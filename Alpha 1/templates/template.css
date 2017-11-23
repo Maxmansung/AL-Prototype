@@ -1,0 +1,60 @@
+#headerwrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid cornflowerblue;
+    padding: 5px;
+    margin-bottom: 5px;
+    min-width: 1126px;
+}
+
+#headerimagewrap{
+    width: 902px;
+    border: 1px solid cornflowerblue;
+    float: left;
+    position: relative;
+    display: inline-block;
+    z-index: 10;
+}
+
+#commonlinks{
+    border: 1px solid black;
+    margin-top: 5px;
+    width: 100%;
+}
+
+#footerwrapper{
+    border: 2px solid black;
+    margin-top: 5px;
+    height: 20px;
+}
+#footerwrapper2{
+    border: 2px solid red;
+    margin-top: 5px;
+    text-align: center;
+}
+#loginbox{
+    position: relative;
+    display: inline-block;
+    float: right;
+    border: 1px solid red;
+    width: 90px;
+    height: 148px;
+    text-align: center;
+    padding: 5px;
+    font-size: 12px;
+}
+
+#headerimage{
+    position: relative;
+    float: left;
+    width: 800px;
+}
+
+#left{
+    float: left;
+}
+
+#right{
+    float: right;
+}

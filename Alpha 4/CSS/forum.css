@@ -1,0 +1,426 @@
+.verticalWrapCentre{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#forumOverview{
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    border: 3px solid darkslateblue;
+    width: 800px;
+    margin: 10px 0 20px 0;
+}
+
+#forumTitle{
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    background: darkslateblue;
+    border: 2px solid black;
+    width: 775px;
+    text-align: center;
+    padding: 5px;
+}
+
+#forumCategories{
+    display: flex;
+    flex-direction: column;
+}
+
+.categoryLink{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 40px;
+    border: 1px solid black;
+    margin: 10px 0 10px 0;
+    padding: 5px;
+    justify-content: space-between;
+    width: 775px;
+}
+
+.categoryLink:hover{
+    background: grey;
+    color: black;
+    cursor: pointer;
+}
+
+.categoryTitle{
+    font-size: 20px;
+    font-weight: bold;
+    color: black;
+}
+
+.categoryFlavour{
+    font-size: 14px;
+    color: rgba(0,0,0,0.8);
+}
+
+#pageCenter{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+}
+
+#forumThreadWrap{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 800px;
+    border: 3px solid darkslateblue;
+    padding: 5px;
+}
+
+#forumThreadMain{
+    display: flex;
+    flex-direction: row;
+    border: 2px solid black;
+    width: inherit;
+}
+
+#forumThreadHeader{
+    font-size: 23px;
+    font-weight: bold;
+    background: slateblue;
+    color: white;
+    width: inherit;
+    border: 2px solid black;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#forumThreadList{
+    width: 250px;
+}
+
+#forumThreadListWrap{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.replyButtonPost:hover{
+    background: rgba(20,20,20,1);
+    color: white;
+    cursor: pointer;
+}
+
+#newThreadButton{
+    background: rgba(50,50,50,0.6);
+    color: black;
+    font-size: 14px;
+    width: 100px;
+    border: 2px solid black;
+    padding: 3px;
+    margin: 5px;
+    text-align: center;
+}
+
+#newThreadButton:hover{
+    background: rgba(20,20,20,1);
+    color: white;
+    cursor: pointer;
+}
+
+#forumThreadDetails{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid black;
+    flex: 1;
+}
+
+#forumThreadPostsList{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.singleThread{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid black;
+    width: 99%;
+    margin-bottom: 2px;
+}
+
+.singleThreadHorizontal{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    font-size: 10px;
+}
+
+.singleThreadTitle{
+    font-size: 15px;
+    font-weight: bold;
+    margin-left: 3px;
+}
+
+.singleThreadTitle:hover{
+    color: darkslateblue;
+    cursor: pointer;
+}
+
+.totalPostsDetail{
+    margin-right: 7px;
+}
+
+.lastPostCreator{
+    margin-left: 10px;
+    margin-right: 7px;
+
+}
+
+.singleThreadCreator{
+    font-size: 12px;
+    padding: 3px;
+    color: grey;
+}
+
+.singleThreadCreator a:link, a:visited{
+    text-decoration: none;
+    color: grey;
+}
+.singleThreadCreator a:hover, a:active{
+    text-decoration: none;
+    color: white;
+    background: gray;
+}
+
+#forumRulesWrap{
+    display: flex;
+    flex-direction: column;
+    border: 2px solid black;
+    padding: 10px;
+    margin: 10px;
+    flex: 1;
+    background: rgba(0,255,255,0.2);
+}
+
+#forumRulesHeader{
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px;
+}
+
+#forumRulesList{
+    font-size: 14px;
+    padding: 10px;
+}
+
+#forumBack{
+    padding: 5px;
+}
+
+#forumBack:hover{
+    cursor: pointer;
+    color: grey;
+}
+
+#forumThreadTitle{
+    padding: 5px;
+}
+
+#newThreadWrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+#newThreadTitle{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+}
+
+#newThreadInstruct{
+    font-size: 15px;
+    padding: 5px;
+    color: black;
+}
+
+#newThreadTitleInput{
+    width: 300px;
+    font-family: Futura, serif;
+    font-size: 15px;
+    margin: 5px 0 5px 5px;
+}
+
+#newThreadPost{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+#newPostText{
+    resize: none;
+    font-family: Futura, serif;
+    font-size: 13px;
+    width: 400px;
+}
+
+#newPostInstruct{
+    color: grey;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+#postThreadButton{
+    width: 80px;
+    height: 20px;
+    align-self: center;
+    border: 2px solid black;
+    background: rgba(50,50,50,0.6);
+    color: black;
+    font-size: 14px;
+    text-align: center;
+    padding: 5px
+}
+
+#postThreadButton:hover{
+    background: rgba(20,20,20,1);
+    color: white;
+    cursor: pointer;
+}
+
+.forumPostWrap{
+    display: flex;
+    flex-direction: row;
+    margin: 5px 0 5px 0;
+    padding: 5px;
+    width: 95%
+}
+
+.forumPostDetails{
+    flex: 2;
+    border: 1px solid black;
+}
+
+.forumPostProfilePic{
+    width: 100px;
+    height: 100px;
+    margin: 5px 0 0 0;
+    border: 1px solid black;
+    color: black;
+}
+
+.forumPostProfileName{
+    margin: 2px;
+    color: grey;
+}
+
+.forumPostProfileName a:link, a:visited{
+    text-decoration: none;
+}
+.forumPostProfileName a:hover, a:active{
+    text-decoration: none;
+    color: white;
+    background: gray;
+}
+
+.forumPostDate{
+    margin: 2px;
+    color: rgba(50,50,50,0.8);
+    font-size: 12px;
+    text-align: center;
+}
+
+.forumPostTextWrap{
+    border: 1px solid black;
+    padding: 10px;
+    flex: 5;
+}
+
+.forumPostHeightWrapDetails{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.forumPostHeightWrapText{
+    height: 100%;
+    display: inline;
+    font-family: "Times New Roman", serif;
+    font-size: 14px;
+}
+
+#userCardImageFile{
+    width: inherit;
+    height: inherit;
+}
+
+.replyButtonPost{
+    width: 80px;
+    height: 20px;
+    align-self: center;
+    border: 2px solid black;
+    background: rgba(50,50,50,0.6);
+    color: black;
+    text-align: center;
+    padding: 5px;
+    font-size: 14px;
+    margin: 10px 0 10px 0;
+}
+
+.replyButtonPost:hover{
+    background: rgba(20,20,20,1);
+    color: white;
+    cursor: pointer;
+}
+
+#postReplyText{
+    resize: none;
+    font-family: Futura, serif;
+    font-size: 13px;
+    width: 100%;
+}
+
+#postReplyWrap{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    width: 95%;
+}
+
+.horizontalWrap{
+    display: flex;
+    flex-direction: row;
+}
+
+.verticalWrap{
+    display: flex;
+    flex-direction: column;
+}
+
+.roleplayTextFormat{
+    border: dashed 1px black;
+    border-radius: 20px;
+    background: white;
+    padding: 10px 20px 10px 20px;
+    min-width: 10px;
+    margin: 0 10px 0 10px;
+}
+
+.textImageEmoji{
+    max-width: 16px;
+    max-height: 16px;
+    margin: 0 5px 0 5px;
+}

@@ -1,0 +1,135 @@
+#horizontalwrap{
+    display: flex;
+    flex-direction: row;
+}
+
+#one1{
+    background: rgba(18,87,182,0); /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(#0467eb,#15bbff,#06b9ff,#a8eeff,#404ba3); /*Safari 5.1-6*/
+    background: -o-linear-gradient(#0467eb,#15bbff,#06b9ff,#a8eeff,#404ba3); /*Opera 11.1-12*/
+    background: -moz-linear-gradient(#0467eb,#15bbff,#06b9ff,#a8eeff,#404ba3); /*Fx 3.6-15*/
+    background: linear-gradient(#0467eb,#15bbff,#06b9ff,#a8eeff,#404ba3); /*Standard*/
+    height: 500px;
+    width: 100px;
+    padding: 10px;
+    margin: 10px;
+    border: 3px black solid;
+}
+
+
+#two2{
+    background: rgba(18,87,182,0); /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(#67909F,#62A0B6,#52528C,#372554,#231123); /*Safari 5.1-6*/
+    background: -o-linear-gradient(#67909F,#62A0B6,#52528C,#372554,#231123); /*Opera 11.1-12*/
+    background: -moz-linear-gradient(#67909F,#62A0B6,#52528C,#372554,#231123); /*Fx 3.6-15*/
+    background: linear-gradient(#67909F,#62A0B6,#52528C,#372554,#231123); /*Standard*/
+    height: 500px;
+    width: 100px;
+    padding: 10px;
+    margin: 10px;
+    border: 3px black solid;
+}
+
+
+#three3{
+    background: rgba(18,87,182,0); /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(#67909F,#62A0B6,#42F2F7,#4B6858,#4D4730); /*Safari 5.1-6*/
+    background: -o-linear-gradient(#67909F,#62A0B6,#42F2F7,#4B6858,#4D4730); /*Opera 11.1-12*/
+    background: -moz-linear-gradient(#67909F,#62A0B6,#42F2F7,#4B6858,#4D4730); /*Fx 3.6-15*/
+    background: linear-gradient(#67909F,#62A0B6,#42F2F7,#4B6858,#4D4730); /*Standard*/
+    height: 500px;
+    width: 100px;
+    padding: 10px;
+    margin: 10px;
+    border: 3px black solid;
+}
+
+
+#four4{
+    background: rgba(18,87,182,0); /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(#2718ff,#2590e8,#25ffdb,#20e844,#9fff18); /*Safari 5.1-6*/
+    background: -o-linear-gradient(#2718ff,#2590e8,#25ffdb,#20e844,#9fff18); /*Opera 11.1-12*/
+    background: -moz-linear-gradient(#2718ff,#2590e8,#25ffdb,#20e844,#9fff18); /*Fx 3.6-15*/
+    background: linear-gradient(#2718ff,#2590e8,#25ffdb,#20e844,#9fff18); /*Standard*/
+    height: 500px;
+    width: 100px;
+    padding: 10px;
+    margin: 10px;
+    border: 3px black solid;
+}
+
+#five5{
+    background: rgba(18,87,182,0); /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(#9acc8f,#4d993d,#f8ffcc,#b18dff,#928fcc); /*Safari 5.1-6*/
+    background: -o-linear-gradient(#9acc8f,#4d993d,#f8ffcc,#b18dff,#928fcc); /*Opera 11.1-12*/
+    background: -moz-linear-gradient(#9acc8f,#4d993d,#f8ffcc,#b18dff,#928fcc); /*Fx 3.6-15*/
+    background: linear-gradient(#9acc8f,#4d993d,#f8ffcc,#b18dff,#928fcc); /*Standard*/
+    height: 500px;
+    width: 100px;
+    padding: 10px;
+    margin: 10px;
+    border: 3px black solid;
+}
+
+#six6{
+    background: rgba(18,87,182,0); /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(#0d7fff,#0caee8,#00ffff,#0ce8aa,#0dff76); /*Safari 5.1-6*/
+    background: -o-linear-gradient(#0d7fff,#0caee8,#00ffff,#0ce8aa,#0dff76); /*Opera 11.1-12*/
+    background: -moz-linear-gradient(#0d7fff,#0caee8,#00ffff,#0ce8aa,#0dff76); /*Fx 3.6-15*/
+    background: linear-gradient(#0d7fff,#0caee8,#00ffff,#0ce8aa,#0dff76); /*Standard*/
+    height: 500px;
+    width: 100px;
+    padding: 10px;
+    margin: 10px;
+    border: 3px black solid;
+}
+
+#seven{
+    background: rgba(18,87,182,0); /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(#2718ff,#2590e8,#25ffdb,#20e844,#9fff18); /*Safari 5.1-6*/
+    background: -o-linear-gradient(#2718ff,#2590e8,#25ffdb,#20e844,#9fff18); /*Opera 11.1-12*/
+    background: -moz-linear-gradient(#2718ff,#2590e8,#25ffdb,#20e844,#9fff18); /*Fx 3.6-15*/
+    background: linear-gradient(#2718ff,#2590e8,#25ffdb,#20e844,#9fff18); /*Standard*/
+    height: 500px;
+    width: 100px;
+    padding: 10px;
+    margin: 10px;
+    border: 3px black solid;
+}
+
+.writing{
+    font-weight: bold;
+    font-size: 40px;
+    color: white;
+    text-align: center;
+}
+
+
+#loadingscreen{
+    visibility: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: gray;
+    z-index: 1000;
+    opacity: 0.5;
+}
+
+#loadingwriting{
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    width: 200px;
+    height: 100px;
+    margin-top: -50px;
+    margin-left: -100px;
+    border: 1px solid black;
+    background-color: slateblue;
+    color: antiquewhite;
+    opacity: 2;
+    text-align: center;
+    line-height: 100px;
+    font-size: 20px;
+}

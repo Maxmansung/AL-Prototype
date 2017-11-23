@@ -1,0 +1,702 @@
+/*The solid black border around the map and buttons*/
+#mapwrapper {
+    display: flex;
+    border: 3px solid black;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+/*This is the controller of the North, East, South and West buttons*/
+.directionbutton {
+    margin: 3px;
+}
+
+/*This aligns the buttons East and West to the centre of the map*/
+#wrapperEW {
+    display: flex;
+    align-items: center;
+}
+
+/*The grey box surrounding the map*/
+#surround {
+    border: 3px solid black;
+    padding: 10px;
+    position: static;
+    z-index: 1;
+    background: gray;
+}
+
+/*Each of the map zones*/
+.zone {
+    width: 20px;
+    height: 20px;
+    border: 1px solid black;
+    position: inherit;
+    float: left;
+    z-index: 10;
+}
+
+/*This is the position of the player and selected zone images (Used to make them overlap)*/
+.mapimages {
+    position: relative;
+    display: inline-block;
+    margin-right: -20px;
+    z-index: 5;
+}
+
+/*This positions the navigator to the side of the main window*/
+#windowwrap{
+    display: flex;
+    flex-direction: row;
+}
+
+/*This positions the menu on top of the main window*/
+#menuwrap{
+    display: flex;
+    flex-direction: column;
+    margin-left: 5px;
+}
+
+/*This is the HUD that contains all the main info*/
+#HUD{
+    border: 1px solid red;
+    min-width: 100px;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#daynumber{
+    border: 1px dotted black;
+    margin: 10px 5px 0 5px;
+    padding: 5px;
+}
+
+#hudtimer{
+    border: 1px dotted black;
+    font-size: 12px;
+    margin-bottom: 10px;
+    padding: 5px;
+}
+
+/*This is the game menu that allows the player to navigate between pages*/
+#gamemenu{
+    width: 800px;
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+}
+
+/*This is the wrapper for the players stamina*/
+#staminawrapper{
+    border: 1px solid black;
+    width: 50px;
+    height: 40px;
+    float: right;
+}
+
+#staminabox{
+    border: 1px dotted blue;
+    display: flex;
+    flex-direction: column;
+    padding: 3px;
+}
+
+/*This is the size of the stamina image*/
+.staminaimage{
+    width: 10px;
+    height: 10px;
+    display: block;
+    float: left;
+}
+
+/*This is the tabs within the menu bar to navigate between pages*/
+.menutab{
+    width: 80px;
+    height: 23px;
+    margin: 8px 0 0 20px;
+    border: 2px solid slateblue;
+    text-align: center;
+    padding-top: 7px;
+    background-color: slateblue;
+    border-radius: 50px 50px 0 0;
+}
+
+/*This is the tabs within the menu bar that the player is currently on*/
+.menutab2{
+    width: 80px;
+    height: 23px;
+    margin: 8px 0 0 20px;
+    border: 2px solid darkslateblue;
+    text-align: center;
+    padding-top: 7px;
+    background-color: darkslateblue;
+    border-radius: 50px 50px 0 0;
+}
+
+/*This is the info window next to the map*/
+#infobox{
+    margin: 12px;
+    height: auto;
+    width: 400px;
+    border: 2px solid black;
+}
+
+/*This is the what holds the map window next to the info window*/
+#mappagewrap{
+    display: flex;
+    flex-direction: row;
+    border: 2px solid slateblue;
+    padding: 10px;
+}
+
+/*This is the zone info*/
+#environment{
+    font-size: 12px;
+    margin: 10px;
+    border: 1px dotted grey;
+    padding: 5px;
+    height: 46px;
+}
+
+/*This is the zone co-ordinates*/
+#zonelocation{
+    text-align: center;
+    margin: 10px 100px 0 100px;
+    width: 200px;
+}
+
+/*This is the players in the location*/
+#players{
+    margin: 10px;
+}
+
+/*This is the main body */
+#playerbox{
+    border: 1px solid black;
+    width: 50%;
+    text-align: center;
+}
+
+/*This is the layout of each of the players details boxes*/
+.playerdiv{
+    border: 1px solid gray;
+    margin: 5px;
+    padding: 2px;
+    overflow: hidden;
+    font-size: 12px;
+}
+a.usernamelink:link{
+    text-decoration: none;
+    color: black;
+}
+a.usernamelink:visited{
+    color: black;
+}
+a.usernamelink:hover{
+    background-color: black;
+    color: white;
+}
+.playerdivgroup{
+    float: right;
+    padding: 3px;
+}
+.playerdivname{
+    float: left;
+    padding: 3px;
+}
+
+/*This is the main body */
+#groupbox{
+    text-align: center;
+    border: 1px solid black;
+}
+
+/*This wraps the players section parts together*/
+#playerspagewrap{
+    display: flex;
+    flex-direction: row;
+    border: 2px solid slateblue;
+    padding: 10px
+}
+/*This is the wrapper for the zone page*/
+#zonepagewrap{
+    display: flex;
+    flex-direction: column;
+    border: 2px solid slateblue;
+    padding: 10px
+}
+
+/*This wraps the other boxed vertically*/
+#otherplayerswrap{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    margin-left: 5px;
+}
+/*This is the zone box*/
+#zoneplayersbox{
+    text-align: center;
+    border: 1px solid black;
+    margin-top: 10px;
+}
+/*This is the button to invite someone to the group */
+.invitegroup{
+    float: right;
+    margin: 2px;
+    font-size: 12px;
+}
+
+/*This section is where playerinvites go*/
+#playerinvites{
+    text-align: center;
+    border: 1px solid black;
+    margin-top: 10px;
+}
+
+/*This is the box containing the invited players current opinions*/
+.inviteddiv{
+    font-size: 14px;
+    border: 1px solid grey;
+    margin: 5px;
+    padding: 2px;
+}
+
+/*This box goes within the player that is invited box and shows the players opinions*/
+.groupopinion{
+    font-size: 12px;
+    border: 1px solid grey;
+    margin: 5px;
+    height: auto;
+}
+
+/*This box shows each player in the groups opinion towards an invite*/
+.groupplayercenter{
+    font-size: 12px;
+    border: 1px solid grey;
+    margin: 5px;
+    height: 21px;
+    text-decoration-color: black;
+}
+.groupplayerleft{
+    font-size: 12px;
+    text-align: left;
+    border: 1px solid grey;
+    margin: 5px;
+    color: green;
+    height: 21px;
+}
+.groupplayerright{
+    font-size: 12px;
+    border: 1px solid grey;
+    margin: 5px;
+    text-align: right;
+    color: red;
+    height: 21px;
+}
+.joinbutton{
+    width: 22px;
+    height: 20px;
+}
+
+/*This section is where player kicks go*/
+#playerkicks{
+    text-align: center;
+    border: 1px solid black;
+    margin-top: 10px;
+}
+
+a.menulink:visited, a.menulink:link {
+     color: white;
+     text-decoration: none;
+     font-weight: bold;
+ }
+
+a.menulink:hover, a.menulink:active {
+    color: antiquewhite;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+a.menulink2:visited, a.menulink2:link {
+    color: #666666;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+#backpackwrap{
+    border: 1px solid black;
+    margin: 10px;
+    padding: 5px;
+    max-width: 200px;
+}
+
+#backpack{
+    border: 1px solid black;
+    margin: 10px;
+    padding: 5px;
+    display: flex;
+    flex-direction: row;
+}
+/*All of these relate to the item images and their information*/
+.itemimage{
+    height: 26px;
+    width: 26px;
+}
+.imagediv{
+    margin: 2px;
+}
+.imagediv .imagetext{
+    visibility: hidden;
+    background-color: darkslategrey;
+    padding: 2px;
+    border-radius: 5px;
+    color: white;
+    text-align: center;
+    position: absolute;
+    margin-top: 30px;
+    font-size: 12px;
+    z-index: 1;
+    width: 150px;
+}
+.imagediv:hover .imagetext{
+    visibility: visible;
+}
+
+#playeritemwrap{
+    display: flex;
+    flex-direction: row;
+}
+
+#playeritemuse{
+    border: 1px solid black;
+    padding: 10px;
+    margin: 10px;
+    align-items: center;
+    width: 500px;
+}
+
+#dropdownwrap{
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    margin-top: 30px;
+}
+
+#useitemspan{
+    width: 50px;
+}
+
+#zoneinformation{
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    padding: 2px;
+}
+
+#depletedzone{
+    color: red;
+}
+
+#zonename{
+    align-self: center;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 3px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#zoneinfowrite{
+    font-weight: normal;
+    font-size: 12px;
+    padding: 3px
+}
+
+#grounditemswrap{
+    border: 1px solid black;
+    padding: 5px;
+    margin: 10px;
+    max-width: 330px;
+
+}
+
+#grounditems{
+    padding: 5px;
+    margin: 5px;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: row;
+    max-width: 300px;
+    flex-wrap: wrap;
+}
+
+#loadingscreen{
+    visibility: hidden;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: gray;
+    z-index: 1000;
+    opacity: 0.5;
+}
+
+#loadingwriting{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200px;
+    height: 100px;
+    margin-top: -50px;
+    margin-left: -100px;
+    border: 1px solid black;
+    background-color: slateblue;
+    color: antiquewhite;
+    opacity: 2;
+    text-align: center;
+    line-height: 100px;
+    font-size: 20px;
+}
+
+#buildingspagewrap{
+    display: flex;
+    flex-direction: row;
+}
+
+#buildingstabs{
+    width: 50px;
+}
+
+#buildingswindow{
+    border: 2px solid slateblue;
+    padding: 10px;
+    height: 500px;
+    width: 100%;
+}
+
+.bmenutab2{
+    width: 80px;
+    height: 23px;
+    margin: 20px 0 60px 0;
+    border: 2px solid slateblue;
+    text-align: center;
+    padding-top: 7px;
+    background-color: slateblue;
+    border-radius: 50px 50px 0 0;
+    transform: rotate(270deg);
+    transform-origin: 50% 75%;
+}
+
+.bmenutab{
+    width: 80px;
+    height: 23px;
+    margin: 20px 0 60px 0;
+    border: 2px solid darkslateblue;
+    text-align: center;
+    padding-top: 7px;
+    background-color: darkslateblue;
+    border-radius: 50px 50px 0 0;
+    transform: rotate(270deg);
+    transform-origin: 50% 75%;
+}
+
+.cmenutab{
+    margin: 10px 0 10px 20px;
+}
+
+.tabimage1{
+    width: 30px;
+    height: 100px;
+}
+
+#tempwrapper{
+    margin: 10px 3px 0 3px;
+    border: 1px solid black;
+}
+
+#tempwrite{
+    font-size: 12px;
+    padding: 5px 5px 0 5px;
+}
+
+#tempdatawrite{
+    font-size: 16px;
+    text-align: right;
+    margin: 3px;
+    padding: 3px;
+    border: 1px dotted black;
+}
+
+/*THIS IS THE BUILDING TAB ITEMS*/
+
+/*This wraps all the information about the building*/
+.buildingdivwrapper{
+    border: 1px solid black;
+    width: inherit;
+    height: 23px;
+    font-size: 14px;
+}
+
+/*This is the header of the buildings*/
+.buildingdivwrapper2{
+    width: inherit;
+    height: 28px;
+    font-size: 16px;
+    text-align: center;
+}
+/*This holds the buildings Name*/
+.buildingtext{
+    height:inherit;
+    width: 150px;
+    font-size: inherit;
+    border-right: 1px dashed grey;
+    position: inherit;
+    float: left;
+
+}
+/*This is the first building material required*/
+.buildingmatt{
+    border-right: 1px dashed grey;
+    width: 80px;
+    height:inherit;
+    position: inherit;
+    font-size: inherit;
+    float: left;
+    margin-left: 5px;
+}
+/*This gives an image for the building material */
+.buildingimages{
+    height: 16px;
+    width: 16px;
+    margin: 3px 5px 0 0;
+}
+
+.buildingstamina{
+    border-right: 1px dashed grey;
+    width: 60px;
+    height:inherit;
+    position: inherit;
+    font-size: inherit;
+    float: right;
+    margin-left: 5px;
+}
+
+/*This is the building button*/
+.buildingbutton {
+    height: 12px;
+    width: 13px;
+    font-size: 10px;
+    float: right;
+    background-color: lightgreen;
+    align-content: center;
+}
+#firepitimage{
+    width: 350px;
+    height: 350px;
+}
+
+#firepitwrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#testinginfo{
+    text-align: center;
+    padding: 5px;
+    font-size: 20px;
+}
+
+#zoneoverviewowner{
+    border: 1px solid black;
+    margin: 15px;
+    padding: 15px;
+    font-size: 18px;
+}
+
+#zonegates{
+    border: 1px dotted black;
+    margin: 5px;
+    padding: 5px;
+}
+
+#overviewwrap{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+}
+
+#readywrap {
+    padding: 5px;
+    margin: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#readyimage:hover{
+    cursor: hand;
+}
+
+#chatwrapper{
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    margin: 42px 0 0 10px;
+    padding: 0 0 0 10px;
+    align-items: center;
+}
+
+#chatbox{
+    border: 1px solid black;
+    padding: 10px;
+    height: 370px;
+    width: inherit;
+}
+
+#inputchat{
+    margin: 3px;
+    width: inherit;
+}
+
+#submittext{
+    width: 50px;
+}
+
+#banktab2{
+    background: url('http://www.arctic-lands.online/images/storage-tab.png');
+    width: 30px;
+    height: 100px;
+}
+#banktab2:hover{
+    background: url('http://www.arctic-lands.online/images/storage-tab2.png');
+}
+
+#firetab2{
+    background: url('http://www.arctic-lands.online/images/firepit-tab.png');
+    width: 30px;
+    height: 100px;
+}
+#firetab2:hover{
+    background: url('http://www.arctic-lands.online/images/firepit-tab2.png');
+}
+#buildingtab2{
+    background: url('http://www.arctic-lands.online/images/buildings-tab.png');
+    width: 30px;
+    height: 100px;
+}
+#buildingtab2:hover{
+    background: url('http://www.arctic-lands.online/images/buildings-tab2.png');
+}
+#overview2{
+    background: url('http://www.arctic-lands.online/images/overview-tab.png');
+    width: 30px;
+    height: 100px;
+}
+#overview2:hover{
+    background: url('http://www.arctic-lands.online/images/overview-tab2.png');
+}

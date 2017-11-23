@@ -1,0 +1,312 @@
+/*Each of the map zones*/
+.zone {
+    width: 20px;
+    height: 20px;
+    border: 1px solid black;
+    position: inherit;
+    float: left;
+    z-index: 10;
+}
+/*This is the controller of the North, East, South and West buttons*/
+.directionbutton {
+    margin: 3px;
+}
+/*The grey box surrounding the map*/
+#surround {
+    border: 3px solid black;
+    padding: 10px 10px 10px 10px;
+    position: static;
+    z-index: 1;
+    background: gray;
+}
+/*The solid black border around the map and buttons*/
+#mapwrapper {
+    display: flex;
+    border: 3px solid black;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+}
+/*This aligns the buttons East and West to the centre of the map*/
+#wrapperEW {
+    display: flex;
+    align-items: center;
+}
+/*This aligns the map and the section of writing to the right*/
+#wrapper {
+    padding: 10px;
+    display: flex;
+    border: 2px solid black;
+    margin: 5px;
+    height: 600px;
+ }
+/*This defines the box of writing to the right*/
+#zonebuildings {
+    flex: 1;
+    width: inherit;
+}
+/*The solid black border around the map and buttons*/
+#infowrapper {
+    margin-left: 10px;
+    padding: 2px 5px 2px 5px;
+    border: 2px solid black;
+    width: 400px;
+}
+/*This is the smaller info window below the first*/
+#infowindow {
+    height: 50px;
+    border: 1px solid black;
+    width: auto;
+    margin-top: 5px;
+}
+/* This is the heading image details*/
+#headingimage {
+    width: 100%;
+    border: 4px solid gray;
+}
+/*This is the navigator window*/
+#navwindow {
+    border: 2px solid gray;
+    background: linear-gradient(90deg,
+    rgba(255, 255, 255, 0)0%,
+    rgba(170, 170, 170, 1)33%,
+    rgba(170, 170, 170, 1)66%,
+    rgba(255, 255, 255, 0)100%);
+    overflow: hidden;
+    height: 22px;
+    flex-direction: column;
+}
+/*This is the red box at the bottom giving the location of all players currently*/
+#testing {
+    border: 2px solid red;
+}
+/*This is the window where actions can occur*/
+#actionwrapper {
+    border: 2px solid black;
+    background: peachpuff;
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+    /*align-content: center;*/
+    align-items: center;
+}
+/*This is the button pressed to search*/
+#searchbutton {
+    width: 100px;
+}
+/*This holds the backpack holder and the image so that they overlap*/
+#backpackwrapper{
+    width: 250px;
+    height: 50px;
+    position: relative;
+    margin: 10px;
+}
+/*This is the div that holds the players object images*/
+#backpack{
+    width: 200px;
+    height: 28px;
+    position: absolute;
+    top: 10px;
+    left: 20px;
+}
+/*This is the image of the backpack*/
+#backpackpic{
+    position: absolute;
+}
+/*This is the position of the player and selected zone images (Used to make them overlap)*/
+.mapimages {
+    position: relative;
+    display: inline-block;
+    margin-right: -20px;
+    z-index: 5;
+}
+/*This is the objects found on the ground and in the bags apearance*/
+.foundobject {
+    margin-left: 5px;
+    width: 26px;
+    height: 26px;
+}
+/*This is the wrapper for the zone items*/
+#zonewrapper{
+    position: relative;
+}
+/*This is the container for any items on the ground*/
+#zoneitemholder{
+    width: 285px;
+    height: 135px;
+    position: absolute;
+    top: 28px;
+    left: 25px;
+}
+/*This is the image for the ground*/
+#groundpic{
+    position: absolute;
+}
+/*This is the wrapper for the players stamina*/
+#staminawrapper{
+    border: 1px solid black;
+    width: 200px;
+    height: 20px;
+    float: right;
+
+}
+/*This is the refresh stamina button*/
+#staminarefresh{
+    width: 150px;
+    height: 20px;
+    float: right;
+    margin-right: 5px;
+}
+/*This wraps all the information about the building*/
+.buildingdivwrapper{
+    border: 1px solid black;
+    width: inherit;
+    height: 16px;
+    font-size: 14px;
+}
+/*This holds the buildings Name*/
+.buildingtext{
+    height:inherit;
+    width: 100px;
+    font-size: inherit;
+    border-right: 1px dashed grey;
+    position: inherit;
+    float: left;
+}
+/*This is the first building material required*/
+.buildingmatt{
+    border-right: 1px dashed grey;
+    width: 40px;
+    height:inherit;
+    position: inherit;
+    font-size: inherit;
+    float: left;
+    margin-left: 5px;
+}
+/*This gives an image for the building material */
+.buildingimages{
+    height: 16px;
+    width: 16px;
+}
+
+.buildingstamina{
+    border-right: 1px dashed grey;
+    width: 60px;
+    height:inherit;
+    position: inherit;
+    font-size: inherit;
+    float: right;
+    margin-left: 5px;
+}
+
+/*This is the building button*/
+.buildingbutton{
+    height: 12px;
+    width: 13px;
+    font-size: 10px;
+    float: right;
+    background-color: lightgreen;
+    align-content: center;
+}
+/*This gives information about what just happened*/
+#Information{
+    border: 1px solid gray;
+    width: 300px;
+    height: 20px;
+    text-align: center;
+    margin: 5px;
+}
+/*This goes on either side of the page to format it for any size window*/
+.edging{
+    width: 10%;
+    background-color: gray;
+    height: 600px;
+    padding: 10px 0 10px 0;
+}
+/*This wraps the entire page and aligns the centre*/
+#wholepage{
+    display: flex;
+    align-items: center;
+}
+/*This holds the items on the left below the map*/
+#col1{
+    display: flex;
+    flex-direction: column;
+    height: inherit;
+}
+/*This is the zones temperature information*/
+#temperature{
+    margin-top: 5px;
+    min-height: 100px;
+    border: 2px solid black;
+    overflow: hidden;
+    font-size: 12px;
+}
+/*This wraps the firepit*/
+#firepitwrapper{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    left: 10%;
+    width: 80%;
+    height: auto;
+    border: 1px solid gray;
+}
+/*This is the tab where actions are performed*/
+.actiontabs{
+    font-size: 14px;
+    color: midnightblue;
+    text-decoration: underline;
+    width: inherit;
+}
+/*This wraps the dropdown box*/
+#dropdownwrap{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+/*This is the button for performing actions*/
+#actionbutton{
+    margin-left: 5px;
+}
+/*This is the chat box window*/
+#chatbox{
+    padding: 10px;
+    display: flex;
+    border: 2px solid black;
+    margin: 5px;
+    width: 1100px;
+    flex-direction: column;
+    height: 160px;
+    overflow-y: scroll;
+}
+/*This is the size of the stamina image*/
+.staminaimage{
+    width: 10px;
+    height: 10px;
+    display: block;
+    float: left;
+}
+/*This wraps all the information about the chat*/
+.chatdivwrapper{
+    border: 1px solid black;
+    width: 1090px;
+    height: 16px;
+    font-size: 14px;
+}
+/*This is the chatbox section*/
+#inputchat{
+    width: 1050px;
+    margin: 0 5px 0 5px;
+}
+
+#explaining{
+    height: 50px;
+    border: 3px solid red;
+    text-align: center;
+    font-weight: bold;
+    padding: 10px;
+    margin: 10px;
+}

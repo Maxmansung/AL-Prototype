@@ -1,0 +1,204 @@
+body{
+    background-repeat: no-repeat;
+    background: rgba(18,87,182,0); /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(rgba(86,213,251,1) 0%,rgba(18,87,182,0.5) 30%,rgba(255,0,0,0) 90%); /*Safari 5.1-6*/
+    background: -o-linear-gradient(rgba(86,213,251,1) 0%,rgba(18,87,182,0.5) 30%,rgba(255,0,0,0) 90%); /*Opera 11.1-12*/
+    background: -moz-linear-gradient(rgba(86,213,251,1) 0%,rgba(18,87,182,0.5) 30%,rgba(255,0,0,0) 90%); /*Fx 3.6-15*/
+    background: linear-gradient(rgba(86,213,251,1) 0%,rgba(18,87,182,0.5) 30%,rgba(255,0,0,0) 90%); /*Standard*/
+    background-attachment: fixed;
+}
+
+#headerwrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 5px;
+    margin-bottom: 5px;
+    min-width: 900px;
+}
+
+#headerimagewrap{
+    width: 900px;
+    float: left;
+    position: relative;
+    display: inline-block;
+    z-index: 10;
+}
+
+#footerwrapper{
+    border: 2px solid black;
+    padding: 10px;
+    margin-top: 5px;
+    height: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#alert{
+    color: red;
+}
+
+#loginbox{
+    position: relative;
+    display: inline-block;
+    float: right;
+    width: 90px;
+    padding-top:10px;
+    height: 170px;
+    text-align: center;
+    font-size: 12px;
+    background: url("/images/menuBackground.png") no-repeat;
+}
+#loginbox a{
+    color: black;
+    text-decoration: none;
+}
+
+#loginbox a:hover{
+    color: #FF5E00;
+    cursor: pointer;
+}
+
+#headerimage{
+    position: relative;
+    float: left;
+    width: 798px;
+    height: 168px;
+}
+
+#loginWrapperHidden{
+    display: none;
+}
+
+#loginWrapper{
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 500;
+}
+
+#loginScreen{
+    border: 3px solid black;
+    padding: 5px;
+    z-index: 1000;
+    width: 700px;
+    height: 550px;
+    background: #67909F;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#dividingLine{
+    background: #2718ff;
+    width: 2px;
+    height: 450px;
+}
+
+.loginWindow{
+    padding: 5px;
+    height: 500px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid black;
+}
+
+.loginTitle{
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.signinInputBox{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0 20px 0;
+    font-weight: bold;
+    font-size: 14px;
+    margin: 0 10px 0 10px;
+    width: 90%;
+}
+
+.errorBox{
+    color: red;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.wordsVsButton{
+    width: inherit;
+}
+
+.loginBoxSubmit{
+    width: 70px;
+    height: 20px;
+    margin-bottom: 50px;
+    background: rgba(0,0,200,0.8);
+    border: none;
+    color: white;
+}
+
+#loadingscreen{
+    visibility: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(100,100,100,0.5);
+    z-index: 1000;
+}
+
+#loadingwriting{
+    position: absolute;
+    top: 40%;
+    left: 30%;
+    margin-top: -50px;
+    text-align: center;
+    line-height: 100px;
+    font-size: 20px;
+}
+
+#loadingwriting img{
+    max-width: 500px;
+    z-index: 1001;
+    opacity: 2;
+}
+
+#recoverPassword{
+    text-align: center;
+    font-size: 12px;
+    color: rgba(10,10,10,0.8);
+}
+
+#recoverPassword a:link{
+    text-decoration: none;
+    color: rgba(10,10,10,0.8);
+}
+
+#recoverPassword a:visited{
+    text-decoration: none;
+    color: rgba(10,10,10,0.8);
+}
+
+#recoverPassword a:hover{
+    text-decoration: none;
+    color: rgba(0,0,0,1);
+    font-weight: bold;
+}

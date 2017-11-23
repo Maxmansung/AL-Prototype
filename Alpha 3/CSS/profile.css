@@ -1,0 +1,479 @@
+/*THIS STYLESHEET IS USED ONLY TO DISPLAY THE PROFILE PAGE AND USER CARD*/
+
+#userpage{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+#userinfo{
+    border: 1px solid slateblue;
+    padding: 5px;
+    margin: 5px;
+    max-width: 400px;
+}
+
+#userAchieve{
+    border: 1px solid black;
+    padding: 5px;
+    margin: 5px;
+    width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#userCard{
+    border: 1px solid black;
+    padding:5px;
+    margin: 5px;
+    width: 600px;
+}
+
+#userCardImage{
+    border: 1px solid black;
+    margin: 5px;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+#userCardImageFile{
+    max-width:100%;
+    max-height:100%;
+}
+
+#userCardName{
+    padding:5px;
+    margin: 5px;
+    font-size: 30px;
+    width: 400px;
+}
+
+#userCardScore{
+    font-weight: bold;
+    font-size: 15px;
+    margin: 0 10px 0 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#userCardHonour{
+    font-weight: bold;
+    font-size: 18px;
+    margin: 15px 5px 0 5px;
+    padding: 5px;
+    color: #252525;
+}
+
+#userCardBio{
+    padding:5px;
+    margin: 5px;
+    font-size: 12px;
+    width: 440px;
+}
+
+#userCardStatus{
+    border: 1px solid black;
+    padding:5px;
+    margin: 5px;
+    font-size: 10px;
+    height: 12px;
+    align-self: flex-end;
+}
+
+#userCardCountry{
+    margin: 5px;
+}
+
+#userCardLogin{
+    border: 1px solid black;
+    padding:5px;
+    margin: 5px;
+    font-size: 10px;
+    height: 12px;
+    align-self: flex-end;
+}
+
+#userCardAge{
+    border: 1px solid black;
+    padding:5px;
+    margin: 5px;
+    font-size: 10px;
+    height: 12px;
+    align-self: flex-end;
+}
+
+#userCardGender{
+    border: 1px solid black;
+    padding:5px;
+    margin: 5px;
+    font-size: 10px;
+    height: 12px;
+    align-self: flex-end;
+}
+
+.userCardWrap1{
+    display: flex;
+    flex-direction: row;
+}
+
+.userCardWrap2{
+    display: flex;
+    flex-direction: column;
+}
+
+#editBioImage{
+    width: 20px;
+    height: 20px;
+    margin: 10px;
+}
+
+#userCardInfoWrap{
+    justify-content: space-between;
+}
+
+.editBioDiv #editBioSpan{
+    visibility: hidden;
+    background-color: darkslateblue;
+    padding: 2px;
+    border-radius: 5px;
+    color: white;
+    text-align: center;
+    position: absolute;
+    margin-top: 30px;
+    font-size: 12px;
+    z-index: 1;
+    width: 150px;
+}
+
+.editBioDiv:hover #editBioSpan{
+    visibility: visible;
+}
+
+#userAchieveTitle{
+    font-size: 20px;
+    margin: 5px;
+}
+
+#userAchieveList{
+    width: 550px;
+    overflow: auto;
+    padding: 5px;
+    margin: 5px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+.userAchieveImageWrap{
+
+}
+
+.userAchieveName{
+    height: 20px;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.userAchieveImage{
+    width: 40px;
+    height: 40px;
+}
+
+.userAchieveImageWrap .userAchieveText{
+    visibility: hidden;
+    background-color: darkslateblue;
+    padding: 2px;
+    border-radius: 5px;
+    color: white;
+    text-align: center;
+    position: absolute;
+    margin-top: 30px;
+    font-size: 12px;
+    z-index: 1;
+    width: 150px;
+}
+
+.userAchieveImageWrap:hover .userAchieveText{
+    visibility: visible;
+}
+
+.userAchieveWrap{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    margin: 2px;
+    border: 1px solid lightslategray;
+    width: 70px;
+    height: 80px;
+    align-items: center;
+}
+
+.userAchieveCount{
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.profileInput{
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#updateProfile{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    align-items: center;
+    padding: 10px;
+    margin: 20px;
+    width: 600px;
+}
+
+#editProfilePage{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profileInputText{
+    margin: 5px;
+}
+
+.profileErrorBox{
+    color: red;
+    margin: 10px;
+    font-weight: bold;
+    font-size: 12px;
+    max-width: 200px;
+}
+
+#userCardFlagImg{
+    width: 32px;
+    height: 32px;
+}
+
+#userCardFlagImgWrap #userCardFlagImgInfo{
+    visibility: hidden;
+    background-color: darkslateblue;
+    padding: 2px;
+    border-radius: 5px;
+    color: white;
+    text-align: center;
+    position: absolute;
+    margin-top: 30px;
+    font-size: 12px;
+    z-index: 1;
+    width: 150px;
+}
+#userCardFlagImgWrap:hover #userCardFlagImgInfo{
+    visibility: visible;
+}
+
+#userStatistics{
+    display: flex;
+    flex-direction: row;
+    border: 1px solid black;
+    width: 600px;
+    padding: 5px;
+    margin: 5px;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* DEATH PAGE */
+
+
+
+#death{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: inherit;
+}
+
+#myCanvas{
+    margin:10px;
+}
+
+#myLegend{
+    margin: 10px;
+}
+
+.myLegendText{
+    margin-bottom: 5px;
+}
+
+.horizontalWrap{
+    display: flex;
+    flex-direction: row;
+}
+
+.verticalWrap{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#deathSubHeading{
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px;
+}
+
+#verticalLine{
+    height: inherit;
+    border: 2px solid gray;
+    margin: 20px;
+}
+
+#confirmDeath{
+    margin: 20px;
+}
+
+#avatarImageUpload{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    align-items: center;
+    margin: 5px 0 20px 0;
+    width: 600px;
+}
+
+#uploadInformation{
+    color: grey;
+    font-size: 12px;
+    align-items: center;
+    margin: 10px;
+    text-align: center;
+}
+
+#uploadTitle{
+    font-size: 20px;
+    margin: 5px 0 20px 0;
+}
+
+#centerAlign{
+    align-items: center;
+    margin: 10px;
+}
+
+#uploadImagePadding{
+    padding: 10px;
+    align-items: center;
+    justify-content: space-between;
+    height: 100px;
+}
+
+#searchNewPlayer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid black;
+    width: 600px;
+    padding: 5px;
+    margin: 5px;
+}
+
+#playerSearchInput{
+
+}
+
+#searchTitleText{
+    font-size: 18px;
+    margin: 5px;
+}
+
+#searchDetailText{
+    font-size: 12px;
+    font-weight: bold;
+    color: rgba(20,20,20,0.9);
+}
+
+#playerSearchFormat{
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+}
+
+#searchBoxWrapper{
+    margin: 5px;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#foundPlayersList{
+    border: 1px solid black;
+    margin: 5px;
+    padding: 10px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+#submitPlayerSearch{
+    width: 22px;
+    height: 22px;
+    background: black;
+    color: white;
+    border: none;
+    padding: 0;
+}
+
+.playerNameWrapper{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid black;
+    margin: 1px;
+    width: inherit;
+}
+
+.playerImageWrapper{
+    border: 1px solid black;
+    margin: 5px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.playerImageFile{
+    max-width:100%;
+    max-height:100%;
+}
+
+.playerNameLink{
+    padding: 0 10px 0 0;
+}
+
+.playerNameLink:link{
+    color: black;
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.playerNameLink:visited{
+    color: black;
+}
+
+.playerNameLink:hover{
+    color: grey;
+}

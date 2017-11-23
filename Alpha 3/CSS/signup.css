@@ -1,0 +1,117 @@
+#wrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+}
+
+#signupbtn{
+    margin: 5px;
+}
+
+.inputfield{
+    border: 1px solid lightskyblue;
+    margin-bottom: 5px;
+}
+
+.joinmap{
+    float: right;
+}
+
+#tutorialhead{
+    align-self: center;
+}
+
+#tutorialby{
+    font-size: 20px;
+    font-weight: bold;
+    align-self: right;
+}
+
+#tutorial{
+    border: 3px solid slateblue;
+    align-items: center;
+    padding: 20px;
+}
+
+#createmap{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    align-items: center;
+    padding: 10px;
+    margin: 20px;
+    width: 300px;
+}
+
+#adminpage{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.admininput{
+    margin: 10px;
+}
+#errorReport{
+    display: flex;
+    align-self: center;
+    color: red;
+    font-weight: bolder;
+}
+#successreport{
+    display: flex;
+    align-self: center;
+    color: green;
+    font-weight: bolder;
+}
+
+#userinteract{
+    border: 1px solid green;
+    padding: 5px;
+    margin: 5px;
+    max-width: 400px;
+}
+
+#passwordRecoveryWrap{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%
+}
+
+#passwordRecoveryWindow{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 300px;
+    border: 3px solid black;
+    padding: 10px;
+    margin: 10px;
+    background: slateblue;
+}
+
+#passwordForgottenWindow{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 400px;
+    border: 3px solid black;
+    padding: 10px;
+    margin: 10px;
+    background: slateblue;
+}
+
+#playerEmail{
+    width: 200px;
+}
+
+#playerUsername{
+    width: 200px;
+}
+
+.loginDetail{
+    font-size: 12px;
+    color: rgba(20,20,20,0.8);
+    text-align: center;
+    width: 80%
+}
