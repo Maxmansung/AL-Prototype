@@ -1,0 +1,2569 @@
+
+/*The solid black border around the map and buttons*/
+#mapwrapper {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+/*This is the controller of the North, East, South and West buttons*/
+.directionbutton {
+    margin: 3px;
+}
+
+/*This aligns the buttons East and West to the centre of the map*/
+#wrapperEW {
+    display: flex;
+    align-items: center;
+}
+
+/*The grey box surrounding the map*/
+#surround {
+    border: 3px solid black;
+    padding: 10px;
+    position: static;
+    z-index: 1;
+    background: gray;
+}
+
+/*Each of the map zones*/
+.zone {
+    width: 20px;
+    height: 20px;
+    border: 1px solid black;
+    z-index: 10;
+}
+
+/*Each of the corner border zones*/
+.zoneAxisCorner {
+    width: 20px;
+    height: 20px;
+    z-index: 10;
+    border: 1px solid rgba(0,0,0,0);
+}
+
+/*Each of the border zones*/
+.zoneAxis {
+    width: 20px;
+    height: 20px;
+    border: 1px solid lightslategray;
+    z-index: 10;
+    background: darkslateblue;
+    color: white;
+    text-align: center;
+    font-family: "Times New Roman", serif;
+    font-size: 12px;
+}
+
+/*This is the position of the player and selected zone images (Used to make them overlap)*/
+.mapimages {
+    position: relative;
+    display: inline-block;
+    margin-right: -20px;
+    z-index: 5;
+}
+
+.mapRowsDiv{
+    display: flex;
+    flex-direction: row;
+}
+
+/*This positions the navigator to the side of the main window*/
+#windowwrap{
+    display: flex;
+    flex-direction: row;
+}
+
+/*This positions the menu on top of the main window*/
+#menuwrap{
+    display: flex;
+    flex-direction: column;
+    margin-left: 5px;
+}
+
+#timeAndTemp{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 140px 10px 70px 10px;
+    background: rgba(100,150,255,0.6);
+    height: 90%;
+}
+
+#HUDWrapper{
+    display: flex;
+    flex-direction: row;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+}
+
+#clickHereImage{
+    background: black;
+    width: 100%;
+    height: 70px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+#clickHereImage:hover{
+    cursor: pointer;
+}
+
+#playerStatusView{
+    margin-left: -100px;
+}
+
+#playerStatusView:hover #playerStatusInfo{
+    visibility: visible;
+}
+
+#playerStatusInfo{
+    visibility: hidden;
+    border: solid darkslateblue 1px;
+    background: slateblue;
+    position: absolute;
+    margin-top: -90px;
+    margin-left: 130px;
+    width: 90px;
+    z-index: 1;
+    border-radius: 5px;
+    color: white;
+    text-align: center;
+    font-size: 14px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.statusDetail{
+    font-size: 12px;
+    padding: 3px;
+}
+
+.statusImage{
+    position: relative;
+    display: inline-block;
+    margin-right: -128px;
+}
+
+.verticalWrap{
+    display: flex;
+    flex-direction: column;
+}
+
+.verticalWrapWide{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.votingDivInfo{
+    width: 95%;
+    border: 1px ridge rgba(0,0,0,0.4);
+    border-radius: 10px;
+    min-height: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 2px 5px 2px 5px;
+    background: rgba(255,255,255,0.5);
+}
+
+#readyButtons{
+    justify-content: center;
+    position: relative;
+}
+
+#spacerPlayerInfo{
+    width: 20px;
+}
+
+#playerInfo{
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    top: -110px;
+    left: -50px;
+}
+
+/*This is the game menu that allows the player to navigate between pages*/
+#gamemenu{
+    width: 800px;
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+}
+
+#spacerHUDInfo{
+    justify-content: space-between;
+    max-width: 300px;
+}
+
+/*This is the wrapper for the players stamina*/
+#staminawrapper{
+    font-size: 16px;
+    font-weight: bold;
+    color: red;
+}
+
+/*This is the wrapper for the players stamina*/
+#staminawrapperExtra{
+    border: 1px solid black;
+    max-width: 100px;
+    float: right;
+}
+
+#staminabox{
+    display: flex;
+    flex-direction: column;
+    padding: 3px;
+    font-weight: bold;
+    text-align: center;
+    align-items: center;
+}
+
+#staminabox2{
+    display: flex;
+    flex-direction: column;
+    padding: 3px;
+    font-weight: bold;
+    text-align: center;
+    align-items: center;
+}
+
+/*This is the size of the stamina image*/
+.staminaimage{
+    width: 10px;
+    height: 10px;
+    display: block;
+    float: left;
+}
+
+/*This is the tabs within the menu bar to navigate between pages*/
+.menutab{
+    width: 80px;
+    height: 23px;
+    margin: 8px 0 0 20px;
+    border: 2px solid slateblue;
+    text-align: center;
+    padding-top: 7px;
+    background-color: slateblue;
+    border-radius: 50px 50px 0 0;
+}
+
+/*This is the tabs within the menu bar that the player is currently on*/
+.menutab2{
+    width: 80px;
+    height: 23px;
+    margin: 8px 0 0 20px;
+    border: 2px solid darkslateblue;
+    text-align: center;
+    padding-top: 7px;
+    background-color: darkslateblue;
+    border-radius: 50px 50px 0 0;
+}
+
+/*This is the info window next to the map*/
+#infobox{
+    height: auto;
+    width: 330px;
+    border: 1px solid black;
+}
+
+/*This is the info window next to the mapZone map*/
+#map{
+    margin: 12px;
+    height: auto;
+    width: 400px;
+    border: 2px solid black;
+    padding: 5px;
+}
+
+/*This wraps the zoneinfo section on the map page*/
+#mapZoneInfo{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/*This is the what holds the map window next to the info window*/
+#mappagewrap{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid slateblue;
+    padding: 10px;
+}
+
+#playerActionsWrap{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/*This is the zone info*/
+#environment{
+    font-size: 12px;
+    margin: 10px;
+    border: 1px dotted grey;
+    padding: 5px;
+    height: 46px;
+}
+
+/*This is the zone co-ordinates*/
+#zonelocation{
+    text-align: center;
+    padding: 10px;
+    width: auto;
+}
+
+/*This is the players in the location*/
+#players{
+    margin: 10px;
+}
+
+/*This is the items in the location*/
+#mapItems{
+    margin: 10px;
+}
+
+/*This is the main body */
+#playerbox{
+    border: 1px solid black;
+    text-align: center;
+}
+
+/*This is the main body */
+#playerBox{
+    border: 1px solid black;
+    text-align: center;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+#playersList{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 10px 10px 20px 10px;
+}
+
+.partyHolder{
+    border: 1px solid black;
+    padding: 5px;
+    margin: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 230px;
+}
+
+.partyHolderSelf{
+    border: 1px solid black;
+    padding: 5px;
+    margin: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 230px;
+    background: rgba(0,100,255,0.2);
+}
+
+#deadList{
+    background: rgba(255,0,0,0.3);
+}
+
+.partyHolderTitle{
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    border-bottom: dashed 1px grey;
+    margin-bottom: 3px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+/*This is used on the MapZone page to align sections horizontally*/
+.horizontalWrap{
+    display: flex;
+    flex-direction: row;
+}
+
+/*This is the layout of each of the players details boxes*/
+.playerdiv{
+    border: 1px solid gray;
+    margin: 5px;
+    padding: 2px;
+    overflow: hidden;
+    font-size: 12px;
+    width: 95%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+a.usernamelink:link{
+    text-decoration: none;
+    color: rgba(0,0,0,0.7);
+}
+a.usernamelink:visited{
+    color: rgba(0,0,0,0.7);
+}
+a.usernamelink:hover{
+    background-color: black;
+    color: white;
+}
+.playerdivgroup{
+    float: right;
+    padding: 3px;
+}
+.playerdivname{
+    padding: 4px;
+    font-size: 11px;
+    color: rgba(0,0,0,0.7);
+    width: 100px;
+    text-align: left;
+}
+.playerdivnameRed{
+    padding: 4px;
+    font-size: 11px;
+    color: rgba(100,0,0,1);
+    width: 100px;
+    text-align: left;
+}
+.playerdivnameGreen{
+    padding: 4px;
+    font-size: 11px;
+    color: rgba(0,100,0,1);
+    width: 100px;
+    text-align: left;
+}
+.playerDivName{
+    padding: 4px;
+    font-size: 11px;
+    color: rgba(0,0,0,0.7);
+}
+
+
+.playerVoteGreen{
+    padding: 2px;
+    font-size: 10px;
+    color: rgba(0,100,0,1);
+    width: 100px;
+    text-align: left;
+}
+
+
+.playerVoteGrey{
+    padding: 4px;
+    font-size: 10px;
+    color: rgba(100,100,100,1);
+    width: 100px;
+    text-align: left;
+}
+
+
+.playerVoteRed{
+    padding: 4px;
+    font-size: 10px;
+    color: rgba(100,0,0,1);
+    width: 100px;
+    text-align: left;
+}
+
+/*This is the main body */
+#groupbox{
+    text-align: center;
+    border: 1px solid black;
+}
+
+/*This wraps the players section parts together*/
+#playerspagewrap{
+    display: flex;
+    flex-direction: column;
+    border: 2px solid slateblue;
+    padding: 10px
+}
+/*This is the wrapper for the zone page*/
+#zonepagewrap{
+    display: flex;
+    flex-direction: column;
+    border: 2px solid slateblue;
+    padding: 10px
+}
+
+/*This wraps the personal page*/
+#avatarPageWrap{
+    display: flex;
+    flex-direction: column;
+    border: 2px solid slateblue;
+    padding: 10px
+}
+
+#justifyPlayersPage{
+    justify-content: space-between;
+    width: 100%;
+}
+
+/*This wraps the other boxed vertically*/
+.otherplayerswrap{
+    display: flex;
+    flex-direction: column;
+    width: 280px;
+}
+
+/*This is the zone box*/
+#zoneplayersbox{
+    text-align: center;
+    border: 1px solid black;
+}
+
+/*This is the button to request to join a group */
+.invitegroup{
+    float: right;
+    margin: 2px;
+    font-size: 12px;
+}
+
+#requestingPlayer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: inherit;
+}
+
+/*This section is where playerinvites go*/
+#playerinvites{
+    text-align: center;
+    border: 1px solid black;
+    margin-top: 10px;
+}
+
+/*This is the box containing the invited players current opinions*/
+.inviteddiv{
+    font-size: 14px;
+    border: 1px solid grey;
+    margin: 5px;
+    padding: 2px;
+}
+
+/*This box goes within the player that is invited box and shows the players opinions*/
+.groupopinion{
+    font-size: 12px;
+    border: 1px solid grey;
+    margin: 5px;
+    height: auto;
+}
+
+/*This box shows each player in the groups opinion towards an invite*/
+.groupplayercenter{
+    font-size: 12px;
+    border: 1px solid grey;
+    margin: 5px;
+    height: 21px;
+    text-decoration-color: black;
+}
+.groupplayerleft{
+    font-size: 12px;
+    text-align: left;
+    border: 1px solid grey;
+    margin: 5px;
+    color: green;
+    height: 21px;
+}
+.groupplayerright{
+    font-size: 12px;
+    border: 1px solid grey;
+    margin: 5px;
+    text-align: right;
+    color: red;
+    height: 21px;
+}
+.joinbutton{
+    width: 22px;
+    height: 20px;
+    background: rgba(0,255,0,0.5);
+}
+
+
+.cancelJoinButton{
+    width: 22px;
+    height: 20px;
+    background: rgba(255,0,0,0.5);
+}
+
+/*This section is where player kicks go*/
+#playerkicks{
+    text-align: center;
+    border: 1px solid black;
+    margin-top: 10px;
+}
+
+a.menulink:visited, a.menulink:link {
+     color: white;
+     text-decoration: none;
+     font-weight: bold;
+ }
+
+a.menulink:hover, a.menulink:active {
+    color: antiquewhite;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+a.menulink2:visited, a.menulink2:link {
+    color: #666666;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+#zoneInfoWrapper{
+    border: 1px solid black;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 325px;
+}
+
+#backpackwrap{
+    border: 1px solid black;
+    padding: 5px;
+    max-width: 250px;
+    margin: 10px;
+}
+
+#backpack{
+    border: 1px solid black;
+    margin: 10px;
+    padding: 5px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+/*All of these relate to the item images and their information*/
+.itemimage{
+    height: 26px;
+    width: 26px;
+}
+.imagediv{
+    margin: 2px;
+}
+
+#researchChoiceWrap{
+    border: 1px solid black;
+    position: absolute;
+    background: lightslategray;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    border-radius: 10px;
+    margin-top: 50px;
+    z-index: 200;
+    visibility: hidden;
+}
+
+.researchTypeName{
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+    margin: 5px;
+}
+
+.researchTypeWrap:hover{
+    cursor: pointer;
+    color: white;
+}
+
+.researchTypeWrap:hover .researchTypeInfo{
+    visibility: visible;
+}
+
+.researchTypeWrap .researchTypeInfo{
+    visibility: hidden;
+    background-color: darkslategrey;
+    padding: 2px;
+    border-radius: 5px;
+    color: white;
+    text-align: center;
+    position: absolute;
+    margin-top: 20px;
+    font-size: 10px;
+    z-index: 1;
+    width: 100px;
+}
+
+.buildingListImageWrapper:hover .imagetext{
+    visibility: visible;
+}
+
+.buildingItemWrapper:hover .imagetext{
+    visibility: visible;
+}
+
+.imagediv:hover{
+    cursor: pointer;
+}
+
+.imagediv:hover .imagetext{
+    visibility: visible;
+}
+
+#playeritemwrap{
+    display: flex;
+    flex-direction: row;
+}
+
+.itemActionDrop{
+    margin: 5px;
+}
+
+#playeritemuse{
+    border: 1px solid black;
+    width: 337px;
+    margin: 0 0 10px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+#playerItemUse{
+    margin: 5px;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+#dropdownwrap{
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: space-between;
+    width: 300px;
+    padding: 0 20px 20px 20px;
+}
+
+.dropdownwrap2 {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: space-between;
+    padding: 5px;
+}
+
+#mainDropdownWrap{
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+#useitemspan{
+}
+
+#zoneinformation{
+    display: flex;
+    flex-direction: column;
+    padding: 2px;
+    text-align: center;
+}
+
+#playersExist{
+    color: red;
+    font-weight: bold;
+    font-size: 12px;
+    padding: 3px;
+    border: dashed 2px red;
+    text-align: center;
+    margin: 10px;
+}
+
+#playersDont{
+    color: darkgreen;
+    font-weight: normal;
+    font-size: 12px;
+    padding: 3px;
+    margin: 10px;
+    text-align: center;
+}
+
+#depletedzone{
+    color: red;
+}
+
+#zonename{
+    align-self: center;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 3px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#zoneinfowrite{
+    font-weight: normal;
+    font-size: 12px;
+    padding: 3px
+}
+
+#grounditemswrap{
+    border: 1px solid black;
+    padding: 5px;
+    width: 325px;
+
+}
+
+#grounditems{
+    padding: 5px;
+    margin: 5px;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+#buildingspagewrap{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#buildingstabs{
+    width: 50px;
+}
+
+#buildingswindow{
+    border: 2px solid slateblue;
+    padding: 10px;
+    min-height: 500px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.bmenutab2{
+    width: 80px;
+    height: 23px;
+    margin: 20px 0 60px 0;
+    border: 2px solid slateblue;
+    text-align: center;
+    padding-top: 7px;
+    background-color: slateblue;
+    border-radius: 50px 50px 0 0;
+    transform: rotate(270deg);
+    transform-origin: 50% 75%;
+}
+
+.bmenutab{
+    width: 80px;
+    height: 23px;
+    margin: 20px 0 60px 0;
+    border: 2px solid darkslateblue;
+    text-align: center;
+    padding-top: 7px;
+    background-color: darkslateblue;
+    border-radius: 50px 50px 0 0;
+    transform: rotate(270deg);
+    transform-origin: 50% 75%;
+}
+
+.cmenutab{
+    margin: 10px 0 10px 20px;
+}
+
+.tabimage1{
+    width: 30px;
+    height: 100px;
+}
+
+#tempwrapper{
+    margin: 10px 3px 0 3px;
+    border: 1px solid black;
+}
+
+#tempwrite{
+    font-size: 12px;
+    padding: 5px 5px 0 5px;
+    font-weight: bold;
+}
+
+#tempDataWrapper{
+    padding: 10px 5px 10px 5px;
+    display: flex;
+    flex-direction: column;
+    height: 100px;
+    justify-content: space-between;
+    border-radius: 10px;
+    align-items: center;
+}
+
+#tempDataWarning{
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+}
+
+#tempdatawrite{
+    margin: 3px;
+    display: flex;
+    flex-direction: row;
+}
+
+.temperatureSpan{
+    text-align: center;
+    font-size: 20px;
+}
+
+.HUDButton{
+    margin: 5px;
+    height: 40px;
+    max-width: 100px;
+}
+
+/*THIS IS THE BUILDING TAB ITEMS*/
+
+/*This wraps all the information about the building*/
+.buildingdivwrapper{
+    border: 1px solid black;
+    width: inherit;
+    height: 28px;
+    font-size: 14px;
+}
+
+/*This is the header of the buildings*/
+.buildingdivwrapper2{
+    width: inherit;
+    height: 28px;
+    font-size: 16px;
+    text-align: center;
+}
+/*This holds the buildings Name*/
+.buildingtext{
+    height:inherit;
+    width: 260px;
+    font-size: inherit;
+    border-right: 1px dashed grey;
+    position: inherit;
+    float: left;
+}
+
+.buildingtext .buildingImageText{
+    visibility: hidden;
+    background-color: darkslateblue;
+    padding: 2px;
+    border-radius: 5px;
+    color: white;
+    text-align: center;
+    position: absolute;
+    margin-top: 30px;
+    font-size: 12px;
+    z-index: 1;
+    width: 150px;
+}
+
+
+.buildingtext:hover .buildingImageText{
+    visibility: visible;
+}
+
+/*This is the first building material required*/
+.buildingmatt{
+    border-right: 1px dashed grey;
+    width: 80px;
+    height:inherit;
+    position: inherit;
+    font-size: inherit;
+    float: left;
+    margin-left: 5px;
+}
+/*This gives an image for the building material */
+.buildingimages{
+    height: 20px;
+    width: 20px;
+    margin: 3px 5px 0 0;
+}
+
+.buildingstamina{
+    border-right: 1px dashed grey;
+    width: 80px;
+    height:inherit;
+    position: inherit;
+    font-size: inherit;
+    float: right;
+    margin-left: 5px;
+}
+
+/*This is the building button*/
+.buildingbutton {
+    height: 12px;
+    width: 13px;
+    margin-top: 5px;
+    font-size: 10px;
+    float: right;
+    background-color: lightgreen;
+    align-content: center;
+}
+#firepitimage{
+    width: 350px;
+    height: 350px;
+}
+
+#firepitwrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#testinginfo{
+    text-align: center;
+    padding: 5px;
+    font-size: 20px;
+}
+
+#zoneoverviewowner{
+    border: 1px solid black;
+    margin: 15px;
+    padding: 15px;
+    font-size: 18px;
+}
+
+#zonegates{
+    border: 1px dotted black;
+    margin: 5px;
+    padding: 5px;
+}
+
+#overviewwrap{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+}
+
+#readywrap {
+    padding: 5px;
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#readyimage:hover{
+    cursor: hand;
+}
+
+#chatwrapper{
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    margin: 42px 0 0 10px;
+    padding: 0 0 0 10px;
+    align-items: center;
+}
+
+#chatbox{
+    border: 1px solid black;
+    padding: 10px;
+    height: auto;
+    width: inherit;
+}
+
+#inputchat{
+    margin: 3px;
+    width: inherit;
+}
+
+#submittext{
+    width: 50px;
+}
+
+#banktab2{
+    background: url('http://www.arcticlandstest.xyz/images/storage-tab.png');
+    width: 30px;
+    height: 100px;
+}
+#banktab2:hover{
+    background: url('http://www.arcticlandstest.xyz/images/storage-tab2.png');
+}
+
+#firetab2{
+    background: url('http://www.arcticlandstest.xyz/images/firepit-tab.png');
+    width: 30px;
+    height: 100px;
+}
+#firetab2:hover{
+    background: url('http://www.arcticlandstest.xyz/images/firepit-tab2.png');
+}
+#buildingtab2{
+    background: url('http://www.arcticlandstest.xyz/images/buildings-tab.png');
+    width: 30px;
+    height: 100px;
+}
+#buildingtab2:hover{
+    background: url('http://www.arcticlandstest.xyz/images/buildings-tab2.png');
+}
+#overview2{
+    background: url('http://www.arcticlandstest.xyz/images/overview-tab.png');
+    width: 30px;
+    height: 100px;
+}
+#overview2:hover{
+    background: url('http://www.arcticlandstest.xyz/images/overview-tab2.png');
+}
+
+#backpackStorage{
+    border: 1px solid black;
+    margin: 10px;
+    padding: 5px;
+    display: flex;
+    flex-direction: row;
+}
+
+#backpackWrapStorage{
+    border: 1px solid black;
+    padding: 5px;
+    margin: 5px;
+}
+
+#zoneStorage{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#storageTitle{
+    font-size: 30px;
+    font-weight: bold;
+}
+
+#storageLevel{
+    font-size: 20px;
+    padding-bottom: 5px;
+}
+
+#storageLockedWriting{
+    font-size: 20px;
+    padding-bottom: 30px;
+    color: red;
+}
+
+#upgradeStorageWrap{
+    padding: 10px;
+    margin: 20px;
+    display: flex;
+    flex-direction: row;
+    border: solid 1px black;
+    align-items: center;
+}
+
+#upgradeStorageWritingWrap{
+    display: flex;
+    flex-direction: column;
+}
+
+#upgradeStorageWriting{
+    padding: 5px;
+    margin: 5px;
+}
+
+#upgradeStorageCost{
+    padding: 5px;
+    margin: 5px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    height: 100%;
+}
+
+#storageWrap{
+    border: 1px solid black;
+    padding: 5px;
+    margin: 5px;
+}
+
+#storage{
+    border: 1px solid black;
+    margin: 10px;
+    padding: 5px;
+    display: flex;
+    flex-direction: row;
+    width: 700px;
+    flex-wrap: wrap;
+}
+
+#itemUsageBuildings{
+    margin: 10px;
+    padding: 5px;
+    color: blue;;
+    font-weight: bold;
+    border: 2px solid blue;
+    text-align: center;
+}
+
+#editTextImage{
+    width: 20px;
+    height: 20px;
+    margin: 10px;
+}
+
+.editTextDiv #editTextSpan{
+    visibility: hidden;
+    background-color: darkslategrey;
+    padding: 2px;
+    border-radius: 5px;
+    color: white;
+    text-align: center;
+    position: absolute;
+    margin-top: 30px;
+    font-size: 12px;
+    z-index: 1;
+    width: 150px;
+}
+.editTextDiv:hover #editTextSpan{
+    visibility: visible;
+}
+
+#groupBoxTitle{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+}
+
+#editPartyNameField{
+    margin: 5px;
+    font-family: "Times New Roman", serif;
+}
+
+#editPartyNameSubmit{
+    font-size: 10px;
+}
+
+.buildingNotBuilt{
+    font-size: 30px;
+    padding: 20px;
+    margin: 10px;
+    font-family: "Times New Roman", serif;
+    text-align: center;
+    color: darkslateblue;
+    font-weight: bold;
+}
+
+#storageLock{
+    padding: 5px;
+    margin-left: 10px;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#upgradeStorageButton{
+    height: 30px;
+}
+
+#storageLockChange{
+    margin: 10px;
+}
+
+#zoneOverview{
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+    padding: 5px;
+    align-items: center;
+}
+
+#zoneOverviewOwner{
+    margin: 5px;
+    padding: 5px;
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+}
+
+#zoneOverviewName{
+    margin: 5px;
+    padding: 5px;
+    font-weight: bold;
+    font-size: 26px;
+    text-align: center;
+}
+
+#zoneOverviewLock{
+    margin: 5px;
+    padding: 5px;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#zoneOverviewInformation{
+    margin: 5px;
+    padding: 5px;
+    border: 1px solid black;
+}
+
+#zoneOverviewDescription{
+    margin: 5px;
+    padding: 5px;
+    max-width: 200px;
+    font-size: 16px;
+}
+
+#searchbutton{
+    max-width: 80px;
+    margin: 10px;
+}
+
+#zoneOverviewBonuses{
+    margin: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border: 1px solid black;
+    padding: 10px;
+}
+
+
+#zoneOverviewWrapHorizontal{
+    margin: 5px;
+    padding: 5px;
+    display: flex;
+    flex-direction: row;
+}
+
+#getLockChange{
+    padding: 10px;
+}
+
+#movementLog{
+    border: 1px black solid;
+    padding: 5px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    min-width: 600px;
+}
+
+#movementLogTitle{
+    border: 1px black solid;
+    padding: 3px;
+    font-weight: bold;
+    font-size: 16px;
+    background: darkslateblue;
+    text-align: center;
+    color: whitesmoke;
+}
+
+#movementLogActions{
+    max-height: 100px;
+    overflow: auto;
+}
+
+.movementLogActionLog{
+    border: 1px solid black;
+    display: flex;
+    flex-direction: row;
+}
+
+.movementLogActionLogRed{
+    border: 1px solid black;
+    display: flex;
+    flex-direction: row;
+    background: rgba(200,0,0,0.3);
+}
+
+.movementLogTimestamp{
+    border-right: solid 1px black;
+    padding: 2px;
+    font-size: 10px;
+    font-weight: bold;
+    color: dimgrey;
+    width: 30px;
+}
+
+.movementLogText{
+    padding: 2px;
+    font-size: 10px;
+}
+
+#pageCenter{
+    justify-content: center;
+    width: 100%;
+    padding-left: 100px;
+}
+
+#gateLockChange{
+    margin: 5px 10px 5px 15px;
+}
+
+/*These are parts of the "Avatar" tab */
+
+
+#avatarOverview{
+    border: 1px black solid;
+    padding: 5px;
+    margin: 5px;
+}
+
+#sleepingBagOverview{
+    border: 1px black solid;
+    padding: 5px;
+    margin: 5px;
+}
+
+#researchOverview{
+    padding: 5px;
+    margin: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#avatarOverviewTitle{
+}
+
+#avatarOverviewImage{
+    border: 1px solid black;
+    width: 100px;
+    height: 100px;
+    margin: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+#sleepingBagImage{
+    width: 160px;
+    height: 140px;
+    margin: 5px;
+}
+
+#sleepingBagUpgradeItems{
+    margin: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+#backpackUpgradeItems{
+    margin: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+#sleepingBagUpgradeButton{
+    width: 80px;
+    margin: 5px;
+    align-self: center;
+}
+
+#avatarOverviewHorizontal{
+    justify-content: space-between;
+}
+
+
+#userCardImageFile{
+    max-width:100%;
+    max-height:100%;
+}
+
+.upgradeSleepingBagItem{
+    padding: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.bagUpgradeImagetext{
+    padding: 2px;
+    font-weight: bold;
+    font-size: 14px;
+
+}
+
+#canvasLegend{
+    font-size: 14px;
+    font-weight: bold;
+    padding: 5px;
+}
+
+#researchLevel{
+    font-size: 14px;
+    padding: 5px 20px 5px 5px;
+}
+
+#sleepingBagLevel{
+    font-size: 14px;
+    padding: 0 0 10px 0;
+    font-weight: bold;
+    text-align: center;
+}
+
+#backpackLevel{
+    font-size: 14px;
+    padding: 0 0 10px 0;
+    font-weight: bold;
+    text-align: center;
+}
+
+#avatarPageSpacing{
+    justify-content: space-between;
+}
+
+#sleepingBagUpgradeWriting{
+    font-size: 12px;
+    font-weight: bold;
+    align-self: flex-start;
+}
+
+#verticalDividingLine{
+    border: 1px grey dashed;
+    margin: 0 10px 0 10px;
+}
+
+.itemLogName{
+    border-radius: 5px;
+    background: darkslateblue;
+    color: white;
+    padding: 0 2px 0 2px;
+}
+
+#takingAlert{
+    background: rgba(255,0,0,0.2);
+}
+
+#worldActionsLog{
+    background: rgba(255,0,0,0.9);
+}
+
+#movementLogOverview{
+    border: 1px black solid;
+    padding: 5px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    min-width: 600px;
+}
+
+#movementLogOverviewTitle{
+    border: 1px black solid;
+    padding: 3px;
+    font-weight: bold;
+    font-size: 16px;
+    background: darkslateblue;
+    text-align: center;
+    color: whitesmoke;
+}
+
+#movementLogOverviewActions{
+    max-height: 400px;
+    overflow: auto;
+}
+
+.movementLogOverviewActionLog{
+    border: 1px solid black;
+    display: flex;
+    flex-direction: row;
+}
+
+.movementLogOverviewTimestamp{
+    border-right: solid 1px black;
+    padding: 2px;
+    font-size: 12px;
+    font-weight: bold;
+    color: dimgrey;
+    width: 30px;
+}
+
+.movementLogOverviewText{
+    padding: 2px;
+    font-size: 12px;
+}
+
+#zoneActionsPageWrap{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid slateblue;
+    padding: 10px
+}
+
+.dayShownTitle{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#currentDayInput{
+    font-size: 80px;
+}
+
+.verticalWrapTempDisplay{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 50px 40px 50px 40px;
+}
+
+.temperatureDisplay{
+    font-size: 70px;
+}
+
+#selectDayDiary{
+    padding: 0 10px 10px 10px;
+}
+
+#currentDayDiary{
+    padding: 20px 10px 40px 10px;
+}
+
+.verticalWrapCentre{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#zoneOverviewLockTitle{
+    font-size: 21px;
+    font-weight: bold;
+}
+
+#partyActionLog{
+    background: rgba(0,0,255,0.2);
+}
+
+.teachResearchImg{
+    width: 16px;
+    height: 16px;
+}
+
+
+
+.buttonImage{
+    max-width: 28px;
+    max-height: 28px;
+}
+
+.explanationText{
+    font-size: 10px;
+    color: lightgray;
+}
+
+.teachResearchWrap{
+    position: absolute;
+    padding: 5px;
+    margin: 5px;
+    background: slateblue;
+    border-radius: 5px;
+    border: 1px solid darkslateblue;
+    display: flex;
+    flex-direction: row;
+}
+
+#teachResearchHorizontalWrap{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.teachableResearchWrap{
+    display: flex;
+    flex-direction: row;
+    border: 1px solid black;
+    justify-content: space-between;
+    background: mediumslateblue;
+    border-radius: 2px;
+    margin: 1px 3px 1px 3px;
+}
+
+.teachBuildingImage{
+    width: 20px;
+    height: 20px;
+    border: 1px solid black;
+    margin: 2px;
+    padding: 2px;
+}
+
+.teachBuildingName{
+    font-size: 10px;
+    font-family: "Times New Roman", serif;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.teachBuildingButton{
+    width: 18px;
+    height: 18px;
+    margin: 5px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+#closeTeachResearch{
+    border: 2px solid black;
+    color: black;
+    background: lightcoral;
+    width: 15px;
+    height: 10px;
+    text-align: center;
+    padding: 0 0 5px 0;
+    font-weight: bold;
+    font-size: 10px;
+}
+
+#closeTeachResearch:hover {
+    cursor: pointer;
+}
+
+#destroyBiome{
+    border: 1px solid black;
+    width: 337px;
+    margin: 0 0 10px 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.titleText{
+    font-weight: bold;
+    font-size: 16px;
+    padding: 5px;
+}
+
+.titleTextSmall{
+    font-weight: bold;
+    font-size: 14px;
+    padding: 5px;
+}
+
+#explinationText{
+    color: grey;
+    font-size: 10px;
+    padding: 5px;
+}
+
+#destroyBiomeButton{
+    margin: 10px;
+    width: 50px;
+    height: 50px;
+}
+
+#destroyBiomeImage{
+    width: inherit;
+    height: inherit;
+}
+
+#destroyBiomeButton:hover{
+    cursor: pointer;
+}
+
+#destroyBiomeButton:hover .imagetext{
+    visibility: visible;
+}
+
+
+.specialBuildingImage{
+    min-width: 200px;
+    min-height: 200px;
+}
+
+.descriptiveText{
+    font-size: 12px;
+}
+
+.performSpecialAction{
+    background: darkslateblue;
+    color: white;
+    border: black 1px;
+    padding: 10px;
+    margin: 10px;
+    width: 80px;
+}
+
+#recordOfSpending{
+    border: 1px solid black;
+    padding: 10px;
+    margin: 10px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#specialZoneDescription{
+    border: 1px solid black;
+    padding: 10px;
+    margin: 10px;
+    align-items: center;
+}
+
+.playerTribute{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2px;
+    margin: 2px;
+    border: solid black 1px;
+}
+
+.playerTributeName{
+    font-size: 10px;
+    padding: 0 10px 0 0;
+    font-weight: bold;
+}
+
+.playerTributeParty{
+    font-size: 10px;
+    padding: 0 20px 0 0;
+
+}
+
+.playerTributeTotal{
+    font-size: 10px;
+}
+
+#shrineStats{
+    display: flex;
+    flex-direction: row;
+    margin: 10px;
+}
+
+.shrineLegendText{
+    margin: 5px;
+}
+
+#shrineStatsTitle{
+    font-weight: bold;
+    font-size: 24px;
+    text-align: center;
+    margin: 10px 0 5px 0;
+}
+
+#survivableTempHide #tempOverviewHidden{
+    visibility: hidden;
+    border: solid darkslateblue 1px;
+    background: slateblue;
+    position: absolute;
+    margin-left: 180px;
+    margin-top: -30px;
+    width: 90px;
+    z-index: 1;
+    border-radius: 5px;
+    color: white;
+    text-align: center;
+    font-size: 12px;
+    padding: 10px;
+}
+
+#survivableTempHide:hover #tempOverviewHidden{
+    visibility: visible;
+}
+
+.moreInfoButton{
+    z-index: 2;
+}
+
+.moreInfoButton img{
+    margin-top: 30px;
+    max-width: 20px;
+}
+
+.tempDetailTitle{
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.tempDetailItem{
+    margin-bottom: 5px;
+
+}
+
+#constructionWrap{
+    display: flex;
+    flex-direction: column;
+    border: 2px solid slateblue;
+    padding: 10px
+}
+
+.horizontalLine{
+    width: inherit;
+    max-height: 1px;
+    border: 1px dashed black;
+    margin: 5px;
+}
+
+#constructionBuildingsWrap{
+    border: 1px solid black;
+}
+
+#playerUpgrades{
+    padding: 5px;
+    margin: 5px;
+    border: solid black 1px;
+}
+
+#constructionUpgrades{
+    padding: 5px;
+    margin: 5px;
+    border: solid black 1px;
+}
+
+#buildingsWrapper{
+    padding: 10px;
+    margin: 5px;
+}
+
+#buildingsListTitle{
+    font-weight: bold;
+    font-size: 20px;
+}
+
+#knownBuildingsListNotUsed{
+    background: rgba(18,87,182,0); /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(rgba(0,0,0,0),rgba(47,79,79,0.5),rgba(0,0,0,0)); /*Safari 5.1-6*/
+    background: -o-linear-gradient(rgba(0,0,0,0),rgba(47,79,79,0.5),rgba(0,0,0,0)); /*Opera 11.1-12*/
+    background: -moz-linear-gradient(rgba(0,0,0,0),rgba(47,79,79,0.5),rgba(0,0,0,0)); /*Fx 3.6-15*/
+    background: linear-gradient(rgba(0,0,0,0),rgba(47,79,79,0.5),rgba(0,0,0,0)); /*Standard*/
+    padding: 10px;
+}
+
+#knownBuildingsList{
+    height: 300px;
+    overflow: auto;
+}
+
+.buildingTypeTitle{
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+}
+
+.buildingTypeWrap{
+    border-bottom: 1px dotted black;
+    margin-bottom: 10px;
+    padding: 0 5px 5px 5px;
+}
+.buildingListImageWrapper{
+    height: 20px;
+    width: 20px;
+    margin: 0 10px 0 0;
+}
+
+.imagetext{
+    visibility: hidden;
+    background-color: darkslategrey;
+    padding: 2px;
+    border-radius: 5px;
+    color: white;
+    text-align: center;
+    position: absolute;
+    margin-top: 30px;
+    font-size: 12px;
+    z-index: 999;
+    width: 150px;
+}
+
+.buildingListImage{
+    max-height: 20px;
+    max-width: 20px;
+}
+
+.buildingListName{
+    font-size: 10px;
+}
+
+.buildingItemWrapper{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.buildingItemsRequired{
+    font-size: 10px;
+    padding: 0 5px 0 5px;
+}
+
+.canBeBuilt {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 20px;
+    margin-bottom: 2px;
+    justify-content: space-between;
+}
+
+.cantBeBuilt{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 20px;
+    margin-bottom: 2px;
+    justify-content: space-between;
+    opacity: 0.5;
+}
+
+.hasBeenBuilt{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 20px;
+    margin-bottom: 2px;
+    justify-content: space-between;
+    background: rgba(0,255,0,0.2);
+}
+
+.buildingItemsListWrapper{
+    width: 150px;
+    display: flex;
+    flex-direction: row;
+}
+
+.buildingTitleWrapper{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 200px;
+}
+
+#buildingImagePadding{
+    padding: 0 10px 0 5px;
+}
+
+.buildingStaminaWrap{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 20px;
+}
+
+.buildingStaminaImage {
+    max-width: 10px;
+    max-height: 10px;
+}
+
+.buildButton2Icon{
+    max-height: 20px;
+    max-width: 20px;
+    margin: 0 5px 0 5px;
+}
+
+.buildButton2Icon:hover{
+    cursor: pointer;
+}
+
+.buildButton3Icon{
+    max-height: 20px;
+    max-width: 20px;
+    margin: 0 5px 0 5px;
+}
+
+.buildingImageBlank{
+    width: 20px;
+    height: 20px;
+    margin: 0 10px 0 0;
+}
+
+.completedBuilding{
+    font-size: 10px;
+    font-weight: bold;
+}
+
+#storageBuildingWrap{
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+    padding: 5px;
+}
+
+.storageTabSelection{
+    width: 60px;
+    height: 20px;
+    border-radius: 0 0 15px 15px;
+    background: rgba(161,76,30,1);
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    margin: 0 10px 0 0;
+    text-align: center;
+}
+
+.storageTabSelection:hover{
+    cursor: pointer;
+}
+
+#itemsListArrayWrap{
+    border: 1px solid rgba(161,76,30,1);
+    background: rgba(161,76,30,0.5);
+}
+
+#itemListArrayTitle{
+    font-size: 12px;
+    font-weight: bold;
+    padding: 10px;
+}
+
+#itemListArray{
+    border: 1px solid black;
+    margin: 0 10px 10px 10px;
+    padding: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    max-width: 320px;
+    flex-wrap: wrap;
+}
+
+.smallWriting{
+    font-size: 12px;
+    color: rgba(0,0,0,0.7);
+}
+
+#firepitOverview{
+    border: 1px solid black;
+    margin: 5px;
+    padding: 10px;
+}
+
+#firepitTitle{
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#firepitImageWrap{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#firepitImageType{
+    max-width: 240px;
+    max-height: 240px;
+}
+
+#firepitImageWrap #firepitBackpackWrap{
+    position: absolute;
+    background: lightslategray;
+    padding: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    max-width: 200px;
+    border-radius: 10px;
+    min-height: 30px;
+    margin-top: 50px;
+    visibility: hidden;
+    z-index: 200;
+}
+
+#firepitImageWrap #firepitInfoPopup{
+    position: absolute;
+    font-size: 10px;
+    color: white;
+    background: darkslategray;
+    padding: 5px;
+    border-radius: 10px;
+    margin-left: -20px;
+    margin-top: -80px;
+    visibility: hidden;
+}
+
+#firepitImageWrap:hover #firepitInfoPopup{
+    visibility: visible;
+}
+
+.disabledScreen{
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    position: fixed;
+    background: rgba(0,0,0,0.1);
+    visibility: hidden;
+    z-index: 199;
+}
+
+.buildingDetailsWriting{
+    font-size: 12px;
+    font-weight: bold;
+    color: rgba(0,0,0,0.8);
+}
+
+#storageDetails{
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#storageData{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-around;
+}
+
+.storageUpgradeItemWrap{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#storageUpgradeItemsOuter{
+    padding: 5px;
+    margin: 10px;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#storageUpgradeItemsInner{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0 5px 0;
+}
+
+#storageUpgradeButton{
+    height: 25px;
+    width: 80px;
+    font-size: 12px;
+    font-weight: bold;
+    background: slateblue;
+    border: darkslateblue;
+    color: white;
+}
+
+#itemHoldersWrap{
+    border: 1px solid black;
+    margin: 5px;
+    padding: 5px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#backpackWrap{
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    margin: 5px;
+}
+
+.constructionPageTitle{
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#backpackHolderWrap {
+    border: 1px solid black;
+    display: flex;
+    padding: 5px 5px 0 5px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-width: 150px;
+    align-self: flex-start;
+}
+
+#backpackWrapBorder{
+    border: 1px solid black;
+    padding: 5px;
+}
+
+#useRecipeButton{
+    height: 25px;
+    width: 80px;
+    font-size: 12px;
+    font-weight: bold;
+    background: slateblue;
+    border: darkslateblue;
+    color: white;
+}
+
+#useItemButton{
+    height: 25px;
+    width: 80px;
+    font-size: 12px;
+    font-weight: bold;
+    background: slateblue;
+    border: darkslateblue;
+    color: white;
+}
+
+#readywrap .readyButtonInfo{
+    visibility: hidden;
+    color: white;
+    background: slateblue;
+    border-radius: 10px;
+    width: 100px;
+    position: absolute;
+    margin: 0 0 0 100px;
+    text-align: center;
+    font-size: 12px;
+    padding: 5px;
+}
+
+#readywrap:hover .readyButtonInfo{
+    visibility: visible;
+}
+
+#zoneOverviewChoice{
+    font-weight: bold;
+    font-size: 12px;
+    padding: 5px;
+    border-radius: 10px;
+    border: black 1px dashed;
+}
+
+#nightFall{
+    width: 500px;
+    height: 500px;
+    margin: 10px;
+    border: 2px solid black;
+}
+
+#countdownTimer{
+    padding-left: 5px;
+    font-weight: bold;
+    color: red;
+}
+
+.selectionWrapper{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#locksWrapper{
+    padding: 10px;
+}
+
+.singleLockWrapper{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 400px;
+    height: 30px;
+    align-items: center;
+}
+
+.singleLockName{
+    font-size: 12px;
+    font-weight: bold;
+    margin: 0 10px 0 10px;
+}
+
+.singleLockHealth{
+    font-size: 12px;
+    margin: 0 10px 0 10px;
+}
+
+#messagesWrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px;
+}
+
+#messageTypeWrapper{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    width: inherit;
+}
+
+.messageTypeSelector{
+    background: rgba(129,100,0,1);
+    color: rgba(255,255,255,1);
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 10px 10px 0 0;
+    padding: 5px;
+    margin: 0 5px 0 5px;
+}
+
+.messageTypeSelector:hover{
+    cursor: pointer;
+}
+
+#mailbox{
+    border: 2px solid rgba(129,100,0,1);
+    background: rgba(229,200,100,1);
+    padding: 10px;
+    width: 500px;
+}
+
+#messagesTitleWrap{
+    justify-content: space-between;
+    width: 100%;
+}
+
+.singleMessageOverview{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    padding: 2px;
+    border: 1px dashed rgba(100,100,100,1);
+    margin: 3px;
+}
+
+.singleMessageOverview:hover{
+    background: rgba(100,150,266,0.4);
+    cursor: pointer;
+}
+
+.singleMessageFrom{
+    font-size: 12px;
+    color: grey;
+    font-weight: bold;
+    width: 150px;
+}
+
+.singleMessageTitle{
+    font-size: 12px;
+    color: black;
+    width: 300px;
+    font-weight: bold;
+}
+
+.singleMessageTime{
+    font-size: 12px;
+    color: grey;
+    width: 100px;
+}
+
+.singleMessageText{
+    border: 1px solid rgba(0,0,0,0.2);
+    margin: 2px 10px 2px 10px;
+    padding: 5px;
+    font-size: 10px;
+}
+
+#writeNewMessageWrap{
+    width: 40%;
+    min-height: 30%;
+    background: slateblue;
+    border: 1px solid black;
+    visibility: hidden;
+    z-index: 200;
+    position: fixed;
+    top: 20%;
+    left: 30%;
+    padding: 20px 10px 20px 10px;
+}
+
+.playerMessageID{
+    font-size: 16px;
+    font-weight: bold;
+    color: rgba(0,0,0,0.7);
+    padding: 5px;
+}
+
+#messageTitleText{
+    font-size: 11px;
+    margin: 10px;
+    font-family: "Times New Roman", "serif";
+}
+
+#messageMainText{
+    resize: none;
+    font-size: 11px;
+    margin: 10px;
+    overflow: hidden;
+    width: 80%;
+    height: 150px;
+    font-family: "Times New Roman", "serif";
+}
+
+#messagePlayerNameLocation{
+    margin: 5px 0 20px 0;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.messageExplanationText{
+    width: 50px;
+    font-weight: bold;
+    font-size: 12px;
+    color: rgba(200,200,200,1);
+    padding: 10px 0 0 0 ;
+}
+
+.centerButtonWrap{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.buttonToMessage{
+    background: rgba(50,50,50,0.6);
+    color: black;
+    font-size: 14px;
+    width: 100px;
+    border: 2px solid black;
+    padding: 3px;
+    margin: 5px;
+    text-align: center;
+}
+
+.buttonToMessage:hover{
+    cursor: pointer;
+    background: rgba(50,50,50,0.9);
+}
+
+#expandButton{
+    height: 100%;
+    background: rgba(100,100,100,0.4);
+    width: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+#HUDPadding{
+    height: 70px;
+}

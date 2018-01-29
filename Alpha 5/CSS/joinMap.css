@@ -1,0 +1,95 @@
+#joinMaps{
+    margin-bottom: 10px;
+}
+
+#pageMiddle{
+    display: flex;
+    flex-direction: column;
+    width: inherit;
+    align-items: center;
+}
+
+.mapListWrap{
+    margin: 20px;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 500px;
+}
+
+.mapsWriting{
+    font-size: 14px;
+    padding: 0 10px 15px 10px;
+    color: gray;
+}
+
+.mapsTitle{
+    font-weight: bold;
+    font-size: 18px;
+    margin: 15px 0 5px 0;
+
+}
+
+#adminMaps{
+    margin-bottom: 10px;
+}
+
+.mapTab{
+    width: 400px;
+    margin: 2px;
+}
+
+.titleLine{
+    border: 1px solid gray;
+    height: 18px;
+    width: inherit;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 5px 0 5px;
+    background-color: rgba(13, 255, 118, 0.3);
+}
+
+.mapName{
+    font-weight: bold;
+    font-size: 12px;
+    font-family: "Times New Roman", "serif";
+    margin-left: 15px;
+}
+
+.mapPlayers{
+    font-family: "Times New Roman", "serif";
+    font-size: 12px;
+    margin-right: 15px;
+}
+
+.mapTabDetails{
+    width: 18px;
+}
+
+.moreDetails{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: inherit;
+    padding: 5px;
+    border: 1px solid gray;
+    justify-content: space-around;
+    background-color: rgba(13, 255, 118, 0.1);
+}
+
+.moreDetailsItem{
+    font-size: 10px;
+    margin: 5px;
+    width: 150px;
+}
+
+#noMapsAvailable{
+    background-color: rgba(255, 0, 0,0.3);
+}
+
+.joinGameButton{
+    margin: 0 50px 0 50px;
+}
