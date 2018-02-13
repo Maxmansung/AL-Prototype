@@ -18,8 +18,8 @@ function updateAllConstruction(response){
     if (response.mapType !== "Tutorial"){
         researchImageBar(response.researchCost, response.researchStamina, response.researchLevel, response.researchTypes);
     }
-    updateStorageItems();
     updateStorageDetails(response.storageDetails);
+    updateStorageItems();
     updateFirepitDetails(response.firepitDetails);
     updateLocks(response.lockDetails);
 }
@@ -156,24 +156,26 @@ function updateFirepitDetails(response){
 
 
 function updateRecipes(info,use){
-    $("#itemActions").empty();
-    $("#useRecipeButton").attr("disabled", true);
-    if (info.length === 0){
-        $("#itemActions").append("<option value='None'>Nothing</option>");
+    $("#recipesUseWrap").empty();
+    $("#itemsUseWrap").empty();
+    var recipeLength = objectSize(info);
+    var useLength = objectSize(use);
+    if (recipeLength === 0){
+        $("#recipiesWrapper").hide();
     } else {
-        $("#useRecipeButton").attr("disabled", false);
         for (var key in info){
-            $("#itemActions").append("<option value="+info[key].recipeID+">"+info[key].description+"</option>");
+            $("#consumablesWrapper").show();
+            $("#recipesUseWrap").append("<div class='selectableText' id='"+info[key].recipeID+"' onclick='useRecipe(this.id)'><img class='recipeItemImage' src='/images/recipe/"+info[key].recipeImage+"'><span>"+info[key].description+"</span></div>");
         }
     }
     $("#useActions").empty();
-    $("#useItemButton").attr("disabled", true);
-    if (use.length === 0){
-        $("#useActions").append("<option value='None'>Nothing</option>");
+    if (useLength === 0){
+        $("#consumablesWrapper").hide();
     } else {
-        $("#useItemButton").attr("disabled", false);
         for (var key in use){
-            $("#useActions").append("<option value="+use[key].recipeID+">"+use[key].description+"</option>");
+            $("#consumablesWrapper").show();
+            $("#itemsUseWrap").append("<div class='selectableText' id='"+use[key].templateID+"' onclick='useItem(this.id)'><img class='recipeItemImage' src='/images/items/"+use[key].image+"'><span>"+use[key].description+"</span></div>");
+
         }
     }
 }
@@ -187,7 +189,7 @@ function createBackpackImages(size,upgrade){
     }
     var empty = size - objectSize(backpackItems);
     for(var x = 0;x<empty;x++){
-        var backpackEmpty = "<div class='imagediv'><image class='itemimage' src='/images/items/Empty.png' id='empty+" + x + "'><span class='imagetext'>Empty</span></div>"
+        var backpackEmpty = "<div class='imagediv'><image class='itemimage' src='/images/items/Empty.png' id='empty+" + x + "'><span class='imagetext'>Empty</span></div>";
         $("#firepitBackpackWrap").append(backpackEmpty);
         $("#backpackHolderWrap").append(backpackEmpty);
     }
@@ -221,9 +223,11 @@ function updateStorageItems() {
     var response = [];
     if (itemsLocation === "Chest"){
         response = chestItems;
+        console.log("Show");
         $("#itemsListArrayWrap #storageDetails").show();
     } else if (itemsLocation === "Ground"){
         response = groundItems;
+        console.log("Hide");
         $("#itemsListArrayWrap #storageDetails").hide();
     }
     $("#itemListArray").empty();
@@ -370,12 +374,10 @@ function chooseNewResearch(id){
     ajax_All(8,id,"x");
 }
 
-function recipeIDValue(){
-    var act = document.getElementById("itemActions").value;
-    ajax_All(1,act,0)
+function useRecipe(id){
+    ajax_All(1,id,0)
 }
 
-function recipeIDValueUse(){
-    var act = document.getElementById("useActions").value;
-    ajax_All(1,act,0)
+function useItem(id){
+    ajax_All(48,id,0)
 }

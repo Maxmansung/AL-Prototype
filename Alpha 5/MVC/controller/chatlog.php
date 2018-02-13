@@ -121,7 +121,7 @@ class chatlog implements chatlog_Interface
     }
 
     function createMessageTime(){
-        date_default_timezone_get("Europe/London");
+        date_default_timezone_set("Europe/London");
         $this->messageTime = date("H:i",$this->messageTime);
     }
 

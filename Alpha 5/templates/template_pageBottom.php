@@ -14,5 +14,6 @@
     </div>
     <div id="alert"><strong>First time users: </strong><a href="/templates/alpha.php">Click Here!</a></div>
     <div class="verticalWrap" id="paddingRight">
-        <div>Alpha 0.5.1 build</div></div>
+        <div>Alpha 0.5.4 build</div>
+    </div>
 </div>

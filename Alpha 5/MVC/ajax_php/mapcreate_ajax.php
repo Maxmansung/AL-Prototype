@@ -28,4 +28,3 @@ if (isset($_POST['map'])) {
 //This redirects back to the admin page if the name is in use already
 header("Location: /admin/admin.php");
 exit();
-?>

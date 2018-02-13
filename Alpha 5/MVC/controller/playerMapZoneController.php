@@ -14,7 +14,7 @@ class playerMapZoneController
             $newZone = new zoneController($avatar->getZoneID());
             $newZone = $newZone->nextMap($dir);
             //This small section prevents players from entering zones not claimed by their party
-            if ($newZone->getControllingParty() !== "empty") {
+            if ($newZone->getControllingParty() !== null) {
                 if ($newZone->getControllingParty() !== $avatar->getPartyID()) {
                     //return array("ERROR" => 1);
                 }
@@ -71,6 +71,10 @@ class playerMapZoneController
                         if ($itemID != "ERROR") {
                             $avatar->resetFindingChanceFail();
                             $zone->updateZone();
+                            $response = achievementController::checkAchievement(array("ACTION","SEARCH"));
+                            if ($response !== false) {
+                                $avatar->addAchievement($response);
+                            }
                             $avatar->updateAvatar();
                             $item = new itemController($itemID);
                             chatlogPersonalController::searchZone($avatar->getAvatarID(),$item->getIdentity());
@@ -105,17 +109,13 @@ class playerMapZoneController
         } else {
             if ($item->getLocationID() === $zone->getZoneID()) {
                 if (count($avatar->getInventory()) < $avatar->getMaxInventorySlots()) {
-                    if($avatar->getZoneID() === $item->getLocationID()) {
-                        $item->setItemLocation("backpack");
-                        $item->setLocationID($avatar->getAvatarID());
-                        $item->updateItem();
-                        $avatar->addInventoryItem($itemID);
-                        $avatar->updateAvatar();
-                        return array("SUCCESS" => true);
-                    } else {
-                        return array("ERROR" => 3);
-                    }
-                } else {
+                    $item->setItemLocation("backpack");
+                    $item->setLocationID($avatar->getAvatarID());
+                    $item->updateItem();
+                    $avatar->addInventoryItem($itemID);
+                    $avatar->updateAvatar();
+                    return array("SUCCESS" => true);
+                }else {
                     return array("ERROR" => 6);
                 }
             } elseif ($item->getLocationID() === $avatar->getAvatarID()) {
@@ -127,7 +127,7 @@ class playerMapZoneController
                 $avatar->updateAvatar();
                 return array("SUCCESS" => true);
             } else {
-                return array("ERROR" => 3);
+                return array("ERROR" => array($item->getLocationID(),$zone->getZoneID()));
             }
         }
     }
@@ -172,6 +172,10 @@ class playerMapZoneController
                     $zone->setFindingChances(0);
                     $avatar->useStamina(5);
                     $avatar->addPlayStatistics("break", 5);
+                    $response = achievementController::checkAchievement(array("ACTION","DESTROY"));
+                    if ($response !== false) {
+                        $avatar->addAchievement($response);
+                    }
                     $avatar->updateAvatar();
                     $zone->updateZone();
                     $biome = new biomeTypeController($zone->getBiomeType());
@@ -209,6 +213,9 @@ class playerMapZoneController
                 } else {
                     $shrine->addCurrentArray($avatar->getAvatarID(),1);
                     $shrine->updateShrine();
+                    $achievement = $shrine->getShrineAchievement();
+                    $avatar->addAchievement($achievement);
+                    $avatar->updateAvatar();
                     return array("SUCCESS"=>true);
                 }
             }
@@ -308,91 +315,92 @@ class playerMapZoneController
             }
             //Avatar is refreshed to allow a second run at removing of the items (for real this time)
             $avatar = new avatarController($avatarID);
-            $checker = self::checkImpact($recipe->getStatusImpact(), $avatar);
-            if (array_key_exists("ERROR", $checker)) {
-                return $checker;
-            } else {
-                //Loop is repeated to actually remove the items from the game this time
-                foreach ($recipe->getConsumedItems() as $requiredItem) {
-                    $itemExistsNew = false;
-                    $avatarItems = itemController::getItemArray($avatar->getMapID(), "backpack", $avatar->getAvatarID());
-                    foreach ($avatarItems as $backpackItem) {
-                        if ($backpackItem["itemTemplateID"] == $requiredItem) {
-                            if ($itemExistsNew === false) {
-                                $itemExistsNew = true;
-                                $itemToDelete = new itemController($backpackItem["itemID"]);
-                                $itemToDelete->delete();
-                                $avatar->removeInventoryItem($backpackItem["itemID"]);
-                            }
+            //Loop is repeated to actually remove the items from the game this time
+            foreach ($recipe->getConsumedItems() as $requiredItem) {
+                $itemExistsNew = false;
+                $avatarItems = itemController::getItemArray($avatar->getMapID(), "backpack", $avatar->getAvatarID());
+                foreach ($avatarItems as $backpackItem) {
+                    if ($backpackItem["itemTemplateID"] == $requiredItem) {
+                        if ($itemExistsNew === false) {
+                            $itemExistsNew = true;
+                            $itemToDelete = new itemController($backpackItem["itemID"]);
+                            $itemToDelete->delete();
+                            $avatar->removeInventoryItem($backpackItem["itemID"]);
                         }
                     }
                 }
-                //This then creates the new items
-                $response = achievementController::checkAchievement($recipeID);
-                if ($response !== false) {
-                    $avatar->addAchievement($response);
-                }
-                foreach ($recipe->getGeneratedItems() as $createdItem) {
-                    if ($createdItem === "I000X") {
-                        $createdItemName = recipeController::differentResult($recipe->getRecipeID());
-                        if (array_key_exists("STAMINA", $createdItemName)) {
-                            $avatar->useStamina($createdItemName["STAMINA"] * -1);
-                            $avatar->updateAvatar();
-                        } else if (array_key_exists("SEARCH", $createdItemName)) {
-                            $chances = $zone->getFindingChances();
-                            $zone->setFindingChances($chances + $createdItemName["SEARCH"]);
-                            $zone->updateZone();
-                        } else if (array_key_exists("ITEM", $createdItemName)) {
-                            $newItem = new itemController("");
-                            $newItem->createNewItemByID($createdItemName["ITEM"], $avatar->getMapID(), $avatar->getAvatarID(), "backpack");
-                            $newItem->insertItem();
-                            $avatar->addInventoryItem($newItem->getItemID());
-                            $comment = $recipe->getRecipeComment();
-                            $comment .= $newItem->getIdentity();
-                            $recipe->setRecipeComment($comment);
-                        }
-                    } else {
-                        $createdItemName = $createdItem;
+            }
+            //This then creates the new items
+            $response = achievementController::checkAchievement(array("RECIPE", $recipeID));
+            if ($response !== false) {
+                $avatar->addAchievement($response);
+            }
+            foreach ($recipe->getGeneratedItems() as $createdItem) {
+                if ($createdItem === "I000X") {
+                    $createdItemName = recipeController::differentResult($recipe->getRecipeID());
+                    if (array_key_exists("STAMINA", $createdItemName)) {
+                        $avatar->useStamina($createdItemName["STAMINA"] * -1);
+                        $avatar->updateAvatar();
+                    } else if (array_key_exists("SEARCH", $createdItemName)) {
+                        $chances = $zone->getFindingChances();
+                        $zone->setFindingChances($chances + $createdItemName["SEARCH"]);
+                        $zone->updateZone();
+                    } else if (array_key_exists("ITEM", $createdItemName)) {
                         $newItem = new itemController("");
-                        $newItem->createNewItemByID($createdItemName, $avatar->getMapID(), $avatar->getAvatarID(), "backpack");
+                        $newItem->createNewItemByID($createdItemName["ITEM"], $avatar->getMapID(), $avatar->getAvatarID(), "backpack");
                         $newItem->insertItem();
                         $avatar->addInventoryItem($newItem->getItemID());
+                        $comment = $recipe->getRecipeComment();
+                        $comment .= $newItem->getIdentity();
+                        $recipe->setRecipeComment($comment);
                     }
+                } else {
+                    $createdItemName = $createdItem;
+                    $newItem = new itemController("");
+                    $newItem->createNewItemByID($createdItemName, $avatar->getMapID(), $avatar->getAvatarID(), "backpack");
+                    $newItem->insertItem();
+                    $avatar->addInventoryItem($newItem->getItemID());
                 }
-                $avatar->updateAvatar();
-                return array("ALERT" => 1, "DATA" => $recipe->getRecipeComment());
             }
+            $avatar->updateAvatar();
+            return array("ALERT" => 1, "DATA" => $recipe->getRecipeComment());
         }
     }
 
-
-    private static function checkImpact($statusImpact,$avatarModel){
-        switch ($statusImpact){
-            case 2:
-                if ($avatarModel->getSingleStatus(5) === 1){
-                    return array("ERROR"=>63);
+    public static function consumeItem($itemID,$avatarID){
+        $avatar = new avatarController($avatarID);
+        $backPack = itemController::getItemArray($avatar->getMapID(),"backpack",$avatar->getAvatarID());
+        $checker = false;
+        foreach ($backPack as $newItem){
+            if($newItem["itemTemplateID"] === $itemID){
+                $checker = $newItem["itemID"];
+            }
+        }
+        if ($checker === false){
+            return array("ERROR"=>"This item doesnt exist in your bag");
+        } else {
+            $item = new itemController($checker);
+            if ($item->getItemTemplateID() === null){
+                return array("ERROR"=>"Somehow the item is no longer around");
+            } else {
+                $status = statusesController::checkConsumable($avatar->getStatusArray(), $item->getStatusImpact());
+                if ($status !== true) {
+                    return array("ALERT" => 11, "DATA" => $status);
                 } else {
-                    $avatarModel->removeSingleStatus(1);
-                    $avatarModel->removeSingleStatus(2);
-                    $avatarModel->changeStatusArray(5);
-                    return array("SUCCESS"=>true);
+                    $avatar->removeInventoryItem($item->getItemID());
+                    $newStatuses = statusesController::changeStatusConsume($avatar->getStatusArray(),$item->getStatusImpact());
+                    $data = statusesController::getStatusResponseSucceed($item->getStatusImpact());
+                    $avatar->setStatusArray($newStatuses);
+                    $avatar->useStamina(($item->getMaxCharges()*-1));
+                    $response = achievementController::checkAchievement(array("RECIPE"=>$item->getItemTemplateID()));
+                    if ($response !== false) {
+                        $avatar->addAchievement($response);
+                    }
+                    $item->delete();
+                    $avatar->updateAvatar();
+                    return array("ALERT" => 12, "DATA" => $data);
                 }
-                break;
-            case 3:
-                if ($avatarModel->getSingleStatus(4) === 1){
-                    return array("ERROR"=>66);
-                } else {
-                    $avatarModel->changeStatusArray(4);
-                    return array("SUCCESS"=>true);
-                }
-                return array("SUCCESS"=>true);
-                break;
-            case 4:
-                return array("SUCCESS"=>true);
-                break;
-            default:
-                return array("SUCCESS"=>true);
-                break;
+            }
         }
     }
 

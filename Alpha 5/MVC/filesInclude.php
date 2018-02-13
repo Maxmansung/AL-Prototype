@@ -55,5 +55,4 @@ include(PROJECT_ROOT."/MVC/view/HUDView.php");
 include(PROJECT_ROOT."/MVC/view/mapView.php");
 include(PROJECT_ROOT."/MVC/view/specialZoneView.php");
 include(PROJECT_ROOT."/MVC/view/nightfallView.php");
-
-?>
+include(PROJECT_ROOT."/MVC/view/recipeView.php");

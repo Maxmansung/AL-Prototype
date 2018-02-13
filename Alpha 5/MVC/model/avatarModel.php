@@ -4,15 +4,15 @@ class avatarModel extends avatar
 {
     private function __construct($avatarModel)
     {
-        $this->avatarID = $avatarModel['avatarID'];
+        $this->avatarID = intval($avatarModel['avatarID']);
         $this->profileID = $avatarModel['profileID'];
-        $this->mapID = $avatarModel['mapID'];
+        $this->mapID = intval($avatarModel['mapID']);
         $this->stamina = intval($avatarModel['stamina']);
         $this->maxStamina = intval($avatarModel['maxstamina']);
-        $this->zoneID = $avatarModel['zoneID'];
+        $this->zoneID = intval($avatarModel['zoneID']);
         $this->inventory = json_decode($avatarModel['inventory']);
         $this->maxInventorySlots = intval($avatarModel['maxinventoryslots']);
-        $this->partyID = $avatarModel['partyID'];
+        $this->partyID = intval($avatarModel['partyID']);
         $this->readiness = $avatarModel['readiness'];
         $this->avatarTempRecord = get_object_vars(json_decode($avatarModel['avatarTempRecord']));
         $this->avatarSurvivableTemp = intval($avatarModel['avatarsurvivabletemp']);
@@ -45,15 +45,15 @@ class avatarModel extends avatar
         } elseif ($type == "Update") {
             $req = $db->prepare("UPDATE Avatar SET profileID= :profileID, mapID= :mapID, stamina= :stamina, maxstamina= :maxStamina, zoneID = :zoneID, inventory= :inventory, maxinventoryslots= :maxInventorySlots, partyID= :partyID, readiness= :readiness, avatarTempRecord= :avatarTempRecord, avatarsurvivabletemp= :avatarSurvivableTemp, achievements= :achievements, partyVote= :partyVote, researchStats= :researchStats, researched= :researched, playStatistics= :playStatistics, tempModLevel= :tempModLevel, findingChanceMod= :findingChanceMod, findingChanceFail= :findingChanceFail, shrineScore= :shrineScore, forumPosts= :forumPosts, statusArray= :statusArray WHERE avatarID= :avatarID");;
         }
-        $req->bindParam(':avatarID', $controller->getAvatarID());
+        $req->bindParam(':avatarID', intval($controller->getAvatarID()));
         $req->bindParam(':profileID', $controller->getProfileID());
-        $req->bindParam(':mapID', $controller->getMapID());
+        $req->bindParam(':mapID', intval($controller->getMapID()));
         $req->bindParam(':stamina', $controller->getStamina());
         $req->bindParam(':maxStamina', $controller->getMaxStamina());
-        $req->bindParam(':zoneID', $controller->getZoneID());
+        $req->bindParam(':zoneID', intval($controller->getZoneID()));
         $req->bindParam(':inventory', json_encode($controller->getInventory()));
         $req->bindParam(':maxInventorySlots', $controller->getMaxInventorySlots());
-        $req->bindParam(':partyID', $controller->getPartyID());
+        $req->bindParam(':partyID', intval($controller->getPartyID()));
         $req->bindParam(':readiness', $controller->getReady());
         $req->bindParam(':avatarTempRecord', json_encode($controller->getavatarTempRecord()));
         $req->bindParam(':avatarSurvivableTemp', $controller->getAvatarSurvivableTemp());
@@ -69,6 +69,10 @@ class avatarModel extends avatar
         $req->bindParam(':forumPosts', json_encode($controller->getForumPosts()));
         $req->bindParam(':statusArray', json_encode($controller->getStatusArray()));
         $req->execute();
+        if ($type == "Insert"){
+            $check = intval($db->lastInsertId());
+            return $check;
+        }
     }
 
     public static function deleteAvatar($avatarID){

@@ -48,7 +48,7 @@ class zoneController extends zone
 
     //This posts the new zone to the database
     public function postZone(){
-        zoneModel::insertZone($this, "Insert");
+        return zoneModel::insertZone($this, "Insert");
     }
 
     //This posts the new zone to the database
@@ -58,20 +58,22 @@ class zoneController extends zone
 
     //This function creates a new zone object when a new map is being created
     public function newZone($mapID, $name, $x, $y,$forestLoc,$shrineLoc,$lakeLoc){
-        $this->zoneID = $mapID.$name;
+        $this->zoneID = null;
         $this->name = $name;
         $this->mapID = $mapID;
         $this->coordinateX = $x;
         $this->coordinateY = $y;
         $this->avatars = array();
         $this->buildings = array();
-        $this->controllingParty = "empty";
+        $this->controllingParty = null;
         $this->protectedZoneType = "none";
         $this->storage = "";
         $this->findingChances = $this->createFindingChances();
         $this->biomeType = $this->createBiomeType($forestLoc,$shrineLoc,$lakeLoc);
         $this->zoneOutpostName = 0;
         $this->zoneSurvivableTemperatureModifier = 0;
+        $id = $this->postZone();
+        $this->zoneID = $id;
     }
 
 
@@ -160,6 +162,10 @@ class zoneController extends zone
                 return 1;
                 break;
         }
+    }
+
+    public static function getZoneIDfromName($zoneID,$mapID){
+        return zoneModel::findZoneIDfromName($zoneID,$mapID);
     }
 
 

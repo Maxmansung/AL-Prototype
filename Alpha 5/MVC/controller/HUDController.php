@@ -45,7 +45,7 @@ class HUDController
         $avatarTemp = new avatarController($avatarID);
         $map = new mapController($avatarTemp->getMapID());
         if (count($map->getAvatars()) >= $map->getMaxPlayerCount() || $type === "admin") {
-            dayEndingFunctions::mapEndingActions($map->getMapID());
+            dayEndingFunctions::mapDayEnds($map->getMapID());
         }
     }
 
@@ -58,30 +58,6 @@ class HUDController
         } else {
             return $nightTime-$currentTime;
         }
-    }
-
-    public static function playerDeath($avatarID){
-        $avatar = new avatarController($avatarID);
-        $survivableTemp = buildingLevels::getTotalSurviveTemp($avatarID);
-        deathScreenController::createNewDeathScreen($avatarID,$survivableTemp);
-        $avatar->toggleReady("dead");
-        $party = new partyController($avatar->getPartyID());
-        $party->removeMember($avatarID);
-        $party->uploadParty();
-        $profile = new profileController($avatar->getProfileID());
-        $profile->setGameStatus("death");
-        $profile->uploadProfile();
-        $zone = new zoneController($avatar->getZoneID());
-        foreach ($avatar->getInventory() as $item){
-            $avatar->removeInventoryItem($item);
-            $itemTemp = new itemController($item);
-            $itemTemp->setItemLocation("ground");
-            $itemTemp->setLocationID($avatar->getZoneID());
-            $itemTemp->updateItem();
-        }
-        $zone->removeAvatar($avatarID);
-        $zone->updateZone();
-        $avatar->updateAvatar();
     }
 
     public static function refreshStamina($avatarID){
@@ -100,7 +76,7 @@ class HUDController
         $avatar = new avatarController($avatarID);
         $profile = new profileController($avatar->getProfileID());
         if ($profile->getAccountType() == "admin") {
-            self::playerDeath($avatarID);
+            dayEndingFunctions::playerDeath($avatarID,3);
             $avatarCheck = new deathScreenController($avatar->getProfileID());
             if ($avatarCheck->getProfileID() != "") {
                 return array("ERROR" => 55);

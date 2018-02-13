@@ -15,13 +15,14 @@ class deathScreenView
     protected $deathType;
     protected $deathDescription;
     protected $deathImage;
+    protected $partyPlayersLeft;
+    protected $scoreAchieve;
 
     public function __construct($profileID)
     {
             $deathModel = new deathScreenController($profileID);
             $this->profileID = $deathModel->getProfileID();
-            $map = new mapController($deathModel->getMapID());
-            $this->mapName = $map->getName();
+            $this->mapName = $deathModel->getMapID();
             $this->partyName = $deathModel->getPartyName();
             $this->deathDay = $deathModel->getDeathDay();
             $this->nightTemp = $deathModel->getNightTemp();
@@ -34,6 +35,8 @@ class deathScreenView
             $this->deathType = $cause->getCauseName();
             $this->deathDescription = $cause->getDescription();
             $this->deathImage = $cause->getImage();
+            $this->partyPlayersLeft = $deathModel->getPartyPlayersLeft();
+            $this->scoreAchieve = achievementController::getAchievementScore($deathModel->getDeathAchievements());
     }
 
     function returnVars(){

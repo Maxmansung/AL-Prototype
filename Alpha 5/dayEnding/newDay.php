@@ -7,4 +7,3 @@ require_once(PROJECT_ROOT . "/MVC/filesInclude.php");
 $nightfall = new websiteData("nightfall");
 $nightfall->setResponse(0);
 $nightfall->updateVariable();
-?>

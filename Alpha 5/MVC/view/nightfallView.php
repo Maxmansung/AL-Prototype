@@ -19,9 +19,9 @@ class nightfallView
         $hours = date("H",time());
         $mins = date("i",time());
         if ($hours >= 22 && $mins >=30){
-            $next = strtotime("tomorrow 10:30pm");
+            $next = strtotime("tomorrow 10:10pm");
         } else {
-            $next = strtotime("today 10:30pm");
+            $next = strtotime("today 10:10pm");
         }
         return $next-$time;
     }

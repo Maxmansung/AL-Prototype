@@ -37,6 +37,7 @@ function switchArray(type,response){
         case 2:
         case 11:
         case 45:
+        case 48:
             personalUpgrade(response.view);
             updateHUD(response.HUD);
             break;

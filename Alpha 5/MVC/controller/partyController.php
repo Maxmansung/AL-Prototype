@@ -26,11 +26,11 @@ class partyController extends party
     }
 
     public function insertParty(){
-        partyModel::insertParty($this,"Insert");
+        return partyModel::insertParty($this,"Insert");
     }
 
-    public function newParty($mapID,$idNum,$partyName){
-        $this->partyID = $mapID.$idNum;
+    public function newParty($mapID,$partyName,$exploration){
+        $this->partyID = null;
         $this->mapID = $mapID;
         $this->members = [];
         $this->partyName = $partyName;
@@ -38,16 +38,9 @@ class partyController extends party
         $this->pendingBans = [];
         $this->playersKnown = [];
         $this->tempBonus = 0;
-    }
-
-    public static function getPartyIDFromNumber($number){
-        $count = 3 - (strlen((string)$number));
-        $finalPartyID = "P";
-        for ($i = 0; $i < $count; $i++) {
-            $finalPartyID .= "0";
-        }
-        $finalPartyID .= $number;
-        return $finalPartyID;
+        $this->setZoneExploration($exploration);
+        $newID = $this->insertParty();
+        $this->partyID = $newID;
     }
 
     public static function getEmptyParty($mapID){

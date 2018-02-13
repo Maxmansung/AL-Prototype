@@ -25,7 +25,7 @@ class chatlogAllController
         $zone = new zoneController($avatar->getZoneID());
         $lockValue = buildingController::getLockValue($zone->getZoneID());
         //This section ensures that players can not see things that occur in zones not owned by them
-        if ($zone->getControllingParty() != "empty") {
+        if ($zone->getControllingParty() != null) {
             if ($lockValue < 1 || $zone->getControllingParty() == $avatar->getPartyID()){
                 $protected = false;
             } else {

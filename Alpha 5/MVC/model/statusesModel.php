@@ -33,6 +33,22 @@ class statusesModel extends statuses
         return $blankArray;
     }
 
+    public static function getStatusResponse($statusChange){
+        $db = db_conx::getInstance();
+        $req = $db->prepare('SELECT failResponse FROM recipeStatusChange WHERE tableKey= :statusChange LIMIT 1');
+        $req->execute(array(':statusChange' => $statusChange));
+        $statusModel = $req->fetch();
+        return $statusModel["failResponse"];
+    }
+
+    public static function getStatusResponseSucceed($statusChange){
+        $db = db_conx::getInstance();
+        $req = $db->prepare('SELECT succeedResponse FROM recipeStatusChange WHERE tableKey= :statusChange LIMIT 1');
+        $req->execute(array(':statusChange' => $statusChange));
+        $statusModel = $req->fetch();
+        return $statusModel["succeedResponse"];
+    }
+
 
 
 }

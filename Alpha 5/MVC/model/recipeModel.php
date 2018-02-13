@@ -12,7 +12,7 @@ class recipeModel extends recipe
         $this->consumedItems = json_decode($recipeModel['consumedItems']);
         $this->generatedItems = json_decode($recipeModel['generatedItems']);
         $this->recipeComment = $recipeModel['recipeComment'];
-        $this->statusImpact = intval($recipeModel['statusImpact']);
+        $this->recipeImage = $recipeModel['recipeImage'];
     }
 
     public static function findRecipe($recipeID){
@@ -36,9 +36,7 @@ class recipeModel extends recipe
         $foundRecipes = [];
         foreach ($recipeModel as $recipe) {
             $newObject = new recipeModel($recipe);
-            if ($newObject->getStatusImpact() === 1) {
-                $foundRecipes[$newObject->getRecipeID()] = $newObject->returnVars();
-            }
+            $foundRecipes[$newObject->getRecipeID()] = $newObject;
         }
         return $foundRecipes;
     }
@@ -56,29 +54,7 @@ class recipeModel extends recipe
         $foundRecipes = [];
         foreach ($recipeModel as $recipe) {
             $newObject = new recipeModel($recipe);
-            if ($newObject->getStatusImpact() === 1) {
-                $foundRecipes[$newObject->getRecipeID()] = $newObject->returnVars();
-            }
-        }
-        return $foundRecipes;
-    }
-
-    public static function recipesUsingItem($itemArray){
-        $itemString = "";
-        foreach ($itemArray as $item){
-            $itemString .= "'".$item."',";
-        }
-        $itemString = rtrim($itemString,",");
-        $db = db_conx::getInstance();
-        $req = $db->prepare("SELECT * FROM Recipe WHERE requiredItems IN (".$itemString.")");
-        $req->execute();
-        $recipeModel = $req->fetchAll();
-        $foundRecipes = [];
-        foreach ($recipeModel as $recipe) {
-            $newObject = new recipeModel($recipe);
-            if ($newObject->getStatusImpact() !== 1) {
-                $foundRecipes[$newObject->getRecipeID()] = $newObject->returnVars();
-            }
+            $foundRecipes[$newObject->getRecipeID()] = $newObject;
         }
         return $foundRecipes;
     }

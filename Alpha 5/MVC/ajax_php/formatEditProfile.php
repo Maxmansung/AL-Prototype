@@ -16,4 +16,3 @@ if (isset($_POST['bio'])) {
 } else {
     echo json_encode(array("ERROR"=>100));
 }
-?>

@@ -4,7 +4,7 @@ class mapModel extends map
 {
     private function __construct($mapmodel)
     {
-        $this->mapID = $mapmodel['mapID'];
+        $this->mapID = intval($mapmodel['mapID']);
         $this->name = $mapmodel['name'];
         $this->maxPlayerCount = intval($mapmodel['maxPlayerCount']);
         $this->edgeSize = intval($mapmodel['edgeSize']);
@@ -64,7 +64,7 @@ class mapModel extends map
         } elseif ($type == "Update"){
             $req = $db->prepare("UPDATE Map SET name= :name2, maxPlayerCount= :maxPlayerCount, edgeSize= :edgeSize, maxPlayerStamina= :maxPlayerStamina, maxPlayerInventorySlots= :maxPlayerInventorySlots, avatars= :avatars, currentDay= :currentDay, dayDuration= :dayDuration, baseNightTemperature= :baseNightTemperature, baseSurvivableTemperature= :baseSurvivableTemperature, basePlayerTemperatureModifier= :basePlayerTemperatureModifier, temperatureRecord= :temperatureRecord, gameType= :gameType WHERE mapID= :mapID");
         }
-        $req->bindParam(':mapID', $mapcontroller->getMapID());
+        $req->bindParam(':mapID', intval($mapcontroller->getMapID()));
         $req->bindParam(':name2', $mapcontroller->getName());
         $req->bindParam(':maxPlayerCount', intval($mapcontroller->getMaxPlayerCount()));
         $req->bindParam(':edgeSize', intval($mapcontroller->getEdgeSize()));
@@ -79,6 +79,10 @@ class mapModel extends map
         $req->bindParam(':temperatureRecord', json_encode($mapcontroller->getTemperatureRecord()));
         $req->bindParam(':gameType', $mapcontroller->getGameType());
         $req->execute();
+        if ($type == "Insert"){
+            $test = $db->lastInsertId();
+            return $test;
+        }
     }
 
 

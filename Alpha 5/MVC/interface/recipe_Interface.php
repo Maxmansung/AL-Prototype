@@ -17,6 +17,6 @@ interface recipe_Interface
     function setGeneratedItems($var);
     function getRecipeComment();
     function setRecipeComment($var);
-    function getStatusImpact();
-    function setStatusImpact($var);
+    function getRecipeImage();
+    function setRecipeImage($var);
 }

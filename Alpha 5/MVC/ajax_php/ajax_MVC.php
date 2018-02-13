@@ -201,6 +201,11 @@ if (isset($_POST["type"])) {
                     $response = privateMessagesController::createNewMessage($profile->getAvatar(),$data,$messageTitle,$messageText);
                     //Returns ERROR or ALERT
                     break;
+                case 48:
+                    //Used when an item is consumed
+                    $response = playerMapZoneController::consumeItem($data,$profile->getAvatar());
+                    break;
+                    //Returns ERROR or SUCCESS
 
                 //200+ functions are used only for testing and can be removed from the main game
 
@@ -275,8 +280,7 @@ if (isset($_POST["type"])) {
                     case 9:
                         //This returns information about the players items only
                         $mapZone = mapView::getCurrentZoneInfo($profile->getAvatar());
-                        $view = $mapZone->allItemsView($profile->getAvatar());
-                        $view["findingChance"] = $mapZone->getFindingChances();
+                        $view = $mapZone->singleZoneView($profile->getAvatar());
                         break;
                     case 10:
                         //This returns information about the players in the game and their relationships

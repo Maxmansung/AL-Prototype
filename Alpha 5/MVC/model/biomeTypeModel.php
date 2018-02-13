@@ -11,6 +11,7 @@ class biomeTypeModel extends biomeType
         $this->temperatureMod = intval($biomeModel['temperatureMod']);
         $this->findingChanceMod = intval($biomeModel['findingChanceMod']);
         $this->finalType = intval($biomeModel['finalType']);
+        $this->biomeImage = $biomeModel['biomeImage'];
     }
 
     public static function getBiomeType($depth)

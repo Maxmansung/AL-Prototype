@@ -6,9 +6,9 @@ class deathCauseModel extends deathCause
     private function __construct($causeModel)
     {
         $this->key = $causeModel['mainKey'];
-        $this->causeName = $causeModel['causeName'];
+        $this->causeName = $causeModel['deathType'];
         $this->description = $causeModel['description'];
-        $this->image = $causeModel['image'];
+        $this->image = $causeModel['deathImage'];
     }
 
     public static function getCause($key){

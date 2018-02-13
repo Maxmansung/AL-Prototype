@@ -15,25 +15,19 @@ class mapView
     protected $description;
     protected $descriptionLong;
     protected $zoneProtected;
-    protected $zoneBuildings;
-    protected $storageBuilt;
-    protected $buildingTempBonus;
-    protected $firepitBonus;
-    protected $lockValue;
-    protected $lockTotal;
     protected $canEnterZone;
     protected $zoneOwners;
     protected $partyInZone;
     protected $outpostBuilt;
-    protected $biomeTempMod;
-    protected $outpostName;
     protected $firepitAlert;
     protected $mapID;
     protected $isSpecialZone;
     protected $specialZoneDetails;
     protected $specialZoneFavours;
+    protected $biomeImage;
+    protected $lockValue;
 
-    private function __construct($zone, $avatar, $party, $biomeMod)
+    private function __construct($zone, $avatar, $party)
     {
         $this->mapID = $zone->getMapID();
         $this->setZoneName($zone->getZoneID());
@@ -46,7 +40,6 @@ class mapView
         $this->setZoneNumber(ltrim($zone->getName(), "z"));
         $this->setCoordinateX($zone->getCoordinateX());
         $this->setCoordinateY($zone->getCoordinateY());
-        $this->setBiomeTempMod($biomeMod);
         $exploration = $party->getZoneExploration();
         $this->setPlayerKnown($exploration[$this->zoneNumber][0]);
         $this->setCanEnterZone(false);
@@ -58,18 +51,14 @@ class mapView
             $this->setDescription("");
             $this->setDescriptionLong("");
             $this->setProtected("empty");
-            $this->setZoneBuildings(array());
-            $this->setStorageBuilt(0);
-            $this->setBuildingTempBonus(0);
-            $this->setFirepitBonus(0);
             $this->setLockValue(0);
-            $this->setLockTotal(0);
             $this->setOutpostName("None");
             $this->setZoneOwners(null);
             $this->setIsSpecialZone(false);
         }
         else {
             $biome = new biomeTypeController($exploration[$this->zoneNumber][0]);
+            $this->biomeImage = $biome->getBiomeImage();
             $this->setBiomeValue($biome->getValue());
             $this->setDescription($biome->getDescription());
             $this->setDescriptionLong($biome->getDescriptionLong());
@@ -77,6 +66,15 @@ class mapView
             $this->setBiomeType($exploration[$this->zoneNumber][0]);
             $shrineZone = shrineController::findShrine($zone->getZoneID());
             $this->setAvatars(array());
+            $this->setPartyInZone(false);
+            foreach ($party->getMembers() as $member) {
+                if (in_array($member, $zone->getAvatars())) {
+                    $this->setPartyInZone(true);
+                }
+            }
+            if ($this->partyInZone === true){
+                $this->setAvatars( mapView::getAvatarNames($zone->getAvatars(),$avatar->getAvatarID()));
+            }
             if ($shrineZone !== false){
                 $this->setIsSpecialZone($shrineZone);
                 $shrine = new shrineController($shrineZone);
@@ -93,43 +91,20 @@ class mapView
                 } else {
                     $this->setOutpostBuilt(false);
                 }
-                $this->setPartyInZone(false);
-                foreach ($party->getMembers() as $member) {
-                    if (in_array($member, $zone->getAvatars())) {
-                        $this->setPartyInZone(true);
-                    }
-                }
                 if ($this->partyInZone === true) {
                     $this->setProtected($zone->getControllingParty());
-                    $this->setStorageBuilt($zone->getStorage());
                     $this->setLockValue(buildingController::getLockValue($zone->getZoneID()));
-                    if ($this->lockValue > 0) {
-                        $lock = buildingController::getConstructedBuildingID("GateLock", $this->zoneName);
-                        $this->setLockTotal(buildingController::lockTotal($lock));
-                    } else {
-                        $this->setLockTotal(0);
-                    }
-                    if ($this->partyInZone === true) {
-                        $this->setAvatars(self::getAvatarNames($zone->getAvatars(), $zone->getMapID(), $avatar->getAvatarID()));
-                    }
-                    if ($this->isProtected() !== "empty") {
+                    if ($this->isProtected() !== null) {
                         $this->outpostName = $zone->getZoneOutpostName();
                         $party = new partyController($zone->getControllingParty());
                         $this->setZoneOwners($party->getPartyName());
                         if ($this->lockValue < 1 || $this->isProtected() == $avatar->getPartyID()) {
                             $this->setCanEnterZone(true);
-                            $this->setZoneBuildings($zone->getBuildings());
-                            $this->setFirepitBonus(buildingController::getFirepitBonus($zone->getZoneID()));
-                            $this->setBuildingTempBonus(buildingController::getZoneTempBonus($zone->getBuildings(), $zone->getZoneID()));
-                        } else {
-                            $this->setFirepitBonus(0);
-                            $this->setBuildingTempBonus(0);
+                        } else{
+                            $this->setCanEnterZone(false);
                         }
                     } else {
-                        $this->setZoneBuildings($zone->getBuildings());
                         $this->setCanEnterZone(true);
-                        $this->setFirepitBonus(buildingController::getFirepitBonus($zone->getZoneID()));
-                        $this->setBuildingTempBonus(buildingController::getZoneTempBonus($zone->getBuildings(), $zone->getZoneID()));
                     }
                 }
             }
@@ -148,17 +123,11 @@ class mapView
         $output .= '/ '.$this->description;
         $output .= '/ '.$this->descriptionLong;
         $output .= '/ '.$this->zoneProtected;
-        $output .= '/ '.$this->zoneBuildings;
-        $output .= '/ '.$this->storageBuilt;
-        $output .= '/ '.$this->buildingTempBonus;
-        $output .= '/ '.$this->firepitBonus;
         $output .= '/ '.$this->lockValue;
-        $output .= '/ '.$this->lockTotal;
         $output .= '/ '.$this->canEnterZone;
         $output .= '/ '.$this->zoneOwners;
         $output .= '/ '.$this->partyInZone;
         $output .= '/ '.$this->outpostBuilt;
-        $output .= '/ '.$this->biomeTempMod;
         $output .= '/ '.$this->outpostName;
         $output .= '/ '.$this->firepitAlert;
         $output .= '/ '.$this->isSpecialZone;
@@ -270,32 +239,6 @@ class mapView
         $this->zoneProtected = $var;
     }
 
-    function getBuildings(){
-        return $this->zoneBuildings;
-    }
-
-    function setBuildings($var){
-        $this->zoneBuildings = $var;
-    }
-
-    function getStorage()
-    {
-        return $this->storageBuilt;
-    }
-
-    function setStorage($var){
-        $this->storageBuilt = intval($var);
-    }
-
-    function getBuildingTempBonus()
-    {
-        return $this->buildingTempBonus;
-    }
-
-    function setBuildingTempBonus($var){
-        $this->buildingTempBonus = intval($var);
-    }
-
     function getLockValue(){
         return $this->lockValue;
     }
@@ -304,28 +247,12 @@ class mapView
         $this->lockValue = intval($var);
     }
 
-    function getLockTotal(){
-        return $this->lockTotal;
-    }
-
-    function setLockTotal($var){
-        $this->lockTotal = intval($var);
-    }
-
     function getCanEnterZone(){
         return $this->canEnterZone;
     }
 
     function setCanEnterZone($var){
         $this->canEnterZone = intval($var);
-    }
-
-    function getBiomeTempMod(){
-        return $this->biomeTempMod;
-    }
-
-    function setBiomeTempMod($var){
-        $this->biomeTempMod = intval($var);
     }
 
     function getFirepitAlert(){
@@ -350,30 +277,6 @@ class mapView
 
     function setZoneOwners($var){
         $this->zoneOwners = $var;
-    }
-
-    function getZoneBuildings(){
-        return $this->zoneBuildings;
-    }
-
-    function setZoneBuildings($var){
-        $this->zoneBuildings = $var;
-    }
-
-    function getStorageBuilt(){
-        return $this->storageBuilt;
-    }
-
-    function setStorageBuilt($var){
-        $this->storageBuilt = boolval($var);
-    }
-
-    function getFirepitBonus(){
-        return $this->firepitBonus;
-    }
-
-    function setFirepitBonus($var){
-        $this->firepitBonus = intval($var);
     }
 
     function getPartyInZone(){
@@ -427,8 +330,7 @@ class mapView
         $avatar = new avatarController($avatarID);
         $zone = new zoneController($avatar->getZoneID());
         $party = new partyController($avatar->getPartyID());
-        $biome = new biomeTypeController($zone->getBiomeType());
-        return new mapView($zone,$avatar,$party,$biome->getTemperatureMod());
+        return new mapView($zone,$avatar,$party);
     }
 
     //This returns the map array view including the avatar and current zones
@@ -448,6 +350,18 @@ class mapView
         $map = new mapController($avatar->getMapID());
         $logs = self::getZoneLogs($avatar->getZoneID(),$party->getPlayersKnown(),$map->getCurrentDay(),$avatar->getAvatarID());
         $data = array("zone"=>$this->returnVars(),"mapZones"=>$mapZones,"itemsView"=>$itemsView,"logs"=>$logs);
+        return $data;
+    }
+
+    //This returns the the avatar and current zone
+    public function singleZoneView($profileAvatar)
+    {
+        $avatar = new avatarController($profileAvatar);
+        $party = new partyController($avatar->getPartyID());
+        $itemsView = $this->allItemsView($profileAvatar);
+        $map = new mapController($avatar->getMapID());
+        $logs = self::getZoneLogs($avatar->getZoneID(),$party->getPlayersKnown(),$map->getCurrentDay(),$avatar->getAvatarID());
+        $data = array("zone"=>$this->returnVars(),"itemsView"=>$itemsView,"logs"=>$logs);
         return $data;
     }
 
@@ -473,6 +387,7 @@ class mapView
         return new mapView($zone, $avatar,$party,0);
     }
 
+
     //This returns the mapView item for the avatars zone
     public static function getCurrentZoneInfo($avatarID)
     {
@@ -480,8 +395,7 @@ class mapView
         $avatar = new avatarController($avatarID);
         $party = new partyController($avatar->getPartyID());
         $zone = new zoneController($avatar->getZoneID());
-        $biome = new biomeTypeController($zone->getBiomeType());
-        return new mapView($zone, $avatar,$party,$biome->getTemperatureMod());
+        return new mapView($zone, $avatar,$party);
     }
 
     //This returns a view of just the backpack and the ground
@@ -490,15 +404,8 @@ class mapView
         $party = new partyController($avatar->getPartyID());
         $map = new mapController($avatar->getMapID());
         $logs = self::getZoneLogs($avatar->getZoneID(),$party->getPlayersKnown(),$map->getCurrentDay(),$avatar->getAvatarID());
-        $items = array("backpack" =>$this->getBackpackItems($avatar->getAvatarID()), "ground" => $this->getZoneItemsArray(), "avatarLoc"=>$avatar->getZoneID(),"recipes"=>$this->createRecipeList($avatar,$this->zoneBuildings),"backpackSize"=>$avatar->getMaxInventorySlots(),"logs"=>$logs);
+        $items = array("backpack" =>$this->getBackpackItems($avatar->getAvatarID()), "ground" => $this->getZoneItemsArray(), "avatarLoc"=>$avatar->getZoneID(),"backpackSize"=>$avatar->getMaxInventorySlots(),"logs"=>$logs);
         return $items;
-    }
-
-
-    //This returns a list of recipes that can be made based on the items in the players backpack and the buildings around
-    private function createRecipeList($avatar,$zoneBuildings){
-        $itemList = itemController::returnItemIDArray($avatar->getMapID(),"backpack",$avatar->getAvatarID());
-        return recipeController::findRecipe($itemList,$zoneBuildings);
     }
 
     //This returns the ground items array for the zone
@@ -512,12 +419,12 @@ class mapView
     }
 
     //This returns the avatar names as an array of profile IDs
-    private static function getAvatarNames($avatarList, $mapID,$avatarID){
+    private static function getAvatarNames($avatarList,$avatarID){
         $newArray = [];
         foreach ($avatarList as $avatar){
             if ($avatar != $avatarID) {
-                $newName = str_replace($mapID, "", $avatar);
-                array_push($newArray, $newName);
+                $tempAvatar = new avatarController($avatar);
+                array_push($newArray,$tempAvatar->getProfileID());
             }
         }
         return $newArray;

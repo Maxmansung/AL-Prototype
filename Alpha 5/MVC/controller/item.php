@@ -20,6 +20,7 @@ class item implements item_Interface
     protected $survivalBonus;
     protected $itemLocation;
     protected $locationID;
+    protected $statusImpact;
 
     public function __toString()
     {
@@ -38,6 +39,7 @@ class item implements item_Interface
         $output .= '/ '.$this->survivalBonus;
         $output .= '/ '.$this->itemLocation;
         $output .= '/ '.$this->locationID;
+        $output .= '/ '.$this->statusImpact;
         return $output;
     }
 
@@ -204,5 +206,15 @@ class item implements item_Interface
 
     function setLocationID($var){
         $this->locationID = $var;
+    }
+
+    function getStatusImpact()
+    {
+        return $this->statusImpact;
+    }
+
+    function setStatusImpact($var)
+    {
+        $this->statusImpact = $var;
     }
 }

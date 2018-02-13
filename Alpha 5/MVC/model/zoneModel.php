@@ -5,7 +5,7 @@ class zoneModel extends zone
 
     private function __construct($zoneModel)
     {
-        $this->zoneID = $zoneModel['zoneID'];
+        $this->zoneID = intval($zoneModel['zoneID']);
         $this->name = $zoneModel['name'];
         $this->mapID = $zoneModel['mapID'];
         $this->coordinateX = $zoneModel['coordinateX'];
@@ -39,6 +39,16 @@ class zoneModel extends zone
         return $zoneModel;
     }
 
+    public static function findZoneIDfromName($zoneID,$mapID){
+        $db = db_conx::getInstance();
+        $req = $db->prepare('SELECT zoneID FROM Zone WHERE mapID= :mapID AND name=:zoneID LIMIT 1');
+        $req->bindParam(':mapID', $mapID);
+        $req->bindParam(':zoneID', $zoneID);
+        $req->execute();
+        $zoneModel = $req->fetch();
+        return intval($zoneModel["zoneID"]);
+    }
+
     public static function findZoneCoords($zone){
         $db = db_conx::getInstance();
         $req = $db->prepare('SELECT zoneID FROM Zone WHERE mapID= :mapID AND coordinateY= :coordY AND coordinateX= :coordX LIMIT 1');
@@ -55,7 +65,7 @@ class zoneModel extends zone
         if ($type == "Insert") {
             $req = $db->prepare("INSERT INTO Zone (zoneID, name, mapID, coordinateX, coordinateY, avatars, buildings, controllingParty, protectedZoneType, storageBuilt, findingChances, biomeType, zoneOutpostName, zoneSurvivableTemperatureModifier, counter) VALUES (:zoneID, :name2, :mapID, :coordinateX, :coordinateY, :avatars, :buildings, :controllingParty, :protectedZoneType, :storage2, :findingChances, :biomeType, :zoneOutpostName, :zoneSurvivableTemperatureModifier, :counter)");
         } elseif ($type == "Update") {
-            $req = $db->prepare("UPDATE Zone SET name= :name2, mapID= :mapID, coordinateX= :coordinateX, coordinateY= :coordinateY, avatars= :avatars, buildings= :buildings, controllingParty= :controllingParty, protectedZoneType= :protectedZoneType, storageBuilt= :storage2, findingChances= :findingChances, biomeType= :biomeType, zoneOutpostName= :zoneOutpostName, zoneSurvivableTemperatureModifier= :zoneSurvivableTemperatureModifier, counter= :counter WHERE zoneID= :zoneID");;
+            $req = $db->prepare("UPDATE Zone SET name= :name2, mapID= :mapID, coordinateX= :coordinateX, coordinateY= :coordinateY, avatars= :avatars, buildings= :buildings, controllingParty= :controllingParty, protectedZoneType= :protectedZoneType, storageBuilt= :storage2, findingChances= :findingChances, biomeType= :biomeType, zoneOutpostName= :zoneOutpostName, zoneSurvivableTemperatureModifier= :zoneSurvivableTemperatureModifier, counter= :counter WHERE zoneID= :zoneID");
         }
         $req->bindParam(':zoneID', $controller->getZoneID());
         $req->bindParam(':name2', $controller->getName());
@@ -73,5 +83,8 @@ class zoneModel extends zone
         $req->bindParam(':zoneSurvivableTemperatureModifier', $controller->getZoneSurvivableTemperatureModifier());
         $req->bindParam(':counter', $controller->getCounter());
         $req->execute();
+        if ($type == "Insert"){
+            return intval($db->lastInsertId());
+        }
     }
 }

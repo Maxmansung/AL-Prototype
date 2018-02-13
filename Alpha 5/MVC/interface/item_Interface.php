@@ -34,4 +34,6 @@ interface item_Interface
     function setItemLocation($var);
     function getLocationID();
     function setLocationID($var);
+    function getStatusImpact();
+    function setStatusImpact($var);
 }

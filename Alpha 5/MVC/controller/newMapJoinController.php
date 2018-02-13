@@ -10,13 +10,11 @@ class newMapJoinController
         if ($name == ""){
             $checkname = 1;
             while ($checkname == 1) {
-                $tempName = nameGeneratorController::getNameAsText("map");
-                $map->newmap($tempName, $player, $invent, $edge, $stamina, $length, $temp, $stemp, $tempm, $type);
+                $name = nameGeneratorController::getNameAsText("map");
                 //This checks to ensure the name is not already in use
-                $checkname = $map->checkname($tempName);
+                $checkname = $map->checkname($name);
             }
         } else {
-            $map->newmap($name, $player, $invent, $edge, $stamina, $length, $temp, $stemp, $tempm, $type);
             //This checks to ensure the name is not already in use
             if ($type !== "Tutorial") {
                 $checkname = $map->checkname($name);
@@ -25,17 +23,12 @@ class newMapJoinController
                 }
             }
         }
-        //This posts the map to the database
-        $map->postMap();
+        $map->newmap($name, $player, $invent, $edge, $stamina, $length, $temp, $stemp, $tempm, $type);
         //This creates the zones
         $counter = 0;
         $forestLoc = $map->createForestLocation($edge);
         $lakeLoc = $map->createLakeLocation($edge);
-        if ($map->getGameType() === "Tutorial"){
-            $shrineLoc = [];
-        } else {
-            $shrineLoc = $map->createShrineLocation($edge);
-        }
+        $shrineLoc = $map->createShrineLocation($edge,$map->getGameType());
         for ($y = 0; $y < $edge; $y++) {
             for ($x = 0; $x < $edge; $x++) {
                 $zone = new zoneController("");
@@ -46,7 +39,6 @@ class newMapJoinController
                 }
                 $finalZoneID .= $counter;
                 $zone->newZone($map->getMapID(), $finalZoneID, $x, $y,$forestLoc,$shrineLoc,$lakeLoc);
-                $zone->postZone();
                 if ($zone->getProtectedType() !== "none"){
                     $shrine = shrineController::createNewShrine($zone->getProtectedType(),$zone->getZoneID());
                     $shrine->insertShrine();
@@ -55,16 +47,13 @@ class newMapJoinController
             }
         }
         for($z=0;$z<=$player;$z++){
-            $finalPartyID = partyController::getPartyIDFromNumber($z);
             $party = new partyController("");
             $checker = true;
             while ($checker == true){
                 $name = nameGeneratorController::getNameAsText("party");
                 $checker = partyController::findMatchingParty($map->getMapID(),$name);
             }
-            $party->newParty($map->getMapID(),$finalPartyID,$name);
-            $party->setZoneExploration(newMapJoinController::overallExplorationArray($edge));
-            $party->insertParty();
+            $party->newParty($map->getMapID(),$name,newMapJoinController::overallExplorationArray($edge));
         }
         return array("ERROR" => 2);
     }
@@ -94,15 +83,10 @@ class newMapJoinController
                 return array("ERROR" => 52);
             }
         }
-        //Add the avatarID to the maps avatar array and upload it to the database
-        $mapcheck->addAvatar($mapcheck->getMapID() . $profile->getProfileID());
-        $playerCount = count($mapcheck->getAvatars());
         //Create the avatar object and upload it to the database
         $avatar = new avatarController("");
         $avatar->newavatar($mapcheck, $profile);
         buildingLevels::getStartingAchievements($mapcheck->getGameType(),$avatar);
-        $partyID = partyController::getPartyIDFromNumber($playerCount);
-        $avatar->setPartyID($mapID . $partyID);
         $startingItems = buildingLevels::playerStartingItems();
         $avatar->setResearched(buildingController::getStartingBuildings($mapcheck->getGameType()));
         foreach ($startingItems as $item) {
@@ -111,18 +95,20 @@ class newMapJoinController
             $object->insertItem();
             $avatar->addInventoryItem($object->getItemID());
         }
-        $avatar->insertAvatar();
-        $checkAvatar = new avatarController($mapcheck->getMapID().$profile->getProfileID());
+        $avatar->updateAvatar();
+        $checkAvatar = new avatarController($avatar->getAvatarID());
         if ($checkAvatar->getAvatarID() == ""){
             return array("ERROR"=>$avatar->returnVars());
         } else {
+            //Add the avatarID to the maps avatar array and upload it to the database
+            $mapcheck->addAvatar($avatar->getAvatarID());
             self::addPlayerToVote($avatar->getMapID(), $avatar->getAvatarID());
             //Update the zone to include the avatar
             $zone = new zoneController($avatar->getZoneID());
             $zone->addAvatar($avatar->getAvatarID());
             $zone->updateZone();
             //Update the party to include the avatar
-            $party = new partyController($mapID . $partyID);
+            $party = new partyController($avatar->getPartyID());
             $party->addMember($avatar->getAvatarID());
             $party->addPlayersKnown($avatar->getAvatarID());
             $party->uploadParty();
@@ -139,16 +125,6 @@ class newMapJoinController
         }
     }
 
-    private static function explorationArray($size)
-    {
-        $count = $size * $size;
-        $exploration = [];
-        for ($x = 0; $x < $count; $x++) {
-            array_push($exploration, 0);
-        }
-        return $exploration;
-    }
-
     private static function overallExplorationArray($size)
     {
         $count = $size * $size;
@@ -162,13 +138,14 @@ class newMapJoinController
 
     private static function addPlayerToVote($mapID,$avatarID){
         $avatarList = avatarController::getAllMapAvatars($mapID);
+        $newAvatar = new avatarController($avatarID);
         foreach ($avatarList as $avatar){
             if ($avatar->getAvatarID() === $avatarID){
                 foreach ($avatarList as $otherAvatar){
                     $avatar->addPartyVotePlayer($otherAvatar->getAvatarID());
                 }
             }
-            $avatar->addPartyVotePlayer($avatarID);
+            $avatar->addPartyVotePlayer($newAvatar->getAvatarID());
             avatarModel::insertAvatar($avatar,"Update");
         }
     }

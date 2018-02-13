@@ -16,7 +16,7 @@ $townList = mapController::getAllMaps24hr();
 foreach ($townList as $town) {
     $map = new mapController($town);
     if (count($map->getAvatars()) >= $map->getMaxPlayerCount()) {
-        dayEndingFunctions::mapEndingActions($map->getMapID());
+
+        dayEndingFunctions::mapDayEnds($map->getMapID());
     }
 }
-?>

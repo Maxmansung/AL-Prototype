@@ -6,8 +6,7 @@ function makeCanvas(width, height,id){
     var myCanvas = document.getElementById(id);
     myCanvas.width = width;
     myCanvas.height = height;
-    var ctx = myCanvas.getContext("2d");
-    return ctx
+    return myCanvas.getContext("2d");
 }
 
 //This creates a line

@@ -1,10 +1,12 @@
 
 /*The solid black border around the map and buttons*/
 #mapwrapper {
+    position: relative;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
     align-items: center;
+    z-index: 10;
 }
 
 /*This is the controller of the North, East, South and West buttons*/
@@ -12,19 +14,14 @@
     margin: 3px;
 }
 
+.directionbutton:hover{
+    cursor: pointer;
+}
+
 /*This aligns the buttons East and West to the centre of the map*/
 #wrapperEW {
     display: flex;
     align-items: center;
-}
-
-/*The grey box surrounding the map*/
-#surround {
-    border: 3px solid black;
-    padding: 10px;
-    position: static;
-    z-index: 1;
-    background: gray;
 }
 
 /*Each of the map zones*/
@@ -54,6 +51,8 @@
     text-align: center;
     font-family: "Times New Roman", serif;
     font-size: 12px;
+    line-height: 20px;
+    vertical-align: middle;
 }
 
 /*This is the position of the player and selected zone images (Used to make them overlap)*/
@@ -62,6 +61,7 @@
     display: inline-block;
     margin-right: -20px;
     z-index: 5;
+    width: 20px;
 }
 
 .mapRowsDiv{
@@ -82,42 +82,130 @@
     margin-left: 5px;
 }
 
-#timeAndTemp{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    padding: 140px 10px 70px 10px;
-    background: rgba(100,150,255,0.6);
-    height: 90%;
+@media (orientation: portrait) {
+
+    #HUDWrapper{
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 80px;
+        left: 0;
+        width: 100%;
+    }
+
+    #timeAndTemp{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 3% 10% 1% 10%;
+        background: rgba(255,150,100,0.6);
+        width: 80%;
+    }
+
+    #pageCenter{
+        justify-content: center;
+        width: 100%;
+        padding-top: 200px;
+    }
+
+    #tempAndPlaceWrap{
+        display: flex;
+        flex-direction: column;
+        height: 150px;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    #expandButton{
+        width: 100%;
+        background: rgba(100,100,100,0.4);
+        height: 30px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+    }
+
+    #clickHereImage{
+        background: black;
+        height: 100%;
+        width: 70px;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    #playerStatusView{
+        width: 125px;
+    }
+    
 }
 
-#HUDWrapper{
-    display: flex;
-    flex-direction: row;
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-}
+@media (orientation: landscape){
 
-#clickHereImage{
-    background: black;
-    width: 100%;
-    height: 70px;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
+    #HUDWrapper{
+        display: flex;
+        flex-direction: row;
+        position: fixed;
+        top: 80px;
+        left: 0;
+        height: 100%;
+    }
+
+    #timeAndTemp{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12% 3% 10% 3%;
+        background: rgba(100,150,255,0.6);
+        height: 75%;
+    }
+
+    #pageCenter{
+        justify-content: center;
+        width: 100%;
+        padding-left: 100px;
+    }
+
+    #expandButton{
+        height: 100%;
+        background: rgba(100,100,100,0.4);
+        width: 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+    }
+
+    #clickHereImage{
+        background: black;
+        width: 100%;
+        height: 70px;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    #playerStatusView{
+        width: 125px;
+    }
+
+    #tempAndPlaceWrap{
+        display: flex;
+        flex-direction: column;
+        height: 150px;
+        justify-content: space-between;
+        align-items: center;
+    }
+
 }
 
 #clickHereImage:hover{
     cursor: pointer;
-}
-
-#playerStatusView{
-    margin-left: -100px;
 }
 
 #playerStatusView:hover #playerStatusInfo{
@@ -153,10 +241,6 @@
     margin-right: -128px;
 }
 
-.verticalWrap{
-    display: flex;
-    flex-direction: column;
-}
 
 .verticalWrapWide{
     display: flex;
@@ -272,9 +356,9 @@
 
 /*This is the info window next to the map*/
 #infobox{
-    height: auto;
-    width: 330px;
-    border: 1px solid black;
+    border: 3px solid black;
+    width: 512px;
+    height: 128px;
 }
 
 /*This is the info window next to the mapZone map*/
@@ -299,7 +383,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    border: 2px solid slateblue;
+    border: 5px solid;
+    border-image: url("/images/testBorder2.png") 16 16 16 16 repeat;
     padding: 10px;
 }
 
@@ -313,17 +398,16 @@
 /*This is the zone info*/
 #environment{
     font-size: 12px;
-    margin: 10px;
+    margin: 5px;
     border: 1px dotted grey;
     padding: 5px;
-    height: 46px;
 }
 
 /*This is the zone co-ordinates*/
 #zonelocation{
     text-align: center;
-    padding: 10px;
-    width: auto;
+    font-size: 180%;
+    margin: 80px 0 0 0;
 }
 
 /*This is the players in the location*/
@@ -399,11 +483,7 @@
     align-items: center;
 }
 
-/*This is used on the MapZone page to align sections horizontally*/
-.horizontalWrap{
-    display: flex;
-    flex-direction: row;
-}
+
 
 /*This is the layout of each of the players details boxes*/
 .playerdiv{
@@ -633,24 +713,33 @@ a.menulink2:visited, a.menulink2:link {
 }
 
 #zoneInfoWrapper{
-    border: 1px solid black;
-    padding: 5px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 325px;
+    width: 512px;
+    height: 512px;
+    border: 2px solid black;
+    position: relative;
+}
+
+.mapImageOverlay{
+    position: absolute;
 }
 
 #backpackwrap{
-    border: 1px solid black;
     padding: 5px;
     max-width: 250px;
     margin: 10px;
 }
 
+.itemContainerWrap{
+    display: flex;
+    flex-direction: row;
+    width: 302px;
+    margin: 3px;
+    align-items: center;
+}
+
 #backpack{
     border: 1px solid black;
-    margin: 10px;
+    margin: 5px;
     padding: 5px;
     display: flex;
     flex-direction: row;
@@ -748,8 +837,10 @@ a.menulink2:visited, a.menulink2:link {
     margin: 5px;
     padding: 5px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: flex-start;
+    border: 1px solid black;
+    justify-content: space-between;
 }
 
 #dropdownwrap{
@@ -801,8 +892,15 @@ a.menulink2:visited, a.menulink2:link {
     font-weight: normal;
     font-size: 12px;
     padding: 3px;
+    border: dashed 2px darkgreen;
     margin: 10px;
     text-align: center;
+}
+
+#playersInZone{
+    position: relative;
+    top: 76px;
+    width: 256px;
 }
 
 #depletedzone{
@@ -813,16 +911,16 @@ a.menulink2:visited, a.menulink2:link {
     align-self: center;
     font-weight: bold;
     font-size: 16px;
-    padding: 3px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    padding: 0 0 3px 0;
+    text-align: center;
+    width: 200px;
 }
 
 #zoneinfowrite{
     font-weight: normal;
     font-size: 12px;
-    padding: 3px
+    padding: 0 0 3px 0;
+    color: rgba(50,50,50,1);
 }
 
 #grounditemswrap{
@@ -908,19 +1006,48 @@ a.menulink2:visited, a.menulink2:link {
 }
 
 #tempDataWrapper{
-    padding: 10px 5px 10px 5px;
+    padding: 5px;
     display: flex;
     flex-direction: column;
-    height: 100px;
     justify-content: space-between;
     border-radius: 10px;
     align-items: center;
 }
 
-#tempDataWarning{
+.tempDescriptionWrapper{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    padding: 3px;
+}
+
+#survivalWarning{
     font-size: 12px;
     font-weight: bold;
     text-align: center;
+    width: 150px;
+}
+
+#survivalWarningGreen{
+    background: rgba(50,200,50,1);
+    border: black 2px solid;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+#survivalWarningOrange{
+    background: rgba(250,150,10,1);
+    border: black 2px solid;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+#survivalWarningRed{
+    background: rgba(200,50,50,1);
+    border: black 2px solid;
+    border-radius: 10px;
+    padding: 5px;
 }
 
 #tempdatawrite{
@@ -1359,7 +1486,6 @@ a.menulink2:visited, a.menulink2:link {
 }
 
 #movementLog{
-    border: 1px black solid;
     padding: 5px;
     margin-bottom: 20px;
     display: flex;
@@ -1368,7 +1494,7 @@ a.menulink2:visited, a.menulink2:link {
 }
 
 #movementLogTitle{
-    border: 1px black solid;
+    border: 2px black solid;
     padding: 3px;
     font-weight: bold;
     font-size: 16px;
@@ -1380,6 +1506,7 @@ a.menulink2:visited, a.menulink2:link {
 #movementLogActions{
     max-height: 100px;
     overflow: auto;
+    border: 2px solid black;
 }
 
 .movementLogActionLog{
@@ -1395,6 +1522,100 @@ a.menulink2:visited, a.menulink2:link {
     background: rgba(200,0,0,0.3);
 }
 
+#mapActionsWrapper{
+    border-left: 2px solid grey;
+    padding-left: 3px;
+    margin-left: 3px;
+    width: 200px;
+}
+
+#zonePlayersWrapper{
+    position: absolute;
+    top: 346px;
+    left: 100px;
+    height: 106px;
+    width: 246px;
+}
+
+#miniMapWrapper{
+    width: 45px;
+    height: 45px;
+    position: absolute;
+    top: 20px;
+    left: 390px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+}
+
+.miniMapRow{
+    display: flex;
+    flex-direction: row;
+    width: 45px;
+    height: 15px;
+}
+
+.miniMapZone{
+    width: 13px;
+    height: 13px;
+    border: 1px solid black;
+    color: rgba(255,0,0,1);
+    font-size: 10px;
+    line-height: 13px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.miniMapZone2{
+    width: 15px;
+    height: 15px;
+}
+
+#mapButtonWrapper{
+    position: absolute;
+    top: 10px;
+    left:430px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#mapButtonWrapper2{
+    visibility: hidden;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    top: -30px;
+    right: -60px;
+    z-index: 50;
+}
+
+#mapwrapper:hover #mapButtonWrapper2{
+    visibility: visible;
+}
+
+#actionButtonsWrapper{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+    width: inherit;
+    position: absolute;
+    top: 390px;
+}
+
+#actionButtonsBackground{
+    min-width: 1px;
+    border: 1px solid black;
+    background: rgba(100,100,100,0.2);
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+    padding: 5px;
+}
+
 .movementLogTimestamp{
     border-right: solid 1px black;
     padding: 2px;
@@ -1407,12 +1628,6 @@ a.menulink2:visited, a.menulink2:link {
 .movementLogText{
     padding: 2px;
     font-size: 10px;
-}
-
-#pageCenter{
-    justify-content: center;
-    width: 100%;
-    padding-left: 100px;
 }
 
 #gateLockChange{
@@ -1646,11 +1861,6 @@ a.menulink2:visited, a.menulink2:link {
     padding: 20px 10px 40px 10px;
 }
 
-.verticalWrapCentre{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
 
 #zoneOverviewLockTitle{
     font-size: 21px;
@@ -1762,6 +1972,13 @@ a.menulink2:visited, a.menulink2:link {
     padding: 5px;
 }
 
+.titleTextMap{
+    font-weight: bold;
+    font-size: 16px;
+    padding: 5px;
+    min-width: 90px;
+}
+
 .titleTextSmall{
     font-weight: bold;
     font-size: 14px;
@@ -1774,10 +1991,16 @@ a.menulink2:visited, a.menulink2:link {
     padding: 5px;
 }
 
-#destroyBiomeButton{
+.mapActionButton{
     margin: 10px;
     width: 50px;
     height: 50px;
+}
+
+#mapCoordinates{
+    font-size: 14px;
+    font-weight: bold;
+    color: rgba(80,48,15,1);
 }
 
 #destroyBiomeImage{
@@ -1785,11 +2008,32 @@ a.menulink2:visited, a.menulink2:link {
     height: inherit;
 }
 
-#destroyBiomeButton:hover{
+.mapActionButton:hover{
     cursor: pointer;
 }
 
-#destroyBiomeButton:hover .imagetext{
+#mapButtonWrapper:hover .imagetext{
+    visibility: visible;
+}
+
+#mapButtonWrapper2:hover .imagetext{
+    visibility: visible;
+}
+
+.mapActionButton:hover .imagetext{
+    visibility: visible;
+}
+
+#mapButtonWrapper .imagetext{
+    top: 30px;
+}
+
+#mapButtonWrapper2 .imagetext{
+    left: 60px;
+    width: 50px;
+}
+
+.directionButtonWrap:hover .imagetext{
     visibility: visible;
 }
 
@@ -2282,6 +2526,7 @@ a.menulink2:visited, a.menulink2:link {
 #backpackWrap{
     display: flex;
     flex-direction: column;
+    border: 1px solid black;
     padding: 5px;
     margin: 5px;
 }
@@ -2299,11 +2544,6 @@ a.menulink2:visited, a.menulink2:link {
     flex-wrap: wrap;
     max-width: 150px;
     align-self: flex-start;
-}
-
-#backpackWrapBorder{
-    border: 1px solid black;
-    padding: 5px;
 }
 
 #useRecipeButton{
@@ -2555,15 +2795,61 @@ a.menulink2:visited, a.menulink2:link {
     background: rgba(50,50,50,0.9);
 }
 
-#expandButton{
-    height: 100%;
-    background: rgba(100,100,100,0.4);
-    width: 30px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
+#HUDPadding{
+    height: 100px;
 }
 
-#HUDPadding{
-    height: 70px;
+.mapPlayerImageWrap{
+    position: absolute;
+    width: 40px;
+    height: 40px;
+}
+
+.mapPlayerImage{
+    width: 36px;
+    height: 36px;
+}
+
+#playerImageSelf{
+    top: 0;
+    left: 100px;
+}
+
+.mapPlayerImageWrap .playerImageText{
+    position: relative;
+    top: -58px;
+    color: black;
+    font-size: 10px;
+}
+
+#zoneDirectionsWrapper{
+
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.selectableText{
+    font-size: 12px;
+    text-decoration: underline;
+    color: rgba(100,100,100,1);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.useableTextWrap{
+    padding-left: 20px
+}
+
+.selectableText:hover{
+    cursor: pointer;
+    color: rgba(0,0,0,1);
+}
+
+.recipeItemImage{
+    max-width: 16px;
+    max-height: 16px;
+    padding: 0 5px 0 0;
 }

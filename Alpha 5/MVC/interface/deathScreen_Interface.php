@@ -25,4 +25,6 @@ interface deathScreen_Interface
     function setShrineScore($var);
     function getDeathType();
     function setDeathType($var);
+    function getPartyPlayersLeft();
+    function setPartyPlayersLeft($var);
 }

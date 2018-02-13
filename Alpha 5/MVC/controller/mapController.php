@@ -7,7 +7,7 @@ class mapController extends map
 
     public function newmap($name,$player,$invent,$edge,$stamina,$length,$temp,$stemp,$tempm,$gameType)
     {
-        $this->mapID = $this->createID();
+        $this->mapID = null;
         $this->name = $name;
         $this->maxPlayerCount = $player;
         $this->maxAvatarInventorySlots = $invent;
@@ -20,6 +20,9 @@ class mapController extends map
         $this->baseAvatarTemperatureModifier = $tempm;
         $this->temperatureRecord = [1=>$temp];
         $this->gameType = $gameType;
+        $id = $this->postMap();
+        echo "<br>MapID: ".$id;
+        $this->mapID = $id;
     }
 
     //This updates a single map object on the database
@@ -66,7 +69,7 @@ class mapController extends map
 
     //This posts the new map to the database
     public function postMap(){
-        mapModel::insertMap($this, "Insert");
+        return mapModel::insertMap($this, "Insert");
     }
 
     public function __construct($id){
@@ -166,10 +169,36 @@ class mapController extends map
         return array($x,$y);
     }
 
-    public function createShrineLocation($edge){
-        $shrine1 = array("S001",rand(0,floor($edge/2)),rand(0,$edge-1));
-        $shrine2 = array("S002",rand(ceil($edge/2),$edge-1),rand(0,$edge-1));
-        return array($shrine1,$shrine2);
+    public function createShrineLocation($edge,$type){
+        if ($type !== "Tutorial") {
+            $shrineArray = array("S001", "S002", "S003");
+        } else {
+            $shrineArray = array("S001", "S004", "S003");
+        }
+        $finalArray = array();
+        $counter = 0;
+        foreach ($shrineArray as $shrine){
+            $xAxis = true;
+            $yAxis = true;
+            while ($xAxis === true && $yAxis === true){
+                $testX = rand(0,$edge-1);
+                $testY = rand(0,$edge-1);
+                $xAxis = false;
+                $yAxis = false;
+                foreach ($finalArray as $newShrine){
+                    if ($testX === $newShrine[1]){
+                        $xAxis = true;
+                    }
+                    if ($testY === $newShrine[2]){
+                        $yAxis = true;
+                    }
+                }
+            }
+            $completedShrine = array($shrine,$testX,$testY);
+            $finalArray[$counter] = $completedShrine;
+            $counter++;
+        }
+        return $finalArray;
     }
 
     public function createLakeLocation($edge){

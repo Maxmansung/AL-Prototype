@@ -36,15 +36,14 @@ class avatarController extends avatar
     }
 
     public function newavatar($mapController, $profileController){
-        $this->avatarID = $mapController->getMapID().$profileController->getProfileID();
         $this->profileID = $profileController->getProfileID();
         $this->mapID = $mapController->getMapID();
         $this->stamina = $mapController->getMaxPlayerStamina();
         $this->maxStamina = $mapController->getMaxPlayerStamina();
-        $this->zoneID = $this->zoneLocation($mapController->getEdgeSize(),count($mapController->getAvatars()),$mapController->getMaxPlayerCount(),$mapController->getMapID());
+        $this->zoneLocation($mapController->getEdgeSize(),count($mapController->getAvatars()),$mapController->getMaxPlayerCount(),$mapController->getMapID());
         $this->inventory = array();
         $this->maxInventorySlots = $mapController->getMaxPlayerInventorySlots();
-        $this->partyID = $this->startParty();
+        $this->partyID = $this->startParty($mapController->getMapID());
         $this->readiness = false;
         $this->avatarTempRecord = $mapController->getBaseAvatarTemperatureModifier();
         $this->avatarSurvivableTemp = self::getBaseAvatarTemperature($profileController);
@@ -55,10 +54,13 @@ class avatarController extends avatar
         $this->tempModLevel = 1;
         $this->shrineScore = array();
         $this->statusArray = statusesController::createStatusArray();
+        $newID = $this->insertAvatar();
+        $this->avatarID = $newID;
+        return $newID;
     }
 
     public function insertAvatar(){
-        avatarModel::insertAvatar($this,"Insert");
+        return avatarModel::insertAvatar($this,"Insert");
     }
 
     public function updateAvatar(){
@@ -70,24 +72,24 @@ class avatarController extends avatar
     }
 
     //This creates a zone location, currently designed to prevent any player from ending up in the same zone as another by dividing the map into player sections. This is not the ideal scenario
-    private function zoneLocation($size, $playerCount, $mapPlayers,$name){
+    private function zoneLocation($size, $playerCount, $mapPlayers,$mapID){
         //This divides the map by the number of players
         $partitionMap = ($size*$size)/$mapPlayers;
-        //This makes a section of the map for the number of player it is
-        $personalMap = $partitionMap*$playerCount;
+        //This makes a section of the map for the number of player in it
         //This selects a random zone between the players maximum zone number and the players minimum
-        $this->zoneNumber = rand(($personalMap-$partitionMap),($personalMap));
-        $count = 4 - (strlen((string)$this->zoneNumber));
+        $zoneNumber = rand(($partitionMap*$playerCount),($partitionMap*($playerCount+1)));
+        $count = 4 - (strlen((string)$zoneNumber));
         $finalZoneID = "z";
         for ($i = 0; $i < $count; $i++) {
             $finalZoneID .= "0";
         }
-        $finalZoneID .= $this->zoneNumber;
-        return $name.$finalZoneID;
+        $finalZoneID .= $zoneNumber;
+        $this->zoneID = zoneController::getZoneIDfromName($finalZoneID,$mapID);
     }
 
-    private function startParty(){
-        return null;
+    private function startParty($mapID){
+        $party = partyController::getEmptyParty($mapID);
+        return $party->getPartyID();
     }
 
     public function useStamina($var){

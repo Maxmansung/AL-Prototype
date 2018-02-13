@@ -331,10 +331,86 @@
 
 
 
-#death{
+#deathWrapper{
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+#deathScreenWrap{
+    border: 3px solid black;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+#deathOverviewWrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 300px;
+}
+
+.boldTitle{
+    font-size: 30px;
+    font-weight: bold;
+}
+
+#deathCauseSection{
+    padding-top: 20px;
+    font-size: 20px;
+    text-align: center;
+}
+
+#deathAchievements{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+#deathCauseDescription{
+    padding-top: 10px;
+    font-size: 13px;
+    color: rgba(100,100,100,1);
+}
+
+.boldWriting{
+    color: rgba(0,0,0,1);
+    font-weight: bold;
+}
+
+#deathSurvivedTotal{
+    vertical-align: middle;
+    font-size: 13px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 30px 0 10px 0;
+}
+
+#deathAchieveScore{
+    font-size: 12px;
+    color: rgba(50,50,50,1);
+    padding: 10px 0 0 0;
+}
+
+#informationText{
+    font-size: 12px;
+    color: rgba(50,50,50,1);
+    text-align: center;
+}
+
+#deathDayNumber{
+    font-size: 30px;
+    font-weight: bold;
+    padding: 5px;
+}
+
+#deathMapSection{
+    font-size: 15px;
+    color: rgba(100,100,100,1);
+    padding: 20px 0 10px 0;
+    width: 100%;
 }
 
 #playStatistics{
@@ -343,6 +419,21 @@
 
 #playAchievements{
     width: 350px;
+    border: 2px solid saddlebrown;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 30px;
+}
+
+#StatisticWrapper{
+    justify-content: space-between;
+}
+
+#shrineAchievements{
+    width: 350px;
+    border: 2px solid saddlebrown;
+    border-radius: 10px;
+    padding: 10px;
 }
 
 #myCanvas{
@@ -355,11 +446,6 @@
 
 .myLegendText{
     margin-bottom: 5px;
-}
-
-.horizontalWrap{
-    display: flex;
-    flex-direction: row;
 }
 
 .verticalWrap{
@@ -589,7 +675,7 @@
 }
 
 .horizontalLine{
-    width: inherit;
+    width: 100%;
     border: 2px solid gray;
     margin: 20px;
 }

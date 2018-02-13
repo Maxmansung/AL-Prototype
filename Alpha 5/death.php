@@ -31,35 +31,50 @@ if ($deathAvatar->getProfileID() == "") {
 <body>
 <?php include_once("templates/template_pageTop.php"); ?>
 <article>
-    <section id="death">
-        <div class="verticalWrap">
-            <div id="shrineScoresTitle">
-                Favour Gained
-            </div>
-            <div id="shrineScores">
-                Shrines Here
-            </div>
-            <div id="totalScoreTitle">
-                Total:
-            </div>
-            <div id="shrineScoresTotal">
-                Total Here
-            </div>
-        </div>
-        <div class="horizontalLine" style="width: 500px;"></div>
-        <div class="horizontalWrap" id="deathWrapper">
-            <div class="verticalWrap" id="playStatistics">
-                <div id="deathSubHeading">Play Statistics</div>
-                <canvas id="myCanvas"></canvas>
-                <div id="myLegend"></div>
-            </div>
-            <div class="verticalLine"></div>
-            <div class="verticalWrap" id="playAchievements">
-                <div id="deathSubHeading">Achievements</div>
-                <div class="verticalWrap" id="deathAchievements">
+    <section id="deathWrapper">
+        <section class="horizontalWrap" id="deathScreenWrap">
+            <section id="deathOverviewWrapper">
+                <div class="boldTitle">
+                    YOU HAVE DIED!
                 </div>
-            </div>
-        </div>
+                <div id="deathCauseSection">
+                    Cause of death here
+                </div>
+                <div id="deathCauseDescription">
+                    Description of death here
+                </div>
+                <div id="deathSurvivedTotal">
+                    Day of death here
+                </div>
+                <div id="deathMapSection">
+                    Map name here
+                </div>
+            </section>
+            <section class="verticalWrap" id="StatisticWrapper">
+                <div class="verticalWrap" id="playAchievements">
+                    <div id="deathSubHeading">Achievements</div>
+                    <div id="deathAchievements">
+                    </div>
+                    <div id="deathAchieveScore">
+
+                    </div>
+                </div>
+                <div class="verticalWrap" id="shrineAchievements">
+                    <div id="deathSubHeading">
+                        Gods Favour
+                    </div>
+                    <div id="shrineScores">
+                        Shrines Here
+                    </div>
+                    <div id="totalScoreTitle">
+                        Total:
+                    </div>
+                    <div id="shrineScoresTotal">
+                        Total Here
+                    </div>
+                </div>
+            </section>
+        </section>
         <button onclick="confirmDeath()" id="confirmDeath">Confirm Death</button>
     </section>
 </article>

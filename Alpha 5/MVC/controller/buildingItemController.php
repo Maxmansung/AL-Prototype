@@ -52,14 +52,16 @@ class buildingItemController
             $storageLock = new buildingController($storageLockID);
             $zoneLockID = buildingController::getConstructedBuildingID("GateLock", $avatar->getZoneID());
             $zoneLock = new buildingController($zoneLockID);
-            if ($zoneLock->getStaminaSpent() === $zoneLock->getStaminaRequired() || $storageLock->getStaminaSpent() === $storageLock->getStaminaRequired()) {
-                $zone = new zoneController($avatar->getZoneID());
-                if ($zone->getControllingParty() !== "empty") {
-                    if ($zone->getControllingParty() !== $avatar->getPartyID()) {
-                        return array("ERROR" => 61);
+            if ($zoneLock->getBuildingTemplateID() !== null) {
+                if ($zoneLock->getStaminaSpent() === $zoneLock->getStaminaRequired() || $storageLock->getStaminaSpent() === $storageLock->getStaminaRequired()) {
+                    $zone = new zoneController($avatar->getZoneID());
+                    if ($zone->getControllingParty() !== null) {
+                        if ($zone->getControllingParty() !== $avatar->getPartyID()) {
+                            return array("ERROR" => 61);
+                        }
+                    } else {
+                        return array("ERROR" => 62);
                     }
-                } else {
-                    return array("ERROR" => 62);
                 }
             }
             if ($item->getLocationID() === $avatar->getAvatarID()) {
@@ -140,6 +142,10 @@ class buildingItemController
                             }
                             $avatar->useStamina($stamina);
                             $avatar->addPlayStatistics("build", $stamina);
+                            $response = achievementController::checkAchievement(array("ACTION","BUILD"));
+                            if ($response !== false) {
+                                $avatar->addAchievement($response);
+                            }
                             $avatar->updateAvatar();
                             $newBuilding->addStaminaSpent($stamina);
                             $checker = null;
@@ -275,7 +281,7 @@ class buildingItemController
     {
         $avatar = new avatarController($avatarID);
         $zone = new zoneController($avatar->getZoneID());
-        if ($zone->getControllingParty() != "empty") {
+        if ($zone->getControllingParty() != null) {
             if ($avatar->getPartyID() != $zone->getControllingParty()) {
                 return array("ERROR" => 32);
             }
@@ -492,7 +498,6 @@ class buildingItemController
 
     //This function adds to the players research counter
     public static function performResearch($avatarID){
-        $avatar = new avatarController($avatarID);
         $checker = self::getAvailableResearchOptions($avatarID,"check");
         if ($checker === false){
             return array("ERROR"=>40);
@@ -508,6 +513,10 @@ class buildingItemController
                 $avatar->adjustResearchStatsStamina(1);
                 $avatar->useStamina(1);
                 $avatar->addPlayStatistics("research",1);
+                $response = achievementController::checkAchievement(array("ACTION","RESEARCH"));
+                if ($response !== false) {
+                    $avatar->addAchievement($response);
+                }
                 $avatar->updateAvatar();
                 return array("SUCCESS"=>true);
             }
@@ -704,7 +713,7 @@ class buildingItemController
     public static function storageAccess($avatarID){
         $avatar = new avatarController($avatarID);
         $zone = new zoneController($avatar->getZoneID());
-        if ($zone->getControllingParty() !== "empty" && $zone->getControllingParty() !== $avatar->getPartyID()) {
+        if ($zone->getControllingParty() !== null && $zone->getControllingParty() !== $avatar->getPartyID()) {
             $storageLock = buildingController::getConstructedBuildingID("StorageLock", $zone->getZoneID());
             if (array_key_exists("ERROR", $storageLock) !== true) {
                 if ($storageLock->getStaminaSpent() === $storageLock->getStaminaRequired()) {

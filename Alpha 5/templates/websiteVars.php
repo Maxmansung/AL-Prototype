@@ -1,5 +1,5 @@
 <?php
-$site = 3;
+$site = 2;
 
 
 switch ($site){
@@ -22,4 +22,3 @@ switch ($site){
         define('SITE_ADDRESS','.arctic-lands.com');
         break;
 }
-?>

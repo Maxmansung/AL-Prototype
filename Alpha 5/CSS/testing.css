@@ -133,3 +133,10 @@
     line-height: 100px;
     font-size: 20px;
 }
+
+
+
+#testingBorder{
+    border: 10px solid black;
+    border-image: url("/images/testBorder2.png") 16 16 16 16 repeat;
+}

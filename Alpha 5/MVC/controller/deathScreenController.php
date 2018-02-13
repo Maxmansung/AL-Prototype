@@ -23,6 +23,7 @@ class deathScreenController extends deathScreen
             $this->shrineScore = $deathModel->shrineScore;
             $this->shrineDisplay = buildingLevels::getShrineDetails($this->shrineScore);
             $this->deathType = $deathModel->getDeathType();
+            $this->partyPlayersLeft = $deathModel->partyPlayersLeft;
         }
     }
 
@@ -41,8 +42,10 @@ class deathScreenController extends deathScreen
         $deathScreen->setDeathAchievements($avatar->getAchievements());
         $deathScreen->setGameType($map->getGameType());
         $deathScreen->setShrineScore($avatar->getShrineScore());
+        $deathScreen->setDeathType(intval($cause));
+        $totalLeft = count($party->getMembers())-1;
+        $deathScreen->setPartyPlayersLeft(intval($totalLeft));
         $deathScreen->insertDeathScreen();
-        $deathScreen->setDeathType($cause);
     }
 
     public function insertDeathScreen(){

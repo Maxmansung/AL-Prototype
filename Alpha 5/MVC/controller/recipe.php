@@ -11,7 +11,7 @@ class recipe implements recipe_Interface
     protected $consumedItems;
     protected $generatedItems;
     protected $recipeComment;
-    protected $statusImpact;
+    protected $recipeImage;
 
 
     public function __toString()
@@ -23,7 +23,7 @@ class recipe implements recipe_Interface
         $output .= '/ '.$this->consumedItems;
         $output .= '/ '.$this->generatedItems;
         $output .= '/ '.$this->recipeComment;
-        $output .= '/ '.$this->statusImpact;
+        $output .= '/ '.$this->recipeImage;
         return $output;
     }
 
@@ -102,13 +102,13 @@ class recipe implements recipe_Interface
         $this->recipeComment = $var;
     }
 
-    function getStatusImpact()
+    function getRecipeImage()
     {
-        return $this->statusImpact;
+        return $this->recipeImage;
     }
 
-    function setStatusImpact($var)
+    function setRecipeImage($var)
     {
-        $this->statusImpact = $var;
+        $this->recipeImage = $var;
     }
 }

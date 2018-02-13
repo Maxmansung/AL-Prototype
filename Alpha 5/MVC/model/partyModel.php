@@ -5,7 +5,7 @@ class partyModel extends party
     private function __construct($partyModel)
     {
         $this->partyID = $partyModel['partyID'];
-        $this->mapID = $partyModel['mapID'];
+        $this->mapID = intval($partyModel['mapID']);
         $this->members = json_decode($partyModel['members']);
         $this->partyName = $partyModel['partyName'];
         $this->pendingRequests = json_decode($partyModel['pendingRequests']);
@@ -32,15 +32,19 @@ class partyModel extends party
             $req = $db->prepare("UPDATE Party SET mapID= :mapID, members= :members, partyName= :partyName, pendingRequests= :pendingRequests, pendingBans= :pendingBans, playersKnown= :playersKnown, overallZoneExploration= :overallZoneExploration, tempBonus= :tempBonus WHERE partyID= :partyID");;
         }
         $req->bindParam(':partyID', $controller->getPartyID());
-        $req->bindParam(':mapID', $controller->getMapID());
-        $req->bindParam(':members', json_encode($controller->getMembers()));
+        $req->bindParam(':mapID', intval($controller->getMapID()));
+        $req->bindParam(':members', json_encode($controller->getMembers()),JSON_NUMERIC_CHECK);
         $req->bindParam(':partyName', $controller->getPartyName());
-        $req->bindParam(':pendingRequests', json_encode($controller->getPendingRequests()));
-        $req->bindParam(':pendingBans', json_encode($controller->getPendingBans()));
-        $req->bindParam(':playersKnown', json_encode($controller->getPlayersKnown()));
-        $req->bindParam(':overallZoneExploration', json_encode($controller->getZoneExploration()));
+        $req->bindParam(':pendingRequests', json_encode($controller->getPendingRequests()),JSON_NUMERIC_CHECK);
+        $req->bindParam(':pendingBans', json_encode($controller->getPendingBans()),JSON_NUMERIC_CHECK);
+        $req->bindParam(':playersKnown', json_encode($controller->getPlayersKnown()),JSON_NUMERIC_CHECK);
+        $req->bindParam(':overallZoneExploration', json_encode($controller->getZoneExploration()),JSON_NUMERIC_CHECK);
         $req->bindParam(':tempBonus', $controller->getTempBonus());
         $req->execute();
+        if ($type == "Insert"){
+            $test = $db->lastInsertId();
+            return $test;
+        }
     }
 
     public static function removeInvites($playerID){

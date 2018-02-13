@@ -16,7 +16,7 @@ class recipeController extends recipe
             $this->consumedItems = $recipe->consumedItems;
             $this->generatedItems = $recipe->generatedItems;
             $this->recipeComment = $recipe->recipeComment;
-            $this->statusImpact = $recipe->statusImpact;
+            $this->recipeImage = $recipe->recipeImage;
         }
     }
 
@@ -25,10 +25,6 @@ class recipeController extends recipe
         $recipeArray2 = recipeModel::recipesRequiringBuilding($buildingArray);
         $recipeArrayFinal = array_merge($recipeArray1,$recipeArray2);
         return $recipeArrayFinal;
-    }
-
-    public static function useableItems($itemArray){
-        return recipeModel::recipesUsingItem($itemArray);
     }
 
     public static function differentResult($recipeID){

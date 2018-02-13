@@ -38,24 +38,41 @@ if ($shrineZone !== false) {
                     </div>
                 </div>
             </div>
-            <div id="firepitOverview">
-                <div  class="titleText">
-                    Firepit
-                </div>
-                <div id="firepitImageWrap" onclick="firepitBackpackView()">
-                    <div id="firepitBackpackWrap">
-
+            <section id="playerItemUse">
+                <div class="verticalWrap" id="recipiesWrapper">
+                    <div class="titleText">
+                        Recipes
                     </div>
-                    <div id="firepitInfoPopup">
-                        Click to drop items
+                    <div id="recipesUseWrap" class="useableTextWrap">
                     </div>
-                    <img id="firepitImageType" src="/images/firepit2.png">
                 </div>
-                <div id="firepitFuel" class="buildingDetailsWriting">
-
+                <div class="verticalWrap" id="consumablesWrapper">
+                    <div class="titleText">
+                        Consumables
+                    </div>
+                    <div id="itemsUseWrap" class="useableTextWrap">
+                    </div>
                 </div>
-                <div id="firepitTempBonus" class="buildingDetailsWriting">
-
+            </section>
+            <div id="backpackWrap">
+                <div class="titleText">
+                    Backpack
+                </div>
+                <div id="backpackLevel">
+                </div>
+                <div class="horizontalWrap">
+                    <div id="backpackHolderWrap">
+                    </div>
+                    <div id="verticalDividingLine">
+                    </div>
+                    <div class="verticalWrap" >
+                        <div id="sleepingBagUpgradeWriting">
+                            Upgrade Cost:
+                        </div>
+                        <div class="horizontalWrap" id="backpackUpgradeItems">
+                        </div>
+                        <button id="sleepingBagUpgradeButton" onclick="upgradeBackpack()">Upgrade</button>
+                    </div>
                 </div>
             </div>
         </section>
@@ -111,53 +128,6 @@ if ($shrineZone !== false) {
         </section>
     </section>
     <section class="horizontalWrap" id="itemHoldersWrap">
-        <div id="backpackWrap">
-            <div class="titleText">
-                Backpack
-            </div>
-            <div id="backpackWrapBorder">
-                <div id="backpackLevel">
-
-                </div>
-                <div class="horizontalWrap">
-                    <div id="backpackHolderWrap">
-
-
-                    </div>
-                    <div id="verticalDividingLine">
-
-                    </div>
-                    <div class="verticalWrap" >
-                        <div id="sleepingBagUpgradeWriting">
-                            Upgrade Cost:
-                        </div>
-                        <div class="horizontalWrap" id="backpackUpgradeItems">
-
-                        </div>
-                        <button id="sleepingBagUpgradeButton" onclick="upgradeBackpack()">Upgrade</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <section id="playerItemUse">
-            <div class="titleText">
-                Actions
-            </div>
-            <div id="mainDropdownWrap">
-            <div class="dropdownwrap2">
-                <select id="itemActions" class="itemActionDrop" >
-                    <option value="none">Error</option>
-                </select>
-                    <button id="useRecipeButton" onclick="recipeIDValue()">Combine</button>
-            </div>
-            <div class="dropdownwrap2">
-                <select id="useActions" class="itemActionDrop" >
-                    <option value="none">Error</option>
-                </select>
-                <button id="useItemButton" onclick="recipeIDValueUse()">Use</button>
-            </div>
-            </div>
-        </section>
         <div id="storageBuildingWrap">
             <div  class="titleText">
                 Zone Items
@@ -178,6 +148,26 @@ if ($shrineZone !== false) {
                 <div class="storageTabSelection" onclick="switchStorage(0)">
                     Ground
                 </div>
+            </div>
+        </div>
+        <div id="firepitOverview">
+            <div  class="titleText">
+                Firepit
+            </div>
+            <div id="firepitImageWrap" onclick="firepitBackpackView()">
+                <div id="firepitBackpackWrap">
+
+                </div>
+                <div id="firepitInfoPopup">
+                    Click to drop items
+                </div>
+                <img id="firepitImageType" src="/images/firepit2.png">
+            </div>
+            <div id="firepitFuel" class="buildingDetailsWriting">
+
+            </div>
+            <div id="firepitTempBonus" class="buildingDetailsWriting">
+
             </div>
         </div>
     </section>

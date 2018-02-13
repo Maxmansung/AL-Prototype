@@ -23,8 +23,8 @@ class statusesController extends statuses
 
     public static function changeStatuses($statusArray){
         if ($statusArray[1] === 1){
-            $statusArray[1] = 1;
-            $statusArray[2] = 0;
+            $statusArray[1] = 0;
+            $statusArray[2] = 1;
             $statusArray[5] = 0;
         } elseif ($statusArray[5] === 1){
             $statusArray[1] = 1;
@@ -49,6 +49,41 @@ class statusesController extends statuses
         } else {
             return "safe";
         }
+    }
+
+    public static function checkConsumable($statusArray,$statusEffect){
+        if ($statusEffect === 2) {
+            if ($statusArray[5] === 1) {
+                return statusesModel::getStatusResponse($statusEffect);
+            }
+        }
+        if ($statusEffect === 3) {
+            if ($statusArray[4] === 1) {
+                return statusesModel::getStatusResponse($statusEffect);
+            }
+        }
+        return true;
+    }
+
+    public static function changeStatusConsume($statusArray,$statusEffect){
+        switch ($statusEffect){
+            case 2:
+                $statusArray[1] = 0;
+                $statusArray[2] = 0;
+                $statusArray[5] = 1;
+                break;
+            case 3:
+                $statusArray[4] = 1;
+                break;
+            case 4:
+                $statusArray[5] = 1;
+                break;
+        }
+        return $statusArray;
+    }
+
+    public static function getStatusResponseSucceed($statusEffect){
+        return statusesModel::getStatusResponseSucceed($statusEffect);
     }
 
 }

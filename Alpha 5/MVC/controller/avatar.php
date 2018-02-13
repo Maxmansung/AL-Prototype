@@ -4,27 +4,27 @@ require_once(PROJECT_ROOT."/MVC/interface/avatar_Interface.php");
 class avatar implements avatar_Interface
 {
 
-    protected $avatarID = "";
-    protected $profileID = "";
-    protected $mapID = "";
-    protected $stamina = 0;
-    protected $maxStamina = 0;
-    protected $zoneID = "";
-    protected $inventory = array();
-    protected $maxInventorySlots = 0;
-    protected $partyID = "";
-    protected $readiness = false;
-    protected $avatarTempRecord = [];
-    protected $avatarSurvivableTemp = 0;
-    protected $achievements = array();
-    protected $partyVote = array();
-    protected $researchStats = array();
-    protected $researched = array();
-    protected $playStatistics = array();
-    protected $tempModLevel = 0;
-    protected $findingChanceMod = 0;
-    protected $findingChanceFail = 0;
-    protected $shrineScore = [];
+    protected $avatarID;
+    protected $profileID;
+    protected $mapID;
+    protected $stamina;
+    protected $maxStamina;
+    protected $zoneID;
+    protected $inventory;
+    protected $maxInventorySlots;
+    protected $partyID;
+    protected $readiness;
+    protected $avatarTempRecord;
+    protected $avatarSurvivableTemp;
+    protected $achievements;
+    protected $partyVote;
+    protected $researchStats;
+    protected $researched;
+    protected $playStatistics;
+    protected $tempModLevel;
+    protected $findingChanceMod;
+    protected $findingChanceFail;
+    protected $shrineScore;
     protected $forumPosts;
     protected $statusArray;
 

@@ -356,9 +356,15 @@ function alerts(response,data){
             if(!alert("The '"+data+"' has been completed")){window.location.reload();}
             break;
         case 10:
-            alert("You have sent a message to ".data);
+            alert("You have sent a message to "+data);
             messageSent();
-            break
+            break;
+        case 11:
+            alert(data);
+            break;
+        case 12:
+            if (!alert(data)){window.location.reload();}
+            break;
     }
 }
 

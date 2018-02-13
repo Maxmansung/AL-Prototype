@@ -10,12 +10,13 @@ function confirmDeath(){
 }
 
 function displayDeathPage(response){
+    deathScreenWriting(response);
     if (response.deathStatistics != null) {
-        makePieChart(response.deathStatistics);
+        //makePieChart(response.deathStatistics);
     } else {
-        emptyPieChart();
+        //emptyPieChart();
     }
-    deathAchievements(response.achievementDetails);
+    deathAchievements(response.achievementDetails,response.scoreAchieve);
     makeShrineScore(response.shrineDisplay);
 }
 
@@ -70,7 +71,7 @@ function makePieChart(stats) {
     $("#myLegend").append(legendHTML);
 }
 
-function deathAchievements(achievements){
+function deathAchievements(achievements,score){
     $("#deathAchievements").empty();
     if (objectSize(achievements) == 0){
         $("#deathAchievements").append("You achieved nothing!");
@@ -79,6 +80,7 @@ function deathAchievements(achievements){
             var achieve = achievements[single].details;
             $("#deathAchievements").append("<div class='userAchieveWrap'><div class='userAchieveName'>" + achieve.name + "</div><div class='userAchieveImageWrap'><img src='/images/achievements/" + achieve.icon + "' class='userAchieveImage'><span class='userAchieveText'>" + achieve.description + "</span></div><div class='userAchieveCount'>" + achievements[single].count + "</div></div>");
         }
+        $("#deathAchieveScore").empty().append("Score: <strong>"+score+"</strong>");
     }
 }
 
@@ -97,9 +99,32 @@ function makeShrineScore(response){
     for (var shrine in response){
         total += response[shrine].score;
     }
-    $("#shrineScoresTotal").empty().append(total);
     $("#shrineScores").empty();
-    for (var shrine in response){
-        $("#shrineScores").append("<div class='shrineOverviewWrap'><img class='shrineFinalImage' src='/images/shrines/"+response[shrine].shrineIcon+"'><div class='shrineImageText'>"+response[shrine].shrineName+"</div><div class='shrineImageScore'>"+response[shrine].score+"</div></div>")
+    if (total !== 0) {
+        $("#shrineScoresTotal").empty().append(total);
+        for (var shrine in response) {
+            $("#shrineScores").append("<div class='shrineOverviewWrap'><img class='shrineFinalImage' src='/images/shrines/" + response[shrine].shrineIcon + "'><div class='shrineImageText'>" + response[shrine].shrineName + "</div><div class='shrineImageScore'>" + response[shrine].score + "</div></div>")
+        }
+    } else {
+        $("#shrineScoresTotal").hide();
+        $("#totalScoreTitle").hide();
+        $("#shrineAchievements").append("<div id='informationText'>You didn't gain the favour of any god this time round, try to find some shrines in your next life</div>")
+    }
+}
+
+function deathScreenWriting(response){
+    $("#deathCauseSection").empty().append("Cause of death<br> <strong>"+response.deathType+"</strong>");
+    $("#deathCauseDescription").empty().append("("+response.deathDescription+")");
+    $("#deathSurvivedTotal").empty().append("<span>Died on day: </span><span id='deathDayNumber'>"+response.deathDay+"</span>");
+    if (response.gameType !== "Tutorial") {
+        if (response.partyPlayersLeft > 1) {
+            $("#deathMapSection").empty().append("Although the land of <span class='boldWriting'>" + response.mapName + "</span> may not miss you the " + response.partyPlayersLeft + " people left of <span class='boldWriting'>" + response.partyName + "</span> might do.");
+        } else if (response.partyPlayersLeft === 1) {
+            $("#deathMapSection").empty().append("Although the land of <span class='boldWriting'>" + response.mapName + "</span> may not miss you the one player left in the <span class='boldWriting'>" + response.partyName + "</span> party hopefully is");
+        } else {
+            $("#deathMapSection").empty().append("Although the land of <span class='boldWriting'>" + response.mapName + "</span> may not miss you but perhaps the name <span class='boldWriting'>" + response.partyName + "</span> will be remembered.");
+        }
+    } else {
+        $("#deathMapSection").empty().append("This map was a tutorial map, therefore no-one will remember you lived.<br><br>Keep practicing though and soon you'll be ready for the real world!!");
     }
 }

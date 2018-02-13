@@ -52,15 +52,15 @@ class profileModel extends profile
     public static function insertProfile($profileController, $type){
         $db = db_conx::getInstance();
         if ($type == "Insert") {
-            $req = $db->prepare("INSERT INTO Profile (id, password, profilepicture, email, login, ip, AccountType, gamestatus, avatar, achievements, bio, country, gender, age, playStatistics, uploadSecurity, passwordRecovery, passwordRecoveryTimer, cookieKey, shrineScore, forumPosts) VALUES (:profileID, :password2, :profilePicture, :email, now(), :loginIP, :accountType, :gameStatus, :avatar, :achievements, :bio, :country, :gender, :age, :playStatistics, :uploadSecurity, :passwordRecovery, :passwordRecoveryTimer, :cookieKey, :shrineScore,:forumPosts)");
+            $req = $db->prepare("INSERT INTO Profile (id, password, profilepicture, email, login, ip, AccountType, gamestatus, avatar, achievements, bio, country, gender, age, playStatistics, uploadSecurity, passwordRecovery, passwordRecoveryTimer, cookieKey, shrineScore, forumPosts) VALUES (:profileID, :password2, :profilePicture, :email, :lastLogin, :loginIP, :accountType, :gameStatus, :avatar, :achievements, :bio, :country, :gender, :age, :playStatistics, :uploadSecurity, :passwordRecovery, :passwordRecoveryTimer, :cookieKey, :shrineScore,:forumPosts)");
         } elseif ($type == "Update"){
-            $req = $db->prepare("UPDATE Profile SET password= :password2, profilepicture= :profilePicture, email= :email, login= now(), ip= :loginIP, AccountType= :accountType, gamestatus= :gameStatus, avatar= :avatar, achievements= :achievements, bio= :bio, country= :country, gender= :gender, age= :age, playStatistics= :playStatistics, uploadSecurity= :uploadSecurity, passwordRecovery= :passwordRecovery, passwordRecoveryTimer= :passwordRecoveryTimer, cookieKey= :cookieKey, shrineScore= :shrineScore,forumPosts= :forumPosts WHERE id= :profileID");
+            $req = $db->prepare("UPDATE Profile SET password= :password2, profilepicture= :profilePicture, email= :email, login= :lastLogin, ip= :loginIP, AccountType= :accountType, gamestatus= :gameStatus, avatar= :avatar, achievements= :achievements, bio= :bio, country= :country, gender= :gender, age= :age, playStatistics= :playStatistics, uploadSecurity= :uploadSecurity, passwordRecovery= :passwordRecovery, passwordRecoveryTimer= :passwordRecoveryTimer, cookieKey= :cookieKey, shrineScore= :shrineScore,forumPosts= :forumPosts WHERE id= :profileID");
         }
         $req->bindParam(':profileID', $profileController->getProfileID());
         $req->bindParam(':password2', $profileController->getPassword());
         $req->bindParam(':profilePicture', $profileController->getProfilePicture());
         $req->bindParam(':email', $profileController->getEmail());
-        //$req->bindParam(':lastLogin', $profileController->getLastLogin());
+        $req->bindParam(':lastLogin', $profileController->getLastLogin());
         $req->bindParam(':loginIP', $profileController->getLoginIP());
         $req->bindParam(':accountType', $profileController->getAccountType());
         $req->bindParam(':gameStatus', $profileController->getGameStatus());

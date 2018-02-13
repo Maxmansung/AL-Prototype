@@ -1,31 +1,61 @@
 ////// MAP + ZONE PAGE ////////
 
+var visionCurrent = 1;
+var selectedZone = false;
+var currentZone = false;
+
 function generalUpdateMap(response){
     updateMapImage(response);
-    updateItems(response.itemsView);
+    updateItems(response);
     zoneActions(response.logs);
 }
 
+function updateItems(info){
+    playerScreenMap(info.zone);
+    updateBackpack(info.itemsView.backpack, info.itemsView.backpackSize);
+    updateGround(info.itemsView.ground);
+    zoneActions(info.itemsView.logs);
+}
+
 function updateMapImage(response){
+    currentZone = response.zone.zoneNumber;
     mapcreate(response.mapZones);
     getDirection(response.zone.coordinateX, response.zone.coordinateY, (Math.sqrt(response.mapZones.length)));
     playerVision(response.itemsView.avatarLoc);
-    zoneInformation(response.zone);
-    $("#infobox").hide();
-    if (response.zone.isSpecialZone !== false){
-        $("#backpackwrap").hide();
-        $("#zoneActionsWrap").hide();
-        $("#grounditems").hide();
+    createMiniMap(response.mapZones,response.zone.zoneNumber);
+    if (selectedZone != false){
+        for (var zone in response.mapZones){
+            if (response.mapZones[zone].zoneName == selectedZone){
+                infobox(response.mapZones[zone]);
+            }
+        }
     } else {
-        $("#backpackwrap").show();
+        infobox(response.zone);
+    }
+    if (visionCurrent === 1){
+        $("#infobox").hide();
+    } else {
+        $("#infobox").show();
+    }
+    $("#mapWrapperHider").hide();
+    if (response.zone.isSpecialZone !== false){
+        $(".itemContainerWrap").hide();
+        $("#mapActionsWrapper").hide();
+        $("#zoneActionsWrap").hide();
+        $("#specialZoneWriting").empty().append("SHRINE")
+    } else {
+        $(".itemContainerWrap").show();
+        $("#mapActionsWrapper").show();
         $("#zoneActionsWrap").show();
-        $("#grounditems").show();
-
+        $("#specialZoneWriting").empty().append("CONSTRUCT")
     }
 }
 
 //This function creates the basic map using the PlayerMapController Class
 function mapcreate(zones) {
+    $("#mapwrapper").click(function(e) {
+        e.stopPropagation();
+    });
     $("#start").empty();
     for (var i = -1; i < (Math.sqrt(zones.length))+1; i++) {
         $("#start").prepend("<div class='mapRowsDiv' id='zoneRow" + i + "'></div>");
@@ -89,6 +119,15 @@ function mapcreate(zones) {
                                 $(this).append("<img src='/images/Surround.png' id='zonesurround' class='mapimages'>").css("z-index", "10");
                                 selectZone(this.id);
                             });
+                        if (selectedZone != false) {
+                            if (ident == selectedZone) {
+                                $("#" + ident).append("<img src='/images/Surround.png' id='zonesurround' class='mapimages'>").css("z-index", "10");
+                            }
+                        } else {
+                            if (zones[x].zoneNumber == currentZone){
+                                $("#" + ident).append("<img src='/images/Surround.png' id='zonesurround' class='mapimages'>").css("z-index", "10")
+                            }
+                        }
                         if (zones[x].partyInZone === true) {
                             $("#unexplored" + x).attr("src", "/images/partyMember.png");
                         }
@@ -103,6 +142,57 @@ function mapcreate(zones) {
             }
         }
     }
+}
+
+//This creates a minimap on the 3rd person view screen
+function createMiniMap(zones,current){
+    $("#miniMapWrapper").empty();
+    var currentX = zones[current].coordinateX;
+    var currentY = zones[current].coordinateY;
+    var zone1 = [-1,1,false];
+    var zone2 = [0,1,false];
+    var zone3 = [1,1,false];
+    var zone4 = [-1,-0,false];
+    var zone5 = [0,0,false];
+    var zone6 = [1,0,false];
+    var zone7 = [-1,-1,false];
+    var zone8 = [0,-1,false];
+    var zone9 = [1,-1,false];
+    var zoneList = [zone1,zone2,zone3,zone4,zone5,zone6,zone7,zone8,zone9];
+    for (var zoneTest in zones){
+        for (check in zoneList){
+            if (zones[zoneTest].coordinateX === (currentX + zoneList[check][0])){
+                if (zones[zoneTest].coordinateY === (currentY + zoneList[check][1])){
+                    zoneList[check][2] = zoneTest;
+                }
+            }
+        }
+    }
+    for (var y = 1; y>-2;y--) {
+        $("#miniMapWrapper").append("<div class='miniMapRow' id='wrapZone" + y + "'></div>");
+        for (var x = -1; x < 2; x++) {
+            for (check in zoneList){
+                if (zoneList[check][1] === y){
+                    if (zoneList[check][0] === x){
+                        var colour = "#000000"
+                        if (zoneList[check][2] !== false) {
+                            colour = getZoneColour(zones[zoneList[check][2]].biomeType);
+                            if (x === 0 && y === 0) {
+                                $("#wrapZone" + y).append("<div class='miniMapZone' id='miniMap" + check + "'>X</div>");
+
+                            } else {
+                                $("#wrapZone" + y).append("<div class='miniMapZone' id='miniMap" + check + "'></div>");
+                            }
+                            $("#miniMap" + check).css({"background": colour})
+                        } else {
+                            $("#wrapZone" + y).append("<div class='miniMapZone2' id='miniMap" + check + "'></div>");
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 }
 
 
@@ -142,72 +232,83 @@ function getDirection(CoordX,CoordY, width) {
     }
 }
 
+//This creates the new visual map window
+function playerScreenMap(info){
+    if (info.biomeType<99) {
+        if (info.findingChances == 0) {
+            $("#zoneInfoWrapper").css("background-image", "url('/images/biomeTitles/deplete" + info.biomeImage+"BiomeBackground.png");
+            $("#actionSearchButton").empty().show().append('<img src="/images/searchButtonDisable.png" id="destroyBiomeImage""><span class="imagetext"><strong>Search zone </strong><br>Zone Depleted</span>');
+            if ($("#actionExplosionButton").length){
+                $("#actionExplosionButton").empty().show().append('<img src="/images/explosionButtonDisable.png" id="destroyBiomeImage""><span class="imagetext"><strong>Destroy zone</strong><br>Zone Depleted</span>');
+            }
+            $("#actionShrineButton").empty().hide();
+        } else {
+            $("#zoneInfoWrapper").css("background-image", "url('/images/biomeTitles/" + info.biomeImage+"BiomeBackground.png");
+            $("#actionSearchButton").empty().show().append('<img src="/images/searchButton.png" id="destroyBiomeImage" onclick="searchZone()"><span class="imagetext"><strong>Search zone</strong><br>Costs 1 stamina</span>');
+            if ($("#actionExplosionButton").length) {
+                $("#actionExplosionButton").empty().show().append('<img src="/images/explosionButton.png" id="destroyBiomeImage" onclick="destroyBiome()"><span class="imagetext"><strong>Destroy zone</strong><br>Costs 5 stamina</span>');
+            }
+            $("#actionShrineButton").empty().hide();
+        }
+    } else {
+        $("#zoneInfoWrapper").css("background-image", "url('/images/biomeTitles/" + info.biomeImage+"BiomeBackground.png");
+        $("#actionSearchButton").empty().hide();
+        $("#actionExplosionButton").empty().hide();
+        $("#actionShrineButton").empty().show().append('<img src="/images/teaching.png" id="destroyBiomeImage" onclick="goToShrine()"><span class="imagetext"><strong>Worship Spirit</strong><br>Different spirits have different costs and rewards</span>');
+    }
+    $("#zonePlayersWrapper").empty().append('<div class="mapPlayerImageWrap" id="playerImageSelf"><img src="/images/mapImages/playerGreen.png" class="mapPlayerImage"></div>');
+    var avatarCount = objectSize(info.avatars);
+    if (avatarCount > 0) {
+        var counter = 0;
+        var width = 246/avatarCount;
+        for (var avatar in info.avatars){
+            var height = Math.floor(Math.random()*74);
+            $("#zonePlayersWrapper").append('<div class="mapPlayerImageWrap" id="player'+avatar+'"><img src="/images/mapImages/playerBrown.png" class="mapPlayerImage"><span class="playerImageText"><strong>'+info.avatars[avatar]+'</strong></span></div>');
+            $("#player"+avatar).css({"top":height+"px","left":width*counter+"px"});
+            counter ++;
+        }
+    }
+    $("#mapCoordinates").empty().append("[ "+info.coordinateX+" / "+info.coordinateY+" ]");
+    setVision();
+}
+
+
+
+//This picks if the map or the zone will be shown
+function setVision(){
+    if (visionCurrent === 0){
+        $("#zoneInfoWrapper").hide();
+        $("#infobox").show();
+        $("#mapwrapper").show();
+    } else {
+        $("#zoneInfoWrapper").show();
+        $("#infobox").hide();
+        $("#mapwrapper").hide();
+    }
+}
+
 
 //This updates the map with the known locations
 function playerVision(avatarLoc) {
     $("#"+avatarLoc).append("<img src='../images/playerlocation.png' id='playerimg' class='mapimages'>");
-    var playerLoc = parseInt(avatarLoc.slice(9,13));
-    $("#unexplored"+playerLoc).css("visibility", "hidden");
+    $("#unexplored"+avatarLoc).css("visibility", "hidden");
     $("#playerimg").css("z-index", "100");
     $("#loadingscreen").css("visibility", "hidden");
-}
-
-//This is used when the arrow direction arrows are pressed on the map screen
-function movedirection(dir){
-    ajax_All(20,dir,7);
-}
-
-//This is used when a zone is clicked on with the map
-function selectZone(zoneID){
-    ajax_All(24, zoneID,8);
 }
 
 
 //This function states what will go into the infobox to the upper right of the map once it has been clicked on
 function infobox(zone) {
-    $("#infobox").show();
-    $("#zonelocation").empty();
-    $("#players").empty();
-    $("#mapItems").empty();
-    $("#environment").empty();
-    $("#zonelocation").append("<strong>[" + zone.coordinateX + " / " + zone.coordinateY + "]</strong>");
-    if (zone.biomeType == "-1") {
-        $("#zonelocation").append("<div><strong>Unexplored</strong></div>");
-    }
-    else {
-        var players = "";
-        if (zone.avatars.length === 0) {
-            players = "Unknown";
+    $("#zonelocation").empty().append("<strong>[" + zone.coordinateX + " / " + zone.coordinateY + "]</strong>");
+    if (selectedZone != false) {
+        if (zone.biomeType == "-1"){
+            $("#infobox").css("background-image", "url('/images/biomeTitles/unknownBiomeTitle.png");
         } else {
-            for (var x = 0; x < zone.avatars.length; x++) {
-                players += zone.avatars[x] + ", ";
-            }
-            players = players.slice(0, -2);
+            $("#infobox").css("background-image", "url('/images/biomeTitles/" + zone.biomeImage+"BiomeTitle.png");
         }
-        $("#zonelocation").append("<div><strong>"+zone.biomeValue+"</strong></div>");
-        $("#players").append("<strong>Players: </strong>" + players);
-        if (zone.zoneOwners != null) {
-            $("#mapItems").append("<strong>Controlling Party: </strong>" + zone.zoneOwners);
-        }
-        $("#environment").append(zone.descriptionLong);
+    } else {
+        $("#infobox").css("background-image", "url('/images/biomeTitles/" + zone.biomeImage+"BiomeTitle.png");
     }
-}
-
-function dropitem(id){
-    ajax_All(44,id,9)
-}
-
-function updateItems(info){
-    updateBackpack(info.backpack, info.backpackSize);
-    updateGround(info.ground);
-    if ("findingChance" in info) {
-        if (info.findingChance === 0) {
-            if ($("#depletedzone").length == 0) {
-                $("#zonename").append("<div id='depletedzone'>(Depleted)</div>");
-            }
-        }
-    }
-    zoneActions(info.logs);
 }
 
 function updateBackpack(items,maxBackpack){
@@ -230,20 +331,6 @@ function updateGround(items){
     for (var object in items){
             $("#grounditems").append("<div class='imagediv'><image class='itemimage' src='/images/items/"+items[object].icon+"' id='"+items[object].itemID+"' onclick='dropitem(this.id)'><span class='imagetext'>"+items[object].identity+"<hr>"+items[object].description+"</span></div>")
     }
-}
-
-function zoneInformation(info){
-    var writing = getAvatars(info.avatars);
-        $("#zoneinformation").empty()
-            .append("<div id='zonename'><div>" + info.biomeValue + "</div></div>")
-            .append("<div id='zoneinfowrite'>" + info.description + "</div>"+writing);
-    if (info.findingChances == 0) {
-        $("#zonename").append("<div id='depletedzone'>(Depleted)</div>");
-    }
-}
-
-function searchZone(){
-    ajax_All(22,"none",9);
 }
 
 function zoneActions(logs){
@@ -269,9 +356,9 @@ function getAvatars(avatarList){
     var writing = "";
     var length = objectSize(avatarList);
     if (length === 0){
-            writing += "<span id='playersDont'>Looking around you can see you're alone in this zone</span>";
+            writing += "<div id='playersDont'>Looking around you can see you're alone in this zone</div>";
     } else {
-        writing = "<span id='playersExist'>Looking around you spot ";
+        writing = "<div id='playersExist'>Looking around you spot ";
         for (var avatar in avatarList) {
             length--;
             writing += avatarList[avatar];
@@ -280,15 +367,11 @@ function getAvatars(avatarList){
             } else if (length == 1) {
                 writing += " and ";
             } else {
-                writing += " nearby</span>"
+                writing += " nearby</div>"
             }
         }
     }
     return writing
-}
-
-function destroyBiome(){
-    ajax_All(23,"none",9);
 }
 
 function destroyResponse(response){
@@ -306,6 +389,20 @@ function destroyResponse(response){
         }
 
     }
+}
+
+function goToShrine(){
+    window.location.href = "ingame.php?p=s";
+}
+
+function openMapImage(){
+    visionCurrent = 0;
+    setVision();
+}
+
+function hideMapWrapper(){
+    visionCurrent = 1;
+    setVision();
 }
 
 function getZoneColour(type){
@@ -342,5 +439,28 @@ function getZoneColour(type){
             var colour = "#000000"
     }
     return colour;
+}
 
+function searchZone(){
+    ajax_All(22,"none",9);
+}
+
+function destroyBiome(){
+    ajax_All(23,"none",9);
+}
+
+function dropitem(id){
+    console.log(id);
+    ajax_All(44,id,9)
+}
+
+//This is used when the arrow direction arrows are pressed on the map screen
+function movedirection(dir){
+    ajax_All(20,dir,7);
+}
+
+//This is used when a zone is clicked on with the map
+function selectZone(zoneID){
+    selectedZone = zoneID;
+    ajax_All(24, zoneID,8);
 }

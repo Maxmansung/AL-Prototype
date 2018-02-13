@@ -1,4 +1,4 @@
-#joinMaps{
+.joinMaps{
     margin-bottom: 10px;
 }
 
@@ -92,4 +92,11 @@
 
 .joinGameButton{
     margin: 0 50px 0 50px;
+}
+
+.descriptionWriting{
+    font-size: 100%;
+    color: red;
+    width: 50%;
+    text-align: center;
 }

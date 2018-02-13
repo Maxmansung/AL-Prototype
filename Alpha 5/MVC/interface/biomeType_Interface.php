@@ -16,4 +16,6 @@ interface biomeType_Interface
     function setFindingChangeMod($var);
     function getFinalType();
     function setFinalType($var);
+    function getBiomeImage();
+    function setBiomeImage($var);
 }

@@ -7,12 +7,12 @@ class chatlogModel extends chatlog
     {
         $this->chatlogID = $chatModel['chatID'];
         $this->mapID = $chatModel['mapID'];
-        $this->avatarID = $chatModel['avatarID'];
+        $this->avatarID = intval($chatModel['avatarID']);
         $this->mapDay = intval($chatModel['mapDay']);
         $this->messageTime = intval($chatModel['messageTime']);
         $this->messageText = $chatModel['messageText'];
         $this->groupID = $chatModel['groupID'];
-        $this->zoneID = $chatModel['zoneID'];
+        $this->zoneID = intval($chatModel['zoneID']);
         $this->messageTimestamp = $chatModel['messageTime'];
         $this->buildingID = $chatModel['buildingID'];
         $this->otherVar = $chatModel['otherVar'];
@@ -29,8 +29,8 @@ class chatlogModel extends chatlog
         }
         $req->bindParam(':chatID', intval($chatController->getChatlogID()));
         $req->bindParam(':mapID', $chatController->getMapID());
-        $req->bindParam(':zoneID', $chatController->getZoneID());
-        $req->bindParam(':avatarID', $chatController->getAvatarID());
+        $req->bindParam(':zoneID', intval($chatController->getZoneID()));
+        $req->bindParam(':avatarID', intval($chatController->getAvatarID()));
         $req->bindParam(':mapDay', intval($chatController->getMapDay()));
         $req->bindParam(':messageTime', $chatController->getMessageTime());
         $req->bindParam(':messageText', $chatController->getMessageText());

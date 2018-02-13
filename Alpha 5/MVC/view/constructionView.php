@@ -36,10 +36,10 @@ class constructionView
         $this->backpackSize= $avatar->getMaxInventorySlots();
         $this->lockDetails = $this->zoneLocks($avatar->getZoneID(),$avatar->getPartyID());
         $this->recipes = $this->createRecipeList($avatar);
-        $this->usingItems =  $this->createUsableItemsList($avatar);
         $map = new mapController($avatar->getMapID());
         $this->mapType = $map->getGameType();
         $this->researchTypes = buildingItemController::getAvailableResearchOptions($avatarID,"view");
+        $this->usingItems = $this->getUseableItems();
     }
 
     function returnVars(){
@@ -73,7 +73,7 @@ class constructionView
         $storageTest = true;
         $buildingTest = true;
         $firepitTest = true;
-        if ($zone->getControllingParty() !== "empty" && $zone->getControllingParty() !== $partyID) {
+        if ($zone->getControllingParty() !== null && $zone->getControllingParty() !== $partyID) {
             $storageLock = buildingController::getConstructedBuildingID("StorageLock", $zoneID);
             if (array_key_exists("ERROR",$storageLock) !== true) {
                 if ($storageLock->getStaminaSpent() === $storageLock->getStaminaRequired()) {
@@ -175,11 +175,18 @@ class constructionView
     public function createRecipeList($avatar){
         $zone = new zoneController($avatar->getZoneID());
         $itemList = itemController::returnItemIDArray($avatar->getMapID(),"backpack",$avatar->getAvatarID());
-        return recipeController::findRecipe($itemList,$zone->getBuildings());
+        return recipeView::getRecipeView($itemList,$zone->getBuildings());
     }
 
-    public function createUsableItemsList($avatar){
-        $itemList = itemController::returnItemIDArray($avatar->getMapID(),"backpack",$avatar->getAvatarID());
-        return recipeController::useableItems($itemList);
+    private function getUseableItems(){
+        $itemList = [];
+        foreach ($this->backpackItems as $item){
+            $item = new itemController($item["itemID"]);
+            if ($item->getStatusImpact() !== 1){
+                $tempArray = array("image"=>$item->getIcon(),"description"=>"Use ".$item->getIdentity(),"templateID"=>$item->getItemTemplateID());
+                $itemList[$item->getIdentity()] = $tempArray;
+            }
+        }
+        return $itemList;
     }
 }

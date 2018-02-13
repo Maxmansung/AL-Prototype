@@ -15,6 +15,7 @@ class biomeTypeController extends biomeType
             $this->temperatureMod = $biomeModel->temperatureMod;
             $this->findingChanceMod = $biomeModel->findingChanceMod;
             $this->finalType = $biomeModel->finalType;
+            $this->biomeImage = $biomeModel->biomeImage;
         }
     }
 

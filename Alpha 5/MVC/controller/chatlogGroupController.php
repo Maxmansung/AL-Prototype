@@ -44,7 +44,7 @@ class chatlogGroupController extends chatlogController
             }
             if ($log->getMapDay() === intval($day)) {
                 $log->createMessageTime();
-                $logDetailsObject[$log->getChatlogID()] = $log->returnVars();
+                $logDetailsObject[$log->getMessageTimestamp()] = $log->returnVars();
             }
         }
         return $logDetailsObject;

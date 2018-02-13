@@ -70,6 +70,9 @@ $map = new mapController($avatar->getMapID());
                             case "c":
                                 include_once($_SERVER['DOCUMENT_ROOT'] . "/MVC/game_pages/constructionTutorial.php");
                                 break;
+                            case "s":
+                                include_once($_SERVER['DOCUMENT_ROOT'] . "/MVC/game_pages/specialZone.php");
+                                break;
                             default:
                                 include_once($_SERVER['DOCUMENT_ROOT'] . "/MVC/game_pages/mapZoneTutorial.php");
                                 break;

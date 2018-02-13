@@ -22,26 +22,30 @@ if ($profile->getProfileID() == ""){
     if ($profile->getGameStatus() === "in") {
         $avatar = new avatarController($profile->getAvatar());
         $map = new mapController($avatar->getMapID());
-        if ($map->getGameType() === "Tutorial") {
-            $buttons = '<div class="navButton" onclick="mapPage()">
-                    <a class="navButtonGreen" href="/ingame.php">MAP</a>
-                        </div>
-                        <div class="navButton" onclick="constructPage()">
-                    <a class="navButtonGreen" href="/ingame.php?p=c">CONSTRUCT</a>
+        $zone = new zoneController($avatar->getZoneID());
+        if (intval($zone->getBiomeType()) === 100){
+            $constructButton = '<div class="navButton">
+                    <a class="navButtonGreen" id="specialZoneWriting" href="/ingame.php?p=s">SHRINE</a>
                         </div>';
         } else {
-            $buttons = '<div class="navButton" onclick="diaryPage()">
+            $constructButton = '<div class="navButton">
+                    <a class="navButtonGreen" id="specialZoneWriting" href="/ingame.php?p=c">CONSTRUCT</a>
+                        </div>';
+        }
+        if ($map->getGameType() === "Tutorial") {
+            $buttons = '<div class="navButton">
+                    <a class="navButtonGreen" href="/ingame.php">MAP</a>
+                        </div>'.$constructButton;
+        } else {
+            $buttons = '<div class="navButton">
                     <a class="navButtonGreen" href="/ingame.php">DIARY</a>
                         </div>
-                        <div class="navButton" onclick="mapPage()">
+                        <div class="navButton">
                     <a class="navButtonGreen" href="/ingame.php?p=m">MAP</a>
                         </div>
-                        <div class="navButton" onclick="playersPage()">
+                        <div class="navButton">
                     <a class="navButtonGreen" href="/ingame.php?p=p">PLAYERS</a>
-                        </div>
-                        <div class="navButton" onclick="constructPage()">
-                    <a class="navButtonGreen" href="/ingame.php?p=c">CONSTRUCT</a>
-                        </div>';
+                        </div>'.$constructButton;
         }
     } else {
         $buttons = '<div class="navButton">
@@ -53,10 +57,17 @@ if ($profile->getProfileID() == ""){
     } else {
         $forum = '<a class="navButtonFlash" href="/forum.php"">FORUM</a>';
     }
+    if ($profile->getAccountType() === "admin"){
+        $admin = '<div class="navButton">
+                    <a class="navButtonRed" href="/admin/admin.php">ADMIN</a>
+                </div>';
+    } else {
+        $admin = "";
+    }
     $name = $profile->getProfileID();
     echo '<div id="navBarBackground">
                 <div class="verticalWrap">
-                    <img src="/images/bannerMini.png" id="navImageBanner">
+                    <img src="/images/bannerMini.png" id="navImageBanner" onclick="homePage()">
                     <div class="playerNameHUD">Logged in as: '.$name.'</div>
                 </div>
                 <div id="navBar">
@@ -64,9 +75,9 @@ if ($profile->getProfileID() == ""){
                     '.$forum.'
                 </div>
                 <div class="navButton">
-                    <span class="navButtonBlue" id="'.$profile->getProfileID().'" onclick="profilePage(this.id)">PROFILE</span>
+                    <a class="navButtonBlue" href="/user.php?u='.$name.'">PROFILE</a>
                 </div>
-                '.$buttons.'
+                '.$buttons.$admin.'
                 <div class="navButton"  onclick="logoutButton()">
                     <span class="navButtonRed">LOGOUT</span>
                 </div>

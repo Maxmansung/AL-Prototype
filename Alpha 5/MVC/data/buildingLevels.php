@@ -21,33 +21,6 @@ class buildingLevels
         }
     }
 
-    //THIS DEFINES THE UPGRADE COST FOR EACH LEVEL OF THE SLEEPING BAG OPTION
-    public static function sleepingBagUpgradeCost($level){
-        switch ($level){
-            case 1:
-                return array("I0012"=>1);
-                break;
-            case 2:
-                return array("I0012"=>2);
-                break;
-            case 3:
-                return array("I0012"=>1,"I0010"=>1);
-                break;
-            case 4:
-                return array("I0012"=>3);
-                break;
-            case 5:
-                return array("I0008"=>1);
-            case 6:
-                return array("I0012"=>1,"I0008"=>1);
-            case 7:
-                return array("I0008"=>2);
-            default:
-                return array("ERROR"=>"X");
-                break;
-        }
-    }
-
     //THIS DEFINES THE UPGRADE COST FOR EACH LEVEL OF THE BACKPACK OPTION
     public static function backpackUpgradeCost($level){
         switch ($level){
@@ -69,19 +42,27 @@ class buildingLevels
         }
     }
 
-    //THIS DEFINES THE STAMINA COST OF EACH RESEARCH LEVEL UPGRADE
-    public static function researchStaminaLevels($level){
+    //THIS DEFINES THE UPGRADE COST FOR EACH LEVEL OF THE SLEEPING BAG OPTION
+    public static function sleepingBagUpgradeCost($level){
         switch ($level){
             case 1:
-                return 10;
+                return array("I0012"=>1);
                 break;
             case 2:
+                return array("I0012"=>2);
+                break;
             case 3:
-                return 15;
+                return array("I0012"=>1,"I0010"=>1);
                 break;
             case 4:
+                return array("I0012"=>3);
+                break;
             case 5:
-                return 20;
+                return array("I0008"=>1);
+            case 6:
+                return array("I0012"=>1,"I0008"=>1);
+            case 7:
+                return array("I0008"=>2);
             default:
                 return array("ERROR"=>"X");
                 break;
@@ -118,6 +99,25 @@ class buildingLevels
         }
     }
 
+    //THIS DEFINES THE STAMINA COST OF EACH RESEARCH LEVEL UPGRADE
+    public static function researchStaminaLevels($level){
+        switch ($level){
+            case 1:
+                return 8;
+                break;
+            case 2:
+            case 3:
+                return 6;
+                break;
+            case 4:
+            case 5:
+                return 5;
+            default:
+                return 4;
+                break;
+        }
+    }
+
     //THIS IS THE STARTING ITEMS FOR THE PLAYER
     public static function playerStartingItems(){
         return array("I0006","I0011");
@@ -129,9 +129,7 @@ class buildingLevels
         //Creates a sigmoid curve
         $temp = floor(atan(($dayNumber-6)/4)*40+40);
         //Creates a plateu curve
-        $changeMax = floor(($dayNumber*15) / ($dayNumber+4));
-        //Takes a random number between -1 and the platau curve
-        $change = rand(-1,$changeMax);
+        //$changeMax = floor(($dayNumber*15) / ($dayNumber+4));
         return $temp;
     }
 
@@ -151,13 +149,31 @@ class buildingLevels
         $modifierBonus = buildingLevels::sleepingBagLevelBonus($avatar->getTempModLevel());
         $totalSurvival = $biome->getTemperatureMod()+$zone->getZoneSurvivableTemperatureModifier()+$avatar->getAvatarSurvivableTemp()+$modifierBonus+$itemsSurvival+$buildingsIncrease+$partyBonus;
         return $totalSurvival;
-
     }
+
+    //THIS RETURNS THE CODE TO WORK OUT THE TOTAL TEMPERATURE MODIFIER
+    public static function getModifiedViewSurviveTemp($avatarID){
+        $avatar = new avatarController($avatarID);
+        $zone = new zoneController($avatar->getZoneID());
+        $party = new partyController($avatar->getPartyID());
+        $buildingsIncrease = self::buildingsTempIncrease($avatar->getAvatarID());
+        if (count($party->getMembers()) === 0){
+            $partyBonus = 0;
+        } else {
+            $partyBonus = floor($party->getTempBonus() / count($party->getMembers()));
+        }
+        $itemsSurvival = avatarController::getItemBonuses($avatar->getMapID(),$avatar->getAvatarID());
+        $modifierBonus = buildingLevels::sleepingBagLevelBonus($avatar->getTempModLevel());
+        $totalSurvival = $zone->getZoneSurvivableTemperatureModifier()+$avatar->getAvatarSurvivableTemp()+$modifierBonus+$itemsSurvival+$buildingsIncrease+$partyBonus;
+        return $totalSurvival;
+    }
+
+
 
     public static function buildingsTempIncrease($avatarID){
         $avatar = new avatarController($avatarID);
         $zone = new zoneController($avatar->getZoneID());
-        if ($zone->getControllingParty() != "empty"){
+        if ($zone->getControllingParty() != null){
             if ($zone->getControllingParty() == $avatar->getPartyID() || buildingController::getLockValue($zone->getZoneID()) == 0){
                 $buildingsIncrease = buildingController::getZoneTempBonus($zone->getBuildings(),$avatar->getZoneID());
             } else {

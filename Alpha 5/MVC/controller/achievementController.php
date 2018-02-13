@@ -39,9 +39,57 @@ class achievementController extends achievement
     }
 
     public static function checkAchievement($type){
-        switch ($type){
-            case "R0010":
-                $response = "A007";
+        switch ($type[0]){
+            case "RECIPE":
+                switch ($type[1]){
+                    case "R0010":
+                        $response = "A007";
+                        break;
+                    default:
+                        $response = false;
+                        break;
+                }
+                break;
+            case "CAMPING":
+                switch ($type[1]){
+                    case 1:
+                        $response = "A009";
+                        break;
+                    case 2:
+                        $response = "A008";
+                        break;
+                    case 5:
+                        $response = "A011";
+                        break;
+                    case 6:
+                        $response = "A010";
+                        break;
+                    case 100:
+                        $response = "A012";
+                        break;
+                    default:
+                        $response = false;
+                        break;
+                }
+                break;
+            case "ACTION":
+                switch ($type[1]){
+                    case "SEARCH":
+                        $response = "A013";
+                        break;
+                    case "DESTROY":
+                        $response = "A014";
+                        break;
+                    case "BUILD":
+                        $response = "A015";
+                        break;
+                    case "RESEARCH":
+                        $response = "A016";
+                        break;
+                    default:
+                        $response = false;
+                        break;
+                }
                 break;
             default:
                 $response = false;

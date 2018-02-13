@@ -36,7 +36,7 @@ class dayEndingFunctions
             $map->updateMap();
         } else {
             $map->updateMap();
-            //dayEndingFunctions::mapEndingActions($map->getMapID());
+            dayEndingFunctions::mapEndingActions($map->getMapID());
             $deleted = true;
         }
         if ($deleted == false) {
@@ -46,6 +46,24 @@ class dayEndingFunctions
             dayEndingFunctions::calculateShrineBonuses($map->getMapID());
             shrineController::resetShrines($map->getMapID());
             $map->updateMap();
+        }
+    }
+
+    public static function testPlayerSurvival($single,$nightTemp){
+        $stats = buildingLevels::getTotalSurviveTemp($single->getAvatarID());
+        $checkStatus = statusesController::checkStatuses($single->getStatusArray());
+        if ($single->getReady() === "dead") {
+            return 3;
+        } elseif ($checkStatus === "dead") {
+            return 2;
+        }elseif ($stats < $nightTemp) {
+            if ($checkStatus === "risk") {
+                return 1;
+            } else {
+                return 0;
+            }
+        } else {
+            return true;
         }
     }
 
@@ -94,6 +112,12 @@ class dayEndingFunctions
         }
         if ($modifier === "cold"){
             $newAvatar->changeStatusArray(3);
+        }
+        $zone = new zoneController($newAvatar->getZoneID());
+        $biome = array("CAMPING",$zone->getBiomeType());
+        $response = achievementController::checkAchievement($biome);
+        if ($response !== false) {
+            $newAvatar->addAchievement($response);
         }
         $newAvatar->updateAvatar();
     }

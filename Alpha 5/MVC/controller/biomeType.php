@@ -10,6 +10,7 @@ class biomeType implements biomeType_Interface
     protected $temperatureMod;
     protected $findingChanceMod;
     protected $finalType;
+    protected $biomeImage;
 
     public function __toString()
     {
@@ -19,6 +20,8 @@ class biomeType implements biomeType_Interface
         $output .= '/ '.$this->descriptionLong;
         $output .= '/ '.$this->temperatureMod;
         $output .= '/ '.$this->findingChanceMod;
+        $output .= '/ '.$this->finalType;
+        $output .= '/ '.$this->biomeImage;
         return $output;
     }
 
@@ -94,5 +97,15 @@ class biomeType implements biomeType_Interface
     function setFinalType($var)
     {
         $this->finalType = $var;
+    }
+
+    function getBiomeImage()
+    {
+        return $this->biomeImage;
+    }
+
+    function setBiomeImage($var)
+    {
+        $this->biomeImage = $var;
     }
 }

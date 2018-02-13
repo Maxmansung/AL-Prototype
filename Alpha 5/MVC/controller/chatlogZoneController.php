@@ -38,11 +38,11 @@ class chatlogZoneController extends chatlogController
         $logDetailsObject = [];
         $avatar = new avatarController($self);
         $zone = new zoneController($zoneID);
-        if ($zone->getControllingParty() == "empty" ||$zone->getControllingParty() == $avatar->getPartyID()) {
+        if ($zone->getControllingParty() == null ||$zone->getControllingParty() == $avatar->getPartyID()) {
             foreach ($chatLog as $log) {
                 if ($log->getMapDay() === intval($day)) {
                     $log->createMessageTime();
-                    $logDetailsObject[$log->getChatlogID()] = $log->returnVars();
+                    $logDetailsObject[$log->getMessageTimestamp()] = $log->returnVars();
                 }
             }
         }

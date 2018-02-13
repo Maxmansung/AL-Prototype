@@ -48,7 +48,7 @@ class chatlogPersonalController extends chatlogController
                 }
                 if ($skip === false) {
                     $log->createMessageTime();
-                    $logDetailsObject[$log->getChatlogID()] = $log->returnVars();
+                    $logDetailsObject[$log->getMessageTimestamp()] = $log->returnVars();
                 }
             }
         }
@@ -63,7 +63,7 @@ class chatlogPersonalController extends chatlogController
                 if ($log->getMessageType() === 5 || $log->getMessageType() === 8){
                     if ($zoneID === $log->getZoneID()){
                         $log->createMessageTime();
-                        $logDetailsObject[$log->getChatlogID()] = $log->returnVars();
+                        $logDetailsObject[$log->getMessageTimestamp()] = $log->returnVars();
                     }
                 }
             }

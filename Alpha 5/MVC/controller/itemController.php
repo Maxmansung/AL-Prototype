@@ -25,6 +25,7 @@ class itemController extends item
             $this->survivalBonus = $itemModel->survivalBonus;
             $this->itemLocation = $itemModel->itemLocation;
             $this->locationID = $itemModel->locationID;
+            $this->statusImpact = $itemModel->statusImpact;
         }
     }
 
@@ -46,6 +47,7 @@ class itemController extends item
         $this->survivalBonus = $itemModel->survivalBonus;
         $this->itemLocation = $locationType;
         $this->locationID = $locationID;
+        $this->statusImpact = $itemModel->statusImpact;
     }
 
     public function createNewItem($biome, $mapID,$locationID,$locationType){
@@ -66,6 +68,7 @@ class itemController extends item
         $this->survivalBonus = $itemModel->survivalBonus;
         $this->itemLocation = $locationType;
         $this->locationID = $locationID;
+        $this->statusImpact = $itemModel->statusImpact;
     }
 
     public function createBlankItem($templateID){
@@ -75,6 +78,7 @@ class itemController extends item
         $this->icon = $itemModel->icon;
         $this->description = $itemModel->description;
         $this->itemType = $itemModel->itemType;
+        $this->statusImpact = $itemModel->statusImpact;
     }
 
     //This uses the array of items found for the biome to randomly select one (based on their chances)

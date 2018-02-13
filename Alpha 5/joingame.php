@@ -22,14 +22,35 @@ if ($profile->getGameStatus() != "ready"){
 <body>
 <?php include_once($_SERVER['DOCUMENT_ROOT'] . "/templates/template_pageTop.php"); ?>
 <div id="pageMiddle">
-    <div class="mapListWrap">
+    <div class="descriptionWriting"></div>
+    <div class="mapListWrap" id="mapsWrapperTutorial">
         <div class="mapsTitle">
-            Open Maps
+            Tutorial Maps
         </div>
         <div class="mapsWriting">
             Select a map to join
         </div>
-        <div id="joinMaps">
+        <div class="joinMaps">
+        </div>
+    </div>
+    <div class="mapListWrap" id="mapsWrapperMain">
+        <div class="mapsTitle">
+            Main Maps
+        </div>
+        <div class="mapsWriting">
+            Select a map to join
+        </div>
+        <div class="joinMaps">
+        </div>
+    </div>
+    <div class="mapListWrap" id="mapsWrapperTest">
+        <div class="mapsTitle">
+            Testing Maps
+        </div>
+        <div class="mapsWriting">
+            Select a map to join
+        </div>
+        <div class="joinMaps">
         </div>
     </div>
     <div class="mapListWrap" id="adminWrapper">

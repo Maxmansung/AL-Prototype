@@ -168,4 +168,24 @@ class shrineController extends shrine
             $temp->updateShrine();
         }
     }
+
+    public function getShrineAchievement(){
+        switch($this->shrineType){
+            case "S001":
+                return "A017";
+                break;
+            case "S002":
+                return "A018";
+                break;
+            case "S003":
+                return "A019";
+                break;
+            case "S004":
+                return "A018";
+                break;
+            default:
+                return array("ERROR"=>"This shrine does not currently have an achievement. Please refresh the page and bug report");
+                break;
+        }
+    }
 }

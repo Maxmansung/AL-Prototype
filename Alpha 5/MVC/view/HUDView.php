@@ -22,6 +22,7 @@ class HUDView
     protected $tempBlessings;
     protected $mapType;
     protected $statusArray;
+    protected $survivalWarning;
 
 
 
@@ -29,13 +30,15 @@ class HUDView
     {
         $avatarModel = new avatarController($avatarID);
         $mapModel = new mapController($avatarModel->getMapID());
-        $totalSurvival = buildingLevels::getTotalSurviveTemp($avatarID);
+        $totalSurvival = buildingLevels::getModifiedViewSurviveTemp($avatarID);
+        $zone = new zoneController($avatarModel->getZoneID());
+        $biome = new biomeTypeController($zone->getBiomeType());
         $this->playerStamina = $avatarModel->getStamina();
         $this->playerMaxStamina = $avatarModel->getMaxStamina();
         $this->currentDay = $mapModel->getCurrentDay();
         $this->dayEnding = HUDController::getDayEndTime();
         $this->clock = date("H:i",time());
-        $this->nightTemp = $mapModel->getBaseNightTemperature();
+        $this->nightTemp = $mapModel->getBaseNightTemperature()-$biome->getTemperatureMod();
         $this->calcSurvTemp = $totalSurvival;
         $this->maxInventorySlots = $avatarModel->getMaxInventorySlots();
         $this->zoneID = $avatarModel->getZoneID();
@@ -53,6 +56,7 @@ class HUDView
         $this->tempZoneMod = $biome->getTemperatureMod();
         $this->mapType = $mapModel->getDayDuration();
         $this->statusArray = statusView::getStatusView($avatarModel->getStatusArray());
+        $this->survivalWarning = dayEndingFunctions::testPlayerSurvival($avatarModel,$mapModel->getBaseNightTemperature());
     }
 
     function returnVars(){

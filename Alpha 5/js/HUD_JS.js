@@ -7,6 +7,7 @@ function updateHUD(response) {
     updateDateTime(response);
     updateReadiness(response.readyStatus, response.mapType);
     updateStatus(response.statusArray);
+    updateWarnings(response.survivalWarning);
 }
 
 //This updates the stamina image
@@ -19,14 +20,6 @@ function updateTemperature(response){
     $("#nightTempNumber").empty().append("<span>"+(parseInt(response.nightTemp)*-1)+"&degC</span>");
     $("#surviveTempNumber").empty().append("<span>"+(parseInt(response.calcSurvTemp)*-1)+"&degC</span>");
     $("#tempOverviewHidden").empty().append(moreDetail);
-    $("#tempDataWarning").empty();
-    if (response.nightTemp>response.calcSurvTemp){
-        $("#tempDataWrapper").css("background","rgba(255,0,0,0.5");
-        $("#tempDataWarning").append("You will DIE tonight");
-    } else {
-        $("#tempDataWrapper").css("background","rgba(0,255,0,0.5");
-        $("#tempDataWarning").append("You will LIVE tonight");
-    }
 }
 
 function writeTempBonuses(response){
@@ -51,6 +44,28 @@ function writeTempBonuses(response){
         returnText += "<div class='tempDetailItem'>Blessings: " + response.tempBlessings + "</div>";
     }
     return returnText;
+}
+
+function updateWarnings(response){
+    $("#survivalWarning").empty();
+    if (response === true){
+        $("#survivalWarning").append("<div id='survivalWarningGreen'>You will  <br><strong>SURVIVE</strong> <br> tonight!</div>");
+    } else {
+        switch(response){
+            case 0:
+                $("#survivalWarning").append("<div id='survivalWarningOrange'>You will be  <br><strong>INJURED</strong>  <br>tonight if you don't warm yourself up</div>");
+                break;
+            case 1:
+                $("#survivalWarning").append("<div id='survivalWarningRed'>Find somewhere warmer, you're going to <br><strong>FREEZE</strong>!</div>");
+                break;
+            case 2:
+                $("#survivalWarning").append("<div id='survivalWarningRed'>You will  <br><strong>STARVE</strong>  <br>if you dont eat tonight!</div>");
+                break;
+            case 3:
+                $("#survivalWarning").append("<div id='survivalWarningRed'>Somehow you've upset the  <br><strong>SNOWMEN</strong> <br> bug report this...</div>");
+                break;
+        }
+    }
 }
 
 function updateDateTime(response) {
@@ -102,7 +117,7 @@ function updateStatus(statuses){
         .append("<div class='statusImage'><img src='/images/playerFace/"+eyes+"'></div>")
         .append("<div class='statusImage'><img src='/images/playerFace/"+nose+"'></div>")
         .append("<div class='statusImage'><img src='/images/playerFace/"+mouth+"'></div>")
-        .append("<div id='playerStatusInfo'><strong>Statuses</strong></div><hr>");
+        .append("<div id='playerStatusInfo'><strong>Statuses</strong></div>");
     for (var status in statuses){
         $("#playerStatusInfo").append("<span class='statusDetail'>"+status+"</span>");
     }
@@ -112,10 +127,8 @@ function displayGameHUD(){
     var check = $("#timeAndTemp").is(":visible");
     if (check === false){
         $("#timeAndTemp").show();
-        $("#pageCenter").css("padding-left","100px");
     } else {
         $("#timeAndTemp").hide();
-        $("#pageCenter").css("padding-left","0");
     }
 }
 

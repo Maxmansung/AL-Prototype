@@ -390,13 +390,6 @@
     cursor: pointer;
 }
 
-#postReplyText{
-    resize: none;
-    font-family: Futura, serif;
-    font-size: 13px;
-    width: 100%;
-}
-
 #postReplyWrap{
     display: flex;
     flex-direction: column;

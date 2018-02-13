@@ -12,11 +12,6 @@ function restrict(elem){
     tf.value = tf.value.replace(rx, "");
 }
 
-//This emptied whatever is in the HTML element x
-function emptyElement(x){
-    _(x).innerHTML = "";
-}
-
 //This shortens the usage of document.getelementbyid into just _
 function _(x) {
     return document.getElementById(x);

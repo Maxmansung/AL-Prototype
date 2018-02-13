@@ -72,17 +72,31 @@ class profileController extends profile
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
-        if (isset($_SESSION["ip"]) && isset($_SESSION["username"])) {
-            $response = profileController::checklogin();
-        } else {
-            $username = profileController::checkCookies();
-            if ($username != false){
-                $response = array("SUCCESS"=>$username);
-            } else {
-                $response = array("ERROR" => "No session or cookies created");
+        if (isset($_SESSION["type"])) {
+            switch ($_SESSION["type"]) {
+                case "main":
+                    if (isset($_SESSION["ip"]) && isset($_SESSION["username"])) {
+                        $response = profileController::checklogin();
+                    } else {
+                        $username = profileController::checkCookies();
+                        if ($username != false) {
+                            $response = array("SUCCESS" => $username);
+                        } else {
+                            $response = array("ERROR" => "No session or cookies created");
+                        }
+                    }
+                    return $response;
+                    break;
+                case "google":
+                    return array("ERROR"=>"This has not yet been implimented");
+                    break;
+                default:
+                    return array("ERROR"=>"This session type does not exist");
+                    break;
             }
         }
-        return $response;
+        self::destroysession();
+        return array("ERROR"=>"Incorrect session created");
     }
 
     //This destroys a users session if the session details are incorrect of corrupted
@@ -131,12 +145,14 @@ class profileController extends profile
                 $checkprofile->setLoginIP(preg_replace('#[^0-9.]#', '', getenv('REMOTE_ADDR')));
                 $_SESSION['username'] = $checkprofile->profileID;
                 $_SESSION['ip'] = $checkprofile->getLoginIP();
-                if ($cookies == true){
+                $_SESSION['type'] = "main";
+                if ($c == true){
                     $checkprofile->setCookieKey();
                     $cookieUpload = $checkprofile->getProfileID() . ':' . $checkprofile->getCookieKey();
                     $mac = hash_hmac('sha256', $cookieUpload, data::$salt["salt"]);
                     $cookieUpload .= ':' . $mac;
                     setcookie('loginKey', $cookieUpload, time() + (86400 * 30),"/",SITE_ADDRESS);
+                    $checkprofile->setLastLogin(date("Y-m-d H:i"));
                     $checkprofile->uploadProfile();
                     return array("COOKIES"=>true);
                 } else {
@@ -325,7 +341,7 @@ class profileController extends profile
         if ($profile->getProfileID() == ""){
             return array("ERROR"=>111);
         } else {
-            if ($profile->getEmail() != $email){
+            if (strtolower($profile->getEmail()) != $email){
                 return array("ERROR"=>112);
             } else {
                 $timeDifference = time() - $profile->getPasswordRecoveryTimer();
