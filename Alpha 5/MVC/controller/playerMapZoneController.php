@@ -11,8 +11,7 @@ class playerMapZoneController
         } else {
             $avatar->useStamina(1);
             $currentZone = new zoneController($avatar->getZoneID());
-            $newZone = new zoneController($avatar->getZoneID());
-            $newZone = $newZone->nextMap($dir);
+            $newZone = $currentZone->nextMap($dir);
             //This small section prevents players from entering zones not claimed by their party
             if ($newZone->getControllingParty() !== null) {
                 if ($newZone->getControllingParty() !== $avatar->getPartyID()) {
