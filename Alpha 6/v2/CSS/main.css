@@ -1,0 +1,184 @@
+@font-face {
+    font-family: "Delicious";
+    src: url("/CSS/fonts/Delicious-Roman.otf")
+}
+
+@font-face {
+    font-family: "Modius Frigid";
+    src: url("/CSS/fonts/Modius'Frigid'.otf");
+}
+
+@media (max-width: 576px) {
+}
+@media (min-width: 576px) and (max-width: 768px) {
+    .tooltip {
+        display: none !important;
+    }
+    .form-control::-webkit-input-placeholder { /* WebKit browsers */
+        color: transparent !important;
+    }
+    .form-control:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+        color: transparent !important;
+    }
+    .form-control::-moz-placeholder { /* Mozilla Firefox 19+ */
+        color: transparent !important;
+    }
+    .form-control :-ms-input-placeholder { /* Internet Explorer 10+ */
+        color: transparent !important;
+    }
+}
+@media (min-width: 768px) and (max-width: 992px) {
+    .tooltip {
+        display: none !important;
+    }
+    .form-control::-webkit-input-placeholder { /* WebKit browsers */
+        color: transparent !important;
+    }
+    .form-control:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+        color: transparent !important;
+    }
+    .form-control::-moz-placeholder { /* Mozilla Firefox 19+ */
+        color: transparent !important;
+    }
+    .form-control :-ms-input-placeholder { /* Internet Explorer 10+ */
+        color: transparent !important;
+    }
+}
+@media (min-width: 992px) and (max-width: 1200px) {
+    .tooltip {
+        display: none !important;
+    }
+    .form-control::-webkit-input-placeholder { /* WebKit browsers */
+        color: transparent !important;
+    }
+    .form-control:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+        color: transparent !important;
+    }
+    .form-control::-moz-placeholder { /* Mozilla Firefox 19+ */
+        color: transparent !important;
+    }
+    .form-control :-ms-input-placeholder { /* Internet Explorer 10+ */
+        color: transparent !important;
+    }
+}
+@media (min-width: 1200px){
+    .tooltip {
+        display: none !important;
+    }
+    .form-control::-webkit-input-placeholder { /* WebKit browsers */
+        color: transparent !important;
+    }
+    .form-control:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+        color: transparent !important;
+    }
+    .form-control::-moz-placeholder { /* Mozilla Firefox 19+ */
+        color: transparent !important;
+    }
+    .form-control :-ms-input-placeholder { /* Internet Explorer 10+ */
+        color: transparent !important;
+    }
+}
+
+
+body{
+    font-family: 'Delicious';
+}
+
+.login-window{
+    border-radius: 10px;
+    background-color: rgba(0,0,0,0.7);
+    border: 2px solid rgba(0,0,0,0.9);
+}
+
+.bg-al-black{
+    color: #ffffff;
+    background: #46333D url(/images/webPageBackgrounds/mountainsNoEdit.jpg) left top/auto no-repeat;
+}
+
+#titleWriting{
+    font-family: 'Delicious' !important;
+    font-weight: bold;
+    color: #000000;
+    padding: 20px;
+}
+
+.lineOnRight{
+    border-right: 2px solid white;
+}
+
+.lineOnTop{
+    border-top: 2px solid white;
+}
+
+#largerWriting{
+}
+
+#navBarBackground{
+    background: #ffffff !important;
+
+}
+
+.signinLink{
+    color: #ffffff
+}
+
+.signinLink:hover{
+    text-decoration: none;
+}
+
+.descriptionWriting{
+    font-size: 80%;
+}
+
+.material-switch > input[type="checkbox"] {
+    display: none;
+}
+
+.material-switch > label {
+    cursor: pointer;
+    height: 0px;
+    position: relative;
+    width: 40px;
+}
+
+.material-switch > label::before {
+    background: rgb(0, 0, 0);
+    box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    content: '';
+    height: 16px;
+    margin-top: -8px;
+    position:absolute;
+    opacity: 0.3;
+    transition: all 0.4s ease-in-out;
+    width: 40px;
+}
+.material-switch > label::after {
+    background: rgb(255, 255, 255);
+    border-radius: 16px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+    content: '';
+    height: 24px;
+    left: -4px;
+    margin-top: -8px;
+    position: absolute;
+    top: -4px;
+    transition: all 0.3s ease-in-out;
+    width: 24px;
+}
+.material-switch > input[type="checkbox"]:checked + label::before {
+    background: rgba(0,100,200,1);
+    opacity: 0.5;
+}
+.material-switch > input[type="checkbox"]:checked + label::after {
+    background: rgba(0,100,200,1);
+    left: 20px;
+}
+
+#googleIcon{
+    max-height: 24px;
+}
+
+.imgCustom{
+    max-height: 24px;
+}
