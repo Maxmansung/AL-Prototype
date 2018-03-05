@@ -6,6 +6,7 @@ class building implements building_Interface
 
     protected $buildingID;
     protected $zoneID;
+    protected $mapID;
     protected $buildingTemplateID;
     protected $fuelBuilding;
     protected $fuelRemaning;
@@ -263,5 +264,15 @@ class building implements building_Interface
     function setBuildingTypeID($var)
     {
         $this->buildingTypeID = $var;
+    }
+
+    function getMapID()
+    {
+        return $this->mapID;
+    }
+
+    function setMapID($var)
+    {
+        $this->mapID = $var;
     }
 }

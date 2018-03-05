@@ -7,7 +7,8 @@ class buildingModel extends building
     {
         if (isset($buildingModel['buildingID'])) {
             $this->buildingID = $buildingModel['buildingID'];
-            $this->zoneID = $buildingModel['zoneID'];
+            $this->zoneID = intval($buildingModel['zoneID']);
+            $this->mapID = intval($buildingModel['mapID']);
             $this->buildingTemplateID = $buildingModel['buildingTemplateID'];
             $this->fuelBuilding = intval($buildingModel['fuelBuilding']);
             $this->fuelRemaning = intval($buildingModel['fuelRemaining']);
@@ -28,6 +29,7 @@ class buildingModel extends building
         } else {
             $this->buildingID = "X";
             $this->zoneID = "X";
+            $this->mapID = "X";
             $this->buildingTemplateID = $buildingModel['buildingTemplateID'];
             $this->fuelBuilding = $buildingModel['fuelBuilding'];
             $this->fuelRemaning = 0;
@@ -52,14 +54,15 @@ class buildingModel extends building
     public static function insertBuilding($buildingController, $type){
         $db = db_conx::getInstance();
         if ($type == "Insert") {
-            $req = $db->prepare("INSERT INTO Building (zoneID,buildingTemplateID,fuelRemaining,staminaSpent) VALUES (:zoneID,:buildingTemplateID,:fuelRemaining,:staminaSpent)");
+            $req = $db->prepare("INSERT INTO Building (zoneID, mapID,buildingTemplateID,fuelRemaining,staminaSpent) VALUES (:zoneID, :mapID, :buildingTemplateID,:fuelRemaining,:staminaSpent)");
         } elseif ($type == "Update"){
-            $req = $db->prepare("UPDATE Building SET zoneID= :zoneID, buildingTemplateID= :buildingTemplateID, fuelRemaining= :fuelRemaining,staminaSpent= :staminaSpent WHERE buildingID= :buildingID");
+            $req = $db->prepare("UPDATE Building SET zoneID= :zoneID, mapID= :mapID, buildingTemplateID= :buildingTemplateID, fuelRemaining= :fuelRemaining,staminaSpent= :staminaSpent WHERE buildingID= :buildingID");
         }
-        $req->bindParam(':zoneID', $buildingController->getZoneID());
+        $req->bindParam(':zoneID', intval($buildingController->getZoneID()));
+        $req->bindParam(':mapID', intval($buildingController->getMapID()));
         $req->bindParam(':buildingTemplateID', $buildingController->getBuildingTemplateID());
-        $req->bindParam(':fuelRemaining', $buildingController->getFuelRemaining());
-        $req->bindParam(':staminaSpent', $buildingController->getStaminaSpent());
+        $req->bindParam(':fuelRemaining', intval($buildingController->getFuelRemaining()));
+        $req->bindParam(':staminaSpent', intval($buildingController->getStaminaSpent()));
         if ($type == "Update") {
             $req->bindParam(':buildingID', $buildingController->getBuildingID());
         }
@@ -78,7 +81,7 @@ class buildingModel extends building
 
     public static function getBuilding($buildingID){
         $db = db_conx::getInstance();
-        $req = $db->prepare('SELECT Building.buildingID, Building.zoneID, Building.buildingTemplateID, Building.fuelRemaining, Building.staminaSpent, BuildingTemplate.name, BuildingTemplate.icon, BuildingTemplate.description, BuildingTemplate.itemsRequired, BuildingTemplate.buildingsRequired, BuildingTemplate.staminaRequired, BuildingTemplate.fuelBuilding, BuildingTemplate.buildingType, BuildingTemplate.tutorialKnown, BuildingTemplate.mainKnown FROM Building INNER JOIN BuildingTemplate ON Building.buildingTemplateID = BuildingTemplate.buildingTemplateID AND Building.buildingID = :buildingID');
+        $req = $db->prepare('SELECT Building.buildingID, Building.zoneID, Building.mapID, Building.buildingTemplateID, Building.fuelRemaining, Building.staminaSpent, BuildingTemplate.name, BuildingTemplate.icon, BuildingTemplate.description, BuildingTemplate.itemsRequired, BuildingTemplate.buildingsRequired, BuildingTemplate.staminaRequired, BuildingTemplate.fuelBuilding, BuildingTemplate.buildingType, BuildingTemplate.tutorialKnown, BuildingTemplate.mainKnown FROM Building INNER JOIN BuildingTemplate ON Building.buildingTemplateID = BuildingTemplate.buildingTemplateID AND Building.buildingID = :buildingID');
         $req->execute(array('buildingID' => $buildingID));
         $buildingModel = $req->fetch();
         return new buildingModel($buildingModel);
@@ -108,7 +111,7 @@ class buildingModel extends building
 
     public static function zoneBuildingsArray($zoneID){
         $db = db_conx::getInstance();
-        $req = $db->prepare('SELECT Building.buildingID, Building.zoneID, Building.buildingTemplateID, Building.fuelRemaining, Building.staminaSpent, BuildingTemplate.name, BuildingTemplate.icon, BuildingTemplate.description, BuildingTemplate.itemsRequired, BuildingTemplate.buildingsRequired, BuildingTemplate.staminaRequired, BuildingTemplate.fuelBuilding, BuildingTemplate.buildingType, BuildingTemplate.tutorialKnown, BuildingTemplate.mainKnown FROM Building INNER JOIN BuildingTemplate ON Building.buildingTemplateID = BuildingTemplate.buildingTemplateID AND Building.zoneID = :zoneID');
+        $req = $db->prepare('SELECT Building.buildingID, Building.zoneID, Building.mapID, Building.buildingTemplateID, Building.fuelRemaining, Building.staminaSpent, BuildingTemplate.name, BuildingTemplate.icon, BuildingTemplate.description, BuildingTemplate.itemsRequired, BuildingTemplate.buildingsRequired, BuildingTemplate.staminaRequired, BuildingTemplate.fuelBuilding, BuildingTemplate.buildingType, BuildingTemplate.tutorialKnown, BuildingTemplate.mainKnown FROM Building INNER JOIN BuildingTemplate ON Building.buildingTemplateID = BuildingTemplate.buildingTemplateID AND Building.zoneID = :zoneID');
         $req->execute(array('zoneID' => $zoneID));
         $buildingModel = $req->fetchAll();
         $buildingArray = [];
@@ -121,7 +124,7 @@ class buildingModel extends building
 
     public static function findBuildingInZone($templateID, $zoneID){
         $db = db_conx::getInstance();
-        $req = $db->prepare('SELECT Building.buildingID, Building.zoneID, Building.buildingTemplateID, Building.fuelRemaining, Building.staminaSpent, BuildingTemplate.name, BuildingTemplate.icon, BuildingTemplate.description, BuildingTemplate.itemsRequired, BuildingTemplate.buildingsRequired, BuildingTemplate.staminaRequired, BuildingTemplate.fuelBuilding, BuildingTemplate.buildingType, BuildingTemplate.tutorialKnown, BuildingTemplate.mainKnown FROM Building INNER JOIN BuildingTemplate ON Building.buildingTemplateID = BuildingTemplate.buildingTemplateID AND Building.buildingTemplateID = :templateID AND Building.zoneID = :zoneID LIMIT 1');
+        $req = $db->prepare('SELECT Building.buildingID, Building.zoneID, Building.mapID, Building.buildingTemplateID, Building.fuelRemaining, Building.staminaSpent, BuildingTemplate.name, BuildingTemplate.icon, BuildingTemplate.description, BuildingTemplate.itemsRequired, BuildingTemplate.buildingsRequired, BuildingTemplate.staminaRequired, BuildingTemplate.fuelBuilding, BuildingTemplate.buildingType, BuildingTemplate.tutorialKnown, BuildingTemplate.mainKnown FROM Building INNER JOIN BuildingTemplate ON Building.buildingTemplateID = BuildingTemplate.buildingTemplateID AND Building.buildingTemplateID = :templateID AND Building.zoneID = :zoneID LIMIT 1');
         $req->bindParam(':templateID', $templateID);
         $req->bindParam(':zoneID', $zoneID);
         $req->execute();
@@ -135,11 +138,10 @@ class buildingModel extends building
     }
 
     public static function getMapBuildingsType($mapID,$buildingID){
-        $zoneID = "%".$mapID."%";
         $db = db_conx::getInstance();
-        $req = $db->prepare('SELECT * FROM Building WHERE buildingTemplateID = :templateID AND Building.zoneID LIKE :zoneID');
+        $req = $db->prepare('SELECT * FROM Building WHERE buildingTemplateID = :templateID AND mapID= :mapID');
         $req->bindParam(':templateID', $buildingID);
-        $req->bindParam(':zoneID', $zoneID);
+        $req->bindParam(':mapID', $mapID);
         $req->execute();
         $buildingModel = $req->fetchAll();
         $buildingArray = [];

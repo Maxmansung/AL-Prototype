@@ -241,9 +241,7 @@ function errors(id){
             }
             break;
         case 58:
-            if (!alert("You have been logged out")){
-                window.location.reload();
-            }
+            createAlertBox(1,1,"You have been logged out",1);
             break;
         case 59:
             alert("This region makes you feel uneasy, its probably best not to disturb it too much - This Error shouldnt be seen, please bug report");
@@ -278,47 +276,52 @@ function errors(id){
             alert("This action does not work currently");
             break;
         case 101:
-            loginScreen();
-            _("usernameSigninError").innerHTML = "Nothing written in fields";
+            $("#username").addClass("is-invalid");
+            $("#password").addClass("is-invalid");
             break;
         case 102:
-            loginScreen();
-            _("usernameSigninError").innerHTML = "That username does not exist";
+            $("#username").addClass("is-invalid");
+            _("usernameError").innerHTML = "That username does not exist";
             break;
         case 103:
-            loginScreen();
-            _("usernameSigninError").innerHTML = " The username and password do not match our records";
+            $("#password").addClass("is-invalid");
+            _("passwordError").innerHTML = " The username and password do not match our records";
             break;
         case 104:
-            loginScreen();
-            _("usernameSigninError").innerHTML = " This profile has not yet been activated";
+            $("#username").addClass("is-invalid");
+            _("usernameError").innerHTML = " This profile has not yet been activated";
             break;
         case 105:
-            _("usernameSignupError").innerHTML = "You have not filled all of the boxes";
+            $("#usernameSign").addClass("is-invalid");
+            _("usernameSignError").innerHTML = "Please complete all sections";
             break;
         case 106:
-            _("usernameSignupError").innerHTML = "This username has been taken";
+            $("#usernameSign").addClass("is-invalid");
+            _("usernameSignError").innerHTML = "This username has been taken";
             break;
         case 107:
-            _("emailSignupError").innerHTML = "An account is already linked to this email";
+            $("#email").addClass("is-invalid");
+            _("emailError").innerHTML = "An account is already linked to this email";
             break;
         case 108:
-            _("usernameSignupError").innerHTML = "Your username must be between 3 and 16 characters";
+            $("#usernameSign").addClass("is-invalid");
+            _("usernameSignError").innerHTML = "Your username must be between 3 and 16 characters";
             break;
         case 109:
-            _("usernameSignupError").innerHTML = "Your username cannot begin with a number";
+            $("#usernameSign").addClass("is-invalid");
+            _("usernameSignError").innerHTML = "Your username cannot begin with a number";
             break;
         case 110:
-            _("adminPasswordError").innerHTML = "Please get the correct password from Maxmansung";
+            alert("The signup system is currently disabled on this site");
             break;
         case 111:
-            _("recoveryError").innerHTML = "Unable to find that username";
-            break;
         case 112:
-            _("recoveryError").innerHTML = "Unable to find that email address";
+            $("#emailForgot").addClass("is-invalid");
+            _("emailForgotAddress").innerHTML = "Unable to find that email address";
             break;
         case 113:
-            _("recoveryError").innerHTML = "Please wait at least 5 minutes between recovery requests";
+            $("#emailForgot").addClass("is-invalid");
+            _("emailForgotAddress").innerHTML = "Please wait at least 5 minutes between recovery requests";
             break;
         case 114:
             alert("The request has failed due to a posting error - Please send a bug report (Error ID = "+id+")");
@@ -332,6 +335,14 @@ function errors(id){
             break;
         case 118:
             _("recoveryError").innerHTML = "This recovery link has now expired, please create a new one";
+            break;
+        case 119:
+            $("#usernameSign").addClass("is-invalid");
+            _("usernameSignError").innerHTML = "Please avoid special characters";
+            break;
+        case 120:
+            $("#email").addClass("is-invalid");
+            _("emailError").innerHTML = "This email address contains unusual characters";
             break;
         case 200:
             window.location.href="/nightfall.php";
@@ -347,9 +358,9 @@ function alerts(response,data){
     switch (response){
         case 0:
             if (data === true) {
-                if(!alert("You are now logged in and a cookie has been created")){window.location.reload();}
+                createAlertBox(1,1,"You are now logged in and a cookie has been created",1);
             } else {
-                if(!alert("You are now logged in but no cookies have been created")){window.location.reload();}
+                createAlertBox(1,1,"You are now logged in",1);
             }
             break;
         case 1:
@@ -396,6 +407,10 @@ function alerts(response,data){
         case 12:
             if (!alert(data)){window.location.reload();}
             break;
+        case 13:
+            var writing = "An email has been sent to: "+data+"\n You have 5mins to respond";
+            createAlertBox(0,1,writing,1);
+            break;
     }
 }
 
@@ -424,19 +439,37 @@ function getRecipeList(data){
     alert("This requires: "+text);
 }
 
-function customAlertBox(title,text,image,onclickValue){
-    $("#alertBoxWrapper").css('visibility', 'visible').focus();
-    $("#alertBoxTitle").empty().append(title);
-    $("#alertBoxText").empty().append(text);
-    $("#alertBoxImageWrap").empty().append("<img class='alertBoxImage' src='/images/errorImages/"+image+"'>");
-    $("#alertBoxConfirm").attr({onclick:"errorBoxFinish("+onclickValue+")",onkeyup:"errorBoxFinish("+onclickValue+")"});
-}
 
-function errorBoxFinish(value){
-    switch (value){
+
+function createAlertBox(titleType,textType,data,buttontype){
+    var title = "Error";
+    var text = "Error";
+    var buttons = '<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>';
+    switch (titleType){
         case 1:
-            console.log(value);
+            title = "";
+            break;
+        default:
+            title = "Alert!";
             break;
     }
-    $("#alertBoxWrapper").css("visibility","hidden");
+    switch (textType){
+        case 1:
+            text = data;
+            break;
+        default:
+            text = "Something has gone wrong - Please bug report ERROR: "+data;
+            break
+    }
+    switch (buttontype){
+        case 1:
+            buttons = '<button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="refreshPage()">Close</button>';
+            break;
+        default:
+            break;
+    }
+    $("#alertBox .modal-title").empty().append(title);
+    $("#alertBox .modal-body").empty().append(text);
+    $("#alertBox .modal-footer").empty().append(buttons);
+    $("#alertBox").modal()
 }

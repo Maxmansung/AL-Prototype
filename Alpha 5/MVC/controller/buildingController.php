@@ -10,6 +10,7 @@ class buildingController extends building
             $buildingModel = buildingModel::getBuilding($id);
             $this->buildingID = $buildingModel->buildingID;
             $this->zoneID = $buildingModel->zoneID;
+            $this->mapID = $buildingModel->mapID;
             $this->buildingTemplateID = $buildingModel->buildingTemplateID;
             $this->fuelBuilding = $buildingModel->fuelBuilding;
             $this->fuelRemaning = $buildingModel->fuelRemaning;
@@ -28,9 +29,11 @@ class buildingController extends building
     }
 
     public function createNewBuilding($buildingTemplateID, $zoneID){
+        $zone = new zoneController($zoneID);
         $buildingModel = buildingModel::newbuilding($buildingTemplateID);
         $this->buildingID = $buildingModel->buildingID;
-        $this->zoneID = $zoneID;
+        $this->zoneID = $zone->getZoneID();
+        $this->mapID = $zone->getMapID();
         $this->buildingTemplateID = $buildingModel->buildingTemplateID;
         $this->fuelBuilding = $buildingModel->fuelBuilding;
         $this->fuelRemaning = $buildingModel->fuelRemaning;

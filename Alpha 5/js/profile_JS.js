@@ -2,14 +2,16 @@
 
 var users = [];
 var countNum = 1;
+var achieveView = 1;
 
 
 function viewPlayerProfile(response){
     displayProfile(response);
-    displayAchievemets(response.achievements);
+    displayAchievemets(response.achievements, response.achievementsSolo);
     makeUserStats(response.playStatistics);
     showAllShrines(response.shrinesDetail);
     setupListener();
+    createButtons();
 }
 
 
@@ -85,8 +87,10 @@ function displayProfile(profile){
         .append("<span id='userCardTotalFavour'>Favour: "+profile.favourScore+"</span><span>Level: "+profile.profileLevel+"</span>");
     $("#userCardGender").empty()
         .append("Gender: "+profile.gender);
-    $("#userCardScore").empty()
+    $("#userCardScoreFull").empty()
         .append("<span>Achievement Score: "+profile.profileScore+"</span>");
+    $("#userCardScoreReady").empty()
+        .append("<span>Achievement Score: "+profile.profileScoreSolo+"</span>");
     $("#userCardImage").empty()
         .append("<img src='/avatarimages/"+profile.profilePicture+"' id='userCardImageFile'>");
     $("#userCardCountry").empty()
@@ -113,16 +117,26 @@ function showAllShrines(response){
     }
 }
 
-function displayAchievemets(achievements){
-    $("#userAchieveList").empty();
+function displayAchievemets(achievements,achievementsSolo){
+    $("#userAchieveListFull").empty();
+    $("#userAchieveListReady").empty();
     if (objectSize(achievements) === 0){
-        $("#userAchieveList").append("<span class='nothingGained'>No achievements gained yet</span>");
+        $("#userAchieveListFull").append("<span class='nothingGained'>Play some real time games to get achievements here</span>");
     }else {
         for (var single in achievements) {
             var achieve = achievements[single].details;
-            $("#userAchieveList").append("<div class='userAchieveWrap'><div class='userAchieveName'>" + achieve.name + "</div><div class='userAchieveImageWrap'><img src='/images/achievements/" + achieve.icon + "' class='userAchieveImage'><span class='userAchieveText'>" + achieve.description + "</span></div><div class='userAchieveCount'>" + achievements[single].count + "</div></div>");
+            $("#userAchieveListFull").append("<div class='userAchieveWrap'><div class='userAchieveName'>" + achieve.name + "</div><div class='userAchieveImageWrap'><img src='/images/achievements/" + achieve.icon + "' class='userAchieveImage'><span class='userAchieveText'>" + achieve.description + "</span></div><div class='userAchieveCount'>" + achievements[single].count + "</div></div>");
         }
     }
+    if (objectSize(achievementsSolo) === 0){
+        $("#userAchieveListReady").append("<span class='nothingGained'>Play some speed games to get achievements here</span>");
+    }else {
+        for (var single in achievementsSolo) {
+            var achieve = achievementsSolo[single].details;
+            $("#userAchieveListReady").append("<div class='userAchieveWrap'><div class='userAchieveName'>" + achieve.name + "</div><div class='userAchieveImageWrap'><img src='/images/achievements/" + achieve.icon + "' class='userAchieveImage'><span class='userAchieveText'>" + achieve.description + "</span></div><div class='userAchieveCount'>" + achievementsSolo[single].count + "</div></div>");
+        }
+    }
+    createButtons();
 }
 
 function editBio(){
@@ -313,4 +327,32 @@ function displayUsers(){
     }
     $("#pageNumber").empty().append("Page "+countNum+" of "+Math.ceil(length/5));
     $("#totalResults").empty().append("<strong>"+length+"</strong> results found");
+}
+
+function createButtons(){
+    if (achieveView === 1){
+        $("#userAchieveListReady").hide();
+        $("#userAchieveListFull").show();
+        $("#userCardScoreReady").hide();
+        $("#userCardScoreFull").show();
+        $("#fullAchieveButton").removeClass("deselectedButton").addClass("selectedButton");
+        $("#readyAchieveButton").removeClass("selectedButton").addClass("deselectedButton");
+    } else {
+        $("#userAchieveListFull").hide();
+        $("#userAchieveListReady").show();
+        $("#userCardScoreFull").hide();
+        $("#userCardScoreReady").show();
+        $("#readyAchieveButton").removeClass("deselectedButton").addClass("selectedButton");
+        $("#fullAchieveButton").removeClass("selectedButton").addClass("deselectedButton");
+    }
+}
+
+function viewReadyAchieve(){
+    achieveView = 0;
+    createButtons();
+}
+
+function viewFullAchieve(){
+    achieveView = 1;
+    createButtons();
 }

@@ -60,7 +60,8 @@ if (isset($_POST["type"])) {
                     break;
                 case 5:
                     //Used for building in adding stamina to buildings
-                    $response = buildingItemController::buildBuilding($data, $profile->getAvatar(), 1);
+                    $spent = intval(preg_replace('#[^0-9]#i', '', $_POST['cost']));
+                    $response = buildingItemController::buildBuilding($data, $profile->getAvatar(), $spent);
                     //Returns ERROR or SUCCESS
                     break;
                 case 6:

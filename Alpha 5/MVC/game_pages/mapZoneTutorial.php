@@ -41,10 +41,6 @@
                 </div>
             </div>
             <section id="mapwrapper">
-                <div id="mapButtonWrapper2">
-                    <img src="/images/mapButton.png" class="mapActionButton" onclick="hideMapWrapper()">
-                    <span class="imagetext"><strong>View Zone</strong></span>
-                </div>
                 <section id="start">
                 </section>
             </section>

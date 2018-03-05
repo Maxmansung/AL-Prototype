@@ -39,8 +39,9 @@ function inGameList(response){
                 $("#zonediv" + response[player].avatarID).append("<div class='playerdivname'><a class='usernamelink' href='/user.php?u=" + response[player].avatarName + "'><strong>" + response[player].avatarName + "</strong></a></div>");
                 if (response[player].inPlayerZone === true) {
                     if (response[player].isPlayer === false) {
+                        var nameCombo = response[player].avatarID+"?+!"+response[player].avatarName;
                         $("#zonediv" + response[player].avatarID).append("<div class='imagediv'><img class='teachResearchImg' src='/images/teaching.png' id='teach" + response[player].avatarID + "' onclick='teachPlayer(this.id)'><div class='imagetext'>Teach " + response[player].avatarName + "<br><div class='explanationText'>Costs 2 stamina</div></div></div>")
-                            .append("<div class='imagediv' id='" + response[player].avatarID + "' onclick='messagePlayer(this.id)'><img class='teachResearchImg' src='/images/messageIcon.png'><div class='imagetext'>Message " + response[player].avatarName + "<br><div class='explanationText'>Write a private message to this player</div></div></div>");
+                            .append("<div class='imagediv' id='" + nameCombo + "' onclick='messagePlayer(this.id)'><img class='teachResearchImg' src='/images/messageIcon.png'><div class='imagetext'>Message " + response[player].avatarName + "<br><div class='explanationText'>Write a private message to this player</div></div></div>");
                         if (response[player].inParty === false) {
                             if (countGroup < 2 || response[player].pendingRequest) {
                                 if (response[player].awaitingInvite === false) {
@@ -155,10 +156,7 @@ function createTeachingList(response){
     console.log(id);
     if (objectSize(teachingArray)>0){
         $(".teachResearchWrap").remove();
-        var div = $("#teach"+id);
-        var location = div.position();
         $("body").append("<div class='teachResearchWrap'><div id='teachResearchHorizontalWrap'></div><div id='closeTeachResearch' onclick='closeTeachWindow()'><div>x</div></div></div>");
-            $(".teachResearchWrap").css({top:(location.top+5)+"px",left:(location.left+15)+"px"});
         for (var building in teachingArray){
             $("#teachResearchHorizontalWrap").append("<div class='teachableResearchWrap'><img src='/images/buildings/"+teachingArray[building].icon+"' class='teachBuildingImage'><div class='teachBuildingName'>"+teachingArray[building].buildingName+"</div><button class='teachBuildingButton' id='"+building+"?!"+id+"' onclick='teachPlayerResearch(this.id)'>+</button></div>")
         }
@@ -233,6 +231,7 @@ function teachPlayerResearch(ID){
     var building = ID.slice(0,count);
     var player = ID.slice(count+2,ID.length);
     var string = building+"&other="+player;
+    $("#teachResearchWrap").remove();
     ajax_All(34,string,10);
 }
 
@@ -247,11 +246,13 @@ function hideWritingScreen(){
 
 
 function messagePlayer(ID){
-    var name = ID.slice(8);
+    var count = ID.indexOf("?+!");
+    var avatarID = ID.slice(0,count);
+    var avatarName = ID.slice(count+3);
     $("#messageMainText").val("");
     $("#messageTitleText").val("");
     $("#messagePlayerNameLocation").empty()
-        .append("<div class='titleText'>To: </div> <div class='playerMessageID' id='"+ID+"'>"+name+"</div>");
+        .append("<div class='titleText'>To: </div> <div class='playerMessageID' id='"+avatarID+"'>"+avatarName+"</div>");
     $("#writeNewMessageWrap").css("visibility", 'visible');
     $("#disableScreenWriting").css("visibility", 'visible');
 }

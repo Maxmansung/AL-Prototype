@@ -1,5 +1,12 @@
 /*THIS STYLESHEET IS USED ONLY TO DISPLAY THE PROFILE PAGE AND USER CARD*/
 
+.horizontalWrapTitle{
+    display: flex;
+    flex-direction: row;
+    width: inherit;
+    justify-content: space-between;
+}
+
 #userpage{
     display: flex;
     flex-direction: column;
@@ -47,7 +54,7 @@
     width: 400px;
 }
 
-#userCardScore{
+.userCardScore{
     font-weight: bold;
     font-size: 15px;
     margin: 0 10px 0 10px;
@@ -154,14 +161,13 @@
     margin: 5px;
 }
 
-#userAchieveList{
+.userAchieveList{
     overflow: auto;
-    padding: 5px;
-    margin: 5px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     align-items: flex-start;
+    width: 540px;
 }
 
 .userAchieveImageWrap{
@@ -691,4 +697,35 @@
     font-weight: bold;
     color: rgba(0,0,0,0.3);
     margin: 10px;
+    width: 100%;
+    text-align: center;
+}
+
+.selectedButton{
+    height: 100%;
+    vertical-align: middle;
+    text-align: center;
+    color: rgba(0,0,0,1);
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 5px;
+}
+
+.deselectedButton{
+    height: 100%;
+    vertical-align: middle;
+    text-align: center;
+    color: rgba(50,50,50,0.7);
+    border-radius: 10px;
+    font-size: 14px;
+    padding: 5px;
+    width: 100px
+}
+
+.deselectedButton:hover{
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    color: rgba(0,0,0,1);
 }

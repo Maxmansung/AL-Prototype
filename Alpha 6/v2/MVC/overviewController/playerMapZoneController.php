@@ -1,5 +1,5 @@
 <?php
-if (!defined('PROJECT_ROOT')) exit(include($_SERVER['DOCUMENT_ROOT'] . "/error/404.php"));
+if (!defined('PROJECT_ROOT')) exit(include($_SERVER['DOCUMENT_ROOT']."/error/404.php"));
 class playerMapZoneController
 {
 
@@ -94,7 +94,12 @@ class playerMapZoneController
             return intval($chancesLeft);
         } else {
             $biome = new biomeTypeController($biomeID);
-            return rand(0, ($biome->getFindingChanceMod() + $avatar->calculateFindingChanceMod()));
+            $total = $biome->getFindingChanceMod() - $avatar->calculateFindingChanceMod();
+            if ($total <= 0){
+                return 0;
+            } else {
+                return rand(0, $total);
+            }
         }
     }
 

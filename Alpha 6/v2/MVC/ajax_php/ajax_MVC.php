@@ -4,7 +4,9 @@ if (isset($_POST["type"])) {
     include_once(PROJECT_ROOT."/MVC/filesInclude.php");
     $type = intval(preg_replace('#[^0-9]#i', '', $_POST['type']));
     $response = profileController::userlogin();
-    if (array_key_exists("ERROR",$response) && $type !== 198){
+    $excludedRequests = array(198,197,196,49);
+    $check = in_array($type,$excludedRequests);
+    if (array_key_exists("ERROR",$response) && $check === false ){
         echo json_encode($response);
     } else {
         if (isset($response["SUCCESS"])) {
@@ -49,6 +51,8 @@ if (isset($_POST["type"])) {
                     //This is used to show the special buildings page
                 case 47:
                     //This is used to show the nightfall page
+                case 49:
+                    //This is used to show the news page
                     $response = array("SUCCESS" => true);
                     //No actions performed
                     break;
@@ -216,6 +220,15 @@ if (isset($_POST["type"])) {
                     $response = playerMapZoneController::consumeItem($data1,$profile->getAvatar());
                     break;
                     //Returns ERROR or SUCCESS
+                case 196:
+                    //Used to recover the players password
+                    $response = profileController::createRecoveryPassword($data1);
+                    break;
+                    //Returns ERROR or ALERT
+                case 197:
+                    //Used to create a new account within the game
+                    $response = $profile->signup($data1,$data2,$data3,$data4);
+                    break;
                 case 198:
                     //Used to log into the game
                     $response = $profile->login($data1,$data2,$data3);
@@ -269,7 +282,15 @@ if (isset($_POST["type"])) {
 
                         //$view = new constructionView($profile->getAvatar());
                         //$view = $view->returnVars();
-                        //break;
+                        break;
+                    case 1:
+                        $view = newsStoryController::getAllNews();
+                        $viewHUD = false;
+                        break;
+                    case 2:
+                        $view = profileAchievements::getView($data1);
+                        $viewHUD = false;
+                        break;
                     default:
                         $view = array("ERROR" => "Somehow you found a 2nd error, this shouldn't be seen - Control =" . $control);
                 }
@@ -283,5 +304,13 @@ if (isset($_POST["type"])) {
                 }
             }
         }
+    }
+} else {include_once($_SERVER['DOCUMENT_ROOT']."/templates/websiteVars.php");
+    include_once(PROJECT_ROOT."/MVC/filesInclude.php");
+    $response = profileController::userlogin();
+    if (!array_key_exists("ERROR", $response)) {
+        $profile = new profileController($response["SUCCESS"]);
+    } else {
+        $profile = new profileController("");
     }
 }

@@ -31,7 +31,7 @@ class HUDController
 
     public static function adminDayEnding($profileID){
         $profile = new profileController($profileID);
-        if ($profile->getAccountType() === "admin" || $profile->getAccountType() === "mod"){
+        if ($profile->getAccountType() <= 3){
             HUDController::dayEndingCheck($profile->getAvatar(),"admin");
             return array("ERROR" => 29);
         } else {
@@ -76,7 +76,7 @@ class HUDController
         $avatar = new avatarController($avatarID);
         $map = new mapController($avatar->getMapID());
         $profile = new profileController($avatar->getProfileID());
-        if ($profile->getAccountType() == "admin" || $map->getGameType() == "Test") {
+        if ($profile->getAccountType() == 1 || $map->getGameType() == "Test") {
             dayEndingFunctions::playerDeath($avatarID,3);
             $avatarCheck = new deathScreenController($avatar->getProfileID());
             if ($avatarCheck->getProfileID() != "") {

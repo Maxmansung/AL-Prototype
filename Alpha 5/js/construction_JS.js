@@ -10,6 +10,7 @@ function updateAllConstruction(response){
     upgradeSleepingBag(response.upgradeCostSleep,response.modifierLevel);
     updateRecipes(response.recipes,response.usingItems);
     showBuildings(response.buildings);
+    buildingFrom(response.storageDetails);
     chestItems = response.storageItems;
     groundItems = response.zoneItems;
     backpackItems = response.backpackItems;
@@ -47,7 +48,7 @@ function upgradeSleepingBag(upgrade,level) {
     for (var object in upgrade) {
         if (itemArray[upgrade[object].itemTemplateID] === undefined) {
             itemArray[upgrade[object].itemTemplateID] = 1;
-            $("#sleepingBagUpgradeItems").append("<div class='upgradeSleepingBagItem'><div class='imagediv'><image class='itemimage' src='/images/items/" + upgrade[object].icon + "'><span class='imagetext'>"+upgrade[object].identity+ "</span></div><div class='bagUpgradeImagetext' id='upgradeItem" + upgrade[object].itemTemplateID + "'>x 1</div></div>");
+            $("#sleepingBagUpgradeItems").append("<div class='upgradeSleepingBagItem'><div class='imagediv'><img class='itemImageBorder' src='/images/items/border.png'><img class='itemimage' src='/images/items/" + upgrade[object].icon + "'><span class='imagetext'>"+upgrade[object].identity+ "</span></div><div class='bagUpgradeImagetext' id='upgradeItem" + upgrade[object].itemTemplateID + "'>x 1</div></div>");
         } else {
             itemArray[upgrade[object].itemTemplateID] += 1;
             $("#upgradeItem" + upgrade[object].itemTemplateID).empty()
@@ -56,6 +57,14 @@ function upgradeSleepingBag(upgrade,level) {
     }
     $("#sleepingBagLevel").empty()
         .append("Level: "+level);
+}
+
+function buildingFrom(storage){
+    if ("ERROR" in storage){
+        $("#itemsUsedInBuilding").empty().append("Place items on the ground to build")
+    } else {
+        $("#itemsUsedInBuilding").empty().append("Place items into the storage to build")
+    }
 }
 
 function researchImageBar(cost,spent,level,researches){
@@ -97,6 +106,8 @@ function showBuildings(response) {
         var background = "canBeBuilt";
         var button = "buildButton2";
         var onClick = "onclick='buildingclick(this.id)'";
+        var inputBox = "<input class='staminaInputBox' id='buildingStamina"+x+"' type='number' min='1' max='20' value='1'>";
+        var buildPopup = "<div class='buildButtonInfo'>Click to spend stamina</div>";
         if (response[x].isBuilt === true){
             background = "hasBeenBuilt";
             button = "buildButton4";
@@ -104,12 +115,15 @@ function showBuildings(response) {
             background = "cantBeBuilt";
             button = "buildButton3";
             onClick = "";
+            inputBox = "<div class='blankStamina'></div>";
+            buildPopup = "<div class='buildButtonInfo'>More items needed to build</div>";
         } else if (response[x].buildingsRequired != 0) {
             parentID = response[x].buildingsRequired;
             if (response[parentID].isBuilt === false) {
                 background = "cantBeBuilt";
                 button = "buildButton3";
                 onClick = "";
+                inputBox = "<div class='blankStamina'></div>";
             }
 
         }
@@ -134,9 +148,9 @@ function showBuildings(response) {
         }
         if (response[x].isBuilt === false) {
             for (var y in response[x].itemsRequired) {
-                $("#building" + x + " .buildingItemsListWrapper").append("<div class='buildingItemWrapper'><div class='buildingListImageWrapper'><img class='buildingListImage' src='/images/items/constructionImages/" + response[x].itemsRequired[y].icon + "'><span class='imagetext'>" + response[x].itemsRequired[y].identity + "</span></div><div class='buildingItemsRequired'>" + response[x].itemsRequired[y].materialOwned + "/" + response[x].itemsRequired[y].materialNeeded + "</div></div>");
+                $("#building" + x + " .buildingItemsListWrapper").append("<div class='buildingItemWrapper'><div class='buildingListImageWrapper'><img class='buildingListImage' src='/images/items/" + response[x].itemsRequired[y].icon + "'><span class='imagetext'>" + response[x].itemsRequired[y].identity + "</span></div><div class='buildingItemsRequired'>" + response[x].itemsRequired[y].materialOwned + "/" + response[x].itemsRequired[y].materialNeeded + "</div></div>");
             }
-            $("#building" + x).append("<div class='buildingStaminaWrap'><div class='buildingItemsRequired'>" + response[x].staminaSpent + "/" + response[x].staminaRequired + "</div><img class='buildingStaminaImage' src='/images/stamina2.png'></div><img class='" + button + "Icon' id='" + x + "' src='/images/" + button + ".png' " + onClick + "'>");
+            $("#building" + x).append("<div class='buildingStaminaWrap'><div class='buildingItemsRequired'>" + response[x].staminaSpent + "/" + response[x].staminaRequired + "</div>"+inputBox+"</div><div class='buildButtonWrapper'><img class='" + button + "Icon' id='" + x + "' src='/images/" + button + ".png' " + onClick + "'>"+buildPopup+"</div>");
         } else {
             $("#building" + x).append("<div class='buildingStaminaWrap'><div class='completedBuilding'>Built</div>")
         }
@@ -178,18 +192,21 @@ function updateRecipes(info,use){
 
         }
     }
+    if (useLength+recipeLength === 0){
+        $("")
+    }
 }
 
 function createBackpackImages(size,upgrade){
     $("#firepitBackpackWrap").empty();
     $("#backpackHolderWrap").empty();
     for (var item in backpackItems){
-        $("#firepitBackpackWrap").append("<div class='imagediv'><image class='itemimage' src='/images/items/" + backpackItems[item].icon + "' id='" + backpackItems[item].itemID + "' onclick='burnItem(this.id)'><span class='imagetext'>" + backpackItems[item].identity + "<hr>" + backpackItems[item].description + "</span></div>");
-        $("#backpackHolderWrap").append("<div class='imagediv'><image class='itemimage' src='/images/items/" + backpackItems[item].icon + "' id='" + backpackItems[item].itemID + "' onclick='dropItem(this.id)'><span class='imagetext'>" + backpackItems[item].identity + "<hr>" + backpackItems[item].description + "</span></div>");
+        $("#firepitBackpackWrap").append("<div class='imagediv'><img class='itemImageBorder' src='/images/items/border.png'><img class='itemimage' src='/images/items/" + backpackItems[item].icon + "' id='" + backpackItems[item].itemID + "' onclick='burnItem(this.id)'><span class='imagetext'>" + backpackItems[item].identity + "<hr>" + backpackItems[item].description + "</span></div>");
+        $("#backpackHolderWrap").append("<div class='imagediv'><img class='itemImageBorder' src='/images/items/border.png'><img class='itemimage' src='/images/items/" + backpackItems[item].icon + "' id='" + backpackItems[item].itemID + "' onclick='dropItem(this.id)'><span class='imagetext'>" + backpackItems[item].identity + "<hr>" + backpackItems[item].description + "</span></div>");
     }
     var empty = size - objectSize(backpackItems);
     for(var x = 0;x<empty;x++){
-        var backpackEmpty = "<div class='imagediv'><image class='itemimage' src='/images/items/Empty.png' id='empty+" + x + "'><span class='imagetext'>Empty</span></div>";
+        var backpackEmpty = "<div class='imagediv'><img class='itemImageBorder' src='/images/items/border.png'><span class='imagetext'>Empty</span></div>";
         $("#firepitBackpackWrap").append(backpackEmpty);
         $("#backpackHolderWrap").append(backpackEmpty);
     }
@@ -198,7 +215,7 @@ function createBackpackImages(size,upgrade){
     for (var object in upgrade) {
         if (itemArray[upgrade[object].itemTemplateID] === undefined) {
             itemArray[upgrade[object].itemTemplateID] = 1;
-            $("#backpackUpgradeItems").append("<div class='upgradeSleepingBagItem'><div class='imagediv'><image class='itemimage' src='/images/items/" + upgrade[object].icon + "'><span class='imagetext'>"+upgrade[object].identity+ "</span></div><div class='bagUpgradeImagetext' id='upgradeItem2" + upgrade[object].itemTemplateID + "'>x 1</div></div>");
+            $("#backpackUpgradeItems").append("<div class='upgradeSleepingBagItem'><div class='imagediv'><img class='itemImageBorder' src='/images/items/border.png'><img class='itemimage' src='/images/items/" + upgrade[object].icon + "'><span class='imagetext'>"+upgrade[object].identity+ "</span></div><div class='bagUpgradeImagetext' id='upgradeItem2" + upgrade[object].itemTemplateID + "'>x 1</div></div>");
         } else {
             itemArray[upgrade[object].itemTemplateID] += 1;
             $("#upgradeItem2" + upgrade[object].itemTemplateID).empty()
@@ -238,12 +255,12 @@ function updateStorageItems() {
         if (objectSize(response) === 0 && response === groundItems) {
         } else {
             for (var object in response) {
-                $("#itemListArray").append("<div class='imagediv'><image class='itemimage' src='/images/items/" + response[object].icon + "' id='" + response[object].itemID + "' onclick='dropItem(this.id)'><span class='imagetext'>" + response[object].identity + "<hr>" + response[object].description + "</span></div>")
+                $("#itemListArray").append("<div class='imagediv'><img class='itemImageBorder' src='/images/items/border.png'><img class='itemimage' src='/images/items/" + response[object].icon + "' id='" + response[object].itemID + "' onclick='dropItem(this.id)'><span class='imagetext'>" + response[object].identity + "<hr>" + response[object].description + "</span></div>")
             }
             if (itemsLocation === "Chest") {
                 var difference = maxStorage - objectSize(response);
                 for (x = 0; x < difference; x++) {
-                    $("#itemListArray").append("<div class='imagediv'><image class='itemimage' src='/images/items/Empty.png' id='empty+" + x + "'><span class='imagetext'>Empty</span></div>")
+                    $("#itemListArray").append("<div class='imagediv'><img class='itemImageBorder' src='/images/items/border.png'><span class='imagetext'>Empty</span></div>")
                 }
             }
         }
@@ -258,7 +275,7 @@ function updateStorageDetails(response){
         for (var object in upgrade) {
             if (itemArray[upgrade[object].itemTemplateID] === undefined) {
                 itemArray[upgrade[object].itemTemplateID] = 1;
-                $("#storageUpgradeItemsInner").append("<div class='storageUpgradeItemWrap'><div class='imagediv'><image class='itemimage' src='/images/items/" + upgrade[object].icon + "'><span class='imagetext'>" + upgrade[object].identity + "</span></div><span class='buildingDetailsWriting' id='upgradeItem" + upgrade[object].itemTemplateID + "'>x 1</span></div>")
+                $("#storageUpgradeItemsInner").append("<div class='storageUpgradeItemWrap'><div class='imagediv'><img class='itemImageBorder' src='/images/items/border.png'><img class='itemimage' src='/images/items/" + upgrade[object].icon + "'><span class='imagetext'>" + upgrade[object].identity + "</span></div><span class='buildingDetailsWriting' id='upgradeItem" + upgrade[object].itemTemplateID + "'>x 1</span></div>")
             } else {
                 itemArray[upgrade[object].itemTemplateID] += 1;
                 $("#upgradeItem" + upgrade[object].itemTemplateID).empty()
@@ -347,7 +364,10 @@ function upgradeStorage(){
 
 //This function sends the message to build a building
 function buildingclick(id){
-    ajax_All(5,id,0)
+    var value = $("#buildingStamina"+id).val();
+    console.log(value);
+    var final = id+"&cost="+value;
+    ajax_All(5,final,0)
 }
 
 function upgradeBackpack(){

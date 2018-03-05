@@ -30,6 +30,7 @@ class profileController extends profile
             $this->gameStatus = $checkprofile->getGameStatus();
             $this->avatarID = $checkprofile->getAvatar();
             $this->achievements = $checkprofile->getAchievements();
+            $this->achievementsSolo = $checkprofile->getAchievementsSolo();
             $this->bio = $checkprofile->getBio();
             $this->country = $checkprofile->getCountry();
             $this->gender = $checkprofile->getGender();
@@ -73,7 +74,13 @@ class profileController extends profile
             session_start();
         }
         if (isset($_SESSION["type"])) {
-            switch ($_SESSION["type"]) {
+            $type = $_SESSION["type"];
+        }
+        if (isset($_COOKIE["type"])) {
+            $type = $_COOKIE["type"];
+        }
+        if (isset($type)){
+            switch ($type) {
                 case "main":
                     if (isset($_SESSION["ip"]) && isset($_SESSION["username"])) {
                         $response = profileController::checklogin();
@@ -137,7 +144,7 @@ class profileController extends profile
             }
             if (!password_verify($p,$checkprofile->getPassword())) {
                 return array("ERROR"=>103);
-            } else if ($checkprofile->accountType == "new") {
+            } else if ($checkprofile->accountType == 6) {
                 return array("ERROR"=>104);
             } else {
                 // CREATE THEIR SESSIONS
@@ -152,6 +159,7 @@ class profileController extends profile
                     $mac = hash_hmac('sha256', $cookieUpload, data::$salt["salt"]);
                     $cookieUpload .= ':' . $mac;
                     setcookie('loginKey', $cookieUpload, time() + (86400 * 30),"/",SITE_ADDRESS);
+                    setcookie('type', "main", time() + (86400 * 30),"/",SITE_ADDRESS);
                     $checkprofile->setLastLogin(date("Y-m-d H:i"));
                     $checkprofile->uploadProfile();
                     return array("COOKIES"=>true);
@@ -241,7 +249,7 @@ class profileController extends profile
             $this->setProfileID($u);
             $this->setEmail($e);
             $this->setLoginIP($ip);
-            $this->setAccountType("new");
+            $this->setAccountType(6);
             $this->setgameStatus("ready");
             $this->setProfilePicture(null);
             $this->setAvatar(null);
@@ -281,19 +289,24 @@ class profileController extends profile
             // Log this potential hack attempt to text file and email details to yourself
             header("location: message.php?msg=No player within the system with these details");
             exit();
-        }$checkprofile->setAccountType("tutorial");
+        }$checkprofile->setAccountType(5);
         // Match was found, you can activate them
         profileModel::insertProfile($checkprofile, "Update");
     }
 
     public function confirmdeath(){
         $deathScreen = new deathScreenController($this->profileID);
-        if ($deathScreen->getGameType() == "Main" || $deathScreen->getGameType() == "Tutorial") {
+        if ($deathScreen->getDayDuration() == "full" && $deathScreen->getGameType() != "Test") {
             if ($deathScreen->getDeathAchievements() != "") {
                 $this->addAchievements($deathScreen->getDeathAchievements());
             }
             if ($deathScreen->getShrineScore() != ""){
                 $this->addShrineScores($deathScreen->getShrineScore());
+            }
+        }
+        if ($deathScreen->getDayDuration() == "check" && $deathScreen->getGameType() != "Test"){
+            if ($deathScreen->getDeathAchievements() != "") {
+                $this->addAchievementsSolo($deathScreen->getDeathAchievements());
             }
         }
         if ($deathScreen->getGameType() == "Main") {
@@ -310,8 +323,8 @@ class profileController extends profile
         $profileAchievements = new profileAchievementController($this,$this->profileID);
         if ($profileAchievements->getProfileScore() > 4){
             if (data::$adminVar['autoTutorial'] == true) {
-                if ($this->accountType == "tutorial") {
-                    $this->setAccountType("active");
+                if ($this->accountType == 5) {
+                    $this->setAccountType(4);
                     $this->uploadProfile();
                     return array("ERROR" => 53);
                 }

@@ -11,7 +11,8 @@ class playerMapZoneController
         } else {
             $avatar->useStamina(1);
             $currentZone = new zoneController($avatar->getZoneID());
-            $newZone = $currentZone->nextMap($dir);
+            $newZone = new zoneController($avatar->getZoneID());
+            $newZone = $newZone->nextMap($dir);
             //This small section prevents players from entering zones not claimed by their party
             if ($newZone->getControllingParty() !== null) {
                 if ($newZone->getControllingParty() !== $avatar->getPartyID()) {
@@ -93,7 +94,12 @@ class playerMapZoneController
             return intval($chancesLeft);
         } else {
             $biome = new biomeTypeController($biomeID);
-            return rand(0, ($biome->getFindingChanceMod() + $avatar->calculateFindingChanceMod()));
+            $total = $biome->getFindingChanceMod() - $avatar->calculateFindingChanceMod();
+            if ($total <= 0){
+                return 0;
+            } else {
+                return rand(0, $total);
+            }
         }
     }
 
@@ -126,7 +132,7 @@ class playerMapZoneController
                 $avatar->updateAvatar();
                 return array("SUCCESS" => true);
             } else {
-                return array("ERROR" => array($item->getLocationID(),$zone->getZoneID()));
+                return array("ERROR" => 3);
             }
         }
     }
@@ -200,7 +206,7 @@ class playerMapZoneController
         $avatar = new avatarController($avatarID);
         $shrine = new shrineController($shrineID);
         if ($shrine->getZoneID() !== $avatar->getZoneID()){
-            return array("ERROR"=>"Player is not in the correct location");
+            return array("ERROR"=>"You are not in the correct zone to perform this action");
         } else{
             $checker = self::worshipChecker($avatar,$shrine);
             if ($checker === false){

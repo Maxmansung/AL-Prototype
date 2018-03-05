@@ -8,177 +8,221 @@
     src: url("/CSS/fonts/Modius'Frigid'.otf");
 }
 
+@font-face {
+    font-family: "Woodcut";
+    src: url("/CSS/fonts/Woodcut.otf");
+}
+
 @media (max-width: 576px) {
 }
 @media (min-width: 576px) and (max-width: 768px) {
-    .tooltip {
-        display: none !important;
-    }
-    .form-control::-webkit-input-placeholder { /* WebKit browsers */
-        color: transparent !important;
-    }
-    .form-control:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-        color: transparent !important;
-    }
-    .form-control::-moz-placeholder { /* Mozilla Firefox 19+ */
-        color: transparent !important;
-    }
-    .form-control :-ms-input-placeholder { /* Internet Explorer 10+ */
-        color: transparent !important;
-    }
 }
 @media (min-width: 768px) and (max-width: 992px) {
-    .tooltip {
-        display: none !important;
-    }
-    .form-control::-webkit-input-placeholder { /* WebKit browsers */
-        color: transparent !important;
-    }
-    .form-control:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-        color: transparent !important;
-    }
-    .form-control::-moz-placeholder { /* Mozilla Firefox 19+ */
-        color: transparent !important;
-    }
-    .form-control :-ms-input-placeholder { /* Internet Explorer 10+ */
-        color: transparent !important;
-    }
 }
 @media (min-width: 992px) and (max-width: 1200px) {
-    .tooltip {
-        display: none !important;
-    }
-    .form-control::-webkit-input-placeholder { /* WebKit browsers */
-        color: transparent !important;
-    }
-    .form-control:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-        color: transparent !important;
-    }
-    .form-control::-moz-placeholder { /* Mozilla Firefox 19+ */
-        color: transparent !important;
-    }
-    .form-control :-ms-input-placeholder { /* Internet Explorer 10+ */
-        color: transparent !important;
-    }
 }
 @media (min-width: 1200px){
-    .tooltip {
-        display: none !important;
-    }
-    .form-control::-webkit-input-placeholder { /* WebKit browsers */
-        color: transparent !important;
-    }
-    .form-control:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-        color: transparent !important;
-    }
-    .form-control::-moz-placeholder { /* Mozilla Firefox 19+ */
-        color: transparent !important;
-    }
-    .form-control :-ms-input-placeholder { /* Internet Explorer 10+ */
-        color: transparent !important;
-    }
 }
 
+.font-size-1{
+    font-size: 60%;
+}
 
-body{
-    font-family: 'Delicious';
+.font-size-2{
+    font-size: 80%;
+}
+
+.font-size-3{
+    font-size: 150%;
+}
+
+.font-size-4{
+    font-size: 200%;
+}
+
+.bannerImage{
+    max-height: 35px;
+}
+
+.clickable{
+    cursor: pointer;
 }
 
 .login-window{
     border-radius: 10px;
-    background-color: rgba(0,0,0,0.7);
     border: 2px solid rgba(0,0,0,0.9);
+    background-color: rgba(0,0,0,0.4);
+    -moz-box-shadow:    0 0 20px 2px rgba(0,0,0,0.9) inset;
+    -webkit-box-shadow: 0 0 20px 2px rgba(0,0,0,0.9) inset;
+    box-shadow:         0 0 20px 2px rgba(0,0,0,0.9) inset;
+}
+
+.login-window-light{
+    border-radius: 10px;
+    border: 2px solid rgba(0,0,0,0.9);
+    background-color: rgba(0,0,0,0.7);
+    -moz-box-shadow:    0 0 20px 2px rgba(0,0,0,0.9) inset;
+    -webkit-box-shadow: 0 0 20px 2px rgba(0,0,0,0.9) inset;
+    box-shadow:         0 0 20px 2px rgba(0,0,0,0.9) inset;
 }
 
 .bg-al-black{
     color: #ffffff;
-    background: #46333D url(/images/webPageBackgrounds/mountainsNoEdit.jpg) left top/auto no-repeat;
-}
-
-#titleWriting{
-    font-family: 'Delicious' !important;
-    font-weight: bold;
-    color: #000000;
-    padding: 20px;
-}
-
-.lineOnRight{
-    border-right: 2px solid white;
-}
-
-.lineOnTop{
-    border-top: 2px solid white;
-}
-
-#largerWriting{
+    background: url("/images/webPageBackgrounds/mountainsNoEdit.jpg");
+    background-color: #46333D;
+    background-position: center top;
+    background-repeat: no-repeat;
+    -o-background-size: auto;
+    -moz-background-size: auto;
+    -webkit-background-size: auto;
 }
 
 #navBarBackground{
-    background: #ffffff !important;
-
+    background: #ffffff;
 }
 
-.signinLink{
-    color: #ffffff
+#alertBar{
+    background-color: rgba(0,0,0,0.7);
+    border-radius: 10px;
 }
 
-.signinLink:hover{
-    text-decoration: none;
+#alertButton{
+    width: 52px;
+    height: 38px;
+    border: 2px solid rgba(0,0,0,0.4);
+    background: rgba(0,0,0,0.1);
+    border-radius: 5px;
+    -moz-box-shadow:    0 0 5px 2px rgba(0,0,0,0.4) inset;
+    -webkit-box-shadow: 0 0 5px 2px rgba(0,0,0,0.4) inset;
+    box-shadow:         0 0 5px 2px rgba(0,0,0,0.4) inset;
 }
 
-.descriptionWriting{
-    font-size: 80%;
-}
-
-.material-switch > input[type="checkbox"] {
-    display: none;
-}
-
-.material-switch > label {
+#alertButton:hover{
+    font-size: 110%;
     cursor: pointer;
-    height: 0px;
-    position: relative;
-    width: 40px;
 }
 
-.material-switch > label::before {
-    background: rgb(0, 0, 0);
-    box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5);
-    border-radius: 8px;
-    content: '';
-    height: 16px;
-    margin-top: -8px;
-    position:absolute;
-    opacity: 0.3;
-    transition: all 0.4s ease-in-out;
-    width: 40px;
-}
-.material-switch > label::after {
-    background: rgb(255, 255, 255);
-    border-radius: 16px;
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
-    content: '';
-    height: 24px;
-    left: -4px;
-    margin-top: -8px;
-    position: absolute;
-    top: -4px;
-    transition: all 0.3s ease-in-out;
-    width: 24px;
-}
-.material-switch > input[type="checkbox"]:checked + label::before {
-    background: rgba(0,100,200,1);
-    opacity: 0.5;
-}
-.material-switch > input[type="checkbox"]:checked + label::after {
-    background: rgba(0,100,200,1);
-    left: 20px;
+.funkyFont{
+    font-family: Woodcut;
 }
 
-#googleIcon{
-    max-height: 24px;
+.newsDate{
+    background-color: #bbbbbb;
+    border: 2px solid rgba(0,0,0,0.9);
+    -moz-box-shadow:    0 0 20px 2px rgba(0,0,0,0.9);
+    -webkit-box-shadow: 0 0 20px 2px rgba(0,0,0,0.9);
+    box-shadow:         0 0 20px 2px rgba(0,0,0,0.9);
+    color: black;
+    font-size: 100%;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    padding: 5px 0 5px 0;
 }
 
-.imgCustom{
-    max-height: 24px;
+.loader {
+    border: 12px solid #dddddd; /* Light grey */
+    border-top: 12px solid #1F51AC; /* Blue */
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.newsBar:hover{
+    cursor: pointer;
+    background-color: rgba(255,255,255,0.2);
+    border-radius: 10px;
+}
+
+#loadingScreen{
+    background: #ffffff;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.loginLink{
+    text-decoration: none;
+    font-size: 85%;
+    color: #ffffff;
+}
+
+.loginLink:hover{
+    color: #aaaaaa;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-header{
+    border-bottom: none !important;
+}
+
+.modal-footer{
+    border-top: none !important;
+}
+
+.pageBottom{
+    background: black;
+    color: #1F51AC;
+    font-size: 85%;
+}
+
+.profileImage{
+    height: 102px;
+    width: 102px;
+    border: 1px solid #dddddd;
+    -moz-box-shadow:    0 0 10px 2px rgba(255,255,255,0.8);
+    -webkit-box-shadow: 0 0 10px 2px rgba(255,255,255,0.8);
+    box-shadow:         0 0 10px 2px rgba(255,255,255,0.8);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background: #000000;
+}
+
+.avatarImage{
+    max-height: 100px;
+    max-width: 100px;
+}
+
+.singleAchievementWrapper{
+    background: rgba(100,100,100,0.9);
+    border: 2px solid #dddddd;
+    border-radius: 5px;
+    padding: 2px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 2px
+}
+
+.achievementImage{
+    max-height: 28px;
+    max-width: 28px;
+}
+
+.achievementWrapper{
+    width: 28px;
+    height: 28px;
+}
+
+#achievementWrapperMain{
+    border: 2px solid rgba(220,220,220,1);
+    border-radius: 10px;
+    -moz-box-shadow:    0 0 20px 2px rgba(220,220,220,0.9) inset;
+    -webkit-box-shadow: 0 0 20px 2px rgba(220,220,220,0.9) inset;
+    box-shadow:         0 0 20px 2px rgba(220,220,220,0.9) inset;
 }

@@ -89,15 +89,22 @@ $map = new mapController($avatar->getMapID());
             </section>
         </section>
         <?php
-        if ($profile->getAccountType() == "admin" || $profile->getAccountType() == "mod" || $map->getGameType() == "Test"){
-            echo
-            '<div class="horizontalWrap" id="readyButtons">
-            <button class="HUDButton" onclick="testdie()">Death</button>
-            <br>
+        $buttons = "";
+        if ($profile->getAccountType() == 1){
+            $buttons = '<button class="HUDButton" onclick="testdie()">Death</button>
             <button class="HUDButton" onclick="testStamina()" >Stamina</button>
-            <br>
-            <button class="HUDButton" onclick="dayEnding()">End Day</button>
-            </div>';
+            <button class="HUDButton" onclick="dayEnding()">End Day</button>';
+        } else if ($map->getGameType() == "Test" ){
+            $buttons = '<button class="HUDButton" onclick="testdie()">Death</button>
+            <button class="HUDButton" onclick="testStamina()" >Stamina</button>';
+        } else if ($profile->getAccountType() == 3) {
+            $buttons = '<button class="HUDButton" onclick="testdie()">Death</button>';
+        }
+        if ($buttons != ""){
+            echo
+            '<div class="horizontalWrap" id="readyButtons">'
+            .$buttons.
+            '</div>';
             }
         ?>
     </article>

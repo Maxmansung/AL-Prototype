@@ -117,6 +117,9 @@ if ($shrineZone !== false) {
             </div>
             <div class="horizontalLine"></div>
             <div id="buildingsWrapper">
+                <div id="itemsUsedInBuilding">
+                    Place items on the ground to build
+                </div>
                 <div  class="titleText">
                     Buildings
                 </div>
@@ -124,7 +127,6 @@ if ($shrineZone !== false) {
 
                 </div>
             </div>
-            <div class="horizontalLine"></div>
         </section>
     </section>
     <section class="horizontalWrap" id="itemHoldersWrap">

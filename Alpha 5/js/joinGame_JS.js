@@ -78,10 +78,14 @@ function createMapLog(maps){
 
 function playerCustomise(response){
     createMapLog(response.maps);
-    if (response.access === "admin"){
-
+    $("#adminWrapper").hide();
+    $("#mapWrapperHide").hide();
+    if (response.access < 2){
+        $("#adminWrapper").show();
+    } else if (response.access === 6){
+        $("#mapsWrapperTest").hide();
+        $("mapWrapperHide").show();
     } else {
-        $("#adminWrapper").hide();
     }
 }
 
@@ -92,7 +96,6 @@ function moreDetails(id){
 }
 
 function joinGame(id){
-    console.log(id);
     ajax_All(40,id,"x");
 }
 

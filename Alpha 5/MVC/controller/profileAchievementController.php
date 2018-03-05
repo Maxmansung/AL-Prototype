@@ -11,9 +11,11 @@ class profileAchievementController
     protected $gameStatus;
     protected $avatarID;
     protected $achievements;
+    protected $achievementsSolo;
     protected $bio;
     protected $isPlayer;
     protected $profileScore;
+    protected $profileScoreSolo;
     protected $country;
     protected $gender;
     protected $age;
@@ -24,7 +26,7 @@ class profileAchievementController
     protected $shrinesDetail;
 
     function getProfileScore(){
-        return $this->profileScore;
+        return $this->profileScoreSolo;
     }
 
 
@@ -66,8 +68,11 @@ class profileAchievementController
         $this->gameStatus = $profile->getGameStatus();
         $this->avatarID = $profile->getAvatar();
         $achievementDetails = $this->getAchievements($profile->getAchievements());
+        $achievementDetails2 = $this->getAchievements($profile->getAchievementsSolo());
         $this->achievements = $achievementDetails[0];
+        $this->achievementsSolo = $achievementDetails2[0];
         $this->profileScore = round($achievementDetails[1]);
+        $this->profileScoreSolo = round($achievementDetails2[1]);
         $this->bio = $profile->getBio();
         $this->country = $profile->getCountry();
         $this->gender = $profile->getGender();

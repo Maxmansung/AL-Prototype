@@ -7,7 +7,7 @@ class zoneModel extends zone
     {
         $this->zoneID = intval($zoneModel['zoneID']);
         $this->name = $zoneModel['name'];
-        $this->mapID = $zoneModel['mapID'];
+        $this->mapID = intval($zoneModel['mapID']);
         $this->coordinateX = $zoneModel['coordinateX'];
         $this->coordinateY = $zoneModel['coordinateY'];
         $this->avatars = json_decode($zoneModel['avatars']);
@@ -69,7 +69,7 @@ class zoneModel extends zone
         }
         $req->bindParam(':zoneID', $controller->getZoneID());
         $req->bindParam(':name2', $controller->getName());
-        $req->bindParam(':mapID', $controller->getMapID());
+        $req->bindParam(':mapID', intval($controller->getMapID()));
         $req->bindParam(':coordinateX', $controller->getCoordinateX());
         $req->bindParam(':coordinateY', $controller->getCoordinateY());
         $req->bindParam(':avatars', json_encode($controller->getAvatars()));

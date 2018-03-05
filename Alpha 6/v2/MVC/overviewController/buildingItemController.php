@@ -1,5 +1,5 @@
 <?php
-if (!defined('PROJECT_ROOT')) exit(include($_SERVER['DOCUMENT_ROOT'] . "/error/404.php"));
+if (!defined('PROJECT_ROOT')) exit(include($_SERVER['DOCUMENT_ROOT']."/error/404.php"));
 class buildingItemController
 {
 
@@ -170,18 +170,18 @@ class buildingItemController
         $zone = new zoneController($avatar->getZoneID());
         $storage = new storageController("", $zone->getZoneID());
         $itemsUsed = $buildingRequires->getItemsRequired();
+        if ($zone->getStorage() == true) {
+            $access = buildingItemController::storageAccess($avatar->getAvatarID());
+            if ($access === true) {
+                $zoneItems = itemController::getItemsAsObjects($zone->getMapID(),"storage",$storage->getStorageID());
+            } else {
+                $zoneItems = itemController::getItemsAsObjects($zone->getMapID(),"ground",$zone->getZoneID());
+            }
+        } else {
+            $zoneItems = itemController::getItemsAsObjects($zone->getMapID(),"ground",$zone->getZoneID());
+        }
         foreach ($itemsUsed as $material) {
             for ($x = 0; $x < $material["materialNeeded"]; $x++) {
-                if ($zone->getStorage() == true) {
-                    $access = buildingItemController::storageAccess($avatar->getAvatarID());
-                    if ($access === true) {
-                        $zoneItems = itemController::getItemsAsObjects($zone->getMapID(),"storage",$zone->getZoneID());
-                    } else {
-                        $zoneItems = itemController::getItemsAsObjects($zone->getMapID(),"ground",$zone->getZoneID());
-                    }
-                } else {
-                    $zoneItems = itemController::getItemsAsObjects($zone->getMapID(),"ground",$zone->getZoneID());
-                }
                 $removed = false;
                 foreach ($zoneItems as $item) {
                     if ($removed == false) {
@@ -191,6 +191,7 @@ class buildingItemController
                             }
                             $item->delete();
                             $removed = true;
+                            $zoneItems[$item->getItemID()] = new itemController("");
                         }
                     }
                 }

@@ -6,13 +6,9 @@
 <link rel="stylesheet" href="/templates/template.css">
 <?php
 if ($profile->getProfileID() == ""){
-     echo '<div id="headerwrapper">
-                <div id="bannerwrap">
-                    <a href="/joingame.php">
-                        <img src="/images/banner5.png" id="headerimage">
-                    </a>
-                </div>
-            </div>';
+    echo '<div id="bannerWrapper">
+        <img src="/images/banner5.png" id="headerimage">
+        </div>';
 } else {
     if ($profile->getPostsNew() !== false){
         $forum = "navButtonAlert";
@@ -57,7 +53,7 @@ if ($profile->getProfileID() == ""){
     } else {
         $forum = '<a class="navButtonFlash" href="/forum.php"">FORUM</a>';
     }
-    if ($profile->getAccountType() === "admin"){
+    if ($profile->getAccountType() === 1){
         $admin = '<div class="navButton">
                     <a class="navButtonRed" href="/admin/admin.php">ADMIN</a>
                 </div>';

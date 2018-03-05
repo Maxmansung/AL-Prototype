@@ -1,7 +1,7 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . "/templates/check_login.php");
 if (!defined('PROJECT_ROOT')) exit(include($_SERVER['DOCUMENT_ROOT']."/error/404.php"));
-if ($profile->getProfileID() == "" || $profile->getAccountType() != "admin"){
+if ($profile->getProfileID() == "" || $profile->getAccountType() > 2){
     header("location:/index.php");
     exit();
 }

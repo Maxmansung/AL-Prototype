@@ -43,7 +43,8 @@ class chatlogMovementController extends chatlogController
                 if (!in_array($log->getAvatarID(), $playersKnown)) {
                     $log->setAvatarID("Someone");
                 } else {
-                    $log->setAvatarID(str_replace($log->getMapID(), "", $log->getAvatarID()));
+                    $avatar = new avatarController($log->getAvatarID());
+                    $log->setAvatarID($avatar->getProfileID());
                 }
             }
             if ($log->getMapDay() === intval($day)) {

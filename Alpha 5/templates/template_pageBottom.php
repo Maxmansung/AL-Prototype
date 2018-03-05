@@ -7,6 +7,24 @@
         <img src="/images/loading.png">
     </div>
 </div>
+<div id="alertBoxWrapper">
+    <div id="alertBox">
+        <div id="alertBoxTitle">
+            Title Text
+        </div>
+        <div id="alertBoxTextImageWrap">
+            <div id="alertBoxText">
+                Action text
+            </div>
+            <div id="alertBoxImageWrap">
+                Image here
+            </div>
+        </div>
+        <div id="alertBoxConfirm">
+            Ok
+        </div>
+    </div>
+</div>
 <div id="footerwrapper">
     <div class="verticalWrap">
         <div >Created by Maxmansung</div>

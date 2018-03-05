@@ -1,5 +1,9 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . "/templates/check_login.php");
+if ($profile->getProfileID() === ""){
+    header("location:/index.php");
+    exit();
+}
 $u = preg_replace('#[^A-Za-z0-9]#i', '', $_GET["u"]);
 ?>
 <!DOCTYPE html>
@@ -71,13 +75,26 @@ $u = preg_replace('#[^A-Za-z0-9]#i', '', $_GET["u"]);
                     </div>
                 </div>
                 <div id="userAchieve">
-                    <div id="userAchieveTitle">
-                        Achievements
+                    <div class="horizontalWrapTitle">
+                        <div id="readyAchieveButton" onclick="viewReadyAchieve()">
+                            Speed Games
+                        </div>
+                        <div id="userAchieveTitle">
+                            Achievements
+                        </div>
+                        <div id="fullAchieveButton" onclick="viewFullAchieve()">
+                            Full Games
+                        </div>
                     </div>
-                    <div id="userAchieveList">
+                    <div class="userAchieveList" id="userAchieveListFull">
                         Achievement list here
                     </div>
-                    <div id="userCardScore">
+                    <div class="userAchieveList" id="userAchieveListReady">
+
+                    </div>
+                    <div class="userCardScore" id="userCardScoreFull">
+                    </div>
+                    <div class="userCardScore" id="userCardScoreReady">
                     </div>
                 </div>
             <div id="searchNewPlayer">

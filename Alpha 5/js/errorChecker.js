@@ -2,18 +2,37 @@
 
 //This function returns the error response depending on the error created by the PHP functions
 function errors(id){
+    var title = "";
+    var text = "";
+    var image = "";
+    var onclickValue = "";
     switch (id) {
         case 0:
-            alert("You don't have enough stamina");
+            title = "Tired";
+            text = "You don't have enough stamina to perform that action. Your stamina will be replenished overnight or you can try to find something to eat that could help";
+            image = "tired.png";
+            onclickValue = 0;
+            customAlertBox(title,text,image,onclickValue);
+            //alert("You don't have enough stamina");
             break;
         case 1:
-            alert("You cannot enter this zone");
+            title = "No Access";
+            text = "Something is preventing you from entering this zone, you may have to go around";
+            image = "direction.png";
+            onclickValue = 0;
+            customAlertBox(title,text,image,onclickValue);
+            //alert("You cannot enter this zone");
             break;
         case 2:
             alert("You shouldn't be able to move this far - (Please error report this message 'ERROR 2')");
             break;
         case 3:
-            alert("This item is no longer located here");
+            title = "No Item";
+            text = "This item seems to have disappeared, sorry";
+            image = "shrug.png";
+            onclickValue = 0;
+            customAlertBox(title,text,image,onclickValue);
+            //alert("This item is no longer located here");
             break;
         case 4:
             var depleted = $("#depletedzone").length;
@@ -230,7 +249,12 @@ function errors(id){
             alert("This region makes you feel uneasy, its probably best not to disturb it too much - This Error shouldnt be seen, please bug report");
             break;
         case 60:
-            alert("You dont have the required sacrifice");
+            title = "Gods Unhappy";
+            text = "It seems you don't have the required sacrifice for this shrine.<br><br>Come back when you're ready to do what it takes";
+            image = "shrug.png";
+            onclickValue = 0;
+            customAlertBox(title,text,image,onclickValue);
+            //alert("You dont have the required sacrifice");
             break;
         case 61:
             alert("This region has been locked away, please join the controlling party or break the lock down");
@@ -391,4 +415,21 @@ function getRecipeList(data){
     }
     var text = getArrayWriting(arrayList);
     alert("This requires: "+text);
+}
+
+function customAlertBox(title,text,image,onclickValue){
+    $("#alertBoxWrapper").css('visibility', 'visible').focus();
+    $("#alertBoxTitle").empty().append(title);
+    $("#alertBoxText").empty().append(text);
+    $("#alertBoxImageWrap").empty().append("<img class='alertBoxImage' src='/images/errorImages/"+image+"'>");
+    $("#alertBoxConfirm").attr({onclick:"errorBoxFinish("+onclickValue+")",onkeyup:"errorBoxFinish("+onclickValue+")"});
+}
+
+function errorBoxFinish(value){
+    switch (value){
+        case 1:
+            console.log(value);
+            break;
+    }
+    $("#alertBoxWrapper").css("visibility","hidden");
 }

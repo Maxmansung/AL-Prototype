@@ -78,7 +78,7 @@ class newMapJoinController
             //Echo error ID - this shows the map is not a new map
             return array("ERROR" => 17);
         } elseif ($mapcheck->getGameType() != "Tutorial") {
-            if ($profile->getAccountType() != "admin" && $profile->getAccountType() != "mod" && $profile->getAccountType() != "active") {
+            if ($profile->getAccountType() < 4) {
                 //Echo error ID - this shows the player is trying to join a game they do not have access to
                 return array("ERROR" => 52);
             }
@@ -119,7 +119,10 @@ class newMapJoinController
             $mapcheck->updateMap();
             chatlogMovementController::playerJoinsMap($avatar->getAvatarID());
             if ($mapcheck->getMaxPlayerCount() == count($mapcheck->getAvatars())) {
-                self::duplicateMap($mapcheck);
+                $check = self::duplicateMap($mapcheck);
+                if ($check["ERROR"] == 1){
+                    return array ("ERROR"=>"For some reason a new map couldn't be created");
+                }
             }
             return array("ALERT" => 7,"DATA"=>$mapcheck->getName());
         }
@@ -174,10 +177,10 @@ class newMapJoinController
 
     public static function duplicateMap($mapController){
         if ($mapController->getGameType() == "Main") {
-            newMapJoinController::createNewMap(nameGeneratorController::getNameAsText("map"), $mapController->getMaxPlayerCount(), $mapController->getMaxPlayerInventorySlots(), $mapController->getEdgeSize(), $mapController->getMaxPlayerStamina(), $mapController->getDayDuration(), 1, $mapController->getBaseSurvivableTemperature(), $mapController->getBaseAvatarTemperatureModifier(),$mapController->getGameType());
+            return newMapJoinController::createNewMap(nameGeneratorController::getNameAsText("map"), $mapController->getMaxPlayerCount(), $mapController->getMaxPlayerInventorySlots(), $mapController->getEdgeSize(), $mapController->getMaxPlayerStamina(), $mapController->getDayDuration(), 1, $mapController->getBaseSurvivableTemperature(), $mapController->getBaseAvatarTemperatureModifier(),$mapController->getGameType());
         }
         elseif ($mapController->getGameType() == "Tutorial") {
-            newMapJoinController::createNewMap($mapController->getName(), $mapController->getMaxPlayerCount(), $mapController->getMaxPlayerInventorySlots(), $mapController->getEdgeSize(), $mapController->getMaxPlayerStamina(), $mapController->getDayDuration(), 1, $mapController->getBaseSurvivableTemperature(), $mapController->getBaseAvatarTemperatureModifier(),$mapController->getGameType());
+            return newMapJoinController::createNewMap($mapController->getName(), $mapController->getMaxPlayerCount(), $mapController->getMaxPlayerInventorySlots(), $mapController->getEdgeSize(), $mapController->getMaxPlayerStamina(), $mapController->getDayDuration(), 1, $mapController->getBaseSurvivableTemperature(), $mapController->getBaseAvatarTemperatureModifier(),$mapController->getGameType());
         }
     }
 }

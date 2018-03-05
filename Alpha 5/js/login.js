@@ -65,7 +65,7 @@ function profile_ajax(type,u,p,e,security){
                 errors(response.ERROR);
             } else{
                 if (type === "signup"){
-                    if(!alert("An activation email has been sent to your email address")){window.location.reload();}
+                    if(!alert("An activation email has been sent to your email address")){window.location.href = "/index.php";}
                 } else if (type === "login") {
                     window.location.href = "/joingame.php";
                 } else if (type === "newPass"){
@@ -136,7 +136,7 @@ function loginListener(){
             $("#signinSubmit").click();
         }
     });
-    $("#signupPasswordConfrm").keyup(function(event){
+    $("#adminSecurePassword").keyup(function(event){
         if(event.keyCode == 13){
             $("#signupSubmit").click();
         }

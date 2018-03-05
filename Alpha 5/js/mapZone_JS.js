@@ -62,7 +62,12 @@ function mapcreate(zones) {
         if (i == -1 || i == Math.sqrt(zones.length)) {
             for (var x = -1;x<(Math.sqrt(zones.length))+1;x++){
                 if (x == -1 || x == (Math.sqrt(zones.length))){
-                    $("#zoneRow" + i).append("<div id='axisHorizontal" + x + "' class='zoneAxisCorner'></div>")
+                    if (x== (Math.sqrt(zones.length)) && i == Math.sqrt(zones.length)) {
+                        $("#zoneRow" + i).append("<div id='axisHorizontal" + x + "' class='zoneAxisCorner' onclick='hideMapWrapper()'><img id='closeButtonImage' src='/images/closeButton.png'><div id='infoWrapper'>Close the map screen</div></div>");
+                        $("#axisHorizontal"+x).css("border","0px");
+                    }else {
+                        $("#zoneRow" + i).append("<div id='axisHorizontal" + x + "' class='zoneAxisCorner'></div>")
+                    }
                 } else {
                     $("#zoneRow" + i).append("<div id='axisHorizontal" + x + "' class='zoneAxis'>" + x + "</div>")
                 }
@@ -149,16 +154,32 @@ function createMiniMap(zones,current){
     $("#miniMapWrapper").empty();
     var currentX = zones[current].coordinateX;
     var currentY = zones[current].coordinateY;
-    var zone1 = [-1,1,false];
-    var zone2 = [0,1,false];
-    var zone3 = [1,1,false];
-    var zone4 = [-1,-0,false];
-    var zone5 = [0,0,false];
-    var zone6 = [1,0,false];
-    var zone7 = [-1,-1,false];
-    var zone8 = [0,-1,false];
-    var zone9 = [1,-1,false];
-    var zoneList = [zone1,zone2,zone3,zone4,zone5,zone6,zone7,zone8,zone9];
+    var zone1 = [-2,2,false];
+    var zone2 = [-2,1,false];
+    var zone3 = [-2,0,false];
+    var zone4 = [-2,-1,false];
+    var zone5 = [-2,-2,false];
+    var zone6 = [-1,2,false];
+    var zone7 = [-1,1,false];
+    var zone8 = [-1,0,false];
+    var zone9 = [-1,-1,false];
+    var zone10 = [-1,-2,false];
+    var zone11 = [0,2,false];
+    var zone12 = [0,1,false];
+    var zone13 = [0,0,false];
+    var zone14 = [0,-1,false];
+    var zone15 = [0,-2,false];
+    var zone16 = [1,2,false];
+    var zone17 = [1,1,false];
+    var zone18 = [1,0,false];
+    var zone19 = [1,-1,false];
+    var zone20 = [1,-2,false];
+    var zone21 = [2,2,false];
+    var zone22 = [2,1,false];
+    var zone23 = [2,0,false];
+    var zone24 = [2,-1,false];
+    var zone25 = [2,-2,false];
+    var zoneList = [zone1,zone2,zone3,zone4,zone5,zone6,zone7,zone8,zone9,zone10,zone11,zone12,zone13,zone14,zone15,zone16,zone17,zone18,zone19,zone20,zone21,zone22,zone23,zone24,zone25];
     for (var zoneTest in zones){
         for (check in zoneList){
             if (zones[zoneTest].coordinateX === (currentX + zoneList[check][0])){
@@ -168,15 +189,18 @@ function createMiniMap(zones,current){
             }
         }
     }
-    for (var y = 1; y>-2;y--) {
+    for (var y = 2; y>-3;y--) {
         $("#miniMapWrapper").append("<div class='miniMapRow' id='wrapZone" + y + "'></div>");
-        for (var x = -1; x < 2; x++) {
+        for (var x = -2; x < 3; x++) {
             for (check in zoneList){
                 if (zoneList[check][1] === y){
                     if (zoneList[check][0] === x){
-                        var colour = "#000000"
+                        var colour = "#333333";
                         if (zoneList[check][2] !== false) {
                             colour = getZoneColour(zones[zoneList[check][2]].biomeType);
+                            if (colour === "#000000"){
+                                colour = "#323232";
+                            }
                             if (x === 0 && y === 0) {
                                 $("#wrapZone" + y).append("<div class='miniMapZone' id='miniMap" + check + "'>X</div>");
 
@@ -314,12 +338,12 @@ function infobox(zone) {
 function updateBackpack(items,maxBackpack){
     $("#backpack").empty();
     for (var object in items){
-        $("#backpack").append("<div class='imagediv'><image class='itemimage' src='/images/items/"+items[object].icon+"' id='"+items[object].itemID+"' onclick='dropitem(this.id)'><span class='imagetext'>"+items[object].identity+"<hr>"+items[object].description+"</span></div>")
+        $("#backpack").append("<div class='imagediv'><img class='itemImageBorder' src='/images/items/border.png'><img class='itemimage' src='/images/items/"+items[object].icon+"' id='"+items[object].itemID+"' onclick='dropitem(this.id)'><span class='imagetext'>"+items[object].identity+"<hr>"+items[object].description+"</span></div>")
 
     }
     var difference = maxBackpack - objectSize(items);
     for (x=0;x<difference;x++){
-        $("#backpack").append("<div class='imagediv'><image class='itemimage' src='/images/items/Empty.png' id='empty+"+x+"'><span class='imagetext'>Empty</span></div>")
+        $("#backpack").append("<div class='imagediv'><img class='itemImageBorder' src='/images/items/border.png'><span class='imagetext'>Empty</span></div>")
     }
 }
 
@@ -329,7 +353,7 @@ function updateGround(items){
         $("#grounditems").append("The zone is empty");
     }
     for (var object in items){
-            $("#grounditems").append("<div class='imagediv'><image class='itemimage' src='/images/items/"+items[object].icon+"' id='"+items[object].itemID+"' onclick='dropitem(this.id)'><span class='imagetext'>"+items[object].identity+"<hr>"+items[object].description+"</span></div>")
+            $("#grounditems").append("<div class='imagediv'><img class='itemImageBorder' src='/images/items/border.png'><img class='itemimage' src='/images/items/"+items[object].icon+"' id='"+items[object].itemID+"' onclick='dropitem(this.id)'><span class='imagetext'>"+items[object].identity+"<hr>"+items[object].description+"</span></div>")
     }
 }
 

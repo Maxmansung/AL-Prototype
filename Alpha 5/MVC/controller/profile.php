@@ -9,10 +9,11 @@ class profile implements profile_Interface
     protected $email = "";
     protected $lastlogin = "";
     protected $loginIP = "";
-    protected $accountType = "";
+    protected $accountType = 7;
     protected $gameStatus = "";
     protected $avatarID = "";
     protected $achievements = array();
+    protected $achievementsSolo = array();
     protected $bio = "";
     protected $country = "";
     protected $gender = "";
@@ -37,6 +38,7 @@ class profile implements profile_Interface
         $output .= '/ '.$this->gameStatus;
         $output .= '/ '.$this->avatarID;
         $output .= '/ '.$this->achievements;
+        $output .= '/ '.$this->achievementsSolo;
         $output .= '/ '.$this->bio;
         $output .= '/ '.$this->country;
         $output .= '/ '.$this->gender;
@@ -117,12 +119,12 @@ class profile implements profile_Interface
 
     function getAccountType()
     {
-        return $this->accountType;
+        return intval($this->accountType);
     }
 
     function setAccountType($accountType)
     {
-        $this->accountType = $accountType;
+        $this->accountType = intval($accountType);
     }
 
     function getGameStatus()
@@ -348,6 +350,32 @@ class profile implements profile_Interface
         if ( $index !== false ) {
             unset( $this->forumPosts[$index]);
             $this->forumPosts = array_values($this->forumPosts);
+        }
+    }
+
+    function getAchievementsSolo()
+    {
+        return $this->achievementsSolo;
+    }
+
+    function setAchievementsSolo($achievements)
+    {
+        $this->achievementsSolo = $achievements;
+    }
+
+    function addAchievementsSolo($achievements)
+    {
+        foreach ($achievements as $avatarKey=>$avatarAchieve){
+            $exists = false;
+            foreach ($this->achievementsSolo as $profileKey=>$profileAchieve){
+                if ($profileKey == $avatarKey){
+                    $this->achievementsSolo[$profileKey]+=$avatarAchieve;
+                    $exists = true;
+                }
+            }
+            if ($exists === false){
+                $this->achievementsSolo[$avatarKey]=$avatarAchieve;
+            }
         }
     }
 }

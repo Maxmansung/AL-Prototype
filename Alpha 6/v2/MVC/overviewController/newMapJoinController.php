@@ -78,7 +78,7 @@ class newMapJoinController
             //Echo error ID - this shows the map is not a new map
             return array("ERROR" => 17);
         } elseif ($mapcheck->getGameType() != "Tutorial") {
-            if ($profile->getAccountType() != "admin" && $profile->getAccountType() != "mod" && $profile->getAccountType() != "active") {
+            if ($profile->getAccountType() > 4) {
                 //Echo error ID - this shows the player is trying to join a game they do not have access to
                 return array("ERROR" => 52);
             }

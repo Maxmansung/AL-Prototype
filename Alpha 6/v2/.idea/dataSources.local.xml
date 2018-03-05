@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal">
+    <data-source name="Private Hosting" uuid="0be83a98-8649-4fc9-964a-7a2cdcaf1182">
+      <database-info product="MySQL" version="5.5.56-MariaDB" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.44 ( Revision: b3cda4f864902ffdde495b9df93937c3e20009be )">
+        <extra-name-characters>#@</extra-name-characters>
+        <identifier-quote-string>`</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="exact" quoted-identifiers="exact" />
+      <secret-storage>master_key</secret-storage>
+      <user-name>maxmansung</user-name>
+      <introspection-schemas>*:ArcticLands</introspection-schemas>
+      <ssh-properties>
+        <enabled>false</enabled>
+        <proxy-host>195.110.59.18</proxy-host>
+        <proxy-port>22</proxy-port>
+        <user>root</user>
+        <use-password>true</use-password>
+      </ssh-properties>
+    </data-source>
+    <data-source name="Shared Hosting" uuid="f0b9671d-cd27-467d-a4df-ab24104969cb">
+      <database-info product="MySQL" version="5.5.5-10.1.29-MariaDB" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.44 ( Revision: b3cda4f864902ffdde495b9df93937c3e20009be )">
+        <extra-name-characters>#@</extra-name-characters>
+        <identifier-quote-string>`</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="exact" quoted-identifiers="exact" />
+      <secret-storage>master_key</secret-storage>
+      <user-name>u509281701_max</user-name>
+      <introspection-schemas>*:u509281701_main</introspection-schemas>
+    </data-source>
+  </component>
+</project>

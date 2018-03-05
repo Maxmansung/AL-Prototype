@@ -1,23 +1,20 @@
 <?php
 ?>
-<nav class="navbar navbar-expand-lg navbar-light">
-    <a class="navbar-brand" href="#">
-        <img class="img-fluid" src="/images/gameLogo2.png" alt="logo">
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-expand-md navbar-light" id="navBarBackground">
+    <div class="d-none d-md-block blackColour funkyFont"><h2><span class="fas fa-snowflake fa-lg small d-inline mb-1"></span>   Will you stay alone in the intense cold?</h2></div>
+    <div class="navbar-brand d-md-none d-block"><img src="/images/titleBanner.png" class="bannerImage"> </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarText">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="#">Login <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Info</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Help</a>
-            </li>
-        </ul>
+    <div class="navbar-collapse collapse" id="navbarSupportedContent">
+        <div class=" nav-item mx-1 d-flex flex-row clickable align-items-center">
+            <span class="fab fa-facebook-square fa-2x facebookColour"></span><div class="blackColour ml-1 d-md-none d-block">Facebook</div>
+        </div>
+        <div class="nav-item mx-1 d-flex flex-row clickable align-items-center">
+            <span class="fab fa-twitter-square fa-2x twitterColour"></span><div class="blackColour ml-1 d-md-none d-block">Twitter</div>
+        </div>
+        <div class="nav-item mx-1 d-flex flex-row clickable align-items-center">
+            <span class="fab fa-google-plus-square fa-2x googleColour"></span><div class="blackColour ml-1 d-md-none d-block">Google+</div>
+        </div>
     </div>
 </nav>

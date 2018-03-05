@@ -6,6 +6,8 @@ interface building_Interface
     function setBuildingID($var);
     function getZoneID();
     function setZoneID($var);
+    function getMapID();
+    function setMapID($var);
     function getBuildingTemplateID();
     function setBuildingTemplateID($var);
     function getFuelBuilding();

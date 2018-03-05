@@ -24,6 +24,7 @@ class deathScreenController extends deathScreen
             $this->shrineDisplay = buildingLevels::getShrineDetails($this->shrineScore);
             $this->deathType = $deathModel->getDeathType();
             $this->partyPlayersLeft = $deathModel->partyPlayersLeft;
+            $this->dayDuration = $deathModel->dayDuration;
         }
     }
 
@@ -45,6 +46,7 @@ class deathScreenController extends deathScreen
         $deathScreen->setDeathType(intval($cause));
         $totalLeft = count($party->getMembers())-1;
         $deathScreen->setPartyPlayersLeft(intval($totalLeft));
+        $deathScreen->setDayDuration($map->getDayDuration());
         $deathScreen->insertDeathScreen();
     }
 

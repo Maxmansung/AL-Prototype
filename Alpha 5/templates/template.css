@@ -1,11 +1,27 @@
-body{
-    background-repeat: no-repeat;
-    background: rgba(18,87,182,0); /* For browsers that do not support gradients */
-    background: -webkit-linear-gradient(rgba(86,213,251,1) 0%,rgba(18,87,182,0.5) 30%,rgba(255,0,0,0) 90%); /*Safari 5.1-6*/
-    background: -o-linear-gradient(rgba(86,213,251,1) 0%,rgba(18,87,182,0.5) 30%,rgba(255,0,0,0) 90%); /*Opera 11.1-12*/
-    background: -moz-linear-gradient(rgba(86,213,251,1) 0%,rgba(18,87,182,0.5) 30%,rgba(255,0,0,0) 90%); /*Fx 3.6-15*/
-    background: linear-gradient(rgba(86,213,251,1) 0%,rgba(18,87,182,0.5) 30%,rgba(255,0,0,0) 90%); /*Standard*/
-    background-attachment: fixed;
+@font-face {
+    font-family: "Delicious";
+    src: url("/CSS/fonts/Delicious-Roman.otf")
+}
+
+
+@media (orientation: landscape) {
+    body {
+        background-repeat: no-repeat;
+        background: rgba(18, 87, 182, 0); /* For browsers that do not support gradients */
+        background: -webkit-linear-gradient(rgba(86, 213, 251, 1) 0%, rgba(18, 87, 182, 0.5) 30%, rgba(255, 0, 0, 0) 90%); /*Safari 5.1-6*/
+        background: -o-linear-gradient(rgba(86, 213, 251, 1) 0%, rgba(18, 87, 182, 0.5) 30%, rgba(255, 0, 0, 0) 90%); /*Opera 11.1-12*/
+        background: -moz-linear-gradient(rgba(86, 213, 251, 1) 0%, rgba(18, 87, 182, 0.5) 30%, rgba(255, 0, 0, 0) 90%); /*Fx 3.6-15*/
+        background: linear-gradient(rgba(86, 213, 251, 1) 0%, rgba(18, 87, 182, 0.5) 30%, rgba(255, 0, 0, 0) 90%); /*Standard*/
+        background-attachment: fixed;
+        font-family: 'Delicious';
+    }
+}
+
+@media (orientation: portrait){
+    body{
+        background: rgba(18, 87, 182, 0.5); /* For browsers that do not support gradients */
+        font-family: 'Delicious';
+    }
 }
 
 .horizontalWrap{
@@ -27,12 +43,6 @@ body{
 .verticalWrapCentre{
     display: flex;
     flex-direction: column;
-    align-items: center;
-}
-
-#bannerwrap{
-    display: flex;
-    flex-direction: row;
     align-items: center;
 }
 
@@ -83,16 +93,6 @@ body{
     text-align: center;
 }
 
-#headerwrapper{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 5px;
-    margin-bottom: 5px;
-    min-width: 900px;
-    justify-content: center;
-}
-
 #footerwrapper{
     padding: 10px;
     margin-top: 5px;
@@ -137,11 +137,18 @@ body{
     cursor: pointer;
 }
 
+#bannerWrapper{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
 #headerimage{
     position: relative;
     float: left;
-    width: 798px;
-    height: 168px;
+    width: 80%;
 }
 
 #loginWrapperHidden{
@@ -320,12 +327,6 @@ body{
     font-size: 14px;
 }
 
-#introTextTitle{
-    font-size: 16px;
-    font-weight: bold;
-    padding: 5px;
-}
-
 #alphaPageLink{
     text-decoration: none;
     color: red;
@@ -375,6 +376,42 @@ body{
         background: black;
     }
 
+    #alertBox{
+        width: 90%;
+        height: 33%;
+        position: fixed;
+        top: 33%;
+        left: 5%;
+        background: rgba(150,150,200,1);
+        border-radius: 10px;
+        border: 3px solid rgba(120,120,180,1);
+        z-index: 101;
+        display: flex;
+        flex-direction: column;
+        font-size: 20px;
+    }
+
+    #alertBoxText{
+        width: 60%;
+        height: 100%;
+        color: rgba(50,30,10,1);
+        flex-wrap: wrap;
+        font-size: 100%;
+    }
+
+    #alertBoxTitle{
+        width: 85%;
+        height: 17%;
+        margin: 3% 5% 0 10%;
+        font-size: 150%;
+        font-weight: bold;
+    }
+
+    #alertBoxImageWrap{
+        max-width: 40%;
+        max-height: 100%;
+    }
+
 }
 
 @media (orientation: landscape) {
@@ -391,6 +428,42 @@ body{
         padding: 0 10px 0 10px;
         margin-right: 20px;
         background: black;
+    }
+
+    #alertBox{
+        width: 50%;
+        height: 33%;
+        position: fixed;
+        top: 33%;
+        left: 25%;
+        background: rgba(150,150,200,1);
+        border-radius: 10px;
+        border: 3px solid rgba(120,120,180,1);
+        z-index: 101;
+        display: flex;
+        flex-direction: column;
+
+    }
+
+    #alertBoxText{
+        width: 75%;
+        height: 100%;
+        font-size: 14px;
+        color: rgba(50,30,10,1);
+        flex-wrap: wrap;
+    }
+
+    #alertBoxTitle{
+        width: 85%;
+        height: 17%;
+        margin: 3% 5% 0 10%;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    #alertBoxImageWrap{
+        max-width: 20%;
+        max-height: 100%;
     }
 
 }
@@ -467,4 +540,49 @@ body{
     font-size: 14px;
     padding: 0 5px 10px 5px;
     text-align: center;
+}
+
+#alertBoxWrapper{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    top: 0;
+    left: 0;
+    background: rgba(0,0,0,0.4);
+    visibility: hidden;
+}
+
+#alertBoxTextImageWrap{
+    width: 90%;
+    height: 49%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 1% 5% 0 5%;
+}
+
+.alertBoxImage{
+    max-width: 100%;
+    max-height: 100%;
+}
+
+#alertBoxConfirm{
+    width: 20%;
+    height: 10%;
+    max-height: 30px;
+    margin: 2% 0 2% 40%;
+    padding: 1%;
+    border: 2px solid rgba(50,150,100,1);
+    background: rgba(70,170,120,1);
+    border-radius: 10px;
+    text-align: center;
+    line-height: 100%;
+    vertical-align: middle;
+    font-weight: bold;
+}
+
+#alertBoxConfirm:hover{
+    cursor: pointer;
+    background: rgba(110,200,150,1);
 }

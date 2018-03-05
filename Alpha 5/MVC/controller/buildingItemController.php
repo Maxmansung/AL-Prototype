@@ -107,7 +107,7 @@ class buildingItemController
             if ($zone->getProtectedType() !== "none"){
                 return array("ERROR"=>59);
             } else {
-                $selectedBuilding = buildingItemController::getSingleBuilding($avatarID, $id);
+                $selectedBuilding = buildingItemController::getSingleBuilding($avatar->getAvatarID(),$id);
                 if ($selectedBuilding->getIsBuilt() === true) {
                     //Building is already built
                     return array("ERROR" => 7);
@@ -156,7 +156,7 @@ class buildingItemController
                             if ($checker !== null) {
                                 return $checker;
                             } else {
-                                return array("Success");
+                                return array("SUCCESS");
                             }
                         }
                     }
@@ -170,18 +170,18 @@ class buildingItemController
         $zone = new zoneController($avatar->getZoneID());
         $storage = new storageController("", $zone->getZoneID());
         $itemsUsed = $buildingRequires->getItemsRequired();
+        if ($zone->getStorage() == true) {
+            $access = buildingItemController::storageAccess($avatar->getAvatarID());
+            if ($access === true) {
+                $zoneItems = itemController::getItemsAsObjects($zone->getMapID(),"storage",$storage->getStorageID());
+            } else {
+                $zoneItems = itemController::getItemsAsObjects($zone->getMapID(),"ground",$zone->getZoneID());
+            }
+        } else {
+            $zoneItems = itemController::getItemsAsObjects($zone->getMapID(),"ground",$zone->getZoneID());
+        }
         foreach ($itemsUsed as $material) {
             for ($x = 0; $x < $material["materialNeeded"]; $x++) {
-                if ($zone->getStorage() == true) {
-                    $access = buildingItemController::storageAccess($avatar->getAvatarID());
-                    if ($access === true) {
-                        $zoneItems = itemController::getItemsAsObjects($zone->getMapID(),"storage",$zone->getZoneID());
-                    } else {
-                        $zoneItems = itemController::getItemsAsObjects($zone->getMapID(),"ground",$zone->getZoneID());
-                    }
-                } else {
-                    $zoneItems = itemController::getItemsAsObjects($zone->getMapID(),"ground",$zone->getZoneID());
-                }
                 $removed = false;
                 foreach ($zoneItems as $item) {
                     if ($removed == false) {
@@ -191,6 +191,7 @@ class buildingItemController
                             }
                             $item->delete();
                             $removed = true;
+                            $zoneItems[$item->getItemID()] = new itemController("");
                         }
                     }
                 }
@@ -669,43 +670,46 @@ class buildingItemController
         $itemsArray = itemController::getAllItems();
         $avatar = new avatarController($avatarID);
         $zone = new zoneController($avatar->getZoneID());
-        $buildingController = new buildingController("");
-        $buildingsList = $buildingController->getBuildingsArray($avatar->getZoneID());
+        $tempID = buildingController::findBuildingInZone($buildingID, $avatar->getZoneID());
+        if (array_key_exists("ERROR",$tempID)){
+            $building = new buildingController("");
+            $building->createNewBuilding($buildingID,$zone->getZoneID());
+        } else {
+            $building = new buildingController($tempID);
+        }
         if ($zone->getStorage() == true) {
-            $access = buildingItemController::storageAccess($avatarID);
+            $access = buildingItemController::storageAccess($avatar->getAvatarID());
             if ($access === true) {
                 $storage = new storageController("", $zone->getZoneID());
                 $zoneItems = itemController::getItemArray($avatar->getMapID(), "storage", $storage->getStorageID());
             } else {
-                $zoneItems = itemController::getItemArray($zone->getMapID(),"ground",$zone->getZoneID());
+                $zoneItems = itemController::getItemArray($zone->getMapID(), "ground", $zone->getZoneID());
             }
         } else {
-            $zoneItems = itemController::getItemArray($zone->getMapID(),"ground",$zone->getZoneID());
+            $zoneItems = itemController::getItemArray($zone->getMapID(), "ground", $zone->getZoneID());
         }
-        foreach ($buildingsList as $building) {
-            if ($building->getBuildingTemplateID() == $buildingID) {
-                $materials = [];
-                $materialsRequired = $building->getItemsRequired();
-                foreach ($materialsRequired as $resource => $required) {
-                    $counter = 0;
-                    foreach ($zoneItems as $singleItem) {
-                        if ($singleItem["itemTemplateID"] == $resource) {
-                            $counter += 1;
-                        }
+        if ($building->getBuildingTemplateID() == $buildingID) {
+            $materials = [];
+            $materialsRequired = $building->getItemsRequired();
+            foreach ($materialsRequired as $resource => $required) {
+                $counter = 0;
+                foreach ($zoneItems as $singleItem) {
+                    if ($singleItem["itemTemplateID"] == $resource) {
+                        $counter += 1;
                     }
-                    $itemIdentity = "";
-                    foreach ($itemsArray as $itemDetails) {
-                        if ($itemDetails->getItemTemplateID() == $resource) {
-                            $itemIdentity = $itemDetails;
-                        }
-                    }
-                    $tempItem = new buildingItemController($required, $counter, $itemIdentity);
-                    $materials[$tempItem->materialRequired] = $tempItem->returnVars();
                 }
-                $building->setItemsRequired($materials);
-                $building->checkCanBeBuilt();
-                return $building;
+                $itemIdentity = "";
+                foreach ($itemsArray as $itemDetails) {
+                    if ($itemDetails->getItemTemplateID() == $resource) {
+                        $itemIdentity = $itemDetails;
+                    }
+                }
+                $tempItem = new buildingItemController($required, $counter, $itemIdentity);
+                $materials[$tempItem->materialRequired] = $tempItem->returnVars();
             }
+            $building->setItemsRequired($materials);
+            $building->checkCanBeBuilt();
+            return $building;
         }
         return "ERROR";
     }

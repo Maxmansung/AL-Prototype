@@ -4,8 +4,8 @@ class storageModel extends storage
 {
     private function __construct($storageModel)
     {
-        $this->storageID = $storageModel['storageID'];
-        $this->zoneID = $storageModel['zoneID'];
+        $this->storageID = intval($storageModel['storageID']);
+        $this->zoneID = intval($storageModel['zoneID']);
         $this->items = json_decode($storageModel['items']);
         $this->maximumCapacity = intval($storageModel['maximumCapacity']);
         $this->storageLevel = intval($storageModel['storageLevel']);
@@ -17,7 +17,7 @@ class storageModel extends storage
         $db = db_conx::getInstance();
         $req = $db->prepare('SELECT * FROM Storage WHERE storageID= :storageID OR zoneID= :zoneID LIMIT 1');
         $req->bindParam(':storageID', $storageID);
-        $req->bindParam(':zoneID', $zoneID);
+        $req->bindParam(':zoneID', intval($zoneID));
         $req->execute();
         $storageModel = $req->fetch();
         return new storageModel($storageModel);

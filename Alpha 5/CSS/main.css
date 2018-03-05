@@ -75,13 +75,6 @@
     flex-direction: row;
 }
 
-/*This positions the menu on top of the main window*/
-#menuwrap{
-    display: flex;
-    flex-direction: column;
-    margin-left: 5px;
-}
-
 @media (orientation: portrait) {
 
     #HUDWrapper{
@@ -139,6 +132,33 @@
 
     #playerStatusView{
         width: 125px;
+    }
+
+
+    /*This is the main body */
+    #playerBox{
+        border: 1px solid black;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    /*This positions the menu on top of the main window*/
+    #menuwrap{
+        display: flex;
+        flex-direction: column;
+        margin-left: 5px;
+        width: 75%;
+    }
+
+    /*This wraps the players section parts together*/
+    #playerspagewrap{
+        display: flex;
+        flex-direction: column;
+        border: 2px solid slateblue;
+        padding: 10px
     }
     
 }
@@ -200,6 +220,32 @@
         height: 150px;
         justify-content: space-between;
         align-items: center;
+    }
+
+    /*This is the main body */
+    #playerBox{
+        border: 1px solid black;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    /*This positions the menu on top of the main window*/
+    #menuwrap{
+        display: flex;
+        flex-direction: column;
+        margin-left: 5px;
+    }
+
+    /*This wraps the players section parts together*/
+    #playerspagewrap{
+        display: flex;
+        flex-direction: column;
+        border: 2px solid slateblue;
+        padding: 10px;
+        width: 800px;
     }
 
 }
@@ -426,20 +472,9 @@
     text-align: center;
 }
 
-/*This is the main body */
-#playerBox{
-    border: 1px solid black;
-    text-align: center;
-    height: 400px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-}
-
 #playersList{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     width: 100%;
     flex-wrap: wrap;
@@ -570,14 +605,6 @@ a.usernamelink:hover{
 #groupbox{
     text-align: center;
     border: 1px solid black;
-}
-
-/*This wraps the players section parts together*/
-#playerspagewrap{
-    display: flex;
-    flex-direction: column;
-    border: 2px solid slateblue;
-    padding: 10px
 }
 /*This is the wrapper for the zone page*/
 #zonepagewrap{
@@ -746,12 +773,25 @@ a.menulink2:visited, a.menulink2:link {
     flex-wrap: wrap;
 }
 /*All of these relate to the item images and their information*/
-.itemimage{
-    height: 26px;
-    width: 26px;
+.itemimage {
+    height: inherit;
+    width: inherit;
+    position: absolute;
+    z-index: 11;
 }
+
+.itemImageBorder{
+    height: inherit;
+    width: inherit;
+    position: absolute;
+    z-index: 10;
+}
+
 .imagediv{
     margin: 2px;
+    height: 26px;
+    width: 26px;
+    position: relative;
 }
 
 #researchChoiceWrap{
@@ -1027,6 +1067,7 @@ a.menulink2:visited, a.menulink2:link {
     font-weight: bold;
     text-align: center;
     width: 150px;
+    margin: 0 10px 0 10px;
 }
 
 #survivalWarningGreen{
@@ -1490,7 +1531,7 @@ a.menulink2:visited, a.menulink2:link {
     margin-bottom: 20px;
     display: flex;
     flex-direction: column;
-    min-width: 600px;
+    min-width: 400px;
 }
 
 #movementLogTitle{
@@ -1538,11 +1579,11 @@ a.menulink2:visited, a.menulink2:link {
 }
 
 #miniMapWrapper{
-    width: 45px;
-    height: 45px;
+    width: 60px;
+    height: 60px;
     position: absolute;
     top: 20px;
-    left: 390px;
+    left: 370px;
     display: flex;
     flex-direction: column;
     border: 1px solid black;
@@ -1551,24 +1592,52 @@ a.menulink2:visited, a.menulink2:link {
 .miniMapRow{
     display: flex;
     flex-direction: row;
-    width: 45px;
-    height: 15px;
+    width: 60px;
+    height: 12px;
 }
 
 .miniMapZone{
-    width: 13px;
-    height: 13px;
-    border: 1px solid black;
+    width: 10px;
+    height: 10px;
+    border: 1px solid rgba(0,0,0,1);
     color: rgba(255,0,0,1);
     font-size: 10px;
-    line-height: 13px;
+    line-height: 10px;
     text-align: center;
     vertical-align: middle;
 }
 
 .miniMapZone2{
-    width: 15px;
-    height: 15px;
+    width: 12px;
+    height: 12px;
+    background: rgba(0,0,0,1);
+}
+
+#closeButtonImage{
+    width: 22px;
+    height: 22px;
+}
+
+.zoneAxisCorner:hover #infoWrapper{
+    visibility: visible;
+}
+
+#infoWrapper{
+    visibility: hidden;
+    position: relative;;
+    width: 100px;
+    font-size: 10px;
+    font-weight: bold;
+    background: darkslategray;
+    color: white;
+    top: -45px;
+    padding: 5px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+#closeButtonImage:hover{
+    cursor: pointer;
 }
 
 #mapButtonWrapper{
@@ -2852,4 +2921,49 @@ a.menulink2:visited, a.menulink2:link {
     max-width: 16px;
     max-height: 16px;
     padding: 0 5px 0 0;
+}
+
+#itemsUsedInBuilding{
+    font-size: 14px;
+    color: rgba(150,0,0,1);
+    width: 100%;
+    text-decoration: underline;
+    text-align: center;
+    font-weight: bold;
+}
+
+.staminaInputBox{
+    width: 28px;
+    font-size: 11px;
+}
+
+.blankStamina{
+    width: 28px;
+    height: 5px;
+}
+
+.buildButtonWrapper{
+    display: flex;
+    flex-direction: row;
+    height: 20px;
+    position: relative;
+    width: 30px;
+}
+
+.buildButtonWrapper .buildButtonInfo{
+    visibility: hidden;
+    position: absolute;
+    background: darkslategray;
+    color: white;
+    border-radius: 10px;
+    padding: 5px;
+    width: 80px;
+    font-size: 10px;
+    height: 20px;
+    text-align: center;
+    margin-left: -90px;
+}
+
+.buildButtonWrapper:hover .buildButtonInfo{
+    visibility: visible;
 }

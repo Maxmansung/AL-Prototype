@@ -13,99 +13,50 @@ if ($profile->getProfileID() !== ""){
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="CSS/signup.css">
     <link rel="icon" href="images/iconSnowman.png" type="image/x-icon"/>
     <link rel="shortcut icon" href="images/iconSnowman.png" type="image/x-icon"/>
     <title>Arctic Lands</title>
 </head>
 <body>
 <?php include_once($_SERVER['DOCUMENT_ROOT']."/templates/template_pageTop.php"); ?>
-<article>
-    <section class="verticalWrapCentre">
-    <div id="loginWritingWrap">
-        <section id="introWriting">
-            <div id="introTextTitle">
-                WELCOME
-            </div>
-            <div>
+<div id="loginOverviewWrapOrientation">
+    <section id="introWritingOrientation">
+        <div id="introTextTitle">
+            WELCOME
+        </div>
+        <div id="extraHorizontalWriting">
             This game is currently in alpha phase 4 and is running test games. This is not a complete game and it requires a lot of
             communication and co-ordination to ensure the test games run effectively. Please ensure you have joined the discord channel
             and that you have requested tutorial games before trying to start
-                <br>
-                <br>
-                <a id="alphaPageLink" href="/templates/alpha.php">Click Here To Learn More</a>
-            </div>
-        </section>
-        <div id='loginScreen'>
-        <div class="loginWindow">
-            <div class="wordsVsButton">
-                <div class="loginTitle">
-                    Sign In
-                </div>
-                <div class="signinInputBox">
-                    Username:
-                    <input type="text" id="signinUsername" name="username" onfocus="emptyElement('usernameSigninError')">
-                </div>
-                <div id="usernameSigninError" class="errorBox">
-                </div>
-                <div class="signinInputBox">
-                    Password:
-                    <input type="password" id="signinPassword" name="password" onfocus="emptyElement('passwordSigninError')">
-                </div>
-                <div id="passwordSigninError" class="errorBox">
-                </div>
-                <div class="signinInputBox">
-                    Remember me:
-                    <input type="checkbox" id="signinCookie" name="cookies">
-                </div>
-                <div id="recoverPassword">
-                    <a  href="/login/forgotten.php">Forgotten your password?</a>
-                </div>
-            </div>
-            <button class="loginBoxSubmit" id="signinSubmit" onclick="loginButton()">Login</button>
+            <br>
+            <br>
+            <a id="alphaPageLink" href="/templates/alpha.php">Click Here To Learn More</a>
         </div>
-        <div id="dividingLine">
-
-        </div>
-        <div class="loginWindow">
-            <div class="wordsVsButton">
-                <div class="loginTitle">
-                    Create new Account
-                </div>
-                <div class="signinInputBox">
-                    Username:
-                    <input type="text" id="signupUsername" name="username" onfocus="emptyElement('usernameSignupError')">
-                </div>
-                <div id="usernameSignupError" class="errorBox">
-                </div>
-                <div class="signinInputBox">
-                    Email:
-                    <input type="email" id="signupEmail" name="email" onfocus="emptyElement('emailSignupError')">
-                </div>
-                <div id="emailSignupError" class="errorBox">
-                </div>
-                <div class="signinInputBox">
-                    Password:
-                    <input type="password" id="signupPassword" name="password" onfocus="emptyElement('passwordSignupError')">
-                </div>
-                <div id="passwordSignupError" class="errorBox">
-                </div>
-                <div class="signinInputBox">
-                    Password confirm:
-                    <input type="password" id="signupPasswordConfrm" name="password" onfocus="emptyElement('passwordSignupError2')">
-                </div>
-                <div class="signinInputBox">
-                    Account creation password:
-                    <input type="password" id="adminSecurePassword" name="adminPassword" onfocus="emptyElement('adminPasswordError')">
-                </div>
-                <div id="adminPasswordError" class="errorBox">
-                </div>
-            </div>
-            <button id="signupSubmit" class="loginBoxSubmit" onclick="signupButton()">Sign-up</button>
-        </div>
-    </div>
-    </div>
     </section>
-</article>
+    <div id="loginWrapperOrientation">
+        <div class="loginOrientation">
+            <div class="loginText">Username:</div>
+            <input type="text" id="signinUsername" name="username" class="loginInputBox"  autofocus="autofocus" onfocus="emptyElement('usernameSigninError')">
+        </div>
+        <div id="usernameSigninError" class="errorBox"></div>
+        <div class="loginOrientation">
+            <div class="loginText">Password:</div>
+            <input type="password" id="signinPassword" name="password" class="loginInputBox" onfocus="emptyElement('passwordSigninError')">
+        </div>
+        <div id="passwordSigninError" class="errorBox"></div>
+        <div class="loginOrientation">
+            Remember me:
+            <input type="checkbox" id="signinCookie" name="cookies">
+        </div>
+        <div id="recoverPassword">
+            <a  href="/login/forgotten.php">Forgotten your password?</a>
+        </div>
+        <div><a href="/login/newAccount.php" class="returnWriting">Create new account</a></div>
+        <br>
+        <button id="signinSubmit" class="loginBoxSubmit" onclick="loginButton()">Log In</button>
+    </div>
+</div>
 <script>
     loginListener();
 </script>

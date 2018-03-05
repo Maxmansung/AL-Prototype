@@ -16,6 +16,7 @@ class deathScreen implements deathScreen_Interface
     protected $shrineScore;
     protected $deathType;
     protected $partyPlayersLeft;
+    protected $dayDuration;
 
     function returnVars(){
         return get_object_vars($this);
@@ -137,5 +138,15 @@ class deathScreen implements deathScreen_Interface
     function setPartyPlayersLeft($var)
     {
         $this->partyPlayersLeft = $var;
+    }
+
+    function getDayDuration()
+    {
+        return $this->dayDuration;
+    }
+
+    function setDayDuration($var)
+    {
+        $this->dayDuration = $var;
     }
 }

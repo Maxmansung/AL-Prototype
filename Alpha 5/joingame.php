@@ -28,17 +28,22 @@ if ($profile->getGameStatus() != "ready"){
             Tutorial Maps
         </div>
         <div class="mapsWriting">
-            Select a map to join
+            The are solo maps with reduced abilities to allow you time to learn the mechanics
         </div>
         <div class="joinMaps">
         </div>
     </div>
     <div class="mapListWrap" id="mapsWrapperMain">
+        <div id="mapWrapperHide">
+            <div id="mapWrapperHideText">
+                You must complete some tutorial games first
+            </div>
+        </div>
         <div class="mapsTitle">
             Main Maps
         </div>
         <div class="mapsWriting">
-            Select a map to join
+            Once your score is high enough you can join the main games
         </div>
         <div class="joinMaps">
         </div>
@@ -48,7 +53,7 @@ if ($profile->getGameStatus() != "ready"){
             Testing Maps
         </div>
         <div class="mapsWriting">
-            Select a map to join
+            These maps are used for testing functions, no achievements will be gained from these
         </div>
         <div class="joinMaps">
         </div>

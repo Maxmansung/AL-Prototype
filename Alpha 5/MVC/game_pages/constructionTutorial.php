@@ -78,6 +78,9 @@ if ($shrineZone !== false) {
         </section>
         <section class="verticalWrap" id="constructionUpgrades">
             <div id="buildingsWrapper">
+                <div id="itemsUsedInBuilding">
+                    Place items on the ground to build
+                </div>
                 <div  class="titleText">
                     Buildings
                 </div>

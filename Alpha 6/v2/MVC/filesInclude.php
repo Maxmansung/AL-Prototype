@@ -15,7 +15,7 @@ include(PROJECT_ROOT."/MVC/controller/achievementController.php");
 include(PROJECT_ROOT."/MVC/controller/avatarController.php");
 include(PROJECT_ROOT."/MVC/controller/biomeTypeController.php");
 include(PROJECT_ROOT."/MVC/controller/buildingController.php");
-include(PROJECT_ROOT . "/MVC/baseController/buildingType.php");
+include(PROJECT_ROOT ."/MVC/baseController/buildingType.php");
 include(PROJECT_ROOT."/MVC/controller/chatlogAllController.php");
 include(PROJECT_ROOT."/MVC/controller/deathCauseController.php");
 include(PROJECT_ROOT."/MVC/controller/deathScreenController.php");
@@ -27,6 +27,7 @@ include(PROJECT_ROOT."/MVC/controller/itemController.php");
 include(PROJECT_ROOT."/MVC/controller/lockController.php");
 include(PROJECT_ROOT."/MVC/controller/mapController.php");
 include(PROJECT_ROOT."/MVC/controller/nameGeneratorController.php");
+include(PROJECT_ROOT."/MVC/controller/newsStoryController.php");
 include(PROJECT_ROOT."/MVC/controller/partyController.php");
 include(PROJECT_ROOT."/MVC/controller/privateMessagesController.php");
 include(PROJECT_ROOT."/MVC/controller/profileController.php");
@@ -47,3 +48,4 @@ include(PROJECT_ROOT . "/MVC/overviewController/partyZonePlayerController.php");
 include(PROJECT_ROOT . "/MVC/overviewController/playerMapZoneController.php");
 
 //VIEW CLASSES
+include(PROJECT_ROOT . "/MVC/view/profileAchievements.php");

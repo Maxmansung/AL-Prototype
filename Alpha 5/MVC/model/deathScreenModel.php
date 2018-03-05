@@ -17,6 +17,7 @@ class deathScreenModel extends deathScreen
         $this->shrineScore = get_object_vars(json_decode($deathModel['shrineScore']));
         $this->deathType = intval($deathModel['deathType']);
         $this->partyPlayersLeft = intval($deathModel['partyPlayersLeft']);
+        $this->dayDuration = $deathModel['dayDuration'];
     }
 
     public static function getDeathScreen($profileID) {
@@ -31,9 +32,9 @@ class deathScreenModel extends deathScreen
     public static function insertDeathScreen($deathScreenController, $type){
         $db = db_conx::getInstance();
         if ($type == "Insert") {
-            $req = $db->prepare("INSERT INTO DeathScreen (profileID, mapID, partyName, deathDay, nightTemp, survivableTemp, deathStatistics, deathAchievements, gameType, shrineScore, deathType, partyPlayersLeft) VALUES (:profileID, :mapID, :partyName, :deathDay, :nightTemp, :survivableTemp, :deathStatistics, :deathAchievements, :gameType, :shrineScore, :deathType, :partyPlayersLeft)");
+            $req = $db->prepare("INSERT INTO DeathScreen (profileID, mapID, partyName, deathDay, nightTemp, survivableTemp, deathStatistics, deathAchievements, gameType, shrineScore, deathType, partyPlayersLeft, dayDuration) VALUES (:profileID, :mapID, :partyName, :deathDay, :nightTemp, :survivableTemp, :deathStatistics, :deathAchievements, :gameType, :shrineScore, :deathType, :partyPlayersLeft, :dayDuration)");
         } elseif ($type == "Update"){
-            $req = $db->prepare("UPDATE DeathScreen SET mapID= :mapID, partyName= :partyName, deathDay= :deathDay, nightTemp= :nightTemp, survivableTemp= :survivableTemp, deathStatistics= :deathStatistics, deathAchievements= :deathAchievements, gameType= :gameType, shrineScore= :shrineScore, deathType= :deathType, partyPlayersLeft= :partyPlayersLeft WHERE profileID= :profileID");
+            $req = $db->prepare("UPDATE DeathScreen SET mapID= :mapID, partyName= :partyName, deathDay= :deathDay, nightTemp= :nightTemp, survivableTemp= :survivableTemp, deathStatistics= :deathStatistics, deathAchievements= :deathAchievements, gameType= :gameType, shrineScore= :shrineScore, deathType= :deathType, partyPlayersLeft= :partyPlayersLeft, dayDuration= :dayDuration WHERE profileID= :profileID");
         }
         $req->bindParam(':profileID', $deathScreenController->getProfileID());
         $req->bindParam(':mapID', $deathScreenController->getMapID());
@@ -47,6 +48,7 @@ class deathScreenModel extends deathScreen
         $req->bindParam(':shrineScore', json_encode($deathScreenController->getShrineScore()));
         $req->bindParam(':deathType', $deathScreenController->getDeathType());
         $req->bindParam(':partyPlayersLeft', $deathScreenController->getPartyPlayersLeft());
+        $req->bindParam(':dayDuration', $deathScreenController->getDayDuration());
         $req->execute();
     }
 

@@ -1,6 +1,6 @@
 <?php
 if (!defined('PROJECT_ROOT')) exit(include($_SERVER['DOCUMENT_ROOT']."/error/404.php"));
-require_once(PROJECT_ROOT . "/MVC/baseController/avatar.php");
+require_once(PROJECT_ROOT."/MVC/controller/avatar.php");
 require_once(PROJECT_ROOT."/MVC/model/avatarModel.php");
 class avatarController extends avatar
 {

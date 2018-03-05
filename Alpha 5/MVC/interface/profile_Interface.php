@@ -23,6 +23,9 @@ interface profile_Interface
     function getAchievements();
     function setAchievements($achievements);
     function addAchievements($achievements);
+    function getAchievementsSolo();
+    function setAchievementsSolo($achievements);
+    function addAchievementsSolo($achievements);
     function getBio();
     function setBio($var);
     function getCountry();

@@ -5,8 +5,8 @@ class shrineModel extends shrine
     private function __construct($shrineModel)
     {
         $this->shrineID = intval($shrineModel['shrineID']);
-        $this->mapID = $shrineModel['mapID'];
-        $this->zoneID = $shrineModel['zoneID'];
+        $this->mapID = intval($shrineModel['mapID']);
+        $this->zoneID = intval($shrineModel['zoneID']);
         $this->shrineType = $shrineModel['shrineType'];
         $this->history = get_object_vars(json_decode($shrineModel['history']));
         $this->currentArray = get_object_vars(json_decode($shrineModel['currentArray']));
@@ -58,8 +58,8 @@ class shrineModel extends shrine
             $req = $db->prepare("UPDATE shrines SET mapID= :mapID, zoneID= :zoneID, shrineType= :shrineType, history= :history, currentArray= :currentArray WHERE shrineID= :shrineID");;
         }
         $req->bindParam(':shrineID', intval($controller->getShrineID()));
-        $req->bindParam(':mapID', $controller->getMapID());
-        $req->bindParam(':zoneID', $controller->getZoneID());
+        $req->bindParam(':mapID', intval($controller->getMapID()));
+        $req->bindParam(':zoneID', intval($controller->getZoneID()));
         $req->bindParam(':shrineType', $controller->getShrineType());
         $req->bindParam(':history', json_encode($controller->getHistory()));
         $req->bindParam(':currentArray', json_encode($controller->getCurrentArray()));

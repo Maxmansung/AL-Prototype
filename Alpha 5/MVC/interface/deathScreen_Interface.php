@@ -27,4 +27,6 @@ interface deathScreen_Interface
     function setDeathType($var);
     function getPartyPlayersLeft();
     function setPartyPlayersLeft($var);
+    function getDayDuration();
+    function setDayDuration($var);
 }

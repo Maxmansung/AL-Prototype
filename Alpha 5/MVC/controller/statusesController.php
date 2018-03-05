@@ -62,6 +62,11 @@ class statusesController extends statuses
                 return statusesModel::getStatusResponse($statusEffect);
             }
         }
+        if ($statusEffect === 5){
+            if($statusArray[5] === 1){
+                return statusesModel::getStatusResponse($statusEffect);
+            }
+        }
         return true;
     }
 
@@ -78,6 +83,13 @@ class statusesController extends statuses
             case 4:
                 $statusArray[5] = 1;
                 break;
+            case 5:
+                $chance = rand(0,1);
+                if ($chance === 0){
+                    $statusArray[1] = 0;
+                    $statusArray[2] = 0;
+                    $statusArray[5] = 1;
+                }
         }
         return $statusArray;
     }

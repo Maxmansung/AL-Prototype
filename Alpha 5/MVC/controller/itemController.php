@@ -118,8 +118,7 @@ class itemController extends item
         $itemArray = itemModel::getItemIDsFromLocation($mapID,$locationType,$locationID);
         $finalArray = [];
         foreach ($itemArray as $item){
-            $tempItem = new itemController(intval($item));
-            $finalArray[intval($item)] = new itemController($tempItem);
+            $finalArray[intval($item)] = new itemController($item);
         }
         return $finalArray;
     }

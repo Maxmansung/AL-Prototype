@@ -1,6 +1,4 @@
 <?php
-include_once($_SERVER['DOCUMENT_ROOT']."/templates/websiteVars.php");
-include_once(PROJECT_ROOT."/MVC/filesInclude.php");
 ?>
 <!DOCTYPE html>
 <html lang="en">

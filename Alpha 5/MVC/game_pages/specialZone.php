@@ -3,7 +3,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/MVC/controller/shrineController.php");
 $shrineZone = shrineController::findShrine($avatar->getZoneID());
 if ($shrineZone === false) {
     echo "<script>
-            window.location.href='/ingame.php?p=bo';
+            window.location.href='/ingame.php?p=c';
             </script>";
 }
 $shrine = new shrineController($shrineZone);

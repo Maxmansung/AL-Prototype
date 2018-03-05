@@ -21,7 +21,6 @@ class mapController extends map
         $this->temperatureRecord = [1=>$temp];
         $this->gameType = $gameType;
         $id = $this->postMap();
-        echo "<br>MapID: ".$id;
         $this->mapID = $id;
     }
 

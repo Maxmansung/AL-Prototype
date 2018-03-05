@@ -16,6 +16,7 @@
     flex-direction: column;
     align-items: center;
     min-width: 500px;
+    position: relative;
 }
 
 .mapsWriting{
@@ -99,4 +100,26 @@
     color: red;
     width: 50%;
     text-align: center;
+}
+
+#mapWrapperHide{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(50,50,50,0.6);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#mapWrapperHideText{
+    background: white;
+    padding: 10px;
+    color: rgba(150,30,30,1);
+    border-radius: 10px;
+    z-index: 10;
+    font-weight: bold;
+    font-size: 18px;
+
 }

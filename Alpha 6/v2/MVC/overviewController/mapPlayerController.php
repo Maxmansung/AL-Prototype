@@ -25,7 +25,7 @@ class mapPlayerController
         $this->mapID = $mapController->getMapID();
         $this->alivePlayers = self::getDeadPlayers($mapController->getMapid());
         if ($this->currentDay>1 || $this->currentPlayersCount>= $this->maxPlayers || in_array($mapController->getMapID().$profile->getProfileID(),$mapController->getAvatars())){
-            if ($profile->getAccountType() === "admin" || $profile->getAccountType() === "mod"){
+            if ($profile->getAccountType() >= 3){
                 $this->mapName = $mapController->getName();
                 $this->currentPlayers = $mapController->getAvatars();
                 $this->mapSize = $mapController->getEdgeSize();
@@ -53,10 +53,10 @@ class mapPlayerController
         $mapArray = mapController::joingames();
         $counter = 0;
         $finalArray = [];
-        if ($profile->getAccountType() != "disabled" && $profile->getAccountType() != "new") {
+        if ($profile->getAccountType() <= 5) {
             foreach ($mapArray as $map) {
                 if ($map->getGameType() == "Test" || $map->getGameType() == "Main") {
-                    if ($profile->getAccountType() == "admin" || $profile->getAccountType() == "mod" || $profile->getAccountType() == "active") {
+                    if ($profile->getAccountType()<= 4) {
                         $tempObject = new mapPlayerController($map, $profile);
                         $finalArray[$counter] = $tempObject->returnVars();
                         $counter++;

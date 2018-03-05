@@ -148,7 +148,7 @@ class profileController extends profile
             }
             if (!password_verify($p,$checkprofile->getPassword())) {
                 return array("ERROR"=>103);
-            } else if ($checkprofile->accountType == "new") {
+            } else if ($checkprofile->accountType == 6) {
                 return array("ERROR"=>104);
             } else {
                 // CREATE THEIR SESSIONS
@@ -228,51 +228,58 @@ class profileController extends profile
     //This function checks the login data and posts it to the database
     public function signup($username, $email, $p,$security){
         $u = preg_replace('#[^A-Za-z0-9]#i', '', $username);
+        $eCheck = strtolower($email);
         $e = strtolower(filter_var($email, FILTER_SANITIZE_EMAIL));
         $sec =  preg_replace('#[^A-Za-z0-9]#i', '', $security);
         // GET USER IP ADDRESS
         $ip = preg_replace('#[^0-9.]#', '', getenv('REMOTE_ADDR'));
-        // DUPLICATE DATA CHECKS FOR USERNAME AND EMAIL
-        $checkprofile = profileModel::checkname($u);
-        $checkemail = profileModel::checkemail($e);
-        // FORM DATA ERROR HANDLING
-        if($u == "" || $e == "" || $p == "" || $sec == ""){
-            return array("ERROR"=>105);
-        } else if ($checkprofile->profileID != ""){
-            return array("ERROR"=>106);
-        } else if ($checkemail->profileID != ""){
-            return array("ERROR"=>107);
-        } else if (strlen($u) < 3 || strlen($u) > 16) {
-            return array("ERROR"=>108);
-        } else if (is_numeric($u[0])) {
-            return array("ERROR"=>109);
-        } else if ($sec != data::$adminVar["loginPassword"]) {
-            return array("ERROR"=>110);
-        }  else {
-            // END FORM DATA ERROR HANDLING
-            $password = data::hashPassword($p);
-            $this->setPassword($password);
-            $this->setProfileID($u);
-            $this->setEmail($e);
-            $this->setLoginIP($ip);
-            $this->setAccountType("new");
-            $this->setgameStatus("ready");
-            $this->setProfilePicture(null);
-            $this->setAvatar(null);
-            $this->setBio("Bio goes here");
-            $this->setCountry("Unknown");
-            $this->setGender("unknown");
-            $this->setProfilePicture("generic.png");
-            $this->setAge(100);
-            $this->achievements = new stdClass();
-            // Add user info into the database table for the main site table
-            profileModel::insertProfile($this, "Insert");
-            // Email the user their activation link
-            $response = emails::sendEmail($u,$e,$this->getPassword(),"confirm");
-            if ($response === "SUCCESS") {
-                return array("Success" => true);
+        if ($u !== $username){
+            return array("ERROR"=>119);
+        } elseif ($e !== $eCheck){
+            return array("ERROR"=>120);
+        } else {
+            // DUPLICATE DATA CHECKS FOR USERNAME AND EMAIL
+            $checkprofile = profileModel::checkname($u);
+            $checkemail = profileModel::checkemail($e);
+            // FORM DATA ERROR HANDLING
+            if ($u == "" || $e == "" || $p == "" || $sec == "") {
+                return array("ERROR" => 105);
+            } else if ($checkprofile->profileID != "") {
+                return array("ERROR" => 106);
+            } else if ($checkemail->profileID != "") {
+                return array("ERROR" => 107);
+            } else if (strlen($u) < 3 || strlen($u) > 16) {
+                return array("ERROR" => 108);
+            } else if (is_numeric($u[0])) {
+                return array("ERROR" => 109);
+            } else if ($sec != data::$adminVar["loginPassword"]) {
+                return array("ERROR" => 110);
             } else {
-                return array("ERROR"=>"The email has not sent");
+                // END FORM DATA ERROR HANDLING
+                $password = data::hashPassword($p);
+                $this->setPassword($password);
+                $this->setProfileID($u);
+                $this->setEmail($e);
+                $this->setLoginIP($ip);
+                $this->setAccountType(6);
+                $this->setgameStatus("ready");
+                $this->setProfilePicture(null);
+                $this->setAvatar(null);
+                $this->setBio("Bio goes here");
+                $this->setCountry("Unknown");
+                $this->setGender("unknown");
+                $this->setProfilePicture("generic.png");
+                $this->setAge(100);
+                $this->achievements = new stdClass();
+                // Add user info into the database table for the main site table
+                profileModel::insertProfile($this, "Insert");
+                // Email the user their activation link
+                $response = emails::sendEmail($u, $e, $this->getPassword(), "confirm");
+                if ($response === "SUCCESS") {
+                    return array("Success" => true);
+                } else {
+                    return array("ERROR" => "The email has not sent");
+                }
             }
         }
     }
@@ -295,7 +302,7 @@ class profileController extends profile
             // Log this potential hack attempt to text file and email details to yourself
             header("location: message.php?msg=No player within the system with these details");
             exit();
-        }$checkprofile->setAccountType("tutorial");
+        }$checkprofile->setAccountType(5);
         // Match was found, you can activate them
         profileModel::insertProfile($checkprofile, "Update");
     }
@@ -329,8 +336,8 @@ class profileController extends profile
         $profileAchievements = new profileAchievementController($this,$this->profileID);
         if ($profileAchievements->getProfileScore() > 4){
             if (data::$adminVar['autoTutorial'] == true) {
-                if ($this->accountType == "tutorial") {
-                    $this->setAccountType("active");
+                if ($this->accountType == 5) {
+                    $this->setAccountType(4);
                     $this->uploadProfile();
                     return array("ERROR" => 53);
                 }
@@ -352,12 +359,12 @@ class profileController extends profile
         return $finalArray;
     }
 
-    public static function createRecoveryPassword($u,$e)
+    public static function createRecoveryPassword($e)
     {
-        $username = preg_replace('#[^a-z0-9]#i', '', $u);
         $email = strtolower(filter_var($e, FILTER_SANITIZE_EMAIL));
-        $profile = new profileController($username);
-        if ($profile->getProfileID() == ""){
+        $profile = profileModel::checkemail($e);
+        $username = $profile->getProfileID();
+        if ($username == ""){
             return array("ERROR"=>111);
         } else {
             if (strtolower($profile->getEmail()) != $email){
@@ -367,6 +374,7 @@ class profileController extends profile
                 if ($timeDifference <= 300) {
                     return array("ERROR" => 113);
                 }
+                $profile = new profileController($username);
                 $profile->setPasswordRecovery();
                 $profile->setPasswordRecoveryTimer();
                 $profile->uploadProfile();
@@ -377,7 +385,7 @@ class profileController extends profile
                     // Email the user their activation link
                     $response = emails::sendEmail($profile->getProfileID(),$profile->getEmail(),$profile->getPasswordRecovery(),"recover");
                     if ($response === "SUCCESS") {
-                        return array("Success" => true);
+                        return array("ALERT" => 13,"DATA"=>$email);
                     } else {
                         return array("ERROR"=>"The email has not sent");
                     }

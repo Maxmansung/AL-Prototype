@@ -46,23 +46,32 @@ class buildingLevels
     public static function sleepingBagUpgradeCost($level){
         switch ($level){
             case 1:
-                return array("I0012"=>1);
+                return array("I0020"=>1);
                 break;
             case 2:
-                return array("I0012"=>2);
+                return array("I0012"=>1);
                 break;
             case 3:
-                return array("I0012"=>1,"I0010"=>1);
+                return array("I0020"=>1,"I0012"=>1);
                 break;
             case 4:
-                return array("I0012"=>3);
+                return array("I0020"=>2,"I0012"=>1);
                 break;
             case 5:
                 return array("I0008"=>1);
+                break;
             case 6:
-                return array("I0012"=>1,"I0008"=>1);
+                return array("I0008"=>1,"I0012"=>1);
+                break;
             case 7:
                 return array("I0008"=>2);
+                break;
+            case 8:
+                return array("I0020"=>2,"I0012"=>1,"I0008"=>1);
+                break;
+            case 9:
+                return array("I0020"=>2,"I0012"=>2,"I0008"=>2);
+                break;
             default:
                 return array("ERROR"=>"X");
                 break;
@@ -82,16 +91,22 @@ class buildingLevels
                 return 7;
                 break;
             case 5:
-                return 11;
+                return 10;
                 break;
             case 6:
-                return 16;
+                return 13;
                 break;
             case 7:
-                return 22;
+                return 17;
                 break;
             case 8:
-                return 30;
+                return 22;
+                break;
+            case 9:
+                return 27;
+                break;
+            case 10:
+                return 33;
                 break;
             default:
                 return 0;
