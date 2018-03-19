@@ -5,7 +5,14 @@ if (isset($_GET["page"])) {
 } else {
     $page = "none";
 }
-$testing = true;
+if ($profile->getAvatar() == ""){
+    if ($profile->getGameStatus() == "in") {
+        $profile->setGameStatus("ready");
+        $profile->uploadProfile();
+        header("location:/index.php");
+    }
+}
+$accessed = true;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,13 +33,24 @@ $testing = true;
 <body class="bg-al-black">
 <?php
 if ($profile->getProfileID() == ""){
-    include_once($_SERVER['DOCUMENT_ROOT']."/templates/template_pageTopSignout.php");
-    include_once($_SERVER['DOCUMENT_ROOT']."/gamePages/login/loginMasterPage.php");
+    if ($page !== "none"){
+        header("location:/index.php");
+    } else {
+        include_once($_SERVER['DOCUMENT_ROOT'] . "/templates/template_pageTopSignout.php");
+        include_once($_SERVER['DOCUMENT_ROOT'] . "/gamePages/login/loginMasterPage.php");
+    }
 } else{
     include_once($_SERVER['DOCUMENT_ROOT']."/templates/template_pageTop.php");
     switch ($page) {
+        case "join":
+            include_once ($_SERVER['DOCUMENT_ROOT']."/gamePages/joinGame/joinGameMasterPage.php");
+            break;
         case "admin":
-            include_once ($_SERVER['DOCUMENT_ROOT']."/gamePages/admin/adminMasterPage.php");
+            if ($profile->getAccountType() <= 3) {
+                include_once($_SERVER['DOCUMENT_ROOT'] . "/gamePages/admin/adminMasterPage.php");
+            } else {
+                header("location:/index.php");
+            }
             break;
         case "spirit":
             include_once ($_SERVER['DOCUMENT_ROOT']."/gamePages/profile/profileMasterPage.php");
@@ -42,7 +60,25 @@ if ($profile->getProfileID() == ""){
             break;
         case "none":
         default:
-            include_once($_SERVER['DOCUMENT_ROOT'] . "/gamePages/ingame/gameMasterPage.php");
+            if ($profile->getAvatar() == ""){
+                if ($profile->getGameStatus() == "death") {
+                    include_once($_SERVER['DOCUMENT_ROOT'] . "/gamePages/death/deathMasterPage.php");
+                } else if ($profile->getGameStatus() == "in"){
+                    $profile->setGameStatus("ready");
+                    $profile->uploadProfile();
+                    header("location:/index.php");
+                } else {
+                    include_once($_SERVER['DOCUMENT_ROOT'] . "/gamePages/joinGame/joinGameMasterPage.php");
+                }
+            } else {
+                if ($profile->getAvatar() == ""){
+                    $profile->setGameStaus("ready");
+                    $profile->uploadProfile();
+                    header("location:/index.php");
+                } else {
+                    include_once($_SERVER['DOCUMENT_ROOT'] . "/gamePages/ingame/gameMasterPage.php");
+                }
+            }
     }
 }
 ?>

@@ -17,6 +17,7 @@ class forumThreadController extends forumThread
             $this->posts = $threadModel->posts;
             $this->lastUpdate = $threadModel->lastUpdate;
             $this->lastPostBy = $threadModel->lastPostBy;
+            $this->stickyThread = $threadModel->stickyThread;
         }
     }
 
@@ -33,8 +34,9 @@ class forumThreadController extends forumThread
                 } else if ($avatarTrue === "party"){
 
                 }
-                $partyZone = partyZonePlayerController::getSinglePlayerDetails($temp->getCreatorID(),$profile->getAvatar());
-                if ($partyZone->getAvatarID() != "") {
+                $avatar = new avatarController($profile->getAvatar());
+                $party = new partyController($avatar->getPartyID());
+                if (in_array($temp->getCreatorID(),$party->getMembers()) == true) {
                     $avatar = new avatarController($temp->getCreatorID());
                     $temp->setCreatorID($avatar->getProfileID());
                 } else{
@@ -60,20 +62,19 @@ class forumThreadController extends forumThread
         switch ($tableDefinition){
             case "mc":
                 $avatar = new avatarController($profile->getAvatar());
-                $map = new mapController($avatar->getMapID());
                 $threads = self::getAllThreadsType($avatar->getMapID(),"forumThreadsMap",true,$profile);
-                $response = ["threads"=>$threads,"title"=>$map->getName()];
+                $response = $threads;
                 break;
             case "pc":
                 $avatar = new avatarController($profile->getAvatar());
-                $party = new partyController($avatar->getPartyID());
                 $threads = self::getAllThreadsType($avatar->getPartyID(),"forumThreadsParty","party",$profile);
-                $response = ["threads"=>$threads,"title"=>$party->getPartyName()];
+                $response = $threads;
                 break;
             default:
                 $category = new forumCatagoriesController($tableDefinition,$profileID);
                 $threads = self::getAllThreadsType($tableDefinition,"forumThreadsGeneral",false,$profile);
-                $response = ["threads"=>$threads,"title"=>$category->getCatagoryName()];
+                $title = $category->getCatagoryName();
+                $response = $threads;
                 break;
         }
         return $response;
@@ -87,24 +88,24 @@ class forumThreadController extends forumThread
         forumThreadModel::insertForumThread($this,"Update");
     }
 
-    public static function createNewThread($tableDefinition,$profileID,$threadName){
+    public static function createNewThread($tableDefinition,$profileID,$threadName,$sticky){
         $profile = new profileController($profileID);
         $threadName = htmlentities($threadName,ENT_QUOTES | ENT_SUBSTITUTE);
         switch ($tableDefinition){
             case "mc":
-                $threadID = self::newMapThread($profile->getAvatar(),$threadName);
+                $threadID = self::newMapThread($profile->getAvatar(),$threadName,$sticky);
                 break;
             case "pc":
-                $threadID = self::newPartyThread($profile->getAvatar(),$threadName);
+                $threadID = self::newPartyThread($profile->getAvatar(),$threadName,$sticky);
                 break;
             default:
-                $threadID = self::newGeneralThread($profileID,$threadName,$tableDefinition);
+                $threadID = self::newGeneralThread($profileID,$threadName,$tableDefinition,$sticky);
                 break;
         }
         return $threadID;
     }
 
-    private static function newPartyThread($avatarID,$threadName){
+    private static function newPartyThread($avatarID,$threadName,$sticky){
         $avatar = new avatarController($avatarID);
         $thread = new forumThreadController("","");
         $thread->tableName = "forumThreadsParty";
@@ -113,12 +114,13 @@ class forumThreadController extends forumThread
         $thread->creatorID = $avatar->getAvatarID();
         $thread->posts = 0;
         $thread->lastUpdate = time();
+        $thread->stickyThread = $sticky;
         $thread->threadID = forumThreadModel::createThreadID($thread->tableName);
         $thread->insertThread();
         return $thread->threadID;
     }
 
-    private static function newMapThread($avatarID,$threadName){
+    private static function newMapThread($avatarID,$threadName,$sticky){
         $avatar = new avatarController($avatarID);
         $thread = new forumThreadController("","");
         $thread->tableName = "forumThreadsMap";
@@ -127,12 +129,13 @@ class forumThreadController extends forumThread
         $thread->creatorID = $avatar->getAvatarID();
         $thread->posts = 0;
         $thread->lastUpdate = time();
+        $thread->stickyThread = $sticky;
         $thread->threadID = forumThreadModel::createThreadID($thread->tableName);
         $thread->insertThread();
         return $thread->threadID;
     }
 
-    private static function newGeneralThread($profileID,$threadName,$category){
+    private static function newGeneralThread($profileID,$threadName,$category,$sticky){
         $profile = new profileController($profileID);
         $thread = new forumThreadController("","");
         $thread->tableName = "forumThreadsGeneral";
@@ -141,20 +144,36 @@ class forumThreadController extends forumThread
         $thread->creatorID = $profile->getProfileID();
         $thread->posts = 0;
         $thread->lastUpdate = time();
+        $thread->stickyThread = $sticky;
         $thread->threadID = forumThreadModel::createThreadID($thread->tableName);
         $thread->insertThread();
         return $thread->threadID;
     }
 
-    public static function checkThread($threadTitle,$length){
-        if (strlen($threadTitle)>50){
-            return array("ERROR"=>43);
-        } elseif (strlen($threadTitle)<4){
-            return array("ERROR"=>44);
-        } elseif (intval($length) < 10) {
-            return array("ERROR"=>46);
+    public static function checkThread($threadTitle,$postText,$tableDefinition,$type,$sticky,$profileID,$accountType)
+    {
+        $title = preg_replace('#[^A-Za-z0-9 !?\-_()@:,."]#i', '',$threadTitle);
+        if ($accountType > 3){
+            $stickyFinal = 0;
         } else {
-            return array("SUCCESS"=>true);
+            $stickyFinal = intval($sticky);
         }
+        if($title != $threadTitle){
+            return array("ERROR"=>"Dont use special chars");
+        } elseif (strlen($title) > 50) {
+            return array("ERROR" => 43);
+        } elseif (strlen($title) < 4) {
+            return array("ERROR" => 44);
+        }
+        $postFinalText = forumPostController::checkPostError($postText);
+        if (is_array($postFinalText)){
+            return $postFinalText;
+        } else {
+            $threadID = forumThreadController::createNewThread($tableDefinition,$profileID,$title,$stickyFinal);
+            $postID = forumPostController::createNewPost($tableDefinition,$profileID,$postFinalText,$threadID);
+            $postID["ALERT"] = 16;
+            return $postID;
+        }
+
     }
 }

@@ -76,7 +76,7 @@ class HUDController
         $avatar = new avatarController($avatarID);
         $map = new mapController($avatar->getMapID());
         $profile = new profileController($avatar->getProfileID());
-        if ($profile->getAccountType() == 1 || $map->getGameType() == "Test") {
+        if ($profile->getAccountType() < 3 || $map->getGameType() == "Test") {
             dayEndingFunctions::playerDeath($avatarID,3);
             $avatarCheck = new deathScreenController($avatar->getProfileID());
             if ($avatarCheck->getProfileID() != "") {

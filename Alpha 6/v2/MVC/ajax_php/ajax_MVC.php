@@ -53,6 +53,10 @@ if (isset($_POST["type"])) {
                     //This is used to show the nightfall page
                 case 49:
                     //This is used to show the news page
+                case 192:
+                    //This is used to get the posts for a forum thread
+                case 193:
+                    //This is used to get the forum threads
                     $response = array("SUCCESS" => true);
                     //No actions performed
                     break;
@@ -220,11 +224,29 @@ if (isset($_POST["type"])) {
                     $response = playerMapZoneController::consumeItem($data1,$profile->getAvatar());
                     break;
                     //Returns ERROR or SUCCESS
+                case 190:
+                    //This is used for creating new threads
+                    $response = forumThreadController::checkThread($data1,$data2,$data3,$data4,$data5,$profile->getProfileID(),$profile->getAccountType());
+                    break;
+                case 191:
+                    //This is used for posting replies to forum threads
+                    $response = forumPostController::createNewPost($data1,$profile->getProfileID(),$data2,$data3);
+                    break;
+                    //Returns ERROR or ALERT
+                case 194:
+                    //Used to update the players image
+                    $response = array("ERROR"=>$data1);
+                    break;
+                case 195:
+                    //Used to update the players profile
+                    $response = $profile->updateProfileDetails($data1,$data2,$data3,$data4);
+                    //Returns ERROR or ALERT
+                    break;
                 case 196:
                     //Used to recover the players password
                     $response = profileController::createRecoveryPassword($data1);
-                    break;
                     //Returns ERROR or ALERT
+                    break;
                 case 197:
                     //Used to create a new account within the game
                     $response = $profile->signup($data1,$data2,$data3,$data4);
@@ -232,13 +254,13 @@ if (isset($_POST["type"])) {
                 case 198:
                     //Used to log into the game
                     $response = $profile->login($data1,$data2,$data3);
-                    break;
                     //Returns ERROR or COOKIES
+                    break;
                 case 199:
                     //Used to log out of the game
                     $response = profileController::destroysession();
-                    break;
                     //Returns ERROR
+                    break;
 
                 //200+ functions are used only for testing and can be removed from the main game
 
@@ -291,8 +313,24 @@ if (isset($_POST["type"])) {
                         $view = profileAchievements::getView($data1);
                         $viewHUD = false;
                         break;
+                    case 3:
+                        //This finds player profiles that match a string
+                        $view = profileController::findProfiles($data1);
+                        $viewHUD = false;
+                        break;
+                    case 4:
+                        //This finds the threads that match a group
+                        $view = forumThreadController::getAllThreads($data1,$profile->getProfileID());
+                        $viewHUD = false;
+                        break;
+                    case 5:
+                        //This finds the posts that match a thread
+                        $view = forumPostController::getAllPosts($data1,$data2,$profile->getProfileID());
+                        $viewHUD = false;
+                        break;
                     default:
                         $view = array("ERROR" => "Somehow you found a 2nd error, this shouldn't be seen - Control =" . $control);
+                        $viewHUD = false;
                 }
                 if ($viewHUD === true) {
                     //$tempHUD = new HUDView($profile->getAvatar());

@@ -14,14 +14,32 @@
 }
 
 @media (max-width: 576px) {
+    .bannerImage{
+        max-height: 30px;
+    }
+    #rulesText{
+        font-size: 80%;
+    }
 }
 @media (min-width: 576px) and (max-width: 768px) {
+    .bannerImage{
+        max-height: 30px;
+    }
 }
 @media (min-width: 768px) and (max-width: 992px) {
+    .bannerImage{
+        max-height: 40px;
+    }
 }
 @media (min-width: 992px) and (max-width: 1200px) {
+    .bannerImage{
+        max-height: 45px;
+    }
 }
 @media (min-width: 1200px){
+    .bannerImage{
+        max-height: 45px;
+    }
 }
 
 .font-size-1{
@@ -32,6 +50,10 @@
     font-size: 80%;
 }
 
+.font-size-2x{
+    font-size: 110%;
+}
+
 .font-size-3{
     font-size: 150%;
 }
@@ -40,27 +62,59 @@
     font-size: 200%;
 }
 
-.bannerImage{
-    max-height: 35px;
+.font-size-5{
+    font-size: 300%;
 }
 
 .clickable{
     cursor: pointer;
 }
 
+.clickableFlash:hover{
+    cursor: pointer;
+    color: #36454f;
+}
+
+.clickableFlashMore:hover{
+    cursor: pointer;
+    color: rgba(150,150,200,1);
+}
+
+.hoverForumWrap{
+    border: 3px solid rgba(0,0,0,0);
+    border-radius: 10px;
+}
+
+.hoverForumWrapDisabled{
+    border: 3px solid rgba(0,0,0,0);
+    border-radius: 10px;
+    opacity: 0.5;
+}
+
+.hoverForumWrapDisabled:hover{
+    cursor: no-drop;
+}
+
+.hoverForumWrap:hover{
+    cursor: pointer;
+    opacity: 0.8;
+    border: 3px solid black;
+}
+
+#profilePageFlag{
+    max-width: 32px;
+    max-height: 32px;
+}
+
+.flagImage{
+    width: 32px;
+    height: 32px;
+}
+
 .login-window{
     border-radius: 10px;
     border: 2px solid rgba(0,0,0,0.9);
-    background-color: rgba(0,0,0,0.4);
-    -moz-box-shadow:    0 0 20px 2px rgba(0,0,0,0.9) inset;
-    -webkit-box-shadow: 0 0 20px 2px rgba(0,0,0,0.9) inset;
-    box-shadow:         0 0 20px 2px rgba(0,0,0,0.9) inset;
-}
-
-.login-window-light{
-    border-radius: 10px;
-    border: 2px solid rgba(0,0,0,0.9);
-    background-color: rgba(0,0,0,0.7);
+    background-color: rgba(0,0,0,0.5);
     -moz-box-shadow:    0 0 20px 2px rgba(0,0,0,0.9) inset;
     -webkit-box-shadow: 0 0 20px 2px rgba(0,0,0,0.9) inset;
     box-shadow:         0 0 20px 2px rgba(0,0,0,0.9) inset;
@@ -75,26 +129,29 @@
     -o-background-size: auto;
     -moz-background-size: auto;
     -webkit-background-size: auto;
+    min-height: 800px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.grayTransparentBackground{
+    background: rgba(100,100,100,0.4);
+    min-height: 700px;
+}
+
+.centerNavWrapper{
+    width: 150px;
 }
 
 #navBarBackground{
     background: #ffffff;
+    border-bottom: 3px solid #aaaaaa;
 }
 
 #alertBar{
-    background-color: rgba(0,0,0,0.7);
+    background-color: rgba(0,0,0,0.9);
     border-radius: 10px;
-}
-
-#alertButton{
-    width: 52px;
-    height: 38px;
-    border: 2px solid rgba(0,0,0,0.4);
-    background: rgba(0,0,0,0.1);
-    border-radius: 5px;
-    -moz-box-shadow:    0 0 5px 2px rgba(0,0,0,0.4) inset;
-    -webkit-box-shadow: 0 0 5px 2px rgba(0,0,0,0.4) inset;
-    box-shadow:         0 0 5px 2px rgba(0,0,0,0.4) inset;
 }
 
 #alertButton:hover{
@@ -134,7 +191,7 @@
     100% { transform: rotate(360deg); }
 }
 
-.newsBar:hover{
+.hoverHighlight:hover{
     cursor: pointer;
     background-color: rgba(255,255,255,0.2);
     border-radius: 10px;
@@ -152,6 +209,26 @@
     justify-content: center;
     align-items: center;
 }
+
+#loadingScreen2{
+    background: rgba(255,255,255,0.6);
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#loadingImage{
+    border: 3px solid black;
+    border-radius: 40px;
+    max-height: 400px;
+}
+
 
 .loginLink{
     text-decoration: none;
@@ -177,6 +254,7 @@
     background: black;
     color: #1F51AC;
     font-size: 85%;
+
 }
 
 .profileImage{
@@ -219,10 +297,215 @@
     height: 28px;
 }
 
-#achievementWrapperMain{
+.achievementWrapperInner{
     border: 2px solid rgba(220,220,220,1);
     border-radius: 10px;
     -moz-box-shadow:    0 0 20px 2px rgba(220,220,220,0.9) inset;
     -webkit-box-shadow: 0 0 20px 2px rgba(220,220,220,0.9) inset;
     box-shadow:         0 0 20px 2px rgba(220,220,220,0.9) inset;
+}
+
+span.btn-dark{
+    color: #fff;
+    background-color: #343a40;
+    border-color: #343a40;
+}
+
+span.btn-dark:hover {
+    color: #fff;
+    background-color: #23272b;
+    border-color: #1d2124;
+}
+
+span.btn-dark:focus, .btn-dark.focus {
+    box-shadow: 0 0 0 0.2rem rgba(52, 58, 64, 0.5);
+}
+
+span.btn-dark.disabled, .btn-dark:disabled {
+    color: #fff;
+    background-color: #343a40;
+    border-color: #343a40;
+}
+
+span.btn-dark:not(:disabled):not(.disabled):active, .btn-dark:not(:disabled):not(.disabled).active,
+.show > .btn-dark.dropdown-toggle {
+    color: #fff;
+    background-color: #1d2124;
+    border-color: #171a1d;
+}
+
+span.btn-dark:not(:disabled):not(.disabled):active:focus, .btn-dark:not(:disabled):not(.disabled).active:focus,
+.show > .btn-dark.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.2rem rgba(52, 58, 64, 0.5);
+}
+
+.btn-dark-label{
+    color: #fff !important;
+    background-color: #343a40 !important;
+    border-color: #343a40 !important;
+}
+
+.searchAvatarImage{
+    max-width: 40px;
+    max-height: 40px;
+}
+
+.searchAvatarImageWrap{
+    width: 40px;
+    height: 40px;
+}
+
+.forumTypeImage{
+    border-radius: 10px 10px 0 0;
+    background: rgba(180,180,180,1);
+    height: 150px;
+}
+
+.forumTypeText{
+    background: rgba(255,255,255,1);
+    border-top: 2px solid rgba(100,100,100,1);
+    border-radius: 0 0 10px 10px;
+    height: 130px;
+}
+
+.forumRulesWrap{
+    background: rgba(180,180,180,1);
+    border-radius: 10px;
+}
+
+.forumTypeImagePhone{
+    border-radius: 10px 0 0 10px;
+    background: rgba(180,180,180,1);
+
+}
+
+.forumTypeTextPhone{
+    background: rgba(255,255,255,1);
+    border-left: 2px solid rgba(100,100,100,1);
+    border-radius: 0 10px 10px 0;
+}
+
+.forumPhoneHeight{
+    height: 100px;
+    border: 3px solid rgba(0,0,0,0);
+    border-radius: 10px;
+}
+
+.forumPhoneHeight:active{
+    border: 3px solid rgba(0,0,0,1);
+    opacity: 0.8;
+}
+
+.forumPhoneHeightDisabled{
+    height: 100px;
+    border: 3px solid rgba(0,0,0,0);
+    border-radius: 10px;
+    opacity: 0.5;
+}
+
+.forumThreadsWrapper{
+    background: rgba(180,180,180,1);
+    border: 3px solid rgba(80,170,240,1);
+    border-radius: 10px;
+}
+
+.threadTitleWrap1{
+    background: rgba(160,160,160,1);
+}
+
+.threadTitleWrap1:hover, .threadTitleWrap1:active{
+    background: rgba(160,160,240,1);
+}
+
+.threadTitleWrap2{
+    background: rgba(120,120,120,1);
+}
+
+.threadTitleWrap2:hover, .threadTitleWrap2:active{
+    background: rgba(120,120,200,1);
+}
+
+#forumThreadsWrapper{
+    background: linear-gradient(90deg, rgba(100,100,100,1) 50%, rgba(180,180,180,1) 50%);
+}
+
+#forumThreadsTitle{
+    background: rgba(180,180,180,1);
+}
+
+.verticalLine{
+    border-left: 3px solid rgba(255,255,255,1);
+    height: 75%;
+    max-width:1px;
+    padding: 0;
+    margin: 0;
+}
+
+.threadSingleDetails{
+    background: rgba(90,90,90,0.5);
+
+}
+
+.threadSingleTitle{
+    background: rgba(50,50,50,0.5);
+}
+
+.forumTitleMain{
+    background: black;
+    border: 2px solid rgba(80,80,80,1);
+    min-height: 10px !important;
+}
+
+.adminTab{
+    background: rgba(255,255,255,1);
+    border-radius: 10px 10px 0 0;
+    border-top: 3px solid rgba(0,0,0,0);
+    border-left: 3px solid rgba(0,0,0,0);
+    border-right: 3px solid rgba(0,0,0,0);
+}
+
+.adminTab:hover{
+    background: rgba(230,230,230,1);
+    color: rgba(50,0,0,1);
+    border-top: 3px solid black;
+    border-left: 3px solid black;
+    border-right: 3px solid black;
+}
+
+.adminWindow{
+    background: rgba(180,180,180,1);
+    border-radius: 0 0 10px 10px;
+}
+
+#forumPostHeader{
+    border: 1px solid rgba(50,50,50,0.5);
+    background: rgba(220,220,220,1);
+    -moz-box-shadow:    0 0 5px 1px rgba(50,50,50,0.5) inset;
+    -webkit-box-shadow: 0 0 5px 1px rgba(50,50,50,0.5) inset;
+    box-shadow:         0 0 5px 1px rgba(50,50,50,0.5) inset;
+
+}
+
+.threadTitlePosts{
+    border-bottom: 1px solid rgba(120,120,120,0.5);
+}
+
+.forumPostAvatar{
+    max-width: 40px;
+    max-height: 40px;
+}
+
+.forumPostWrapper{
+    border: 1px solid rgba(140,140,140,0.7);
+    background: rgba(200,200,200,1);
+}
+
+.forumPostText{
+    background: rgba(180,180,180,1);
+    border-radius: 5px;
+}
+
+.textImageEmoji{
+    max-width: 20px;
+    max-height: 20px;
 }

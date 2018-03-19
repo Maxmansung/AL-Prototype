@@ -1,4 +1,8 @@
 <?php
+if (isset($accessed) === false){
+    header("location:/");
+    exit("No access");
+}
 ?>
 <div id="forgottenPasswordScreen">
     <div class="row justify-content-center flex-wrap">

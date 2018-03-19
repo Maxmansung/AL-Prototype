@@ -26,14 +26,22 @@ class statusesController extends statuses
             $statusArray[1] = 0;
             $statusArray[2] = 1;
             $statusArray[5] = 0;
-        } elseif ($statusArray[5] === 1){
+            $statusArray[6] = 0;
+        } elseif ($statusArray[6] === 1){
             $statusArray[1] = 1;
             $statusArray[2] = 0;
             $statusArray[5] = 0;
+            $statusArray[6] = 0;
+        } elseif ($statusArray[5] === 1){
+            $statusArray[1] = 0;
+            $statusArray[2] = 0;
+            $statusArray[5] = 0;
+            $statusArray[6] = 1;
         } elseif ($statusArray[2] === 1){
             $statusArray[1] = 0;
             $statusArray[2] = 1;
             $statusArray[5] = 0;
+            $statusArray[6] = 0;
         }
         if ($statusArray[4] === 1) {
             $statusArray[4] = 0;

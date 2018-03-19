@@ -125,7 +125,7 @@ class profileModel extends profile
     public static function findAllProfiles($username) {
         $adjustedUsername = "%".$username."%";
         $db = db_conx::getInstance();
-        $req = $db->prepare("SELECT id FROM Profile WHERE id LIKE :adjustedUsername");
+        $req = $db->prepare("SELECT id FROM Profile WHERE id LIKE :adjustedUsername ORDER BY id ASC");
         $req->execute(array(':adjustedUsername' => $adjustedUsername));
         $profileModel = $req->fetchAll();
         $counter = 0;

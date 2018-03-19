@@ -16,19 +16,26 @@ class forumPostModel extends forumPost
 
     public static function insertForumPost($postController,$type){
         $table = $postController->getTableName();
+        $postID = intval($postController->getPostID());
+        $creatorID = $postController->getCreatorID();
+        $postDate = intval($postController->getPostDate());
+        $editable = $postController->getEditable();
+        $postText = $postController->getPostText();
+        $threadID = intval($postController->getThreadID());
+        $postCount = intval($postController->getPostCount());
         $db = db_conx::getInstance();
         if ($type == "Insert") {
             $req = $db->prepare("INSERT INTO ".$table." (postID, creatorID, postDate, editable, postText, threadID, postCount) VALUES (:postID, :creatorID, :postDate, :editable, :postText, :threadID, :postCount)");
         } elseif ($type == "Update"){
             $req = $db->prepare("UPDATE ".$table." SET creatorID= :creatorID, postDate= :postDate, editable= :editable, postText= :postText, threadID= :threadID, postCount= :postCount WHERE postID= :postID");
         }
-        $req->bindParam(':postID', intval($postController->getPostID()));
-        $req->bindParam(':creatorID', $postController->getCreatorID());
-        $req->bindParam(':postDate', intval($postController->getPostDate()));
-        $req->bindParam(':editable', $postController->getEditable());
-        $req->bindParam(':postText', $postController->getPostText());
-        $req->bindParam(':threadID', intval($postController->getThreadID()));
-        $req->bindParam(':postCount', intval($postController->getPostCount()));
+        $req->bindParam(':postID', $postID);
+        $req->bindParam(':creatorID', $creatorID);
+        $req->bindParam(':postDate', $postDate);
+        $req->bindParam(':editable', $editable);
+        $req->bindParam(':postText', $postText);
+        $req->bindParam(':threadID', $threadID);
+        $req->bindParam(':postCount', $postCount);
         $req->execute();
     }
 

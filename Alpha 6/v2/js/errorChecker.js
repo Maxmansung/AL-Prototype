@@ -184,10 +184,10 @@ function errors(id){
             alert("You do not have the correct items in your backpack");
             break;
         case 43:
-            alert("Your title is longer than 50 chars");
+            createAlertBox(0,1,"Your title is longer than 50 chars");
             break;
         case 44:
-            alert("Your title is less than 4 chars");
+            createAlertBox(0,1,"Your title is less than 4 chars");
             break;
         case 45:
             if (!alert("The post has failed as you are trying to post into a thread that you dont have access to (Shouldn't be possible without hacking, please error report this)")) {
@@ -195,7 +195,7 @@ function errors(id){
             }
             break;
         case 46:
-            alert("Your post is less than 10 chars, please add more");
+            createAlertBox(0,1,"Your post is too short, please add more");
             break;
         case 47:
             alert("You have nothing to teach this player");
@@ -344,6 +344,21 @@ function errors(id){
             $("#email").addClass("is-invalid");
             _("emailError").innerHTML = "This email address contains unusual characters";
             break;
+        case 121:
+            createAlertBox(0,1,"Please only use PNG, JPEG, GIF or JPG file types");
+            break;
+        case 122:
+            createAlertBox(0,1,"Please upload a single file");
+            break;
+        case 123:
+            createAlertBox(3,1,"The image file is too big");
+            break;
+        case 124:
+            createAlertBox(3,1,"The image file is too small");
+            break;
+        case 125:
+            createAlertBox(3,1,"You cannot change your avatar image more than once in 12 hours");
+            break;
         case 200:
             window.location.href="/nightfall.php";
             break;
@@ -411,6 +426,15 @@ function alerts(response,data){
             var writing = "An email has been sent to: "+data+"\n You have 5mins to respond";
             createAlertBox(0,1,writing,1);
             break;
+        case 14:
+            createAlertBox(2,1,"Your profile has been updated",1);
+            break;
+        case 15:
+            createAlertBox(2,1,"Your message has been sent",1);
+            break;
+        case 16:
+            createAlertBox(2,1,"Your thread has been created",1);
+            break;
     }
 }
 
@@ -449,6 +473,13 @@ function createAlertBox(titleType,textType,data,buttontype){
         case 1:
             title = "";
             break;
+        case 2:
+            title = "Success";
+            break;
+        case 3:
+            title = "Failed";
+            break;
+        case 0:
         default:
             title = "Alert!";
             break;

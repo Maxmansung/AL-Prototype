@@ -19,5 +19,7 @@ interface forumThread_Interface
     function setTableName($var);
     function getLastPostBy();
     function setLastPostBy($var);
+    function getStickyThread();
+    function setStickyThread($var);
 
 }

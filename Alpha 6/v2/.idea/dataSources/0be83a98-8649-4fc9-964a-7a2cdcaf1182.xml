@@ -2201,33 +2201,38 @@
       <Position>6</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <index id="492" parent="38" name="forumThreadsGeneral-catagories">
+    <column id="492" parent="38" name="stickyThread">
+      <Position>7</Position>
+      <DataType>int(11)|0</DataType>
+      <DefaultExpression>&apos;0&apos;</DefaultExpression>
+    </column>
+    <index id="493" parent="38" name="forumThreadsGeneral-catagories">
       <ColNames>threadDefinition</ColNames>
     </index>
-    <index id="493" parent="38" name="forumThreads_Profile_id_fk">
+    <index id="494" parent="38" name="forumThreads_Profile_id_fk">
       <ColNames>creatorID</ColNames>
     </index>
-    <index id="494" parent="38" name="forumThreads_threadID_uindex">
+    <index id="495" parent="38" name="forumThreads_threadID_uindex">
       <ColNames>threadID</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="495" parent="38" name="PRIMARY">
+    <key id="496" parent="38" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>threadID</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="496" parent="38" name="forumThreads_threadID_uindex">
+    <key id="497" parent="38" name="forumThreads_threadID_uindex">
       <ColNames>threadID</ColNames>
       <UnderlyingIndexName>forumThreads_threadID_uindex</UnderlyingIndexName>
     </key>
-    <foreign-key id="497" parent="38" name="forumThreads_Profile_id_fk">
+    <foreign-key id="498" parent="38" name="forumThreads_Profile_id_fk">
       <ColNames>creatorID</ColNames>
       <RefSchemaName>ArcticLands</RefSchemaName>
       <RefTableName>Profile</RefTableName>
       <RefColNames>id</RefColNames>
       <OnUpdate>cascade</OnUpdate>
     </foreign-key>
-    <foreign-key id="498" parent="38" name="forumThreadsGeneral_ibfk_1">
+    <foreign-key id="499" parent="38" name="forumThreadsGeneral_ibfk_1">
       <ColNames>threadDefinition</ColNames>
       <RefSchemaName>ArcticLands</RefSchemaName>
       <RefTableName>forumCatagories</RefTableName>
@@ -2235,52 +2240,57 @@
       <OnUpdate>cascade</OnUpdate>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <column id="499" parent="39" name="threadID">
+    <column id="500" parent="39" name="threadID">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="500" parent="39" name="threadTitle">
+    <column id="501" parent="39" name="threadTitle">
       <Position>2</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="501" parent="39" name="creatorID">
+    <column id="502" parent="39" name="creatorID">
       <Position>3</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="502" parent="39" name="posts">
+    <column id="503" parent="39" name="posts">
       <Position>4</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="503" parent="39" name="threadDefinition">
+    <column id="504" parent="39" name="threadDefinition">
       <Position>5</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="504" parent="39" name="lastUpdate">
+    <column id="505" parent="39" name="lastUpdate">
       <Position>6</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <index id="505" parent="39" name="forumThreadsMap-AvatarID">
+    <column id="506" parent="39" name="stickyThread">
+      <Position>7</Position>
+      <DataType>int(11)|0</DataType>
+      <DefaultExpression>&apos;0&apos;</DefaultExpression>
+    </column>
+    <index id="507" parent="39" name="forumThreadsMap-AvatarID">
       <ColNames>creatorID</ColNames>
     </index>
-    <index id="506" parent="39" name="forumThreadsMap-MapID">
+    <index id="508" parent="39" name="forumThreadsMap-MapID">
       <ColNames>threadDefinition</ColNames>
     </index>
-    <index id="507" parent="39" name="forumThreadsMap_threadID_uindex">
+    <index id="509" parent="39" name="forumThreadsMap_threadID_uindex">
       <ColNames>threadID</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="508" parent="39" name="PRIMARY">
+    <key id="510" parent="39" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>threadID</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="509" parent="39" name="forumThreadsMap_threadID_uindex">
+    <key id="511" parent="39" name="forumThreadsMap_threadID_uindex">
       <ColNames>threadID</ColNames>
       <UnderlyingIndexName>forumThreadsMap_threadID_uindex</UnderlyingIndexName>
     </key>
-    <foreign-key id="510" parent="39" name="forumThreadsMap_Avatar_avatarID_fk">
+    <foreign-key id="512" parent="39" name="forumThreadsMap_Avatar_avatarID_fk">
       <ColNames>creatorID</ColNames>
       <RefSchemaName>ArcticLands</RefSchemaName>
       <RefTableName>Avatar</RefTableName>
@@ -2288,7 +2298,7 @@
       <OnUpdate>cascade</OnUpdate>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <foreign-key id="511" parent="39" name="forumThreadsMap_Map_mapID_fk">
+    <foreign-key id="513" parent="39" name="forumThreadsMap_Map_mapID_fk">
       <ColNames>threadDefinition</ColNames>
       <RefSchemaName>ArcticLands</RefSchemaName>
       <RefTableName>Map</RefTableName>
@@ -2296,52 +2306,57 @@
       <OnUpdate>cascade</OnUpdate>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <column id="512" parent="40" name="threadID">
+    <column id="514" parent="40" name="threadID">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="513" parent="40" name="threadTitle">
+    <column id="515" parent="40" name="threadTitle">
       <Position>2</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="514" parent="40" name="creatorID">
+    <column id="516" parent="40" name="creatorID">
       <Position>3</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="515" parent="40" name="posts">
+    <column id="517" parent="40" name="posts">
       <Position>4</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="516" parent="40" name="threadDefinition">
+    <column id="518" parent="40" name="threadDefinition">
       <Position>5</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="517" parent="40" name="lastUpdate">
+    <column id="519" parent="40" name="lastUpdate">
       <Position>6</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <index id="518" parent="40" name="forumThreadsParty-Party">
+    <column id="520" parent="40" name="stickyThread">
+      <Position>7</Position>
+      <DataType>int(11)|0</DataType>
+      <DefaultExpression>&apos;0&apos;</DefaultExpression>
+    </column>
+    <index id="521" parent="40" name="forumThreadsParty-Party">
       <ColNames>threadDefinition</ColNames>
     </index>
-    <index id="519" parent="40" name="forumThreadsParty_Avatar_avatarID_fk">
+    <index id="522" parent="40" name="forumThreadsParty_Avatar_avatarID_fk">
       <ColNames>creatorID</ColNames>
     </index>
-    <index id="520" parent="40" name="forumThreadsParty_threadID_uindex">
+    <index id="523" parent="40" name="forumThreadsParty_threadID_uindex">
       <ColNames>threadID</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="521" parent="40" name="PRIMARY">
+    <key id="524" parent="40" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>threadID</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="522" parent="40" name="forumThreadsParty_threadID_uindex">
+    <key id="525" parent="40" name="forumThreadsParty_threadID_uindex">
       <ColNames>threadID</ColNames>
       <UnderlyingIndexName>forumThreadsParty_threadID_uindex</UnderlyingIndexName>
     </key>
-    <foreign-key id="523" parent="40" name="forumThreadsParty_Avatar_avatarID_fk">
+    <foreign-key id="526" parent="40" name="forumThreadsParty_Avatar_avatarID_fk">
       <ColNames>creatorID</ColNames>
       <RefSchemaName>ArcticLands</RefSchemaName>
       <RefTableName>Avatar</RefTableName>
@@ -2349,7 +2364,7 @@
       <OnUpdate>cascade</OnUpdate>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <foreign-key id="524" parent="40" name="forumThreadsParty_Party_partyID_fk">
+    <foreign-key id="527" parent="40" name="forumThreadsParty_Party_partyID_fk">
       <ColNames>threadDefinition</ColNames>
       <RefSchemaName>ArcticLands</RefSchemaName>
       <RefTableName>Party</RefTableName>
@@ -2357,117 +2372,117 @@
       <OnUpdate>cascade</OnUpdate>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <column id="525" parent="41" name="locationName">
+    <column id="528" parent="41" name="locationName">
       <Position>1</Position>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="526" parent="41" name="description">
+    <column id="529" parent="41" name="description">
       <Position>2</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <index id="527" parent="41" name="itemLocations_locationName_uindex">
+    <index id="530" parent="41" name="itemLocations_locationName_uindex">
       <ColNames>locationName</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="528" parent="41" name="PRIMARY">
+    <key id="531" parent="41" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>locationName</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="529" parent="41" name="itemLocations_locationName_uindex">
+    <key id="532" parent="41" name="itemLocations_locationName_uindex">
       <ColNames>locationName</ColNames>
       <UnderlyingIndexName>itemLocations_locationName_uindex</UnderlyingIndexName>
     </key>
-    <column id="530" parent="42" name="type">
+    <column id="533" parent="42" name="type">
       <Position>1</Position>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="531" parent="42" name="description">
+    <column id="534" parent="42" name="description">
       <Position>2</Position>
       <DataType>text|0</DataType>
     </column>
-    <index id="532" parent="42" name="mapType_type_uindex">
+    <index id="535" parent="42" name="mapType_type_uindex">
       <ColNames>type</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="533" parent="42" name="PRIMARY">
+    <key id="536" parent="42" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>type</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="534" parent="42" name="mapType_type_uindex">
+    <key id="537" parent="42" name="mapType_type_uindex">
       <ColNames>type</ColNames>
       <UnderlyingIndexName>mapType_type_uindex</UnderlyingIndexName>
     </key>
-    <column id="535" parent="43" name="nameType">
+    <column id="538" parent="43" name="nameType">
       <Position>1</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="536" parent="43" name="firstName">
+    <column id="539" parent="43" name="firstName">
       <Position>2</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="537" parent="43" name="middleName">
+    <column id="540" parent="43" name="middleName">
       <Position>3</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="538" parent="43" name="lastName">
+    <column id="541" parent="43" name="lastName">
       <Position>4</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <index id="539" parent="43" name="nameGenerator_firstName_uindex">
+    <index id="542" parent="43" name="nameGenerator_firstName_uindex">
       <ColNames>firstName</ColNames>
       <Unique>1</Unique>
     </index>
-    <index id="540" parent="43" name="nameGenerator_lastName_uindex">
+    <index id="543" parent="43" name="nameGenerator_lastName_uindex">
       <ColNames>middleName</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="541" parent="43" name="nameGenerator_firstName_uindex">
+    <key id="544" parent="43" name="nameGenerator_firstName_uindex">
       <ColNames>firstName</ColNames>
       <UnderlyingIndexName>nameGenerator_firstName_uindex</UnderlyingIndexName>
     </key>
-    <key id="542" parent="43" name="nameGenerator_lastName_uindex">
+    <key id="545" parent="43" name="nameGenerator_lastName_uindex">
       <ColNames>middleName</ColNames>
       <UnderlyingIndexName>nameGenerator_lastName_uindex</UnderlyingIndexName>
     </key>
-    <column id="543" parent="44" name="newsID">
+    <column id="546" parent="44" name="newsID">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="544" parent="44" name="title">
+    <column id="547" parent="44" name="title">
       <Position>2</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="545" parent="44" name="author">
+    <column id="548" parent="44" name="author">
       <Position>3</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="546" parent="44" name="timestampPosted">
+    <column id="549" parent="44" name="timestampPosted">
       <Position>4</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="547" parent="44" name="postText">
+    <column id="550" parent="44" name="postText">
       <Position>5</Position>
       <DataType>text|0</DataType>
     </column>
-    <column id="548" parent="44" name="comments">
+    <column id="551" parent="44" name="comments">
       <Position>6</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <index id="549" parent="44" name="newsTable_Profile_id_fk">
+    <index id="552" parent="44" name="newsTable_Profile_id_fk">
       <ColNames>author</ColNames>
     </index>
-    <key id="550" parent="44" name="PRIMARY">
+    <key id="553" parent="44" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>newsID</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="551" parent="44" name="newsTable_Profile_id_fk">
+    <foreign-key id="554" parent="44" name="newsTable_Profile_id_fk">
       <ColNames>author</ColNames>
       <RefSchemaName>ArcticLands</RefSchemaName>
       <RefTableName>Profile</RefTableName>
@@ -2475,52 +2490,52 @@
       <OnUpdate>cascade</OnUpdate>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <column id="552" parent="45" name="messageID">
+    <column id="555" parent="45" name="messageID">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="553" parent="45" name="receivingAvatar">
+    <column id="556" parent="45" name="receivingAvatar">
       <Position>2</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="554" parent="45" name="sendingAvatar">
+    <column id="557" parent="45" name="sendingAvatar">
       <Position>3</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="555" parent="45" name="gameTimestamp">
+    <column id="558" parent="45" name="gameTimestamp">
       <Position>4</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="556" parent="45" name="messageTitle">
+    <column id="559" parent="45" name="messageTitle">
       <Position>5</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="557" parent="45" name="messageText">
+    <column id="560" parent="45" name="messageText">
       <Position>6</Position>
       <DataType>text|0</DataType>
     </column>
-    <index id="558" parent="45" name="avatarReveiver">
+    <index id="561" parent="45" name="avatarReveiver">
       <ColNames>receivingAvatar</ColNames>
     </index>
-    <index id="559" parent="45" name="avatarSender_fk">
+    <index id="562" parent="45" name="avatarSender_fk">
       <ColNames>sendingAvatar</ColNames>
     </index>
-    <index id="560" parent="45" name="privateMessages_messageID_uindex">
+    <index id="563" parent="45" name="privateMessages_messageID_uindex">
       <ColNames>messageID</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="561" parent="45" name="PRIMARY">
+    <key id="564" parent="45" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>messageID</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="562" parent="45" name="privateMessages_messageID_uindex">
+    <key id="565" parent="45" name="privateMessages_messageID_uindex">
       <ColNames>messageID</ColNames>
       <UnderlyingIndexName>privateMessages_messageID_uindex</UnderlyingIndexName>
     </key>
-    <foreign-key id="563" parent="45" name="privateMessages_recieved_avatarID_fk">
+    <foreign-key id="566" parent="45" name="privateMessages_recieved_avatarID_fk">
       <ColNames>receivingAvatar</ColNames>
       <RefSchemaName>ArcticLands</RefSchemaName>
       <RefTableName>Avatar</RefTableName>
@@ -2528,7 +2543,7 @@
       <OnUpdate>cascade</OnUpdate>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <foreign-key id="564" parent="45" name="privateMessages_Avatar_avatarID_fk">
+    <foreign-key id="567" parent="45" name="privateMessages_Avatar_avatarID_fk">
       <ColNames>sendingAvatar</ColNames>
       <RefSchemaName>ArcticLands</RefSchemaName>
       <RefTableName>Avatar</RefTableName>
@@ -2536,158 +2551,158 @@
       <OnUpdate>cascade</OnUpdate>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <column id="565" parent="46" name="titleID">
+    <column id="568" parent="46" name="titleID">
       <Position>1</Position>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="566" parent="46" name="titleText">
+    <column id="569" parent="46" name="titleText">
       <Position>2</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="567" parent="46" name="comment">
+    <column id="570" parent="46" name="comment">
       <Position>3</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <index id="568" parent="46" name="profileTitles_titleID_uindex">
+    <index id="571" parent="46" name="profileTitles_titleID_uindex">
       <ColNames>titleID</ColNames>
       <Unique>1</Unique>
     </index>
-    <index id="569" parent="46" name="profileTitles_titleText_uindex">
+    <index id="572" parent="46" name="profileTitles_titleText_uindex">
       <ColNames>titleText</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="570" parent="46" name="PRIMARY">
+    <key id="573" parent="46" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>titleID</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="571" parent="46" name="profileTitles_titleID_uindex">
+    <key id="574" parent="46" name="profileTitles_titleID_uindex">
       <ColNames>titleID</ColNames>
       <UnderlyingIndexName>profileTitles_titleID_uindex</UnderlyingIndexName>
     </key>
-    <key id="572" parent="46" name="profileTitles_titleText_uindex">
+    <key id="575" parent="46" name="profileTitles_titleText_uindex">
       <ColNames>titleText</ColNames>
       <UnderlyingIndexName>profileTitles_titleText_uindex</UnderlyingIndexName>
     </key>
-    <column id="573" parent="47" name="tableKey">
+    <column id="576" parent="47" name="tableKey">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="574" parent="47" name="changeType">
+    <column id="577" parent="47" name="changeType">
       <Position>2</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="575" parent="47" name="description">
+    <column id="578" parent="47" name="description">
       <Position>3</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="576" parent="47" name="failResponse">
+    <column id="579" parent="47" name="failResponse">
       <Position>4</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="577" parent="47" name="succeedResponse">
+    <column id="580" parent="47" name="succeedResponse">
       <Position>5</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <key id="578" parent="47" name="PRIMARY">
+    <key id="581" parent="47" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>tableKey</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="579" parent="48" name="typeKey">
+    <column id="582" parent="48" name="typeKey">
       <Position>1</Position>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="580" parent="48" name="typeName">
+    <column id="583" parent="48" name="typeName">
       <Position>2</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="581" parent="48" name="description">
+    <column id="584" parent="48" name="description">
       <Position>3</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="582" parent="48" name="imageIcon">
+    <column id="585" parent="48" name="imageIcon">
       <Position>4</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="583" parent="48" name="worshipCost">
+    <column id="586" parent="48" name="worshipCost">
       <Position>5</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="584" parent="48" name="worshipDescription">
+    <column id="587" parent="48" name="worshipDescription">
       <Position>6</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="585" parent="48" name="minParty">
+    <column id="588" parent="48" name="minParty">
       <Position>7</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="586" parent="48" name="maxParty">
+    <column id="589" parent="48" name="maxParty">
       <Position>8</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="587" parent="48" name="shrineBonus">
+    <column id="590" parent="48" name="shrineBonus">
       <Position>9</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="588" parent="48" name="blessingMessage">
+    <column id="591" parent="48" name="blessingMessage">
       <Position>10</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <key id="589" parent="48" name="PRIMARY">
+    <key id="592" parent="48" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>typeKey</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="590" parent="49" name="shrineID">
+    <column id="593" parent="49" name="shrineID">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="591" parent="49" name="mapID">
+    <column id="594" parent="49" name="mapID">
       <Position>2</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="592" parent="49" name="zoneID">
+    <column id="595" parent="49" name="zoneID">
       <Position>3</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="593" parent="49" name="shrineType">
+    <column id="596" parent="49" name="shrineType">
       <Position>4</Position>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="594" parent="49" name="history">
+    <column id="597" parent="49" name="history">
       <Position>5</Position>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="595" parent="49" name="currentArray">
+    <column id="598" parent="49" name="currentArray">
       <Position>6</Position>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="596" parent="49" name="shrines_MapID">
+    <index id="599" parent="49" name="shrines_MapID">
       <ColNames>mapID</ColNames>
     </index>
-    <index id="597" parent="49" name="shrines_typeKey">
+    <index id="600" parent="49" name="shrines_typeKey">
       <ColNames>shrineType</ColNames>
     </index>
-    <index id="598" parent="49" name="shrines_ZoneID">
+    <index id="601" parent="49" name="shrines_ZoneID">
       <ColNames>zoneID</ColNames>
     </index>
-    <key id="599" parent="49" name="PRIMARY">
+    <key id="602" parent="49" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>shrineID</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="600" parent="49" name="shrines_Map_mapID_fk">
+    <foreign-key id="603" parent="49" name="shrines_Map_mapID_fk">
       <ColNames>mapID</ColNames>
       <RefSchemaName>ArcticLands</RefSchemaName>
       <RefTableName>Map</RefTableName>
@@ -2695,7 +2710,7 @@
       <OnUpdate>cascade</OnUpdate>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <foreign-key id="601" parent="49" name="shrines_Zone_zoneID_fk">
+    <foreign-key id="604" parent="49" name="shrines_Zone_zoneID_fk">
       <ColNames>zoneID</ColNames>
       <RefSchemaName>ArcticLands</RefSchemaName>
       <RefTableName>Zone</RefTableName>
@@ -2703,7 +2718,7 @@
       <OnUpdate>cascade</OnUpdate>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <foreign-key id="602" parent="49" name="shrines_typeKey">
+    <foreign-key id="605" parent="49" name="shrines_typeKey">
       <ColNames>shrineType</ColNames>
       <RefSchemaName>ArcticLands</RefSchemaName>
       <RefTableName>shrineTypes</RefTableName>
@@ -2711,57 +2726,57 @@
       <OnUpdate>cascade</OnUpdate>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <column id="603" parent="50" name="statusID">
+    <column id="606" parent="50" name="statusID">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="604" parent="50" name="statusName">
+    <column id="607" parent="50" name="statusName">
       <Position>2</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="605" parent="50" name="statusDescription">
+    <column id="608" parent="50" name="statusDescription">
       <Position>3</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="606" parent="50" name="statusImage">
+    <column id="609" parent="50" name="statusImage">
       <Position>4</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="607" parent="50" name="modifier">
+    <column id="610" parent="50" name="modifier">
       <Position>5</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <column id="608" parent="50" name="startingStat">
+    <column id="611" parent="50" name="startingStat">
       <Position>6</Position>
       <DataType>int(11)|0</DataType>
       <DefaultExpression>&apos;0&apos;</DefaultExpression>
     </column>
-    <key id="609" parent="50" name="PRIMARY">
+    <key id="612" parent="50" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>statusID</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="610" parent="51" name="variable">
+    <column id="613" parent="51" name="variable">
       <Position>1</Position>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="611" parent="51" name="response">
+    <column id="614" parent="51" name="response">
       <Position>2</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <index id="612" parent="51" name="websiteData_variable_uindex">
+    <index id="615" parent="51" name="websiteData_variable_uindex">
       <ColNames>variable</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="613" parent="51" name="PRIMARY">
+    <key id="616" parent="51" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>variable</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="614" parent="51" name="websiteData_variable_uindex">
+    <key id="617" parent="51" name="websiteData_variable_uindex">
       <ColNames>variable</ColNames>
       <UnderlyingIndexName>websiteData_variable_uindex</UnderlyingIndexName>
     </key>

@@ -339,8 +339,14 @@ class profile implements profile_Interface
 
     function addForumPosts($var)
     {
-        if (!in_array($var,$this->forumPosts)){
-            array_push($this->forumPosts,$var);
+        if (is_array($this->forumPosts)) {
+            if (!in_array($var, $this->forumPosts)) {
+                array_push($this->forumPosts, $var);
+            }
+        } else {
+            $temp = [$this->forumPosts];
+            array_push($temp, $var);
+            $this->forumPosts = $temp;
         }
     }
 

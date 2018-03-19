@@ -252,9 +252,8 @@ class buildingController extends building
                 if (array_key_exists("ERROR",$firepitBuilding)){
                     return 0;
                 } else {
-                    $firepit = new firepitController($firepitBuilding);
                     $rockBuilding = buildingController::getConstructedBuildingID("HeatRock",$zoneID);
-                    $temp = round($firepit->getTemperatureIncrease()/10 + $rockBuilding->getFuelRemaining());
+                    $temp = 2*floor(sqrt($rockBuilding->getFuelRemaining()*0.8));
                     return $temp;
                 }
             default:

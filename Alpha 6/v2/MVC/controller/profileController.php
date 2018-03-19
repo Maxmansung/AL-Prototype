@@ -353,7 +353,7 @@ class profileController extends profile
 
         foreach ($nameArray as $profile){
             $player = new profileController($profile);
-            $finalArray[$counter] = array("profile"=>$player->getProfileID(),"profileImage"=>$player->getProfilePicture());
+            $finalArray[$counter] = array("profile"=>$player->getProfileID(),"profileImage"=>$player->getProfilePicture(),"login"=>$player->calculateLoginTime());
             $counter ++;
         }
         return $finalArray;
@@ -442,5 +442,44 @@ class profileController extends profile
                 return false;
             }
         }
+    }
+
+    public function updateProfileDetails($bio,$age,$gender,$country){
+        $bioCheck = htmlentities($bio, ENT_QUOTES | ENT_SUBSTITUTE);
+        $ageCheck = preg_replace('#[^0-9]#', '', $age);
+        $genderCheck = preg_replace('/[^\w-, ]/', '',$gender);
+        $countryCheck = filter_var($country, FILTER_SANITIZE_STRING);
+        if ($bioCheck !== ""){
+            $this->setBio($bioCheck);
+        }
+        if ($ageCheck !== ""){
+            $this->setAge($ageCheck);
+        }
+        if ($genderCheck !== ""){
+            $this->setGender($genderCheck);
+        }
+        if ($countryCheck !== ""){
+            $this->setCountry($countryCheck);
+        }
+        $this->uploadProfile();
+        return array("ALERT"=>14,"DATA"=>"None");
+    }
+
+
+    private function calculateLoginTime(){
+        $actual = strtotime($this->lastlogin);
+        $current = time();
+        $difference = $current - $actual;
+        $midnight = strtotime("today midnight");
+        if ($actual > $midnight){
+            $response = "Today";
+        } else {
+            if ($difference < (86400*3)) {
+                $response = "Last 3 days";
+            } else {
+                $response = date("j-M",$actual);
+            }
+        }
+        return $response;
     }
 }

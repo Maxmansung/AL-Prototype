@@ -41,6 +41,7 @@ function ajax_All(type, view, data1, data2, data3, data4, data5, data6){
         }
     };
     hr.send("type="+type+"&view="+view+"&data1="+data1+"&data2="+data2+"&data3="+data3+"&data4="+data4+"&data5="+data5+"&data6="+data6);
+    //console.log("type="+type+"&view="+view+"&data1="+data1+"&data2="+data2+"&data3="+data3+"&data4="+data4+"&data5="+data5+"&data6="+data6)
 }
 
 
@@ -51,8 +52,17 @@ function switchArray(type,response){
         case 35:
             showProfilePage(response.view);
             break;
+        case 38:
+            createSearchResults(response.view);
+            break;
         case 49:
             createNews(response.view);
+            break;
+        case 192:
+            createPostViewPhone(response.view);
+            break;
+        case 193:
+            saveThreadsData(response.view);
             break;
         case 198:
             window.location.reload();
@@ -100,11 +110,14 @@ function refreshPage(){
 }
 
 function hideLoading(){
-    $("#loadingScreen").hide(1000);
+    setTimeout(function(){
+        $("#loadingScreen2").hide(1000);
+        $("#loadingScreen").hide(1000);
+    }, 0);
 }
 
 function showLoading(){
-    $("#loadingScreen").show("1000");
+    $("#loadingScreen2").show("1000");
 }
 
 function activateTooltips() {

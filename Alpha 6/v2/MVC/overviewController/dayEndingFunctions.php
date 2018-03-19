@@ -190,6 +190,17 @@ class dayEndingFunctions
                 }
             }
         }
+        $rockArray = buildingController::getMapBuildings($mapID,"HeatRock");
+        foreach ($rockArray as $rock){
+            $building = new buildingController($rock->getBuildingID());
+            $firepitBuilding = buildingController::getConstructedBuildingID("Firepit",$building->getZoneID());
+            if (array_key_exists("ERROR",$firepitBuilding)){
+                $building->setFuelRemaining(0);
+            } else {
+                $building->modifyFuelRemaining(1);
+            }
+            $building->postBuildingDatabase();
+        }
     }
 
 
@@ -247,20 +258,19 @@ class dayEndingFunctions
     public static function updateZoneInfo($mapID){
         $zoneArray = zoneController::getAllZones($mapID);
         foreach ($zoneArray as $zoneObject) {
+            $zone = new zoneController($zoneObject->getZoneID());
+            $zone->setCounter(0);
             if ($zoneObject->getFindingChances() < 1) {
                 $biome = new biomeTypeController($zoneObject->getBiomeType());
                 if ($biome->getFinalType() !== 1) {
-                    $zone = new zoneController($zoneObject->getZoneID());
                     $zone->setBiomeType($zone->getBiomeType() - 1);
                     $zone->resetFindingChances();
                     $zone->setCounter(0);
-                    $zone->updateZone();
                 }
             } else {
-                $zone = new zoneController($zoneObject->getZoneID());
                 $zone->setFindingChances($zone->getFindingChances() + 1);
-                $zone->updateZone();
             }
+            $zone->updateZone();
         }
     }
 

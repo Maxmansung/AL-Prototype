@@ -1,4 +1,8 @@
 <?php
+if (isset($accessed) === false){
+    header("location:/");
+    exit("No access");
+}
 ?>
 <div id="signupWindowScreen">
     <div class="row justify-content-center">
@@ -53,9 +57,9 @@
             </div>
         </div>
         <div class="col-md-1 d-none d-md-block "></div>
-        <div class="col-md-5 col-11 login-window my-3">
+        <div class="col-lg-6 col-md-5 col-11 login-window my-3">
             <h1 class="grayColour funkyFont m-3">Register your death.</h1>
-            <p class="grayColour small m-3">Today is the first day of the rest of your afterlife, role up and register your soul with the Grim Reaper.<br><br>But whats this? Your soul seems impure, unfavoured by any of the realms gods!<br><br>No, no no... this just wont do... it seems you will have some making up to do soon</p>
+            <div class="grayColour m-3">Today is the first day of the rest of your afterlife, role up and register your soul with the Grim Reaper.<br><br>But whats this? Your soul seems impure, unfavoured by any of the realms gods!<br><br>No, no no... this just wont do... it seems you will have some making up to do soon</div>
         </div>
     </div>
 </div>

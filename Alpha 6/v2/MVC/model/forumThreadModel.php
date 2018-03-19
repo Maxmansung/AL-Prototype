@@ -11,23 +11,32 @@ class forumThreadModel extends forumThread
         $this->creatorID = $threadModel['creatorID'];
         $this->posts = intval($threadModel['posts']);
         $this->lastUpdate = intval($threadModel['lastUpdate']);
-        $this->lastPostBy = $threadModel['lastPostBy'];
+        $this->lastPostBy = "";
+        $this->stickyThread = intval(($threadModel['stickyThread']));
     }
 
     public static function insertForumThread($forumController,$type){
         $table = $forumController->getTableName();
+        $threadID = intval($forumController->getThreadID());
+        $threadTitle = $forumController->getThreadTitle();
+        $creatorID = $forumController->getCreatorID();
+        $posts = intval($forumController->getPosts());
+        $threadDefinition = $forumController->getThreadDefinition();
+        $lastUpdate = intval($forumController->getLastUpdate());
+        $stickyThread = intval($forumController->getStickyThread());
         $db = db_conx::getInstance();
         if ($type == "Insert") {
-            $req = $db->prepare("INSERT INTO ".$table." (threadID, threadTitle, creatorID, posts, threadDefinition, lastUpdate) VALUES (:threadID, :threadTitle, :creatorID, :posts, :threadDefinition, :lastUpdate)");
+            $req = $db->prepare("INSERT INTO ".$table." (threadID, threadTitle, creatorID, posts, threadDefinition, lastUpdate, stickyThread) VALUES (:threadID, :threadTitle, :creatorID, :posts, :threadDefinition, :lastUpdate, :stickyThread)");
         } elseif ($type == "Update"){
-            $req = $db->prepare("UPDATE ".$table." SET threadTitle= :threadTitle, creatorID= :creatorID, posts= :posts, threadDefinition= :threadDefinition, lastUpdate= :lastUpdate WHERE threadID= :threadID");
+            $req = $db->prepare("UPDATE ".$table." SET threadTitle= :threadTitle, creatorID= :creatorID, posts= :posts, threadDefinition= :threadDefinition, lastUpdate= :lastUpdate, stickyThread= :stickyThread WHERE threadID= :threadID");
         }
-        $req->bindParam(':threadID', intval($forumController->getThreadID()));
-        $req->bindParam(':threadTitle', $forumController->getThreadTitle());
-        $req->bindParam(':creatorID', $forumController->getCreatorID());
-        $req->bindParam(':posts', intval($forumController->getPosts()));
-        $req->bindParam(':threadDefinition', $forumController->getThreadDefinition());
-        $req->bindParam(':lastUpdate', intval($forumController->getLastUpdate()));
+        $req->bindParam(':threadID', $threadID);
+        $req->bindParam(':threadTitle', $threadTitle);
+        $req->bindParam(':creatorID', $creatorID);
+        $req->bindParam(':posts', $posts);
+        $req->bindParam(':threadDefinition', $threadDefinition);
+        $req->bindParam(':lastUpdate', $lastUpdate);
+        $req->bindParam(':stickyThread', $stickyThread);
         $req->execute();
     }
 

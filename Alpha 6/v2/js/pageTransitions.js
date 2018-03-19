@@ -145,8 +145,8 @@ function forgottenPassword() {
 function createNews(data){
     $("#newsStories").empty();
     for (var x in data){
-        $("#newsStories").append("<div class='row d-flex flex-row align-items-center newsBar m-2 py-1' id='newsLink"+x+"'></div>");
-        $("#newsLink"+x).append('<div class="col-1"></div><div class="newsDate d-flex flex-column align-items-center"><div><strong>'+data[x].month+'</strong></div><div>'+data[x].day+'</div></div><div class="mr-md-auto mr-0 ml-auto ml-md-4"><div class="h5">'+data[x].title+'<br><small class="text-muted">By '+data[x].author+'</small></div></div><div class="d-none d-md-block">Comments   <i class="far fa-comments"></i></div><div class="col-1"></div>')
+        $("#newsStories").append("<div class='row d-flex flex-row align-items-center hoverHighlight m-2 py-1' id='newsLink"+x+"'></div>");
+        $("#newsLink"+x).append('<div class="col-1"></div><div class="newsDate d-flex flex-column align-items-center"><div><strong>'+data[x].month+'</strong></div><div>'+data[x].day+'</div></div><div class="mr-md-auto mr-0 ml-auto ml-md-4"><div class="h5">'+data[x].title+'<br><small class="text-muted">By '+data[x].author+'</small></div></div><div class="d-none d-md-block"><i class="far fa-comments"></i>  <span class="blueColour">'+data[x].comments+' </span> Comments</div><div class="col-1"></div>')
     }
 }
 

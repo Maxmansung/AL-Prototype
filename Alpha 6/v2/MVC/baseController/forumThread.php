@@ -12,6 +12,7 @@ class forumThread implements forumThread_Interface
     protected $lastUpdate;
     protected $tableName;
     protected $lastPostBy;
+    protected $stickyThread;
     protected $newPost;
 
     public function __toString()
@@ -23,6 +24,7 @@ class forumThread implements forumThread_Interface
         $output .= '/ '.$this->posts;
         $output .= '/ '.$this->lastUpdate;
         $output .= '/ '.$this->tableName;
+        $output .= '/ '.$this->stickyThread;
         $output .= '/ '.$this->newPost;
         return $output;
     }
@@ -119,5 +121,15 @@ class forumThread implements forumThread_Interface
 
     function setNewPost($var){
         $this->newPost = $var;
+    }
+
+    function getStickyThread()
+    {
+        return $this->stickyThread;
+    }
+
+    function setStickyThread($var)
+    {
+        $this->stickyThread = $var;
     }
 }

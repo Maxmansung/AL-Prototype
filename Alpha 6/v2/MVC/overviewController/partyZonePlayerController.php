@@ -518,7 +518,9 @@ class partyZonePlayerController
         $ingroup = false;
         $isPlayer = false;
         $inZone = false;
+        $partyKnown = false;
         $awaitingInvite = false;
+        $pendingRequest = false;
         $votingVision = [];
         if ($personal->getAvatarID() == $avatar->getAvatarID()) {
             $isPlayer = true;
@@ -532,7 +534,7 @@ class partyZonePlayerController
         if ($avatar->getAvatarID() != "dead") {
             $alive = true;
         }
-        $controller = new partyZonePlayerController($avatar,$otherParty,$alive,$known,$ingroup,$isPlayer,$inZone,null,null,$votingVision,$awaitingInvite);
+        $controller = new partyZonePlayerController($avatar,$otherParty,$alive,$known,$ingroup,$isPlayer,$inZone,null,null,$votingVision,$awaitingInvite,$pendingRequest,$partyKnown);
         return $controller;
 
     }

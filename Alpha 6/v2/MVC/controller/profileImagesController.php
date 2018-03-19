@@ -31,16 +31,17 @@ class profileImagesController
                 if ($check !== false) {
                     // Check file size
                     if ($uploadFile["size"] > 1000000) {
-                        return array("ERROR"=>"Too Big");
+                        return array("ERROR"=>123);
                     }
                     if ($uploadFile["size"] < 300) {
-                        return array("ERROR"=>"Image is too small");
+                        return array("ERROR"=>124);
                     }
                     // Allow certain file formats
                     if ($uploadFile["type"] != "image/jpg" && $uploadFile["type"] != "image/png" && $uploadFile["type"] != "image/jpeg" && $uploadFile["type"] != "image/gif") {
-                        return array("ERROR"=>"File type is not correct");
+                        return array("ERROR"=>121);
                     }
-                    $extension = end(explode(".", $uploadFile["name"]));
+                    $name = explode(".", $uploadFile["name"]);
+                    $extension = end($name);
                     $uploadFile["name"] = $profile->getProfileID().".".$extension;
                     $targetFile .= ".".$extension;
                     unlink($targetFile);
@@ -48,15 +49,15 @@ class profileImagesController
                         $profile->setProfilePicture($uploadFile["name"]);
                         $profile->setUploadSecurity();
                         $profile->uploadProfile();
-                        return array("SUCCESS"=>$profile->getProfileID());
+                        return array("SUCCESS"=>true);
                     } else {
                         return array("ERROR"=>"Sorry, there was an error uploading your file.");
                     }
                 } else {
-                    return array("ERROR"=>"File is not an image.");
+                    return array("ERROR"=>121);
                 }
             } else {
-                return array("ERROR"=>"Uploading too frequently");
+                return array("ERROR"=>125);
             }
         } else {
             return array("ERROR"=>"Error with profile");

@@ -68,7 +68,11 @@ class forumPostController extends forumPost
                     $temp->setNewPost(false);
                 }
                 $profilePlayer = new profileController($temp->getCreatorID());
-                $temp->setAvatarImage($profilePlayer->getProfilePicture());
+                if ($profilePlayer->getProfilePicture() != null) {
+                    $temp->setAvatarImage($profilePlayer->getProfilePicture());
+                } else {
+                    $temp->setAvatarImage("generic.png");
+                }
             }
             $finalArray[$temp->getPostCount()] = $temp->returnVars();
         }
@@ -106,6 +110,19 @@ class forumPostController extends forumPost
         forumPostModel::insertForumPost($this,"Update");
     }
 
+    public static function checkPostError($postText){
+        if (strlen($postText) < 10) {
+            return array("ERROR" => 46);
+        }else if (strlen($postText) > 5000) {
+            $postText = substr($postText, 0, 5000);
+            $postText = htmlentities($postText, ENT_QUOTES | ENT_SUBSTITUTE);
+            return $postText;
+        } else {
+            $postText = htmlentities($postText, ENT_QUOTES | ENT_SUBSTITUTE);
+            return $postText;
+        }
+    }
+
     public static function createNewPost($tableDefinition,$profileID,$postText,$threadID){
         if (strlen($postText) < 10){
             $postID = array("ERROR"=>46);
@@ -114,7 +131,7 @@ class forumPostController extends forumPost
             if (strlen($postText) > 5000) {
                 $postText = substr($postText, 0, 5000);
             }
-            $postText = htmlentities($postText, ENT_QUOTES | ENT_SUBSTITUTE);
+            $postText = htmlspecialchars($postText, ENT_QUOTES);
             switch ($tableDefinition) {
                 case "mc":
                     $thread = new forumThreadController($threadID, "forumThreadsMap");
@@ -158,7 +175,7 @@ class forumPostController extends forumPost
         $thread->increasePosts();
         $thread->setLastUpdate(time());
         $thread->updateThread();
-        return array("PostID"=>$post->getPostID());
+        return array("ALERT"=>15,"DATA"=>$post->getPostID());
     }
 
     private static function newMapPost($avatarID,$postText,$threadID){
@@ -180,7 +197,7 @@ class forumPostController extends forumPost
         avatarController::addNewPostsMap($avatar->getMapID(),$post->getPostID());
         $avatar->removeForumPosts($post->getPostID());
         $avatar->updateAvatar();
-        return array("PostID"=>$post->getPostID());
+        return array("ALERT"=>15,"DATA"=>$post->getPostID());
     }
 
     private static function newGeneralPost($profileID,$postText,$threadID){
@@ -202,7 +219,7 @@ class forumPostController extends forumPost
         $profile = new profileController($profileID);
         $profile->removeForumPosts($post->getPostID());
         $profile->uploadProfile();
-        return array("PostID"=>$post->getPostID());
+        return array("ALERT"=>15,"DATA"=>$post->getPostID());
     }
 
     function makeTime(){
@@ -216,8 +233,8 @@ class forumPostController extends forumPost
             $date = floor($difference/3600);
             return $date." hours ago";
         } else {
-            $date = date("g:Ha",$this->getPostDate());
-            $date .="<br/>".date("jS M",$this->getPostDate());
+            $date =date("jS M",$this->getPostDate());
+            $date .=" at ".date("G:H",$this->getPostDate());
             return $date;
         }
     }
