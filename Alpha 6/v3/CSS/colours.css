@@ -1,0 +1,39 @@
+.blackColour{
+    color: #000000;
+}
+
+.grayColour{
+    color: #dddddd;
+}
+
+.darkGrayColour{
+    color: #333333;
+}
+
+.greenColour{
+    color: #AFF016;
+}
+
+.blueColour{
+    color: #1F51AC;
+}
+
+.redColour{
+    color: #C91285;
+}
+
+.orangeColour{
+    color: #FFAE18;
+}
+
+.whiteBackground{
+    background: #ffffff;
+}
+
+.grayBackground{
+    background: #bbbbbb;
+}
+
+.darkGrayBackground{
+    background: #333333;
+}
