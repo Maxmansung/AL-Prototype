@@ -8,7 +8,11 @@ class avatarController extends avatar
     public function __construct($id)
     {
         if ($id != ""){
-            $avatarModel = avatarModel::findAvatarID($id);
+            if (is_object($id)){
+                $avatarModel = $id;
+            } else {
+                $avatarModel = avatarModel::findAvatarID($id);
+            }
             $this->avatarID = $avatarModel->getAvatarID();
             $this->profileID = $avatarModel->getProfileID();
             $this->mapID = $avatarModel->getMapID();
@@ -36,7 +40,7 @@ class avatarController extends avatar
     }
 
     public function newavatar($mapController, $profileController){
-        $this->profileID = $profileController->getProfileID();
+        $this->profileID = $profileController->getProfileName();
         $this->mapID = $mapController->getMapID();
         $this->stamina = $mapController->getMaxPlayerStamina();
         $this->maxStamina = $mapController->getMaxPlayerStamina();
@@ -77,7 +81,7 @@ class avatarController extends avatar
         $partitionMap = ($size*$size)/$mapPlayers;
         //This makes a section of the map for the number of player in it
         //This selects a random zone between the players maximum zone number and the players minimum
-        $zoneNumber = rand(($partitionMap*$playerCount),($partitionMap*($playerCount+1)));
+        $zoneNumber = rand(($partitionMap*$playerCount),(($partitionMap*($playerCount+1))-1));
         $count = 4 - (strlen((string)$zoneNumber));
         $finalZoneID = "z";
         for ($i = 0; $i < $count; $i++) {
@@ -96,8 +100,18 @@ class avatarController extends avatar
         $this->stamina -= $var;
     }
 
-    public static function getAllMapAvatars($mapID){
-        return avatarModel::getAllMapAvatars($mapID);
+    public static function getAllMapAvatars($mapID,$vars){
+        $list = avatarModel::getAllMapAvatars($mapID);
+        $finalArray = [];
+        foreach ($list as $avatar){
+            $avatarController = new avatarController($avatar);
+            if ($vars === true){
+                $finalArray[$avatarController->getAvatarID()] = $avatarController->returnVars();
+            } else {
+                $finalArray[$avatarController->getAvatarID()] = $avatarController;
+            }
+        }
+        return $finalArray;
     }
 
     public static function removePartyVotesForPlayer($partyID,$avatarID){

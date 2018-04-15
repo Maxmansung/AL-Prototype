@@ -8,7 +8,11 @@ class zoneController extends zone
     public function __construct($id)
     {
         if ($id != ""){
-            $zoneModel = zoneModel::findZoneID($id);
+            if (is_object($id)){
+                $zoneModel = $id;
+            } else {
+                $zoneModel = zoneModel::findZoneID($id);
+            }
             $this->zoneID = $zoneModel->getZoneID();
             $this->name = $zoneModel->getName();
             $this->mapID = $zoneModel->getMapID();
@@ -170,13 +174,16 @@ class zoneController extends zone
 
 
     //This returns an array of all the zones within a map
-    public static function getAllZones($var){
-        $zoneModel = zoneModel::findMapZones($var);
-        $counter = 0;
+    public static function getAllZones($mapID,$var){
+        $zoneModel = zoneModel::findMapZones($mapID);
         $zoneList = [];
         foreach ($zoneModel as $zone){
-            $zoneList[$counter] = new zoneController($zone[0]);
-            $counter += 1;
+            $temp = new zoneController($zone);
+            if ($var === true){
+                $zoneList[$temp->getZoneID()] = $temp->returnVars();
+            } else {
+                $zoneList[$temp->getZoneID()] = $temp;
+            }
         }
         return $zoneList;
     }

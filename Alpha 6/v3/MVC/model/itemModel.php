@@ -5,43 +5,47 @@ class itemModel extends item
     private function __construct($itemModel)
     {
         if (isset($itemModel['ItemID'])) {
-            $this->itemID = $itemModel['ItemID'];
-            $this->mapID = $itemModel['MapID'];
+            $this->itemID = intval($itemModel['ItemID']);
+            $this->mapID = intval($itemModel['MapID']);
             $this->itemTemplateID = $itemModel['itemTemplateID'];
             $this->identity = $itemModel['identity'];
             $this->icon = $itemModel['icon'];
             $this->description = $itemModel['description'];
-            $this->itemType = $itemModel['itemType'];
-            $this->findingChances = $itemModel['findingchances'];
-            $this->fuelValue = $itemModel['fuelvalue'];
-            $this->maxCharges = $itemModel['maxcharges'];
-            $this->currentCharges = $itemModel['currentcharges'];
+            $this->itemType = intval($itemModel['itemtype']);
+            $this->findingChances = intval($itemModel['findingchances']);
+            $this->fuelValue = intval($itemModel['fuelvalue']);
+            $this->maxCharges = intval($itemModel['maxcharges']);
+            $this->currentCharges = intval($itemModel['currentcharges']);
             $this->itemStatus = $itemModel['itemstatus'];
-            $this->usable = $itemModel['useable'];
-            $this->itemType = $itemModel['itemtype'];
-            $this->survivalBonus = $itemModel['survivalBonus'];
+            $this->usable = intval($itemModel['useable']);
+            $this->survivalBonus = intval($itemModel['survivalBonus']);
             $this->itemLocation = $itemModel['itemLocation'];
             $this->locationID = intval($itemModel['locationID']);
             $this->statusImpact = intval($itemModel['statusImpact']);
         } else {
-            $this->itemID = "X";
-            $this->mapID = "X";
-            $this->itemTemplateID = $itemModel['templateID'];
-            $this->identity = $itemModel['identity'];
-            $this->icon = $itemModel['icon'];
-            $this->description = $itemModel['description'];
-            $this->itemType = $itemModel['itemType'];
-            $this->findingChances = $itemModel['findingchances'];
-            $this->fuelValue = $itemModel['fuelvalue'];
-            $this->maxCharges = $itemModel['maxcharges'];
-            $this->currentCharges = $itemModel['maxcharges'];
-            $this->itemStatus = "normal";
-            $this->usable = $itemModel['useable'];
-            $this->itemType = $itemModel['itemtype'];
-            $this->survivalBonus = $itemModel['survivalBonus'];
+            $this->itemID = null;
+            $this->mapID = null;
             $this->itemLocation = "ground";
             $this->locationID = "X";
-            $this->statusImpact = intval($itemModel['statusImpact']);
+            $this->itemStatus = "normal";
+            $this->itemTemplateID = $itemModel['templateID'];
+            if (isset($itemModel['findingChances'])) {
+                $this->findingChances = intval($itemModel['findingchances']);
+            }
+            if (isset($itemModel['identity'])) {
+                $this->identity = $itemModel['identity'];
+                $this->icon = $itemModel['icon'];
+                $this->description = $itemModel['description'];
+            }if (isset($itemModel['itemType'])) {
+                $this->itemType = intval($itemModel['itemType']);
+                $this->fuelValue = intval($itemModel['fuelvalue']);
+                $this->maxCharges = intval($itemModel['maxcharges']);
+                $this->currentCharges = intval($itemModel['maxcharges']);
+                $this->usable = intval($itemModel['useable']);
+                $this->itemType = $itemModel['itemtype'];
+                $this->survivalBonus = intval($itemModel['survivalBonus']);
+                $this->statusImpact = intval($itemModel['statusImpact']);
+            }
         }
     }
 
@@ -56,19 +60,26 @@ class itemModel extends item
 
 
     public static function insertItem($itemController, $type){
+        $itemID = intval($itemController->getItemID());
+        $mapID = intval($itemController->getMapID());
+        $itemTemplateID = $itemController->getItemTemplateID();
+        $currentCharges = intval($itemController->getCurrentCharges());
+        $itemStatus = $itemController->getItemStatus();
+        $itemLocation = $itemController->getItemLocation();
+        $locationID = intval($itemController->getLocationID());
         $db = db_conx::getInstance();
         if ($type == "Insert") {
             $req = $db->prepare("INSERT INTO Item (ItemID,MapID,itemTemplateID,currentcharges,itemstatus,itemLocation,locationID) VALUES (:itemID,:mapID,:itemTemplateID,:currentCharges,:itemStatus, :itemLocation, :locationID)");
         } elseif ($type == "Update"){
             $req = $db->prepare("UPDATE Item SET MapID= :mapID,itemTemplateID= :itemTemplateID, currentcharges= :currentCharges,itemstatus= :itemStatus, itemLocation= :itemLocation, locationID= :locationID WHERE ItemID= :itemID");
         }
-        $req->bindParam(':itemID', $itemController->getItemID());
-        $req->bindParam(':mapID', $itemController->getMapID());
-        $req->bindParam(':itemTemplateID', $itemController->getItemTemplateID());
-        $req->bindParam(':currentCharges', $itemController->getCurrentCharges());
-        $req->bindParam(':itemStatus', $itemController->getItemStatus());
-        $req->bindParam(':itemLocation', $itemController->getItemLocation());
-        $req->bindParam(':locationID', intval($itemController->getLocationID()));
+        $req->bindParam(':itemID', $itemID);
+        $req->bindParam(':mapID', $mapID);
+        $req->bindParam(':itemTemplateID', $itemTemplateID);
+        $req->bindParam(':currentCharges', $currentCharges);
+        $req->bindParam(':itemStatus', $itemStatus);
+        $req->bindParam(':itemLocation', $itemLocation);
+        $req->bindParam(':locationID', $locationID);
         $req->execute();
     }
 

@@ -31,12 +31,11 @@ class forumPostController extends forumPost
         }
     }
 
-    private static function getAllPostsThread($threadID,$table,$avatarTrue,$personalProfile){
+    private static function getAllPostsThread($threadID,$table,$avatarTrue,$profile){
         $array = forumPostModel::getAllPosts($threadID,$table);
         $finalArray = [];
         foreach ($array as $post) {
             $temp = new forumPostController($post['postID'], $table);
-            $profile = new profileController($personalProfile);
             if ($avatarTrue !== false) {
                 $avatar = new avatarController($profile->getAvatar());
                 if ($avatarTrue === true) {
@@ -53,7 +52,7 @@ class forumPostController extends forumPost
                 $partyZone = partyZonePlayerController::getSinglePlayerDetails($temp->getCreatorID(),$profile->getAvatar());
                 if ($partyZone->getAvatarID() != "") {
                     $profilePlayer = new profileController($partyZone->getAvatarName());
-                    $temp->setCreatorID($profilePlayer->getProfileID());
+                    $temp->setCreatorID($profilePlayer->getProfileName());
                     $temp->setAvatarImage($profilePlayer->getProfilePicture());
                 } else {
                     $temp->setCreatorID("Unknown");
@@ -123,11 +122,10 @@ class forumPostController extends forumPost
         }
     }
 
-    public static function createNewPost($tableDefinition,$profileID,$postText,$threadID){
+    public static function createNewPost($tableDefinition,$profile,$postText,$threadID){
         if (strlen($postText) < 10){
             $postID = array("ERROR"=>46);
         } else {
-            $profile = new profileController($profileID);
             if (strlen($postText) > 5000) {
                 $postText = substr($postText, 0, 5000);
             }
@@ -152,7 +150,7 @@ class forumPostController extends forumPost
                     }
                     break;
                 default:
-                    $postID = self::newGeneralPost($profileID, $postText, $threadID);
+                    $postID = self::newGeneralPost($profile, $postText, $threadID);
                     break;
             }
         }
@@ -183,7 +181,7 @@ class forumPostController extends forumPost
         $post = new forumPostController("","");
         $post->tableName = "forumPostsMap";
         $post->postID = forumPostModel::createThreadID($post->tableName);
-        $post->creatorID = $avatar->getAvatarID();
+        $post->creatorID = $avatar->getProfileID();
         $post->postDate = time();
         $post->editable = 1;
         $post->postText = $postText;
@@ -200,11 +198,11 @@ class forumPostController extends forumPost
         return array("ALERT"=>15,"DATA"=>$post->getPostID());
     }
 
-    private static function newGeneralPost($profileID,$postText,$threadID){
+    private static function newGeneralPost($profile,$postText,$threadID){
         $post = new forumPostController("","");
         $post->tableName = "forumPostsGeneral";
         $post->postID = forumPostModel::createThreadID($post->tableName);
-        $post->creatorID = $profileID;
+        $post->creatorID = $profile->getProfileName();
         $post->postDate = time();
         $post->editable = 1;
         $post->postText = $postText;
@@ -216,7 +214,6 @@ class forumPostController extends forumPost
         $thread->setLastUpdate(time());
         $thread->updateThread();
         profileController::addNewPostProfiles($post->getPostID());
-        $profile = new profileController($profileID);
         $profile->removeForumPosts($post->getPostID());
         $profile->uploadProfile();
         return array("ALERT"=>15,"DATA"=>$post->getPostID());

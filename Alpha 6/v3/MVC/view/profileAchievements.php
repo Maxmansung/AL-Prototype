@@ -4,38 +4,64 @@ class profileAchievements
 {
 
     protected $profileID;
+    protected $profileName;
     protected $profilePicture;
     protected $gameStatus;
-    protected $achievementsMain;
-    protected $achievementsSpeed;
     protected $login;
     protected $accountType;
-    protected $bio;
-    protected $country;
-    protected $gender;
     protected $age;
+    protected $gender;
+    protected $keyAchievement1;
+    protected $keyAchievement2;
+    protected $keyAchievement3;
+    protected $keyAchievement4;
+    protected $favouriteGod;
+    protected $country;
+    protected $mainGames;
+    protected $speedGames;
+    protected $bio;
+    protected $achievementsMain;
+    protected $achievementsSpeed;
     protected $shrineScore;
-    protected $conversion;
+    protected $soloLeaderboard;
+    protected $teamLeaderboard;
+    protected $fullLeaderboard;
 
     private function __construct($id)
     {
         if ($id !== ""){
             $profile = new profileController($id);
+            $profileDetails = new profileDetailsController($profile->getProfileID());
             $this->profileID = $profile->getProfileID();
+            $this->profileName = $profile->getProfileName();
             $this->profilePicture = $profile->getProfilePicture();
             $this->gameStatus = $profile->getGameStatus();
-            $this->achievementsMain = $profile->getAchievements();
-            $this->achievementsSpeed = $profile->getAchievementsSolo();
             $this->login = $profile->getLastLogin();
-            $this->accountType = $profile->getAccountType();
-            $this->bio = $profile->getBio();
-            $this->country = $profile->getCountry();
-            $this->gender = $profile->getGender();
-            $this->age = $profile->getAge();
-            $this->shrineScore = $profile->getShrineScore();
+            $this->accountType = profileDetailsModel::getProfileAccountType($profile->getAccountType());
+            $this->age = $profileDetails->getAge();
+            $this->gender = $profileDetails->getGender();
+            $this->keyAchievement1 = $profileDetails->getKeyAchievement1();
+            $this->keyAchievement2 = $profileDetails->getKeyAchievement2();
+            $this->keyAchievement3 = $profileDetails->getKeyAchievement3();
+            $this->keyAchievement4 = $profileDetails->getKeyAchievement4();
+            $this->favouriteGod = shrineModel::getShrineNameOnly($profileDetails->getFavouriteGod());
+            $this->country = $profileDetails->getCountry();
+            $this->mainGames = $profileDetails->getMainGames();
+            $this->speedGames = $profileDetails->getSpeedGames();
+            $this->bio = $profileDetails->getBio();
+            $this->achievementsMain = $profileDetails->getAchievements();
+            $this->achievementsSpeed = $profileDetails->getAchievementsSolo();
+            $this->soloLeaderboard = $profileDetails->getSoloLeaderboard();
+            $this->teamLeaderboard = $profileDetails->getTeamLeaderboard();
+            $this->fullLeaderboard = $profileDetails->getFullLeaderboard();
+            $this->calculateShrines();
             $this->calculateLoginTime();
             $this->createAchievements();
         }
+    }
+
+    private function calculateShrines(){
+        $this->shrineScore = $this->soloLeaderboard+$this->teamLeaderboard+$this->fullLeaderboard;
     }
 
     function returnVars(){

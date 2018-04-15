@@ -18,12 +18,12 @@ class party implements party_Interface
     {
         $output = $this->partyID;
         $output .= '/ '.$this->mapID;
-        $output .= '/ '.$this->members;
+        $output .= '/ '.json_encode($this->members);
         $output .= '/ '.$this->partyName;
-        $output .= '/ '.$this->pendingRequests;
-        $output .= '/ '.$this->pendingBans;
-        $output .= '/ '.$this->playersKnown;
-        $output .= '/ '.$this->overallZoneExploration;
+        $output .= '/ '.json_encode($this->pendingRequests);
+        $output .= '/ '.json_encode($this->pendingBans);
+        $output .= '/ '.json_encode($this->playersKnown);
+        $output .= '/ '.json_encode($this->overallZoneExploration);
         return $output;
     }
 

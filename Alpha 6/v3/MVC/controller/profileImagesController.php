@@ -19,13 +19,13 @@ class profileImagesController
         return $image;
     }
 
-    public function checkUpload($uploadFile,$profileID)
+    public function checkUpload($uploadFile,$profile)
     {
-        $profile = new profileController($profileID);
+        $profileDetails = new profileDetailsController($profile->getProfileID());
         if ($profile->getProfileID() != "") {
-            $securityTimer = time() - $profile->getUploadSecurity();
+            $securityTimer = time() - $profileDetails->getUploadSecurity();
             if ($securityTimer > 43200) {
-                $targetFile = $this->targetDir . $profileID;
+                $targetFile = $this->targetDir . $profile->getProfileID();
                 // Check if image file is a actual image or fake image
                 $check = getimagesize($uploadFile["tmp_name"]);
                 if ($check !== false) {
@@ -44,11 +44,14 @@ class profileImagesController
                     $extension = end($name);
                     $uploadFile["name"] = $profile->getProfileID().".".$extension;
                     $targetFile .= ".".$extension;
-                    unlink($targetFile);
+                    if (file_exists($targetFile)) {
+                        unlink($targetFile);
+                    }
                     if (move_uploaded_file($uploadFile["tmp_name"], $targetFile)) {
                         $profile->setProfilePicture($uploadFile["name"]);
-                        $profile->setUploadSecurity();
+                        $profileDetails->setUploadSecurity();
                         $profile->uploadProfile();
+                        $profileDetails->uploadProfile();
                         return array("SUCCESS"=>true);
                     } else {
                         return array("ERROR"=>"Sorry, there was an error uploading your file.");

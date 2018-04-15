@@ -128,6 +128,29 @@ function forgottenPassword() {
     }
 }
 
+//This function logs the player in to start the first tutorial game
+function confirmActivation(){
+    var u = $("#profileActivationName").text();
+    var p = $("#confirmPasswordActivation").val();
+    if (p != ""){
+        if ($("#confirmPasswordActivation").hasClass("is-invalid")){
+            $("#confirmPasswordActivation").removeClass("is-invalid");
+        }
+        ajax_All(213,0,u,p)
+    } else {
+        $("#confirmPasswordError").empty().append("Please type your password");
+        $("#confirmPasswordActivation").addClass("is-invalid");
+    }
+}
+
+function activationListener(){
+    $("#confirmPasswordActivation").keyup(function(event){
+        if(event.keyCode == 13){
+            $("#confirmButton").click();
+        }
+    });
+}
+
 function loginListener(){
     $("#password").keyup(function(event){
         if(event.keyCode == 13){

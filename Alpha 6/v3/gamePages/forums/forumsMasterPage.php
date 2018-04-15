@@ -10,7 +10,7 @@ if (isset($_GET["f"])) {
 }
 ?>
 <script src="/js/forumPage.js"></script>
-<div class="container-fluid grayTransparentBackground">
+<div class="container-fluid grayTransparentBackground pb-3">
     <?php
     switch ($forum) {
         case "none":

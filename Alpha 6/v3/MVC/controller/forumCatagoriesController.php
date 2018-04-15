@@ -5,7 +5,7 @@ require_once(PROJECT_ROOT."/MVC/model/forumCatagoriesModel.php");
 class forumCatagoriesController extends forumCatagories
 {
 
-    public function __construct($name,$profileID)
+    public function __construct($name,$profile)
     {
         if ($name != ""){
             $catagoryModel = forumCatagoriesModel::getCatagory($name);
@@ -14,9 +14,9 @@ class forumCatagoriesController extends forumCatagories
             $this->description = $catagoryModel->description;
             $this->flavourText = $catagoryModel->flavourText;
             $this->accessType = $catagoryModel->accessType;
-            $access = self::getPlayerAccess($profileID, $this->accessType);
+            $access = self::getPlayerAccess($profile, $this->accessType);
             $this->accessType = $access;
-            $this->newPosts = $this->checkIfNewPost($profileID,$name);
+            $this->newPosts = $this->checkIfNewPost($profile,$name);
         }
     }
 
@@ -38,10 +38,9 @@ class forumCatagoriesController extends forumCatagories
         forumCatagoriesModel::insertForumCatagory($this,"Update");
     }
 
-    private static function getPlayerAccess($profileID,$accessType){
+    private static function getPlayerAccess($profile,$accessType){
         $access = false;
         if ($accessType != "all") {
-            $profile = new profileController($profileID);
             if ($accessType == "avatar") {
                 if ($profile->getAvatar() != "") {
                     $access = true;
@@ -53,8 +52,7 @@ class forumCatagoriesController extends forumCatagories
         return $access;
     }
 
-    private function checkIfNewPost($profileID,$category){
-        $profile = new profileController($profileID);
+    private function checkIfNewPost($profile,$category){
         if ($category === "g"){
             if($profile->getForumPosts() !== array()){
                 return true;

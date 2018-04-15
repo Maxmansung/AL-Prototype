@@ -175,9 +175,9 @@ class buildingModel extends building
 
     public static function getTutorialBuildings($type){
         $db = db_conx::getInstance();
-        if ($type === "Tutorial"){
+        if ($type === 3){
             $req = $db->prepare('SELECT buildingTemplateID FROM BuildingTemplate WHERE tutorialKnown = 1');
-        } else {
+        } else{
             $req = $db->prepare('SELECT buildingTemplateID FROM BuildingTemplate WHERE mainKnown = 1');
         }
         $req->execute();

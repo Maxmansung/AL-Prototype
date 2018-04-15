@@ -53,7 +53,8 @@ class newsStoryController extends newsStory
     }
 
     public static function postingNews($profileController, $title, $postText, $visible, $type){
-        if ($profileController->getAccountType() <= 3) {
+        $profileController->getProfileAccess();
+        if ($profileController->getAccessPostNews()===1) {
             $visibleClean = boolval(preg_replace('#[^0-9]#i', '', $visible));
             $titleClean = preg_replace('#[^A-Za-z0-9 ?()!.,£$]#i', '', $title);
             if (strlen($titleClean) < 3) {
@@ -90,7 +91,8 @@ class newsStoryController extends newsStory
     }
 
     public static function deleteNewsController($profileController, $newsID){
-        if ($profileController->getAccountType() >= 3){
+        $profileController->getProfileAccess();
+        if ($profileController->getAccessPostNews()===1){
             return array("ERROR"=>28);
         } else {
             $newsClean = intval(preg_replace('#[^0-9]#i', '', $newsID));

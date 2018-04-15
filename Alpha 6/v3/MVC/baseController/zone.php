@@ -30,8 +30,8 @@ class zone implements zone_interface
         $output .= '/ '.$this->mapID;
         $output .= '/ '.$this->coordinateX;
         $output .= '/ '.$this->coordinateY;
-        $output .= '/ '.$this->avatars;
-        $output .= '/ '.$this->buildings;
+        $output .= '/ '.json_encode($this->avatars);
+        $output .= '/ '.json_encode($this->buildings);
         $output .= '/ '.$this->controllingParty;
         $output .= '/ '.$this->protectedZoneType;
         $output .= '/ '.$this->storage;

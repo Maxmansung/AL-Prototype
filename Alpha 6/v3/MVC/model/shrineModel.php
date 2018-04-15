@@ -8,16 +8,32 @@ class shrineModel extends shrine
         $this->mapID = intval($shrineModel['mapID']);
         $this->zoneID = intval($shrineModel['zoneID']);
         $this->shrineType = $shrineModel['shrineType'];
-        $this->history = get_object_vars(json_decode($shrineModel['history']));
-        $this->currentArray = get_object_vars(json_decode($shrineModel['currentArray']));
+        if (is_object(json_decode($shrineModel['history']))) {
+            $this->history = get_object_vars(json_decode($shrineModel['history']));
+        } else {
+            $this->history = [];
+        }
+        if (is_object(json_decode($shrineModel['currentArray']))) {
+            $this->currentArray = get_object_vars(json_decode($shrineModel['currentArray']));
+        } else {
+            $this->currentArray = [];
+        }
+        if (is_object(json_decode($shrineModel['worshipCost']))) {
+            $this->worshipCost = get_object_vars(json_decode($shrineModel['worshipCost']));
+        } else {
+            $this->worshipCost = [];
+        }
+        if (is_object(json_decode($shrineModel['shrineBonus']))) {
+            $this->shrineBonus = get_object_vars(json_decode($shrineModel['shrineBonus']));
+        } else {
+            $this->shrineBonus = [];
+        }
         $this->shrineName = $shrineModel['typeName'];
         $this->description = $shrineModel['description'];
         $this->shrineIcon = $shrineModel['imageIcon'];
-        $this->worshipCost = get_object_vars(json_decode($shrineModel['worshipCost']));
         $this->worshipDescription = $shrineModel['worshipDescription'];
         $this->minParty = intval($shrineModel['minParty']);
         $this->maxParty = intval($shrineModel['maxParty']);
-        $this->shrineBonus = get_object_vars(json_decode($shrineModel['shrineBonus']));
         $this->blessingMessage = $shrineModel['blessingMessage'];
     }
 
@@ -99,6 +115,14 @@ class shrineModel extends shrine
         $req->execute(array('type' => $shrineID));
         $shrineModel = $req->fetch();
         return new shrineModel($shrineModel);
+    }
+
+    public static function getShrineNameOnly($shrineID){
+        $db = db_conx::getInstance();
+        $req = $db->prepare('SELECT typeName FROM shrineTypes WHERE typeKey= :type LIMIT 1');
+        $req->execute(array('type' => $shrineID));
+        $shrineModel = $req->fetch();
+        return $shrineModel['typeName'];
     }
 
 }

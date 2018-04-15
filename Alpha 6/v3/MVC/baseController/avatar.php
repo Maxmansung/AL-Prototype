@@ -36,19 +36,19 @@ class avatar implements avatar_Interface
         $output .= '/ '.$this->stamina;
         $output .= '/ '.$this->maxStamina;
         $output .= '/ '.$this->zoneID;
-        $output .= '/ '.$this->inventory;
+        $output .= '/ '.json_encode($this->inventory);
         $output .= '/ '.$this->maxInventorySlots;
         $output .= '/ '.$this->partyID;
         $output .= '/ '.$this->readiness;
-        $output .= '/ '.$this->avatarTempRecord;
+        $output .= '/ '.json_encode($this->avatarTempRecord);
         $output .= '/ '.$this->avatarSurvivableTemp;
-        $output .= '/ '.$this->partyVote;
-        $output .= '/ '.$this->researched;
-        $output .= '/ '.$this->playStatistics;
+        $output .= '/ '.json_encode($this->partyVote);
+        $output .= '/ '.json_encode($this->researched);
+        $output .= '/ '.json_encode($this->playStatistics);
         $output .= '/ '.$this->tempModLevel;
-        $output .= '/ '.$this->shrineScore;
-        $output .= '/ '.$this->forumPosts;
-        $output .= '/ '.$this->statusArray;
+        $output .= '/ '.json_encode($this->shrineScore);
+        $output .= '/ '.json_encode($this->forumPosts);
+        $output .= '/ '.json_encode($this->statusArray);
         return $output;
     }
 

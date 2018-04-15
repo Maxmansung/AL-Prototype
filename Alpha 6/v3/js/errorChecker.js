@@ -78,24 +78,16 @@ function errors(id){
             alert("You do not currently have the required items");
             break;
         case 14:
-            if (!alert("This map has already filled")) {
-                window.location.reload();
-            }
+            createAlertBox(5,1,"This land is already full",1);
             break;
         case 15:
-            if (!alert("You have already played this map")) {
-                window.location.reload();
-            }
+            createAlertBox(5,1,"You have already played this land and died",1);
             break;
         case 16:
-            if (!alert("You are already in a game")) {
-                window.location.reload();
-            }
+            createAlertBox(5,1,"You cannot exist in two lands at once, finish your current life first",1);
             break;
         case 17:
-            if (!alert("This map does not exist or is not on day 1")) {
-                window.location.reload();
-            }
+            createAlertBox(5,1,"This land has moved on without you, get there earlier next time",1);
             break;
         case 18:
             alert("You cannot leave a group where you are the only member - (Please error report this message 'ERROR 18')");
@@ -167,9 +159,7 @@ function errors(id){
             }
             break;
         case 38:
-            if (!alert("That map no longer exists")) {
-                window.location.reload();
-            }
+            createAlertBox(5,1,"This map no longer exists to join",1);
             break;
         case 39:
             alert("You do not have this building researched yet");
@@ -213,9 +203,7 @@ function errors(id){
             alert("The player does not know the parent building required to learn it - (Please error report this message 'ERROR 49')");
             break;
         case 52:
-            if (!alert("You do not have access to this map")) {
-                window.location.reload();
-            }
+            createAlertBox(5,1,"You cannot access this land at your current level",1);
             break;
         case 53:
             if (!alert("Congratulations, you're now an active player and can join the larger test maps")) {
@@ -374,6 +362,27 @@ function errors(id){
         case 130:
             createAlertBox(0,1,"The news body is too short");
             break;
+        case 131:
+            $("#mapNameError").empty().append("There is already a map with this name");
+            $("#createMapName").addClass("is-invalid");
+            break;
+        case 132:
+            $("#playerCountError").empty().append("Players must be 1-40");
+            $("#createMapPlayers").addClass("is-invalid");
+            break;
+        case 133:
+            $("#edgeSizeError").empty().append("Size must be 3-30");
+            $("#createMapEdge").addClass("is-invalid");
+            break;
+        case 134:
+            createAlertBox(5,1,"This map has already been reported, please wait for a response",1);
+            break;
+        case 135:
+            createAlertBox(5,1,"You can only report maps that you have access to, please don't try to hack the system",1);
+            break;
+        case 136:
+            createAlertBox(5,1,"You can only use to allowed formats, please don't try to hack the system",1);
+            break;
         case 200:
             window.location.href="/nightfall.php";
             break;
@@ -419,7 +428,7 @@ function alerts(response,data){
             destroyResponse(data);
             break;
         case 7:
-            if (!alert("You have joined the map: "+data)){window.location.reload();}
+            createAlertBox(2,1,"You have joined the map: "+data,1);
             break;
         case 8:
             if (!alert("You have deleted map: "+data)){window.location.reload();}
@@ -461,6 +470,28 @@ function alerts(response,data){
             break;
         case 20:
             createAlertBox(2,1,"News story has been deleted",1);
+            break;
+        case 21:
+            createAlertBox(2,1,"The map: '"+data+"' has been deleted",1);
+            break;
+        case 22:
+            createAlertBox(2,1,"An email has been sent to '"+data+"', please use this to activate your account",1);
+            break;
+        case 23:
+            createAlertBox(2,1,"Welcome to your first game of Arctic Lands, explore the world and try to learn",1);
+            break;
+        case 24:
+            createAlertBox(2,1,"A new map has been created called: "+data,1);
+            break;
+        case 25:
+            createAlertBox(2,1,"You have updated the avatar for: "+data,1);
+            break;
+        case 26:
+            createAlertBox(2,1,"You have just killed: "+data,1);
+            break;
+        case 27:
+            createAlertBox(2,1,"You have updated the map for: "+data,1);
+            break;
     }
 }
 
@@ -508,6 +539,9 @@ function createAlertBox(titleType,textType,data,buttontype,moreButton){
         case 4:
             title = "Warning";
             break;
+        case 5:
+            title = "Error";
+            break;
         case 0:
         default:
             title = "Alert!";
@@ -527,6 +561,9 @@ function createAlertBox(titleType,textType,data,buttontype,moreButton){
             break;
         case 2:
             buttons = '<button type="button" class="btn btn-dark" data-dismiss="modal">No</button><button type="button" class="btn btn-danger" data-dismiss="modal" onclick="'+moreButton+'()">Yes</button>';
+            break;
+        case 3:
+            buttons = '<input type="text" id="passwordRequiredModal" class="form-control mx-2" autofocus><button type="button" class="btn btn-dark" data-dismiss="modal">No</button><button type="button" class="btn btn-danger" onclick="'+moreButton+'()">Yes</button>';
             break;
         default:
             break;

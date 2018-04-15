@@ -203,7 +203,7 @@ class buildingLevels
     //THIS DEFINES THE STARTING ACHIEVEMENTS FOR PLAYERS
     public static function getStartingAchievements($gameType,$avatar){
         switch ($gameType){
-            case "Main":
+            case 1:
                 $avatar->addAchievement("A001");
                 break;
             default:

@@ -12,7 +12,7 @@
             <option value="test">Important</option>
         </select>
         <?php
-        if ($profile->getAccountType() < 6){
+        if ($profile->getAccessEditForum()===1){
             echo '<div class="form-check col-3 align-items-center d-flex flex-row">
             <input class="form-check-input pb-3" type="checkbox" id="postStickyCreate">
             <label class="form-check-label blackColour" for="postStickyCreate">

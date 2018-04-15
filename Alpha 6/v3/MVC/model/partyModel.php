@@ -4,7 +4,7 @@ class partyModel extends party
 {
     private function __construct($partyModel)
     {
-        $this->partyID = $partyModel['partyID'];
+        $this->partyID = intval($partyModel['partyID']);
         $this->mapID = intval($partyModel['mapID']);
         $this->members = json_decode($partyModel['members']);
         $this->partyName = $partyModel['partyName'];
@@ -26,7 +26,7 @@ class partyModel extends party
 
     public static function insertParty($controller, $type){
         $db = db_conx::getInstance();
-        $partyID = $controller->getPartyID();
+        $partyID = intval($controller->getPartyID());
         $mapID = intval($controller->getMapID());
         $members = json_encode($controller->getMembers(),JSON_NUMERIC_CHECK);
         $partyName = $controller->getPartyName();
@@ -72,10 +72,11 @@ class partyModel extends party
     }
 
     public static function findEmptyParty($mapID){
+        $members = json_encode(array());
         $db = db_conx::getInstance();
         $req = $db->prepare('SELECT * FROM Party WHERE mapID= :mapID AND members= :members LIMIT 1');
         $req->bindParam(':mapID', $mapID);
-        $req->bindParam(':members', json_encode(array()));
+        $req->bindParam(':members', $members);
         $req->execute();
         $partyModel = $req->fetch();
         return new partyModel($partyModel);

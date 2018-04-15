@@ -55,12 +55,17 @@ class mapController extends map
     }
 
     //This function will create the map join screen
-    public static function joingames(){
+    public static function joingames($var){
         $joingame = mapModel::allMaps();
         $counter = 0;
         $maplist = [];
         foreach ($joingame as $map){
-            $maplist[$counter] = new mapController($map[0]);
+            $temp = new mapController($map);
+            if ($var === true) {
+                $maplist[$counter] = $temp->returnVars();
+            } else {
+                $maplist[$counter] = $temp;
+            }
             $counter += 1;
         }
         return $maplist;
@@ -71,9 +76,14 @@ class mapController extends map
         return mapModel::insertMap($this, "Insert");
     }
 
-    public function __construct($id){
-        if ($id != ""){
-            $mapmodel = mapModel::checkmapID($id);
+    public function __construct($id)
+    {
+        if ($id != "") {
+            if (is_object($id)) {
+                $mapmodel = $id;
+            } else {
+                $mapmodel = mapModel::checkmapID($id);
+            }
             $this->mapID = $mapmodel->getMapID();
             $this->name = $mapmodel->getName();
             $this->maxPlayerCount = $mapmodel->getMaxPlayerCount();

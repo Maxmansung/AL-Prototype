@@ -8,7 +8,11 @@ class partyController extends party
     public function __construct($id)
     {
         if ($id != ""){
-            $partyModel = partyModel::findParty($id);
+            if (is_object($id)){
+                $partyModel = $id;
+            } else {
+                $partyModel = partyModel::findParty($id);
+            }
             $this->partyID = $partyModel->partyID;
             $this->mapID = $partyModel->mapID;
             $this->members = $partyModel->members;
@@ -45,7 +49,7 @@ class partyController extends party
 
     public static function getEmptyParty($mapID){
         $partyModel = partyModel::findEmptyParty($mapID);
-        return new partyController($partyModel->getPartyID());
+        return new partyController($partyModel);
     }
 
     public static function removeAllInvites($playerID){

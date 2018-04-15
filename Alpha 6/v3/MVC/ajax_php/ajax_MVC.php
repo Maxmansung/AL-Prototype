@@ -4,7 +4,7 @@ if (isset($_POST["type"])) {
     include_once(PROJECT_ROOT."/MVC/filesInclude.php");
     $type = intval(preg_replace('#[^0-9]#i', '', $_POST['type']));
     $response = profileController::userlogin();
-    $excludedRequests = array(204,198,197,196,49);
+    $excludedRequests = array(213,204,198,197,196,49);
     $check = in_array($type,$excludedRequests);
     if (array_key_exists("ERROR",$response) && $check === false ){
         echo json_encode($response);
@@ -59,6 +59,10 @@ if (isset($_POST["type"])) {
                     //This is used to get the forum threads
                 case 206:
                     //This is used to get the news edit view
+                case 210:
+                    //This is used to get all of the current map views
+                case 211:
+                    //This is used to get al the detail of a single map for editing
                     $response = array("SUCCESS" => true);
                     //No actions performed
                     break;
@@ -197,12 +201,12 @@ if (isset($_POST["type"])) {
                     break;
                 case 40:
                     //This is used to join a player to a game
-                    $response = newMapJoinController::addAvatar($data1, $profile->getProfileID());
+                    $response = newMapJoinController::addAvatar($data1, $profile);
                     //Returns ERROR or ALERT
                     break;
                 case 41:
                     //This is used to join a player to a game
-                    $response = newMapJoinController::deleteGame($data1, $profile->getAccountType());
+                    $response = newMapJoinController::deleteGame($data1, $profile);
                     //Returns ERROR
                     break;
                 case 43;
@@ -233,17 +237,17 @@ if (isset($_POST["type"])) {
                     //Returns ERROR or ALERT
                 case 190:
                     //This is used for creating new threads
-                    $response = forumThreadController::checkThread($data1,$data2,$data3,$data4,$data5,$profile->getProfileID(),$profile->getAccountType());
+                    $response = forumThreadController::checkThread($data1,$data2,$data3,$data4,$data5,$profile);
                     break;
                     //Returns ERROR or ALERT
                 case 191:
                     //This is used for posting replies to forum threads
-                    $response = forumPostController::createNewPost($data1,$profile->getProfileID(),$data2,$data3);
+                    $response = forumPostController::createNewPost($data1,$profile,$data2,$data3);
                     break;
                     //Returns ERROR or ALERT
                 case 194:
-                    //Used to update the players image
-                    $response = array("ERROR"=>$data1);
+                    //Used to update the players favourite achievments
+                    $response = profileDetailsController::updateFavouriteAchievements($profile,$data1,$data2,$data3,$data4);
                     break;
                 case 195:
                     //Used to update the players profile
@@ -257,11 +261,11 @@ if (isset($_POST["type"])) {
                     break;
                 case 197:
                     //Used to create a new account within the game
-                    $response = $profile->signup($data1,$data2,$data3,$data4);
+                    $response = $profile->signup($data1,$data2,$data3,"GreatSnowman");
                     break;
                 case 198:
                     //Used to log into the game
-                    $response = $profile->login($data1,$data2,$data3);
+                    $response = $profile->login($data1,$data2,$data3,false);
                     //Returns ERROR or COOKIES
                     break;
                 case 199:
@@ -270,7 +274,7 @@ if (isset($_POST["type"])) {
                     //Returns ERROR
                     break;
 
-                //200+ functions are used only for testing and can be removed from the main game
+                //200+ functions are used for admin properties
 
                 case 201:
                     //Used for the insta-Death button
@@ -311,7 +315,35 @@ if (isset($_POST["type"])) {
                     //Returns ERROR or ALERT
                 case 209:
                     //Used for creating new maps
-                    $response = newMapJoinController::createNewMap($data1,$data2,$data3,$data4,$profile, "Main");
+                    $response = newMapJoinController::createNewMap($data1,$data2,$data3,$data4,$profile,$data5);
+                    break;
+                    //Returns ERROR or ALERT
+                case 212:
+                    //Used to delete a map
+                    $response = newMapJoinController::deleteMap($profile,$data1,$data2);
+                    break;
+                    //Returns ERROR or ALERT
+                case 213:
+                    //Used to activate an account and join a tutorial game
+                    $response = profileController::activateConfirm($data1,$data2);
+                    break;
+                case 214:
+                    //Used to report a created map that needs to be removed
+                    $response = reportingController::newReportCreateMap($profile,$data1,$data2);
+                    break;
+                case 215:
+                    //Used to edit a player within a game
+                    $response = mapPlayerController::editPlayerStats($data1,$data2,$data3,$profile);
+                    break;
+                    //Returns ERROR or ALERT
+                case 216:
+                    //Used to kill a player within a game
+                    $response = HUDController::playerDeathKilling($data1,$profile);
+                    break;
+                    //Returns ERROR or ALERT
+                case 217:
+                    //Used to edit a map within a game
+                    $response = mapPlayerController::editMapStats($profile,$data1,$data2,$data3);
                     break;
                     //Returns ERROR or ALERT
                 default:
@@ -341,7 +373,7 @@ if (isset($_POST["type"])) {
                         //$view = $view->returnVars();
                         break;
                     case 1:
-                        $view = joinGameView::createView($profile->getAccountType());
+                        $view = joinGameView::createView($profile);
                         $viewHUD = false;
                         break;
                     case 2:
@@ -350,21 +382,29 @@ if (isset($_POST["type"])) {
                         break;
                     case 3:
                         //This finds player profiles that match a string
-                        $view = profileController::findProfiles($data1);
+                        $view = profileSearchView::findProfiles($data1);
                         $viewHUD = false;
                         break;
                     case 4:
                         //This finds the threads that match a group
-                        $view = forumThreadController::getAllThreads($data1,$profile->getProfileID());
+                        $view = forumThreadController::getAllThreads($data1,$profile);
                         $viewHUD = false;
                         break;
                     case 5:
                         //This finds the posts that match a thread
-                        $view = forumPostController::getAllPosts($data1,$data2,$profile->getProfileID());
+                        $view = forumPostController::getAllPosts($data1,$data2,$profile);
                         $viewHUD = false;
                         break;
                     case 6:
                         $view = newsStoryController::getAllNews();
+                        $viewHUD = false;
+                        break;
+                    case 7:
+                        $view = mapOverviewEditView::getAllMapsOverview($profile);
+                        $viewHUD = false;
+                        break;
+                    case 8:
+                        $view = mapOverviewEditView::getSingleMapDetail($profile,$data1);
                         $viewHUD = false;
                         break;
                     default:
@@ -387,6 +427,13 @@ if (isset($_POST["type"])) {
     $response = profileController::userlogin();
     if (!array_key_exists("ERROR", $response)) {
         $profile = new profileController($response["SUCCESS"]);
+        if ($profile->getGameStatus() === "death"){
+            $death = new deathScreenController($profile->getProfileID());
+            if ($death->getProfileID() !== $profile->getProfileID()){
+                $profile->setGameStatus("ready");
+                $profile->uploadProfile();
+            }
+        }
     } else {
         $profile = new profileController("");
     }

@@ -7,7 +7,7 @@ class dayEndingFunctions
         $map = new mapController($mapID);
         $deathCounter = 0;
         $deleted = false;
-        $avatarArray = avatarController::getAllMapAvatars($map->getMapID());
+        $avatarArray = avatarController::getAllMapAvatars($map->getMapID(),false);
         foreach ($avatarArray as $single) {
             $stats = buildingLevels::getTotalSurviveTemp($single->getAvatarID());
             $checkStatus = statusesController::checkStatuses($single->getStatusArray());
@@ -67,13 +67,12 @@ class dayEndingFunctions
         }
     }
 
-    public static function playerDeath($avatarID,$deathType){
-        $avatar = new avatarController($avatarID);
-        $temp = buildingLevels::getTotalSurviveTemp($avatarID);
-        deathScreenController::createNewDeathScreen($avatarID,$temp,$deathType);
+    public static function playerDeath($avatar,$deathType){
+        $temp = buildingLevels::getTotalSurviveTemp($avatar->getAvatarID());
+        deathScreenController::createNewDeathScreen($avatar,$temp,$deathType);
         $avatar->toggleReady("dead");
         $party = new partyController($avatar->getPartyID());
-        $party->removeMember($avatarID);
+        $party->removeMember($avatar->getAvatarID());
         $party->uploadParty();
         $profile = new profileController($avatar->getProfileID());
         $profile->setGameStatus("death");
@@ -86,7 +85,7 @@ class dayEndingFunctions
             $itemTemp->setLocationID($avatar->getZoneID());
             $itemTemp->updateItem();
         }
-        $zone->removeAvatar($avatarID);
+        $zone->removeAvatar($avatar->getAvatarID());
         $zone->updateZone();
         $avatar->updateAvatar();
     }

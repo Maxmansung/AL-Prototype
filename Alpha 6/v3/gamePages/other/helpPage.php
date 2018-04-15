@@ -4,7 +4,7 @@ if (isset($accessed) === false){
     exit("No access");
 }
 ?>
-<div class="container">
+<div class="container-fluid pb-3 pageSize">
     <div class="row d-flex flex-column justify-content-center align-items-center login-window m-5 ">
         <div class="font-weight-bold">HELP PAGE</div>
         <div>This page has not been created yet</div>

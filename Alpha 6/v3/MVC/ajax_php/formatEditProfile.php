@@ -12,7 +12,7 @@ if (isset($_FILES[0])){
             $profile = new profileController("");
         }
         $checker = new profileImagesController();
-        $response = $checker->checkUpload($_FILES[0],$profile->getProfileID());
+        $response = $checker->checkUpload($_FILES[0],$profile);
         echo json_encode($response);
     }
 }

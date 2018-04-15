@@ -29,9 +29,9 @@ class HUDController
         return array("ERROR"=>"This has been disabled on multiplayer maps");
     }
 
-    public static function adminDayEnding($profileID){
-        $profile = new profileController($profileID);
-        if ($profile->getAccountType() <= 3){
+    public static function adminDayEnding($profile){
+        $profile->getProfileAccess();
+        if ($profile->getAccessEditMap()===1){
             HUDController::dayEndingCheck($profile->getAvatar(),"admin");
             return array("ERROR" => 29);
         } else {
@@ -72,11 +72,32 @@ class HUDController
 
     }
 
+    public static function playerDeathKilling($avatarID,$profile){
+        $profile->getProfileAccess();
+        if ($profile->getAccessEditMap()===1){
+            $avatarIDClean = intval(preg_replace('#[^0-9]#i', '', $avatarID));
+            $avatar = new avatarController($avatarIDClean);
+            if ($avatar->getAvatarID() === $avatarIDClean) {
+                dayEndingFunctions::playerDeath($avatar,3);
+                $profilePlayer = new profileController($avatar->getProfileID());
+                $profilePlayer->setAvatar(null);
+                $profilePlayer->setGameStatus("death");
+                $profilePlayer->uploadProfile();
+                return array("ALERT"=>26,"DATA"=>$avatar->getProfileID());
+            } else {
+                return array("ERROR"=>"This avatar does not exist");
+            }
+        } else {
+            return array("ERROR"=>28);
+        }
+    }
+
     public static function playerDeathButton($avatarID){
         $avatar = new avatarController($avatarID);
         $map = new mapController($avatar->getMapID());
         $profile = new profileController($avatar->getProfileID());
-        if ($profile->getAccountType() < 3 || $map->getGameType() == "Test") {
+        $profile->getProfileAccess();
+        if ($profile->getAccessEditMap()===1 || $map->getGameType() == "Test") {
             dayEndingFunctions::playerDeath($avatarID,3);
             $avatarCheck = new deathScreenController($avatar->getProfileID());
             if ($avatarCheck->getProfileID() != "") {

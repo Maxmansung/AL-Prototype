@@ -18,22 +18,26 @@ class deathScreenController extends deathScreen
             $this->survivableTemp = $deathModel->survivableTemp;
             $this->deathStatistics = $deathModel->deathStatistics;
             $this->deathAchievements = $deathModel->deathAchievements;
-            $this->achievementDetails = achievementController::getAchievements($this->deathAchievements);
+            if (is_object($this->deathAchievements)) {
+                $this->achievementDetails = achievementController::getAchievements($this->deathAchievements);
+            }
             $this->gameType = $deathModel->gameType;
             $this->shrineScore = $deathModel->shrineScore;
-            $this->shrineDisplay = buildingLevels::getShrineDetails($this->shrineScore);
+            if (is_object($this->shrineScore)) {
+                $this->shrineDisplay = buildingLevels::getShrineDetails($this->shrineScore);
+            }
             $this->deathType = $deathModel->getDeathType();
             $this->partyPlayersLeft = $deathModel->partyPlayersLeft;
             $this->dayDuration = $deathModel->dayDuration;
         }
     }
 
-    public static function createNewDeathScreen($avatarID,$deathTemp,$cause){
-        $avatar = new avatarController($avatarID);
+    public static function createNewDeathScreen($avatar,$deathTemp,$cause){
+        $profile = new profileController($avatar->getProfileID());
         $map = new mapController($avatar->getMapID());
         $party = new partyController($avatar->getPartyID());
         $deathScreen = new deathScreenController("");
-        $deathScreen->setProfileID($avatar->getProfileID());
+        $deathScreen->setProfileID($profile->getProfileID());
         $deathScreen->setMapID($map->getName());
         $deathScreen->setPartyName($party->getPartyName());
         $deathScreen->setDeathDay($map->getCurrentDay());

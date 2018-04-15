@@ -11,26 +11,38 @@ if(isset($_GET["p"])){
 echo "<div class='d-none getDataClass'  id='".$person."'></div>"
 ?>
 <script src="/js/profilePage.js"></script>
-<div class="container">
-    <div class="row justify-content-between align-items-start">
+<div class="container-fluid d-block d-md-none mt-5 mb-2">
+    <?php
+    include ($_SERVER['DOCUMENT_ROOT']."/gamePages/profile/profileStats.php");
+    include ($_SERVER['DOCUMENT_ROOT']."/gamePages/profile/profileOverview.php");
+    include ($_SERVER['DOCUMENT_ROOT']."/gamePages/profile/profileAchievements.php");
+    include ($_SERVER['DOCUMENT_ROOT']."/gamePages/profile/profileSearch2.php");
+    include ($_SERVER['DOCUMENT_ROOT']."/gamePages/profile/profileFoundResults.php");
+    ?>
+</div>
+<div class="container-fluid d-md-block d-none mt-5 mb-2">
+    <div class="row justify-content-center p-0 m-0">
+        <div class="col-md-6 col-lg-5 col-xl-4 pl-4 pr-3">
+            <?php
+            include ($_SERVER['DOCUMENT_ROOT']."/gamePages/profile/profileOverview.php");
+            ?>
+        </div>
+        <div class="col-md-6 pr-4 pl-3">
         <?php
-        include_once ($_SERVER['DOCUMENT_ROOT']."/gamePages/profile/profileOverview.php");
-        include_once ($_SERVER['DOCUMENT_ROOT']."/gamePages/profile/profileAchievements.php");
+        include ($_SERVER['DOCUMENT_ROOT']."/gamePages/profile/profileStats.php");
+        include ($_SERVER['DOCUMENT_ROOT']."/gamePages/profile/profileAchievements.php");
+        include ($_SERVER['DOCUMENT_ROOT']."/gamePages/profile/profileSearch.php");
         ?>
-        <div class="login-window mt-3 col-12 col-md-5">
-            <div class="input-group my-3">
-                <input type="text" class="form-control" placeholder="Find Spirits" aria-label="Recipient's username" aria-describedby="basic-addon2" id="searchForUsername">
-                <div class="input-group-append">
-                    <button class="btn btn-dark" type="button" onclick="searchForSpirits()" id="searchProfileButton"><i class="fas fa-search"></i></button>
-                </div>
-            </div>
-            <div id="profilesFound" class="container-fluid justify-content-center">
-
-            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center pt-3 m-0">
+        <div class="col-md-10">
+        <?
+        include ($_SERVER['DOCUMENT_ROOT']."/gamePages/profile/profileFoundResults.php");
+        ?>
         </div>
     </div>
 </div>
 <script>
-    var data = $(".getDataClass").attr('id');
-    ajax_All(35,2,data)
+    loadProfilePage()
 </script>

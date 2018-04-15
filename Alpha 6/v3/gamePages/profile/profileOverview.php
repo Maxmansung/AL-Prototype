@@ -4,108 +4,65 @@ if (isset($accessed) === false){
     exit("No access");
 }
 ?>
-<div class="login-window mt-3 col-12 col-md-5" id="profileOverviewWrap">
-    <div class="my-3 mx-1 d-flex flex-row col">
-        <div class="profileImage">
-            <img src="/avatarimages/Unknown.png" class="avatarImage" id="profilePageImage">
-        </div>
-        <div class="d-flex flex-column col pr-0">
-            <div class="d-flex flex-row justify-content-between">
-                <div class="funkyFont font-size-3" id="profilePageName">
-
-                </div>
-                <div class="flagImage">
-                    <img src="https://www.arctic-lands.com/images/flags/United%20Kingdom.png" id="profilePageFlag">
-                </div>
+<div class="row mx-md-0 mx-2 ">
+    <div class="col-12 blackColour grayBorder">
+        <div class="row justify-content-between lightGrayBackground">
+            <div class="col-3 font-size-4 p-3">
+                <i class="fas fa-cog clickableFlash" onclick="goToPage('edit')"></i>
             </div>
-            <div class="font-size-2" id="profilePageBio"></div>
-        </div>
-    </div>
-    <div class="row mx-1 justify-content-between align-items-baseline mb-2">
-        <div class="font-size-1">
-            Last login:
-            <span id="profilePageLogin"></span>
-        </div>
-        <div class="font-size-1">
-            Gender:
-            <span id="profilePageGender"></span>
-        </div>
-        <div class="font-size-1">
-            Age:
-            <span id="profilePageAge"></span>
-        </div>
-        <?php
-        if ($profile->getProfileID() === $person){
-            echo '<div class="clickableFlash" onclick="switchEditScreen()">
-                    <i class="fas fa-edit"></i>
-                </div>';
-        }
-        ?>
-    </div>
-</div>
-<div class="login-window mt-3 col-12 col-md-5" id="profileEditWrap">
-    <div class="row">
-        <div class="clickableFlash ml-2 mt-1 funkyFont" onclick="closeEditScreen()">Back</div>
-    </div>
-    <div class="row justify-content-center funkyFont font-size-3">
-        Edit profile
-    </div>
-    <div class="row mt-1 justify-content-center">
-        <div class="col-11 d-flex flex-column">
-            <div class="form-text">Bio</div>
-            <textarea class="form-control" id="profileBio" rows="3" maxlength="120"></textarea>
-        </div>
-    </div>
-    <div class="row mt-3 justify-content-center">
-        <div class="col-11 d-flex flex-row justify-content-between">
-            <div class="form-text">Age</div>
-            <input type="number" class="form-control col-2" id="profileAge" min="0" max="200">
-        </div>
-    </div>
-    <div class="row mt-3 justify-content-center">
-        <div class="col-11 d-flex flex-row justify-content-between">
-            <div class="form-text">Gender</div>
-            <input type="text" class="form-control col-6" id="profileGender" maxlength="20">
-        </div>
-    </div>
-    <div class="row mt-1 justify-content-center">
-        <div class="col-11 d-flex flex-column">
-            <div class="form-text">Country</div>
-            <select id="profileCountry" selected="">
-                <?php
-                include_once ($_SERVER['DOCUMENT_ROOT']."/gamePages/profile/profileCountry.php");
-                ?>
-            </select>
-        </div>
-    </div>
-    <div class="row justify-content-center mt-3">
-        <button class="btn btn-dark" onclick="submitProfileEdit()">Submit</button>
-    </div>
-    <hr class="col-8" style="width: 100%; color: white; height: 1px; background-color:white;">
-    <form method="post" id="avatarImageUpload" class="my-3">
-        <div class="funkyFont font-size-3">Change Avatar</div>
-        <div class="d-flex flex-column justify-content-between align-items-center ">
-            <div class="profileImage">
-                <img src="/avatarimages/Unknown.png" class="avatarImage" id="profilePageNewImage">
+            <div class="col-6 col-sm-4 col-md-6 pt-4 pb-2 d-flex flex-row justify-content-center align-items-center">
+                <img src="" class="rounded-circle profilePageImage">
             </div>
-            <div class="input-group my-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text btn btn-dark" onclick="submitNewImage()">Upload</span>
+            <div class="col-3 d-flex flex-row justify-content-end align-items-start p-3">
+                <img src="" class="flagImage profilePageFlag">
+            </div>
+        </div>
+        <div class="row justify-content-center lightGrayBackground py-2">
+            <div class="col-12 darkGrayColour font-size-2x profileSpiritType" align="center">
+            </div>
+        </div>
+        <div class="row justify-content-center whiteBackground">
+            <div class="col-12 font-weight-bold font-size-3 profileSpiritName pt-2" align="center">
+            </div>
+            <div class="col-8 d-flex flex-row justify-content-start grayColour font-size-2 standardWrapperTitle">
+                <span class="pr-2">Last login: </span><span class="profilePageLogin"></span>
+            </div>
+        </div>
+        <div class="row whiteBackground">
+            <div class="col-12 py-2 px-4 profilePageBio" align="center">
+            </div>
+        </div>
+        <div class="row lightGrayBackground">
+            <div class="col-12 pl-4 py-2 font-weight-bold font-size-2x" align="left">
+                Show off
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3 standardWrapper">
+                <img src="/images/profilePage/achievements/hacker.png" class="achievementShowoff showOff1">
+            </div>
+            <div class="col-3 standardWrapper">
+                <img src="/images/profilePage/achievements/hacker.png" class="achievementShowoff showOff2">
+            </div>
+            <div class="col-3 standardWrapper">
+                <img src="/images/profilePage/achievements/hacker.png" class="achievementShowoff showOff3">
+            </div>
+            <div class="col-3 standardWrapper">
+                <img src="/images/profilePage/achievements/hacker.png" class="achievementShowoff showOff4">
+            </div>
+        </div>
+        <div class="row lightGrayBackground">
+            <div class="col-12 d-flex p-3 flex-column justify-content-start">
+                <div class="font-weight-bold font-size-2x">
+                    Info
                 </div>
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="profileImageUpload">
-                    <label class="custom-file-label" for="profileImageUpload">Choose file</label>
+                <div class="pl-3 d-flex flex-row">
+                    <span class="pr-2">Gender: </span><span class="profilePageGender"></span>
+                </div>
+                <div class="pl-3">
+                    <span class="pr-2">Age: </span><span class="profilePageAge"></span>
                 </div>
             </div>
         </div>
-        <div class="font-size-1 my-3 grayColour" align="center">
-            Your avatar can only be changed once every 12 hours
-            <br/>
-            <br/>
-            Please only upload JPEG,JPG,PNG or GIF files
-            <br/>
-            <br/>
-            File size can be no bigger than 1MB
-        </div>
-    </form>
+    </div>
 </div>

@@ -26,13 +26,13 @@ class map implements map_interface
         $output .= '/ '.$this->edgeSize;
         $output .= '/ '.$this->maxAvatarStamina;
         $output .= '/ '.$this->maxAvatarInventorySlots;
-        $output .= '/ '.$this->avatars;
+        $output .= '/ '.json_encode($this->avatars);
         $output .= '/ '.$this->currentDay;
         $output .= '/ '.$this->dayDuration;
         $output .= '/ '.$this->baseNightTemperature;
         $output .= '/ '.$this->baseSurvivableTemperature;
         $output .= '/ '.$this->baseAvatarTemperatureModifier;
-        $output .= '/ '.$this->temperatureRecord;
+        $output .= '/ '.json_encode($this->temperatureRecord);
         $output .= '/ '.$this->gameType;
         return $output;
     }

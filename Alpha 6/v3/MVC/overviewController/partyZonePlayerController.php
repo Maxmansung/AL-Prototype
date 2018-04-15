@@ -437,7 +437,7 @@ class partyZonePlayerController
     public static function getPlayerDetails($avatarID)
     {
         $avatar = new avatarController($avatarID);
-        $currentAvatars = avatarController::getAllMapAvatars($avatar->getMapID());
+        $currentAvatars = avatarController::getAllMapAvatars($avatar->getMapID(),false);
         $party = new partyController($avatar->getPartyID());
         $map = new mapController($avatar->getMapID());
         $avatarList = $map->getAvatars();

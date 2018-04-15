@@ -70,9 +70,8 @@ class forumThreadController extends forumThread
     }
 
 
-    public static function getAllThreads($tableDefinition,$profileID)
+    public static function getAllThreads($tableDefinition,$profile)
     {
-        $profile = new profileController($profileID);
         switch ($tableDefinition){
             case "mc":
                 $avatar = new avatarController($profile->getAvatar());
@@ -85,7 +84,7 @@ class forumThreadController extends forumThread
                 $response = $threads;
                 break;
             default:
-                $category = new forumCatagoriesController($tableDefinition,$profileID);
+                $category = new forumCatagoriesController($tableDefinition,$profile);
                 $threads = self::getAllThreadsType($tableDefinition,"forumThreadsGeneral",false,$profile);
                 $title = $category->getCatagoryName();
                 $response = $threads;
@@ -102,8 +101,7 @@ class forumThreadController extends forumThread
         forumThreadModel::insertForumThread($this,"Update");
     }
 
-    public static function createNewThread($tableDefinition,$profileID,$threadName,$sticky){
-        $profile = new profileController($profileID);
+    public static function createNewThread($tableDefinition,$profile,$threadName,$sticky){
         $threadName = htmlentities($threadName,ENT_QUOTES | ENT_SUBSTITUTE);
         switch ($tableDefinition){
             case "mc":
@@ -113,7 +111,7 @@ class forumThreadController extends forumThread
                 $threadID = self::newPartyThread($profile->getAvatar(),$threadName,$sticky);
                 break;
             default:
-                $threadID = self::newGeneralThread($profileID,$threadName,$tableDefinition,$sticky);
+                $threadID = self::newGeneralThread($profile->getProfileID(),$threadName,$tableDefinition,$sticky);
                 break;
         }
         return $threadID;
@@ -149,13 +147,12 @@ class forumThreadController extends forumThread
         return $thread->threadID;
     }
 
-    private static function newGeneralThread($profileID,$threadName,$category,$sticky){
-        $profile = new profileController($profileID);
+    private static function newGeneralThread($profile,$threadName,$category,$sticky){
         $thread = new forumThreadController("","");
         $thread->tableName = "forumThreadsGeneral";
         $thread->threadDefinition = $category;
         $thread->threadTitle = $threadName;
-        $thread->creatorID = $profile->getProfileID();
+        $thread->creatorID = $profile->getProfileName();
         $thread->posts = 0;
         $thread->lastUpdate = time();
         $thread->stickyThread = $sticky;
@@ -164,10 +161,11 @@ class forumThreadController extends forumThread
         return $thread->threadID;
     }
 
-    public static function checkThread($threadTitle,$postText,$tableDefinition,$type,$sticky,$profileID,$accountType)
+    public static function checkThread($threadTitle,$postText,$tableDefinition,$type,$sticky,$profile)
     {
+        $profile->getProfileAccess();
         $title = preg_replace('#[^A-Za-z0-9 !?\-_()@:,."]#i', '',$threadTitle);
-        if ($accountType > 5){
+        if ($profile->getAccessEditForum()===1){
             $stickyFinal = 0;
         } else {
             $stickyFinal = intval($sticky);
@@ -183,8 +181,8 @@ class forumThreadController extends forumThread
         if (is_array($postFinalText)){
             return $postFinalText;
         } else {
-            $threadID = forumThreadController::createNewThread($tableDefinition,$profileID,$title,$stickyFinal);
-            $postID = forumPostController::createNewPost($tableDefinition,$profileID,$postFinalText,$threadID);
+            $threadID = forumThreadController::createNewThread($tableDefinition,$profile,$title,$stickyFinal);
+            $postID = forumPostController::createNewPost($tableDefinition,$profile,$postFinalText,$threadID);
             $postID["ALERT"] = 16;
             return $postID;
         }

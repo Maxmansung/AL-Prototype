@@ -3,7 +3,7 @@
 }
 
 .grayColour{
-    color: #dddddd;
+    color: #999999;
 }
 
 .darkGrayColour{
@@ -30,10 +30,26 @@
     background: #ffffff;
 }
 
+.lightGrayBackground{
+    background: rgba(220,220,220,0.8);
+}
+
 .grayBackground{
     background: #bbbbbb;
 }
 
 .darkGrayBackground{
     background: #333333;
+}
+
+.blueBackground{
+    background: #1F51AC;
+}
+
+.redBackground{
+    background: #C91285;
+}
+
+.greenBackground{
+    background: #AFF016;
 }

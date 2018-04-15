@@ -33,33 +33,54 @@ class germanLanguage implements languageInterface
         return "SIGN UP FREE";
     }
 
+    //This is the title to the text describing the page
+    function loginMasterPageAboutTitle()
+    {
+        return "About the game";
+    }
+
+    //These discuss different ways to play the game. Var 1 is the title and the rest is the description
+    //Description 1 look at solo play
     function loginMasterPageDescription1($var)
     {
         if($var === 1){
             return "By yourself...";
         }
         else {
-            return "Lorem ipsum dolor sit amet, at solet voluptua eos, ei natum facilisis constituam mea. Liber admodum eam id. Id has munere ridens, ut quidam aeterno utroque eos. Sit cu veniam.";
+            return "Become a lone wolf, roaming the wasteland without a care for anyone. Save your own skin whilst those around you freeze to death. Its a harsh world but there are gods that favour only the strong.";
         }
     }
 
+    //Description 2 look s at group play
     function loginMasterPageDescription2($var)
     {
         if($var === 1){
             return "In a team...";
         }
         else {
-            return "Lorem ipsum dolor sit amet, et propriae apeirian mediocrem vel, quo ut atqui petentium accommodare. No quot virtute alterum sea, an vim zril alterum, cum aperiam reformidans no. Case prompta.";
+            return "Find others and team up to survive, create a camp and build up your defenses, then laugh from your walls as others around you freeze in the snow. Gain the favour of the gods of clans as you fight to be the last survivors.";
         }
     }
 
+    //Description 3 looks at trying to unite and entire map
     function loginMasterPageDescription3($var)
     {
         if($var === 1){
-            return "Bla bla...";
+            return "Unite the world...";
         }
         else {
-            return "An sed minimum reprehendunt, pertinacia liberavisse cu eum, prima liber est te. Ex mea ludus suscipit aliquando, nam no dolor pertinacia, ne mel alienum sensibus. Ei singulis interesset his, mel.";
+            return "Communicate with the rest of the map and work to unite the world. Perhaps together you can overcome this cycle and find peace?<br><br>Do you trust those around you enough to open your gates and let in the masses though...";
+        }
+    }
+
+    //Description 4 about trying to tear the world apart
+    function loginMasterPageDescription4($var)
+    {
+        if($var === 1){
+            return "Tear it apart...";
+        }
+        else {
+            return "Destroy the land around you as you scrape every last resource out of it. Dig, explode and even summon the will of the gods until all that remains is the cold hard stone below your feet";
         }
     }
 
@@ -117,6 +138,42 @@ class germanLanguage implements languageInterface
     function loginNavLanguage()
     {
         return "Language";
+    }
+
+    //This is the logout button
+    function loginNavLogout()
+    {
+        return "Logout";
+    }
+
+    //This is the reader text for the notifications button
+    function loginNavNotifications()
+    {
+        return "Notifications";
+    }
+
+    //This is the button for the forums and other community functions
+    function loginNavCommunity()
+    {
+        return "Community";
+    }
+
+    //This is the button for the players profile page called the "Spirit" due to the story being about your spirit constantly living and dying
+    function loginNavSpirit()
+    {
+        return "Spirit";
+    }
+
+    //This is the button for the admin page that will allow players to manage reports and create new maps, only players with the right privilege will be able to do this.
+    function loginNavAdmin()
+    {
+        return "Admin";
+    }
+
+    //This is the messages popup that will tell you about any alerts
+    function loginNavMessages()
+    {
+        return "Messages";
     }
 
 

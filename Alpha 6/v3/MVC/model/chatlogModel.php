@@ -22,19 +22,27 @@ class chatlogModel extends chatlog
     public static function insertChatLogZone($chatController, $type){
         $chatlogType = $chatController->getChatlogType();
         $db = db_conx::getInstance();
+        $chatID = intval($chatController->getChatlogID());
+        $mapID = $chatController->getMapID();
+        $zoneID = intval($chatController->getZoneID());
+        $avatarID = intval($chatController->getAvatarID());
+        $mapDay = intval($chatController->getMapDay());
+        $messageTime = $chatController->getMessageTime();
+        $messageText = $chatController->getMessageText();
+        $messageType = intval($chatController->getMessageType());
         if ($type == "Insert") {
             $req = $db->prepare("INSERT INTO ".$chatlogType." (chatID, mapID, zoneID, avatarID, mapDay, messageTime, messageText, messageType) VALUES (:chatID, :mapID, :zoneID, :avatarID, :mapDay, :messageTime, :messageText, :messageType)");
         } elseif ($type == "Update") {
             $req = $db->prepare("UPDATE  ".$chatlogType."  SET mapID= :mapID, zoneID= :zoneID, avatarID= :avatarID, mapDay= :mapDay, messageTime= :messageTime, messageText= :messageText WHERE chatID= :chatID");
         }
-        $req->bindParam(':chatID', intval($chatController->getChatlogID()));
-        $req->bindParam(':mapID', $chatController->getMapID());
-        $req->bindParam(':zoneID', intval($chatController->getZoneID()));
-        $req->bindParam(':avatarID', intval($chatController->getAvatarID()));
-        $req->bindParam(':mapDay', intval($chatController->getMapDay()));
-        $req->bindParam(':messageTime', $chatController->getMessageTime());
-        $req->bindParam(':messageText', $chatController->getMessageText());
-        $req->bindParam(':messageType', intval($chatController->getMessageType()));
+        $req->bindParam(':chatID',$chatID);
+        $req->bindParam(':mapID', $mapID);
+        $req->bindParam(':zoneID', $zoneID);
+        $req->bindParam(':avatarID', $avatarID);
+        $req->bindParam(':mapDay', $mapDay);
+        $req->bindParam(':messageTime',$messageTime);
+        $req->bindParam(':messageText', $messageText);
+        $req->bindParam(':messageType', $messageType);
         $req->execute();
     }
 

@@ -23,7 +23,7 @@ if (isset($accessed) === false){
                 Powers
             </div>
             <?php
-            if ($profile->getAccountType() <= 5) {
+            if ($profile->getAccessNewMap()===1) {
                 echo '<div class="adminLink clickable col-11 p-3 my-2" onclick = "selectPage(this.id)" id = "map" >
                 <div class="row justify-content-between align-items-center px-3" >
                     <div class="col-9 d-flex flex-row flex-wrap align-items-center" ><div class="font-size-3 pr-3" > Create Map </div ><div class="font-size-2 darkGrayColour" > Create new maps to play alone or with friends </div ></div >
@@ -31,7 +31,7 @@ if (isset($accessed) === false){
                 </div >
             </div >';
             }
-            if ($profile->getAccountType() <= 3) {
+            if ($profile->getAccessEditForum()===1) {
                 echo '<div class="adminLink clickable col-11 p-3 my-2" onclick = "selectPage(this.id)" id = "report" >
                 <div class="row justify-content-between align-items-center px-3" >
                     <div class="col-9 d-flex flex-row flex-wrap align-items-center" ><div class="font-size-3 pr-3" > Manage Reports </div ><div class="font-size-2 darkGrayColour" > Moderators can manage reports made by players </div ></div >
@@ -39,7 +39,7 @@ if (isset($accessed) === false){
                 </div >
             </div >';
             }
-            if ($profile->getAccountType() <= 2){
+            if ($profile->getAccessPostNews()===1){
                 echo '<div class="adminLink clickable col-11 p-3 my-2" onclick = "selectPage(this.id)" id = "news" >
                 <div class="row justify-content-between align-items-center px-3" >
                     <div class="col-9 d-flex flex-row flex-wrap align-items-center" ><div class="font-size-3 pr-3" > Post News </div ><div class="font-size-2 darkGrayColour" > This is where you can post news stories </div ></div >

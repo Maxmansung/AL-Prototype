@@ -16,11 +16,21 @@ class profileController extends profile
         return $this->nightfall;
     }
 
+    public function getProfileAccess(){
+        profileModel::getProfileAccess($this);
+    }
+
     public function __construct($id)
     {
         if ($id != ""){
-            $checkprofile = profileModel::checkname($id);
+            $checker = intval($id);
+            if ($checker != 0 && $id == $checker){
+                $checkprofile = profileModel::getProfile($id);
+            } else {
+                $checkprofile = profileModel::checkname($id);
+            }
             $this->profileID = $checkprofile->getProfileID();
+            $this->profileName = $checkprofile->getProfileName();
             $this->password = $checkprofile->getPassword();
             $this->profilePicture = $checkprofile->getProfilePicture();
             $this->email = $checkprofile->getEmail();
@@ -29,22 +39,14 @@ class profileController extends profile
             $this->accountType = $checkprofile->getAccountType();
             $this->gameStatus = $checkprofile->getGameStatus();
             $this->avatarID = $checkprofile->getAvatar();
-            $this->achievements = $checkprofile->getAchievements();
-            $this->achievementsSolo = $checkprofile->getAchievementsSolo();
-            $this->bio = $checkprofile->getBio();
-            $this->country = $checkprofile->getCountry();
-            $this->gender = $checkprofile->getGender();
-            $this->age = $checkprofile->getAge();
-            $this->playStatistics = $checkprofile->getPlayStatistics();
-            $this->uploadSecurity = $checkprofile->getUploadSecurity();
             $this->passwordRecovery = $checkprofile->getPasswordRecovery();
             $this->passwordRecoveryTimer = $checkprofile->getPasswordRecoveryTimer();
             $this->cookieKey = $checkprofile->getCookieKey();
-            $this->shrineScore = $checkprofile->getShrineScore();
             $this->forumPosts = $checkprofile->getForumPosts();
             $this->postsNew = $this->checkForNewPosts();
             $this->nightfall = data::getNightfall();
             $this->reportTimer = $checkprofile->getReportTimer();
+            $this->createdMap = $checkprofile->getCreatedMap();
         }
     }
 
@@ -130,7 +132,7 @@ class profileController extends profile
     }
 
     //This function performs the AJAX login script
-    public static function login($username, $p, $cookies)
+    public static function login($username, $p, $cookies,$confirm)
     {
         // GATHER THE POSTED DATA INTO LOCAL VARIABLES AND SANITIZE
         $u = preg_replace('#[^A-Za-z0-9]#i', '', $username);
@@ -149,7 +151,7 @@ class profileController extends profile
             }
             if (!password_verify($p,$checkprofile->getPassword())) {
                 return array("ERROR"=>103);
-            } else if ($checkprofile->accountType == 8) {
+            } else if ($checkprofile->accountType == 8 && $confirm !== true) {
                 return array("ERROR"=>104);
             } else {
                 // CREATE THEIR SESSIONS
@@ -157,7 +159,7 @@ class profileController extends profile
                     session_start();
                 }
                 $checkprofile->setLoginIP(preg_replace('#[^0-9.]#', '', getenv('REMOTE_ADDR')));
-                $_SESSION['username'] = $checkprofile->profileID;
+                $_SESSION['username'] = $checkprofile->getProfileID();
                 $_SESSION['ip'] = $checkprofile->getLoginIP();
                 $_SESSION['type'] = "main";
                 if ($c === true){
@@ -169,10 +171,10 @@ class profileController extends profile
                     setcookie('type', "main", time() + (86400 * 30),"/",SITE_ADDRESS);
                     $checkprofile->setLastLogin(date("Y-m-d H:i"));
                     $checkprofile->uploadProfile();
-                    return array("ALERT"=>0,"DATA"=>$c);
+                    return array("ALERT"=>0,"DATA"=>0);
                 } else {
                     $checkprofile->uploadProfile();
-                    return array("ALERT"=>0,"DATA"=>$c);
+                    return array("ALERT"=>0,"DATA"=>0);
                 }
             }
         }
@@ -259,27 +261,28 @@ class profileController extends profile
                 // END FORM DATA ERROR HANDLING
                 $password = data::hashPassword($p);
                 $this->setPassword($password);
-                $this->setProfileID($u);
+                $this->setProfileName($u);
                 $this->setEmail($e);
                 $this->setLoginIP($ip);
                 $this->setAccountType(8);
                 $this->setgameStatus("ready");
                 $this->setProfilePicture(null);
                 $this->setAvatar(null);
-                $this->setBio("Bio goes here");
-                $this->setCountry("Unknown");
-                $this->setGender("unknown");
                 $this->setProfilePicture("generic.png");
-                $this->setAge(100);
                 $this->achievements = new stdClass();
                 // Add user info into the database table for the main site table
-                profileModel::insertProfile($this, "Insert");
-                // Email the user their activation link
-                $response = emails::sendEmail($u, $e, $this->getPassword(), "confirm");
-                if ($response === "SUCCESS") {
-                    return array("Success" => true);
+                $userID = profileModel::insertProfile($this, "Insert");
+                if ($userID != 0) {
+                    profileDetailsController::newProfileCreation($userID);
+                    // Email the user their activation link
+                    $response = emails::sendEmail($userID, $e, $this->getPassword(), "confirm");
+                    if ($response === "SUCCESS") {
+                        return array("ALERT" => 22,"DATA"=>$this->getEmail());
+                    } else {
+                        return array("ERROR" => "The email has not sent");
+                    }
                 } else {
-                    return array("ERROR" => "The email has not sent");
+                    return array("ERROR" => "The profile has not been created due to an unknown database error");
                 }
             }
         }
@@ -287,25 +290,52 @@ class profileController extends profile
 
     public function activate($username, $email, $password)
     {
-        $u = preg_replace('#[^a-z0-9]#i', '', $username);
+        $u = preg_replace('#[^0-9]#i', '', $username);
         $e = filter_var($email, FILTER_SANITIZE_EMAIL);
-        $p = filter_var($password, FILTER_SANITIZE_STRING);
         // Evaluate the lengths of the incoming $_GET variable
-        if (strlen($u) < 3 || strlen($e) < 5 || $p == "") {
+        if (strlen($u) < 2 || strlen($e) < 5 || $password == "") {
             // Log this issue into a text file and email details to yourself
-            header("location: message.php?msg=Get values are not correctly set");
-            exit();
+            return array("ERROR"=>0);
         }
         // Check their credentials against the database
-        $checkprofile = profileModel::checkname($u);
+        $checkprofile = new profileController($u);
         // Evaluate for a match in the system (0 = no match, 1 = match)
         if ($checkprofile->profileID == "") {
             // Log this potential hack attempt to text file and email details to yourself
-            header("location: message.php?msg=No player within the system with these details");
-            exit();
-        }$checkprofile->setAccountType(7);
-        // Match was found, you can activate them
-        profileModel::insertProfile($checkprofile, "Update");
+            return array("ERROR"=>1);
+        }
+        if ($password !== $checkprofile->getPassword()) {
+            return array("ERROR"=>2);
+        }
+        $checkprofile->getProfileAccess();
+        if ($checkprofile->getAccessActivated() === 0){
+            return array("ERROR"=>3);
+        }
+        return array("ALERT"=>23,"DATA"=>$checkprofile->getProfileName());
+    }
+
+
+    public static function activateConfirm($username,$password){
+        $checker = self::login($username,$password,false,true);
+        if (array_key_exists("ERROR", $checker)){
+            return $checker;
+        } else {
+            $profile = new profileController($username);
+            $profile->setAccountType(7);
+            $mapID = mapModel::getTutorialMap();
+            if ($mapID != 0){
+                $response = newMapJoinController::addAvatar($mapID,$username);
+                if (array_key_exists("ERROR",$response)){
+                    return $response;
+                } else {
+                    $profile->uploadProfile();
+                    return array("ALERT"=>23,"DATA"=>"");
+                }
+            } else {
+                $profile->uploadProfile();
+                return array("ERROR" => "There are no tutorial maps currently, however your account has been activated");
+            }
+        }
     }
 
     public function confirmdeath(){
@@ -345,19 +375,6 @@ class profileController extends profile
             }
         }
         return array("ERROR"=>56);
-    }
-
-    public static function findProfiles($name){
-        $nameArray = profileModel::findAllProfiles($name);
-        $finalArray = [];
-        $counter = 0;
-
-        foreach ($nameArray as $profile){
-            $player = new profileController($profile);
-            $finalArray[$counter] = array("profile"=>$player->getProfileID(),"profileImage"=>$player->getProfilePicture(),"login"=>$player->calculateLoginTime());
-            $counter ++;
-        }
-        return $finalArray;
     }
 
     public static function createRecoveryPassword($e)
@@ -446,41 +463,8 @@ class profileController extends profile
     }
 
     public function updateProfileDetails($bio,$age,$gender,$country){
-        $bioCheck = htmlentities($bio, ENT_QUOTES | ENT_SUBSTITUTE);
-        $ageCheck = preg_replace('#[^0-9]#', '', $age);
-        $genderCheck = preg_replace('/[^\w-, ]/', '',$gender);
-        $countryCheck = filter_var($country, FILTER_SANITIZE_STRING);
-        if ($bioCheck !== ""){
-            $this->setBio($bioCheck);
-        }
-        if ($ageCheck !== ""){
-            $this->setAge($ageCheck);
-        }
-        if ($genderCheck !== ""){
-            $this->setGender($genderCheck);
-        }
-        if ($countryCheck !== ""){
-            $this->setCountry($countryCheck);
-        }
-        $this->uploadProfile();
-        return array("ALERT"=>14,"DATA"=>"None");
-    }
-
-
-    private function calculateLoginTime(){
-        $actual = strtotime($this->lastlogin);
-        $current = time();
-        $difference = $current - $actual;
-        $midnight = strtotime("today midnight");
-        if ($actual > $midnight){
-            $response = "Today";
-        } else {
-            if ($difference < (86400*3)) {
-                $response = "Last 3 days";
-            } else {
-                $response = date("j-M",$actual);
-            }
-        }
+        $profileDetails = new profileDetailsController($this->profileID);
+        $response = $profileDetails->updateProfileDetails($bio,$age,$gender,$country);
         return $response;
     }
 }

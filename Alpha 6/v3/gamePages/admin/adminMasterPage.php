@@ -4,7 +4,7 @@ if (isset($accessed) === false){
     exit("No access");
 }
 ?>
-<div class="container-fluid">
+<div class="container-fluid pb-3 pageSize">
     <script src="/js/adminPage.js"></script>
     <?php
     if (isset($_GET["a"])) {
@@ -14,7 +14,7 @@ if (isset($accessed) === false){
     }
     switch ($admin){
         case "news":
-            if ($profile->getAccountType() >= 3){
+            if ($profile->getAccessPostNews()===0){
                 include_once($_SERVER['DOCUMENT_ROOT'] . "/gamePages/admin/adminFrontPage.php");
             } else {
                 include_once($_SERVER['DOCUMENT_ROOT'] . "/gamePages/admin/postNews.php");
@@ -22,7 +22,7 @@ if (isset($accessed) === false){
             }
             break;
         case "map":
-            if ($profile->getAccountType() >= 6){
+            if ($profile->getAccessNewMap()===0){
                 include_once($_SERVER['DOCUMENT_ROOT'] . "/gamePages/admin/adminFrontPage.php");
             } else {
                 include_once($_SERVER['DOCUMENT_ROOT'] . "/gamePages/admin/adminNewMap.php");
@@ -30,7 +30,7 @@ if (isset($accessed) === false){
             }
             break;
         case "snowman":
-            if ($profile->getAccountType() >= 3){
+            if ($profile->getAccessEditMap()===0){
                 include_once($_SERVER['DOCUMENT_ROOT'] . "/gamePages/admin/adminFrontPage.php");
             } else {
                 include_once($_SERVER['DOCUMENT_ROOT'] . "/gamePages/admin/adminEditMap.php");
@@ -38,7 +38,7 @@ if (isset($accessed) === false){
             }
             break;
         case "report":
-            if ($profile->getAccountType() >= 4){
+            if ($profile->getAccessEditForum()===0){
                 include_once($_SERVER['DOCUMENT_ROOT'] . "/gamePages/admin/adminFrontPage.php");
             } else {
                 include_once($_SERVER['DOCUMENT_ROOT'] . "/gamePages/admin/adminReports.php");

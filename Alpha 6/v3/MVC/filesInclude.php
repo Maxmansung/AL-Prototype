@@ -31,6 +31,7 @@ include(PROJECT_ROOT."/MVC/controller/newsStoryController.php");
 include(PROJECT_ROOT."/MVC/controller/partyController.php");
 include(PROJECT_ROOT."/MVC/controller/privateMessagesController.php");
 include(PROJECT_ROOT."/MVC/controller/profileController.php");
+include(PROJECT_ROOT."/MVC/controller/profileDetailsController.php");
 include(PROJECT_ROOT."/MVC/controller/profileImagesController.php");
 include(PROJECT_ROOT."/MVC/controller/reportingController.php");
 include(PROJECT_ROOT."/MVC/controller/recipeController.php");
@@ -51,3 +52,5 @@ include(PROJECT_ROOT . "/MVC/overviewController/playerMapZoneController.php");
 //VIEW CLASSES
 include(PROJECT_ROOT . "/MVC/view/profileAchievements.php");
 include(PROJECT_ROOT . "/MVC/view/joinGameView.php");
+include(PROJECT_ROOT . "/MVC/view/mapOverviewEditView.php");
+include(PROJECT_ROOT . "/MVC/view/profileSearchView.php");

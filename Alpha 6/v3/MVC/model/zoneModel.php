@@ -32,11 +32,18 @@ class zoneModel extends zone
 
     public static function findMapZones($mapID){
         $db = db_conx::getInstance();
-        $req = $db->prepare('SELECT zoneID FROM Zone WHERE mapID= :mapID ORDER BY zoneID ASC');
+        $req = $db->prepare('SELECT * FROM Zone WHERE mapID= :mapID ORDER BY zoneID ASC');
         $req->bindParam(':mapID', $mapID);
         $req->execute();
         $zoneModel = $req->fetchAll();
-        return $zoneModel;
+        $final = [];
+        $counter = 0;
+        foreach ($zoneModel as $zone){
+            $temp = new zoneModel($zone);
+            $final[$counter] = $temp;
+            $counter++;
+        }
+        return $final;
     }
 
     public static function findZoneIDfromName($zoneID,$mapID){
@@ -62,21 +69,24 @@ class zoneModel extends zone
 
     public static function insertZone($controller, $type){
         $db = db_conx::getInstance();
-        $zoneID = $controller->getZoneID();
+        $zoneID = intval($controller->getZoneID());
         $name2 = $controller->getName();
         $mapID = intval($controller->getMapID());
         $coordinateX = $controller->getCoordinateX();
         $coordinateY = $controller->getCoordinateY();
         $avatars = json_encode($controller->getAvatars());
         $buildings = json_encode($controller->getBuildings());
-        $controllingParty = $controller->getControllingParty();
+        $controllingParty = intval($controller->getControllingParty());
+        if ($controllingParty === 0){
+            $controllingParty = null;
+        }
         $protectedZoneType = $controller->getProtectedType();
         $storage2 = $controller->getStorage();
-        $findingChances = $controller->getFindingChances();
-        $biomeType = $controller->getBiomeType();
+        $findingChances = intval($controller->getFindingChances());
+        $biomeType = intval($controller->getBiomeType());
         $zoneOutpostName = $controller->getZoneOutpostName();
-        $zoneSurvivableTemperatureModifier = $controller->getZoneSurvivableTemperatureModifier();
-        $counter = $controller->getCounter();
+        $zoneSurvivableTemperatureModifier = intval($controller->getZoneSurvivableTemperatureModifier());
+        $counter = intval($controller->getCounter());
         if ($type == "Insert") {
             $req = $db->prepare("INSERT INTO Zone (name, mapID, coordinateX, coordinateY, avatars, buildings, controllingParty, protectedZoneType, storageBuilt, findingChances, biomeType, zoneOutpostName, zoneSurvivableTemperatureModifier, counter) VALUES (:name2, :mapID, :coordinateX, :coordinateY, :avatars, :buildings, :controllingParty, :protectedZoneType, :storage2, :findingChances, :biomeType, :zoneOutpostName, :zoneSurvivableTemperatureModifier, :counter)");
         } elseif ($type == "Update") {

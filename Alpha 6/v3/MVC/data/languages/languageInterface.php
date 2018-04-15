@@ -9,9 +9,11 @@ interface languageInterface
     function loginMasterPageWriting();
     function loginMasterPagePlayNow();
     function loginMasterPageSignupFree();
+    function loginMasterPageAboutTitle();
     function loginMasterPageDescription1($var);
     function loginMasterPageDescription2($var);
     function loginMasterPageDescription3($var);
+    function loginMasterPageDescription4($var);
     function loginMasterPageOnPhone($var);
 
     //ARRAY FOR THE TOP NAV BAR
@@ -21,6 +23,12 @@ interface languageInterface
     function loginNavWiki();
     function loginNavBlog();
     function loginNavLanguage();
+    function loginNavLogout();
+    function loginNavNotifications();
+    function loginNavCommunity();
+    function loginNavSpirit();
+    function loginNavAdmin();
+    function loginNavMessages();
 
     //THE POPUP LOGIN BOX DETAILS
     function loginScreenSignup();
@@ -68,4 +76,20 @@ interface languageInterface
     function footerContactTitle();
     function footerContactCreator();
     function footerContactCredits();
+
+    //THE FORUM THREADS PAGE
+    function forumThreadsTitle($var);
+    function forumThreadsForums();
+    function forumThreadsSearch();
+    function forumThreadsRefresh();
+    function forumThreadsNewThread();
+    function forumThreadsThreads();
+    function forumThreadsResponses();
+    function forumThreadsPriorityThreads();
+
+    //THE FORUM REPORTING MODAL
+    function forumReportingReasons($var);
+    function forumReportingInformation();
+    function forumReportingInformationDescription();
+
 }

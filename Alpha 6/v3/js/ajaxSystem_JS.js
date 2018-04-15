@@ -52,6 +52,9 @@ function switchArray(type,response){
         case 35:
             showProfilePage(response.view);
             break;
+        case 36:
+            showProfileEditPage(response.view);
+            break;
         case 38:
             createSearchResults(response.view);
             break;
@@ -70,8 +73,14 @@ function switchArray(type,response){
         case 206:
             createNewsEditPage(response.view);
             break;
+        case 210:
+            createEditMapAdmin(response.view);
+            break;
+        case 211:
+            createEditPlayerAdmin(response.view);
+            break;
         default:
-            console.log("Error Unknown");
+            console.log("This view does not have an associated function currently");
             break;
     }
 }

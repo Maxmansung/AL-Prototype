@@ -2,8 +2,10 @@
 if (!defined('PROJECT_ROOT')) exit(include($_SERVER['DOCUMENT_ROOT'] . "/error/404.php"));
 class newMapJoinController
 {
-    private $invent = 4;
+    private $inventMain = 4;
+    private $inventTutorial = 6;
     private $stamina = 20;
+    private $staminaTest = 100;
     private $temp = 0;
     private $stemp = 0;
     private $tempm = 0;
@@ -13,15 +15,34 @@ class newMapJoinController
     private $maxEdge = 30;
 
     public static function createNewMap($name,$player,$edge,$length,$profile,$type){
-        if($profile->getAccountType() >= 6){
-            return array("ERROR"=>"You do not have access to do this");
+        $profile->getProfileAccess();
+        if($profile->getAccessNewMap()===0){
+            return array("ERROR"=>28);
         } else {
+            if ($profile->getAccessEditMap()===0){
+                if ($profile->getCreatedMap() != 0) {
+                    $map = new mapController($profile->getCreatedMap());
+                    if ($map->getMapID() != 0) {
+                        return array("ERROR" => "You can only create 1 map at a time, please wait for the last map to end");
+                    }
+                }
+                $typeClean = 2;
+            } else {
+                $typeClean = intval(preg_replace('#[^0-9]#i', '',$type));
+            }
             $mapJoin = new newMapJoinController();
             $edgeClean = intval(preg_replace('#[^0-9]#i', '',$edge));
             $playerClean = intval(preg_replace('#[^0-9]#i', '',$player));
             $nameClean = preg_replace('#[^A-Za-z0-9 -]#i', '',$name);
             $lengthClean = preg_replace('#[^A-Za-z0-9 -]#i', '',$length);
-            return $mapJoin->createMapFunction($nameClean, $playerClean, $edgeClean, $lengthClean,$type);
+            $checker = $mapJoin->createMapFunction($nameClean, $playerClean, $edgeClean, $lengthClean,$typeClean);
+            if (array_key_exists("ERROR",$checker)) {
+                return $checker;
+            } else {
+                $profile->setCreatedMap($checker->getMapID());
+                $profile->uploadProfile();
+                return array("ALERT"=>24,"DATA"=>$checker->getName());
+            }
         }
     }
 
@@ -39,20 +60,33 @@ class newMapJoinController
             }
         }
         //This checks to ensure the name is not already in use
-        $checkname = $map->checkname($name);
+        if ($type !== 3) {
+            $checkname = $map->checkname($name);
+        } else {
+            $checkname = 0;
+        }
         if ($checkname > 0) {
-            return array("ERROR" => "Name cannot be: ".$name);
+            return array("ERROR" => 131);
         } else {
             if ($player < $this->minPlayer || $player > $this->maxPlayers) {
-                return array("ERROR" => "Player count is not correct");
+                return array("ERROR" => 132);
             } else {
                 if ($edge < $this->minEdge || $edge > $this->maxEdge) {
-                    return array("ERROR" => "Edge size is not allowable");
+                    return array("ERROR" => 133);
                 } else {
                     if ($length !== "check" && $length !== "full"){
-                        return array ("ERROR"=>"This type is not allowable: ".$length);
+                        return array ("ERROR"=>136);
                     } else {
-                        $map->newmap($name, $player, $this->invent, $edge, $this->stamina, $length, $this->temp, $this->stemp, $this->tempm, $type);
+                        $stamina = $this->stamina;
+                        if ($type > 2){
+                            $invent = $this->inventTutorial;
+                            if ($type > 3){
+                                $stamina = $this->staminaTest;
+                            }
+                        } else {
+                            $invent = $this->inventMain;
+                        }
+                        $map->newmap($name, $player, $invent, $edge, $stamina, $length, $this->temp, $this->stemp, $this->tempm, $type);
                         //This creates the zones
                         $counter = 0;
                         $forestLoc = $map->createForestLocation($edge);
@@ -84,7 +118,7 @@ class newMapJoinController
                             }
                             $party->newParty($map->getMapID(), $name, newMapJoinController::overallExplorationArray($edge));
                         }
-                        return array("ALERT"=>"","DATA"=>$map->getName());
+                        return $map;
                     }
                 }
             }
@@ -92,9 +126,9 @@ class newMapJoinController
     }
 
     //This function adds an avatar to the map
-    public static function addAvatar($mapID,$profileID)
+    public static function addAvatar($mapID,$profile)
     {
-        $profile = new profileController($profileID);
+        $profile->getProfileAccess();
         $mapcheck = new mapController($mapID);
         if ($mapcheck->getMapID() == "") {
             return array("ERROR" => 38);
@@ -111,7 +145,7 @@ class newMapJoinController
             //Echo error ID - this shows the map is not a new map
             return array("ERROR" => 17);
         } elseif ($mapcheck->getGameType() != "Tutorial") {
-            if ($profile->getAccountType() > 6) {
+            if ($profile->getAccessAllGames()===0) {
                 //Echo error ID - this shows the player is trying to join a game they do not have access to
                 return array("ERROR" => 52);
             }
@@ -153,11 +187,11 @@ class newMapJoinController
             chatlogMovementController::playerJoinsMap($avatar->getAvatarID());
             if ($mapcheck->getMaxPlayerCount() == count($mapcheck->getAvatars())) {
                 $check = self::duplicateMap($mapcheck);
-                if ($check["ERROR"] == 1){
+                if (array_key_exists("ERROR",$check)){
                     return array ("ERROR"=>"For some reason a new map couldn't be created");
                 }
             }
-            return array("ALERT" => 7,"DATA"=>$mapcheck->getName());
+            return array("ALERT" => 7, "DATA"=>$mapcheck->getName());
         }
     }
 
@@ -173,7 +207,7 @@ class newMapJoinController
 
 
     private static function addPlayerToVote($mapID,$avatarID){
-        $avatarList = avatarController::getAllMapAvatars($mapID);
+        $avatarList = avatarController::getAllMapAvatars($mapID,false);
         $newAvatar = new avatarController($avatarID);
         foreach ($avatarList as $avatar){
             if ($avatar->getAvatarID() === $avatarID){
@@ -186,34 +220,29 @@ class newMapJoinController
         }
     }
 
-    public static function deleteGame($mapID,$access){
-        if ($access === "admin"){
-            $map = new mapController($mapID);
-            if ($map->getMapID() == ""){
-                return array("ERROR" => 38);
-            } else {
-                if ($map->getMapID() == "map00001"){
-                    return array("ERROR" => 38);
-                } else {
-                    $response = $map->deleteMap();
-                    if ($response !== "ERROR"){
-                        return array("ALERT" => 8, "DATA"=>$response);
-                    } else {
-                        return array("ERROR"=>"Somehow the map wasn't deleted");
-                    }
-                }
-            }
-        } else {
-            return array("ERROR" => 28);
+    public static function duplicateMap($mapController){
+        $mapJoin = new newMapJoinController();
+        if ($mapController->getGameType() == 1) {
+            return $mapJoin->createMapFunction("", $mapController->getMaxPlayerCount(), $mapController->getEdgeSize(), $mapController->getDayDuration(), $mapController->getGameType());
+        }
+        elseif ($mapController->getGameType() == 3) {
+            return $mapJoin->createMapFunction($mapController->getName(), 1, $mapController->getEdgeSize(), "check",$mapController->getGameType());
         }
     }
 
-    public static function duplicateMap($mapController){
-        if ($mapController->getGameType() == "Main") {
-            return newMapJoinController::createNewMap(nameGeneratorController::getNameAsText("map"), $mapController->getMaxPlayerCount(), $mapController->getMaxPlayerInventorySlots(), $mapController->getEdgeSize(), $mapController->getMaxPlayerStamina(), $mapController->getDayDuration(), 1, $mapController->getBaseSurvivableTemperature(), $mapController->getBaseAvatarTemperatureModifier(),$mapController->getGameType());
-        }
-        elseif ($mapController->getGameType() == "Tutorial") {
-            return newMapJoinController::createNewMap($mapController->getName(), $mapController->getMaxPlayerCount(), $mapController->getMaxPlayerInventorySlots(), $mapController->getEdgeSize(), $mapController->getMaxPlayerStamina(), $mapController->getDayDuration(), 1, $mapController->getBaseSurvivableTemperature(), $mapController->getBaseAvatarTemperatureModifier(),$mapController->getGameType());
+    public static function deleteMap($profile,$mapID,$password){
+        $profile->getProfileAccess();
+        if ($profile->getAccessEditMap()===0){
+            return array("ERROR"=>28);
+        } else {
+            if ($password != data::$adminVar['deletePassword']){
+                return array('ERROR'=>"Wrong Password");
+            } else {
+                $mapIDClean = intval(preg_replace('#[^0-9]#i', '', $mapID));
+                $map = new mapController($mapIDClean);
+                $map->deleteMap();
+                return array("ALERT"=>21,"DATA"=>$map->getName());
+            }
         }
     }
 }

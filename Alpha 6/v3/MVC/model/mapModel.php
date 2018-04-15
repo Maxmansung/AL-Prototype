@@ -21,7 +21,7 @@ class mapModel extends map
         } else {
             $this->temperatureRecord = json_decode($mapmodel['temperatureRecord']);
         }
-        $this->gameType = $mapmodel["gameType"];
+        $this->gameType = intval($mapmodel["gameType"]);
     }
 
     public static function checkname($name) {
@@ -57,7 +57,14 @@ class mapModel extends map
         $req = $db->prepare("SELECT * FROM Map");
         $req->execute();
         $mapmodel = $req->fetchAll();
-        return $mapmodel;
+        $final = [];
+        $counter = 0;
+        foreach ($mapmodel as $map){
+            $temp = new mapModel($map);
+            $final[$counter] = $temp;
+            $counter++;
+        }
+        return $final;
     }
 
     public static function insertMap($mapcontroller, $type){
@@ -75,7 +82,7 @@ class mapModel extends map
         $baseSurvivableTemperature = intval($mapcontroller->getBaseSurvivableTemperature());
         $basePlayerTemperatureModifier = intval($mapcontroller->getBaseAvatarTemperatureModifier());
         $temperatureRecord = json_encode($mapcontroller->getTemperatureRecord());
-        $gameType = $mapcontroller->getGameType();
+        $gameType = intval($mapcontroller->getGameType());
         if ($type == "Insert") {
             $req = $db->prepare("INSERT INTO Map (name, maxPlayerCount, edgeSize, maxPlayerStamina, maxPlayerInventorySlots, avatars, currentDay, dayDuration, baseNightTemperature, baseSurvivableTemperature, basePlayerTemperatureModifier, temperatureRecord, gameType) VALUES (:name2, :maxPlayerCount, :edgeSize, :maxPlayerStamina, :maxPlayerInventorySlots, :avatars, :currentDay, :dayDuration, :baseNightTemperature, :baseSurvivableTemperature, :basePlayerTemperatureModifier, :temperatureRecord, :gameType)");
         } elseif ($type == "Update"){
@@ -123,6 +130,21 @@ class mapModel extends map
             array_push($finalArray,$map[0]);
         }
         return $finalArray;
+    }
+
+    public static function getTutorialMap(){
+        $db = db_conx::getInstance();
+        $req = $db->prepare("SELECT * FROM Map WHERE gameType= 'Tutorial' ORDER BY mapID DESC LIMIT 5");
+        $req->execute();
+        $mapmodel = $req->fetchAll();
+        $final = 0;
+        foreach ($mapmodel as $map){
+            $mapModel = new mapModel($map);
+            if (count($mapModel->getAvatars())==0){
+                $final = $mapModel->getMapID();
+            }
+        }
+        return $final;
     }
 
 
