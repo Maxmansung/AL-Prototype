@@ -134,7 +134,7 @@ class mapModel extends map
 
     public static function getTutorialMap(){
         $db = db_conx::getInstance();
-        $req = $db->prepare("SELECT * FROM Map WHERE gameType= 'Tutorial' ORDER BY mapID DESC LIMIT 5");
+        $req = $db->prepare("SELECT * FROM Map WHERE gameType= 4 ORDER BY mapID DESC LIMIT 5");
         $req->execute();
         $mapmodel = $req->fetchAll();
         $final = 0;

@@ -18,7 +18,6 @@ if (isset($accessed) === false){
                 include_once($_SERVER['DOCUMENT_ROOT'] . "/gamePages/admin/adminFrontPage.php");
             } else {
                 include_once($_SERVER['DOCUMENT_ROOT'] . "/gamePages/admin/postNews.php");
-
             }
             break;
         case "map":
@@ -26,7 +25,6 @@ if (isset($accessed) === false){
                 include_once($_SERVER['DOCUMENT_ROOT'] . "/gamePages/admin/adminFrontPage.php");
             } else {
                 include_once($_SERVER['DOCUMENT_ROOT'] . "/gamePages/admin/adminNewMap.php");
-
             }
             break;
         case "snowman":
@@ -34,7 +32,6 @@ if (isset($accessed) === false){
                 include_once($_SERVER['DOCUMENT_ROOT'] . "/gamePages/admin/adminFrontPage.php");
             } else {
                 include_once($_SERVER['DOCUMENT_ROOT'] . "/gamePages/admin/adminEditMap.php");
-
             }
             break;
         case "report":
@@ -42,7 +39,13 @@ if (isset($accessed) === false){
                 include_once($_SERVER['DOCUMENT_ROOT'] . "/gamePages/admin/adminFrontPage.php");
             } else {
                 include_once($_SERVER['DOCUMENT_ROOT'] . "/gamePages/admin/adminReports.php");
-
+            }
+            break;
+        case "users":
+            if ($profile->getAccessEditForum()===0){
+                include_once($_SERVER['DOCUMENT_ROOT'] . "/gamePages/admin/adminFrontPage.php");
+            } else {
+                include_once($_SERVER['DOCUMENT_ROOT'] . "/gamePages/admin/adminEditUsers.php");
             }
             break;
         case "none":

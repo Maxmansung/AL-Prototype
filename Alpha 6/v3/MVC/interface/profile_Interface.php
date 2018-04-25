@@ -50,4 +50,6 @@ interface profile_Interface
     function setAccessAllGames($var);
     function getAccessAdminPage();
     function setAccessAdminPage($var);
+    function getAccessEditUsers();
+    function setAccessEditUsers($var);
 }

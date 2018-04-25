@@ -407,7 +407,10 @@ span.btn-dark:not(:disabled):not(.disabled):active:focus, .btn-dark:not(:disable
     height: 40px;
 }
 
-
+.searchAdminAvatarImage{
+    max-height: 80px;
+    max-width: 80px;
+}
 
 .forumTypeImage{
     border-radius: 10px 10px 0 0;
@@ -715,13 +718,43 @@ span.btn-dark:not(:disabled):not(.disabled):active:focus, .btn-dark:not(:disable
 }
 
 #soloScoreWrap{
-    background: linear-gradient(0deg, rgba(0,255,0,0.8), rgba(0,255,0,0.4));
+    background: linear-gradient(0deg, rgba(0,0,255,0.4), rgba(0,0,255,0.1));
 }
 
 #teamScoreWrap{
-    background: linear-gradient(0deg, rgba(255,0,0,0.8), rgba(255,0,0,0.4));
+    background: linear-gradient(0deg, rgba(255,0,0,0.4), rgba(255,0,0,0.1));
 }
 
 #fullScoreWrap{
-    background: linear-gradient(0deg, rgba(0,0,255,0.8), rgba(0,0,255,0.4));
+    background: linear-gradient(0deg, rgba(0,255,0,0.4), rgba(0,255,0,0.1));
+}
+
+.leaderboardSelect{
+    border-radius: 50% 50% 5% 5%;
+    border-width: 2px;
+    border-style: solid;
+    border-color: rgba(100,100,100,1);
+}
+
+.leaderboardSelect:hover{
+    border-color: rgba(0,0,0,1);
+    cursor: pointer;
+    color: rgba(20,20,90,1);
+}
+
+.leaderboardPlayer1{
+    background: rgba(0,0,0,0.1);
+}
+
+.leaderboardPlayer2{
+    background: rgba(0,0,0,0.2);
+}
+
+.adminUserEditWrapper{
+    background: linear-gradient(90deg, rgba(100,100,100,0), rgba(100,100,100,0.2));
+    border-radius: 5px;
+}
+
+.adminUserEditWrapper:hover{
+    background: linear-gradient(90deg, rgba(100,100,100,0.1), rgba(100,100,100,0.4));
 }

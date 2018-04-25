@@ -169,6 +169,12 @@ class cowLanguage implements languageInterface
         return "Moo!";
     }
 
+    //This is the button for the game leaderboards page
+    function loginNavScore()
+    {
+        return "Mooos";
+    }
+
     //This is the button for the admin page that will allow players to manage reports and create new maps, only players with the right privilege will be able to do this.
     function loginNavAdmin()
     {

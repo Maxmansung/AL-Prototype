@@ -22,6 +22,16 @@ class profileModel extends profile
         $this->createdMap = intval($profileModel['createdMap']);
     }
 
+    public static function getProfileIDFromName($profileName){
+        $db = db_conx::getInstance();
+        $req = $db->prepare('SELECT id FROM Profile WHERE profileName= :profileName LIMIT 1');
+        $req->bindParam(':profileName', $profileName);
+        $req->execute();
+        $profileModel = $req->fetch();
+        return intval($profileModel['id']);
+
+    }
+
     //This function finds a profile by player name
     public static function checkname($profileName) {
         $db = db_conx::getInstance();
@@ -101,18 +111,19 @@ class profileModel extends profile
         $req->bindParam(':reportTimer', $reportTimer);
         $req->bindParam(':createdMap', $createdMap);
         $req->execute();
-        if ($type == "Insert"){
-            $check = intval($db->lastInsertId());
-            return $check;
-        }
     }
 
     //This function finds all profiles with a partial name
-    public static function findAllProfiles($username) {
+    public static function findAllProfiles($username, $count) {
         $adjustedUsername = "%".$username."%";
+        $countChange = intval($count);
+        if ($countChange == 0){
+            $countChange = 10;
+        }
         $db = db_conx::getInstance();
-        $req = $db->prepare("SELECT * FROM Profile WHERE profileName LIKE :adjustedUsername ORDER BY profileName ASC");
-        $req->execute(array(':adjustedUsername' => $adjustedUsername));
+        $req = $db->prepare("SELECT * FROM Profile WHERE profileName LIKE :adjustedUsername ORDER BY profileName ASC LIMIT ".$countChange);
+        $req->bindParam(':adjustedUsername', $adjustedUsername);
+        $req->execute();
         $profileModel = $req->fetchAll();
         $counter = 0;
         $finalArray = [];
@@ -153,5 +164,6 @@ class profileModel extends profile
         $profileController->setAccessActivated(intval($profileModel['activated']));
         $profileController->setAccessAllGames(intval($profileModel['allGames']));
         $profileController->setAccessAdminPage(intval($profileModel['adminPage']));
+        $profileController->setAccessEditUsers(intval($profileModel['editUsers']));
     }
 }

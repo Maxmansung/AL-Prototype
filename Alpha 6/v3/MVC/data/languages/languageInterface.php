@@ -27,6 +27,7 @@ interface languageInterface
     function loginNavNotifications();
     function loginNavCommunity();
     function loginNavSpirit();
+    function loginNavScore();
     function loginNavAdmin();
     function loginNavMessages();
 

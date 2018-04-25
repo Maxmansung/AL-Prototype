@@ -37,10 +37,11 @@ if (isset($accessed) === false){
             echo '<div class="row px-3 justify-content-around mb-3 align-items-center" >
                     <div class="col-xl-4 col-lg-5 col-md-6 col-12" >
                         <select class="form-control" id = "createMapType" >
-                            <option value = "2" > Custom</option >
                             <option value = "1" > Main</option >
-                            <option value = "4" > Test</option >
-                            <option value = "3" > Tutorial</option >
+                            <option value = "2" > Custom</option >
+                            <option value = "3" > Practice</option >
+                            <option value = "4" > Tutorial</option >
+                            <option value = "5" > Test</option >
                         </select >
                     </div >
                     <div class="col-lg-5 col-md-6 col-12 darkGrayColour font-size-2" align = "right" >

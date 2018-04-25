@@ -110,5 +110,14 @@ class profileDetailsModel extends profileDetails
         return $profileModel;
     }
 
+    public static function getAllShrineScores($type){
+        $db = db_conx::getInstance();
+        $req = $db->prepare('SELECT profileDetails.profileID, profileDetails.'.$type.', Profile.profileName FROM profileDetails INNER JOIN Profile ON profileDetails.profileID = Profile.id ORDER BY profileDetails.'.$type.' DESC');
+        $req->execute();
+        $profileModel = $req->fetchAll();
+        return $profileModel;
+
+    }
+
 
 }

@@ -155,9 +155,12 @@ function createEditMapAdmin(data){
                 type = "Custom";
                 break;
             case 3:
-                type = "Tutorial";
+                type = "Practice";
                 break;
             case 4:
+                type = "Tutorial";
+                break;
+            case 5:
                 type = "Testing";
                 break;
         }
@@ -307,4 +310,212 @@ function mapReport(id){
             }
         }
     }
+}
+
+function getReportsPage(){
+    ajax_All(218,10);
+}
+
+function makeReportsPage(data){
+    makeForumReports(data.forum);
+    makeMapReports(data.map);
+}
+
+function makeForumReports(data){
+    $("#forumReports").empty();
+    var length = objectSize(data);
+    if (length > 0) {
+        for (var x in data) {
+            $("#forumReports").append('<div class="row justify-content-center py-1 px-2">' +
+                '<div class="col-11 d-flex flex-column lightGrayBackground">' +
+                '<div class="row d-flex flex-row justify-content-start align-items-center">' +
+                '<div class="p-2 font-weight-bold font-size-2 col-4 col-sm-3 col-md-2">' + data[x].reporter + '</div>' +
+                '<div class="p-2 font-size-2 col-5 col-sm-7 col-md-8">' + data[x].details + '</div>' +
+                '<div class="font-size-1 col-3 col-sm-2 grayColour" align="right">' + data[x].timestampCreated + '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div class="col-11 d-flex flex-row justify-content-center lightGrayBackground">' +
+                '<button class="btn btn-dark m-2">Go To</button>' +
+                '<button class="btn btn-danger m-2" id="report+!' + data[x].reportID + '" onclick="createReportModal(this.id)">Solved</button>' +
+                '</div>' +
+                '</div>')
+        }
+    } else {
+        $("#forumReports").append('<div class="row justify-content-center py-1 px-2">' +
+            '<div class="col-11 grayColour" align="center">No forum reports currently</div>' +
+            '</div>');
+    }
+}
+
+function makeMapReports(data){
+    $("#mapReports").empty();
+    var length = objectSize(data);
+    if (length > 0) {
+        for (var x in data) {
+            $("#mapReports").append('<div class="row justify-content-center py-1 px-2">' +
+                '<div class="col-11 d-flex flex-column lightGrayBackground">' +
+                '<div class="row d-flex flex-row justify-content-start align-items-center">' +
+                '<div class="p-2 font-weight-bold font-size-2 col-4 col-sm-3 col-md-2">' + data[x].reporter + '</div>' +
+                '<div class="p-2 font-size-2 col-5 col-sm-7 col-md-8">' + data[x].details + '</div>' +
+                '<div class="font-size-1 col-3 col-sm-2 grayColour" align="right">' + data[x].timestampCreated + '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div class="col-11 d-flex flex-row justify-content-center lightGrayBackground">' +
+                '<button class="btn btn-dark m-2" onclick="goToPage(\'admin&a=snowman\')">Go To</button>' +
+                '<button class="btn btn-danger m-2" id="report+!' + data[x].reportID + '" onclick="createReportModal(this.id)">Solved</button>' +
+                '</div>' +
+                '</div>')
+        }
+    } else {
+        $("#mapReports").append('<div class="row justify-content-center py-1 px-2">' +
+            '<div class="col-11 grayColour" align="center">No forum reports currently</div>' +
+            '</div>');
+    }
+}
+
+function markReportAsSolved(id){
+    var reportID = id.slice(10);
+    var text = $("#message-text-report").val();
+    if (text.length < 1){
+        $("#message-text-report").addClass("is-invalid");
+    } else {
+        $("#message-text-report").removeClass("is-invalid");
+        $('#reportPosResponse').modal("hide");
+        ajax_All(219,0,reportID,text);
+    }
+}
+
+function createReportModal(id){
+    $("#reportPosResponse .modal-header").empty().append("Closing Report");
+    $("#reportPosResponse .modal-footer").empty().append("<button class='btn btn-dark' data-dismiss='modal' aria-label='Close'>Cancel</button><button class='btn btn-danger' id='ex"+id+"' onclick='markReportAsSolved(this.id)'>Close Report</button>");
+    $("#message-text-report").empty();
+    $('#reportPosResponse').modal({
+        backdrop: 'static',
+        keyboard: false
+    });
+}
+
+function findSpiritAdmin(){
+    var username = $("#adminPageSearchSpirit").val();
+    ajax_All(220,11,username);
+}
+
+function createEditUserItem(data){
+    $("#adminUsersWrapper").empty();
+    for(var x in data){
+        $("#adminUsersWrapper").append('<div class="row my-1 p-1 adminUserEditWrapper">' +
+            '<div class="col-2 col-xl-1 d-none d-md-flex flex-column align-items-end justify-content-center">' +
+            '<img class="searchAdminAvatarImage" src="/avatarimages/'+data[x].profileImage+'">' +
+            '</div>' +
+            '<div class="col-12 col-sm-4 col-md-3 d-flex flex-sm-column flex-row justify-content-center justify-content-sm-start align-items-end align-items-sm-start"> ' +
+            '<div class="font-weight-bold">'+data[x].profile+'</div>' +
+            '<div class="font-size-2 grayColour px-2 px-sm-0">'+data[x].login+'</div>' +
+            '<div class="font-size-2 grayColour">Type: '+data[x].accountType+'</div>' +
+            '</div>' +
+            '<div class="col-12 col-sm-4 col-md-3 d-flex flex-sm-column flex-row justify-content-center font-size-2 ">' +
+            '<div class="d-flex flex-sm-row flex-column justify-content-center align-items-center px-2"><div class="pr-sm-2">Points against</div><div>'+data[x].warningPoints+'</div></div>' +
+            '<div class="d-flex flex-sm-row flex-column justify-content-center align-items-center px-2"><div class="pr-sm-2">Warnings </div><div>'+data[x].lifeTimeWarnings+'</div></div>' +
+            '</div>' +
+            '<div class="col-12 col-sm-4 col-xl-5 d-flex flex-row flex-sm-column justify-content-center align-items-end">' +
+            '<div class="p-1"><button class="btn btn-dark" onclick="createRankModal(this.id)" id="'+data[x].accountType+'rank+!'+data[x].profileID+'">Edit</button></div>' +
+            '<div class="p-1"><button class="btn btn-danger" onclick="createWarningModal(this.id)" id="warning1+!'+data[x].profileID+'">Warning</button></div>' +
+            '</div>' +
+            '</div>')
+    }
+}
+
+function createWarningModal(id){
+    $("#adminUserWarning .modal-footer").empty().append("<button class='btn btn-dark' data-dismiss='modal' aria-label='Close'>Cancel</button><button class='btn btn-danger' id='ex"+id+"' onclick='giveUserWarning(this.id)'>Give Warning</button>");
+    $('#adminUserWarning').modal({
+        backdrop: 'static',
+        keyboard: false
+    });
+}
+
+function createRankModal(id){
+    var rank = id.slice(0,1);
+    $("#adminUserRank").val(rank).change();
+    changeRankText();
+    $("#adminUserRank .modal-footer").empty().append("<button class='btn btn-dark' data-dismiss='modal' aria-label='Close'>Cancel</button><button class='btn btn-danger' id='ex"+id+"' onclick='changeUserRank(this.id)'>Change Rank</button>");
+    $('#adminUserRank').modal({
+        backdrop: 'static',
+        keyboard: false
+    });
+}
+
+function changeRankText(){
+    var valueRank = $("#selectRank").val();
+    valueRank = valueRank.slice(0,1);
+    var text = "";
+    console.log(valueRank);
+    switch (valueRank) {
+        case 0:
+            text = "You cannot change players rank";
+            break;
+        case 1:
+            text = "This is the top developer rank, this can only be given and lost through direct database manipulation";
+            break;
+        case 2:
+            text = "Admin rank, due to the high level of powers this has, only a developer can give and remove of this";
+            break;
+        case 3:
+            text = "Moderators have the ability to support the forums and give warnings, this rank can only be changed by an Admin or above";
+            break;
+        case 4:
+            text = "The superior unused rank is currently a blank rank in preperation for advanced skills later in the game";
+            break;
+        case 5:
+            text = "The superior rank allows player to make their own maps. This will likely become a paid option in the future and manipulation of this should be avoided";
+            break;
+        case 6:
+            text = "Regular is the most common rank that all players will get after completing enough tutorial and practice games";
+            break;
+        case 7:
+            text = "Small spirits have only just begun with the game, their account is active but they cannot join main games yet";
+            break;
+        case 8:
+            text = "New spirits have not activated their accounts with their emails";
+            break;
+        case 9:
+            text = "Lost spirits have been disabled either through innactivity or warnings. These may need bringing back to life";
+            break;
+    }
+    $("#rankExplanation").empty().append(text);
+}
+
+function changeUserRank(id){
+    var valueRank = $("#selectRank").val();
+    if (valueRank.length > 1){
+        createAlertBox(5,1,"You cannot use this rank");
+    } else {
+        var idNew = id.slice(9);
+        $('#adminUserRank').modal("hide");
+        ajax_All(222,0,idNew,valueRank);
+    }
+}
+
+function giveUserWarning(id){
+    var profileID = id.slice(12);
+    var warning = $("#selectWarning").val();
+    var reason = $("#message-text-report").val();
+    if (reason.length < 1){
+        $("#message-text-report").addClass("is-invalid");
+    } else {
+        $("#message-text-report").removeClass("is-invalid");
+        $('#adminUserWarning').modal("hide");
+        ajax_All(221, 0, profileID, warning, reason);
+    }
+}
+
+function adminUserPageLoad(){
+    adminSearchButtonListener();
+}
+
+
+function adminSearchButtonListener() {
+    $("#adminPageSearchSpirit").keyup(function (event) {
+        if (event.keyCode == 13) {
+            $("#adminPageSearchSpiritButton").click();
+        }
+    });
 }

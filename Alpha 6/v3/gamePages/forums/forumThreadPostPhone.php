@@ -1,6 +1,6 @@
 <?php
 ?>
-<div class="col-12 p-2 m-2 justify-content-center standardWrapper" id="forumThreadPostPhone">
+<div class="col-12 justify-content-center standardWrapper" id="forumThreadPostPhone">
     <div class="col-12 pr-5 m-0">
         <div class="clickableFlashMore d-flex justify-content-end" onclick="phoneBackPost()">
             <b><i class="fas fa-reply"></i>Back</b>

@@ -168,10 +168,16 @@ class englishLanguage implements languageInterface
         return "Spirit";
     }
 
+    //This is the button for the game leaderboards page
+    function loginNavScore()
+    {
+        return "Leaderboard";
+    }
+
     //This is the button for the admin page that will allow players to manage reports and create new maps, only players with the right privilege will be able to do this.
     function loginNavAdmin()
     {
-        return "Admin";
+        return "Advanced";
     }
 
     //This is the messages popup that will tell you about any alerts

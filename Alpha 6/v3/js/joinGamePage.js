@@ -4,10 +4,11 @@
     this.link = link;
 }
 
-var linkForum = new importantLink("Forum","Arctic Lands discussion","x");
-var linkHelp = new importantLink("Help","A general overview of how to play the game","x");
-var linkWiki = new importantLink("Arctic Lands Wiki","Work together with the community to record strategies and the key points","x");
-var linkArray = [linkForum,linkHelp,linkWiki];
+var linkForum = new importantLink("Forum","Arctic Lands discussion","forum&f=g");
+var linkScores = new importantLink("Leaderboard","See where you rank in the game","score");
+var linkHelp = new importantLink("Help","Understand how the game works","help");
+var linkSpirit = new importantLink("Spirit","See your record within the arctic lands","spirit");
+var linkArray = [linkSpirit,linkScores,linkForum,linkHelp];
 
 
 
@@ -24,11 +25,16 @@ function createJoingameLinks(data){
 function createImportantLinks(){
     $("#importantLinksWrapper").empty();
     for (var x in linkArray){
-        $("#importantLinksWrapper").append('<div class="col-11 importantLinkWrapper d-flex flex-column align-items-start mb-2" onclick="'+linkArray[x].link+'">' +
+        $("#importantLinksWrapper").append('<div class="col-11 importantLinkWrapper d-flex flex-column align-items-start mb-2" id="link'+linkArray[x].link+'" onclick="goToLink(this.id)">' +
             '<div class="font-weight-bold">'+linkArray[x].title+'</div>' +
             '<div class="font-size-2">'+linkArray[x].text+'</div>' +
             '</div>')
     }
+}
+
+function goToLink(id){
+    var final = id.slice(4);
+    goToPage(final)
 }
 
 function createNews(data){

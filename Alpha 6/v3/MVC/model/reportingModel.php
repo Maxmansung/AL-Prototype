@@ -14,6 +14,7 @@ class reportingModel extends reporting
         $this->details = $reportingModel['details'];
         $this->timestampCreated = intval($reportingModel['timestampCreated']);
         $this->timestampResolved = intval($reportingModel['timestampResolved']);
+        $this->resolvedBy = $reportingModel['resolvedBy'];
     }
 
     public static function findReport($reportID){
@@ -64,10 +65,11 @@ class reportingModel extends reporting
         $details = $controller->getDetails();
         $timestampCreated = intval($controller->getTimestampCreated());
         $timestampResolved = intval($controller->getTimestampResolved());
+        $resolvedBy =  $controller->getResolvedBy();
         if ($type == "Insert") {
-            $req = $db->prepare("INSERT INTO reporting (reporter, reportType, reportObject, reportedPlayer, resolved, details, timestampCreated, timestampResolved) VALUES (:reporter, :reportType, :reportObject, :reportedPlayer,:resolved,:details,:timestampCreated, :timestampResolved)");
+            $req = $db->prepare("INSERT INTO reporting (reporter, reportType, reportObject, reportedPlayer, resolved, details, timestampCreated, timestampResolved, resolvedBy) VALUES (:reporter, :reportType, :reportObject, :reportedPlayer,:resolved,:details,:timestampCreated, :timestampResolved, :resolvedBy)");
         } elseif ($type == "Update") {
-            $req = $db->prepare("UPDATE reporting SET reporter= :reporter, reportType= :reportType, reportObject= :reportObject, reportedPlayer= :reportedPlayer, resolved= :resolved, details= :details, timestampCreated= :timestampCreated, timestampResolved= :timestampResolved WHERE reportID= :reportID");
+            $req = $db->prepare("UPDATE reporting SET reporter= :reporter, reportType= :reportType, reportObject= :reportObject, reportedPlayer= :reportedPlayer, resolved= :resolved, details= :details, timestampCreated= :timestampCreated, timestampResolved= :timestampResolved , resolvedBy= :resolvedBy WHERE reportID= :reportID");
             $req->bindParam(':reportID', $reportID);
         }
         $req->bindParam(':reporter', $reporter);
@@ -78,11 +80,25 @@ class reportingModel extends reporting
         $req->bindParam(':details', $details);
         $req->bindParam(':timestampCreated', $timestampCreated);
         $req->bindParam(':timestampResolved', $timestampResolved);
+        $req->bindParam(':resolvedBy', $resolvedBy);
         $req->execute();
         if ($type == "Insert"){
             $check = intval($db->lastInsertId());
             return $check;
         }
+    }
+
+    public static function findAllReportsIncomplete(){
+        $db = db_conx::getInstance();
+        $req = $db->prepare("SELECT * FROM reporting WHERE resolved= 0");
+        $req->execute();
+        $reportModel = $req->fetchAll();
+        $finalArray = [];
+        foreach ($reportModel as $report) {
+            $temp = new reportingModel($report);
+            $finalArray[$temp->reportID] = $temp;
+        }
+        return $finalArray;
     }
 
 

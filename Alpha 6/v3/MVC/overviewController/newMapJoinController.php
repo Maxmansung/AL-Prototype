@@ -19,6 +19,7 @@ class newMapJoinController
         if($profile->getAccessNewMap()===0){
             return array("ERROR"=>28);
         } else {
+            $nameClean = preg_replace('#[^A-Za-z0-9 -]#i', '',$name);
             if ($profile->getAccessEditMap()===0){
                 if ($profile->getCreatedMap() != 0) {
                     $map = new mapController($profile->getCreatedMap());
@@ -29,11 +30,13 @@ class newMapJoinController
                 $typeClean = 2;
             } else {
                 $typeClean = intval(preg_replace('#[^0-9]#i', '',$type));
+                if ($typeClean != 2){
+                    modTrackingController::createNewTrack(1,$profile->getProfileID(),$typeClean,$nameClean,"","");
+                }
             }
             $mapJoin = new newMapJoinController();
             $edgeClean = intval(preg_replace('#[^0-9]#i', '',$edge));
             $playerClean = intval(preg_replace('#[^0-9]#i', '',$player));
-            $nameClean = preg_replace('#[^A-Za-z0-9 -]#i', '',$name);
             $lengthClean = preg_replace('#[^A-Za-z0-9 -]#i', '',$length);
             $checker = $mapJoin->createMapFunction($nameClean, $playerClean, $edgeClean, $lengthClean,$typeClean);
             if (array_key_exists("ERROR",$checker)) {
@@ -51,16 +54,29 @@ class newMapJoinController
     public function createMapFunction($name,$player,$edge,$length,$type)
     {
         $map = new mapController("");
-        if ($name == "") {
+        if ($name == "" || $type > 2) {
             $checkname = 1;
             while ($checkname == 1) {
-                $name = nameGeneratorController::getNameAsText("map");
-                //This checks to ensure the name is not already in use
-                $checkname = $map->checkname($name);
+                if ($type < 3) {
+                    $name = nameGeneratorController::getNameAsText("map");
+                    //This checks to ensure the name is not already in use
+                    $checkname = $map->checkname($name);
+                } else if ($type == 3){
+                    $name = nameGeneratorController::getNameAsText("practice");
+                    $checkname = 0;
+                } else if ($type == 4){
+                    $name = "Tutorial Map";
+                    $checkname = 0;
+                } else {
+                    if ($name == "") {
+                        $name = "Test Map";
+                    }
+                    $checkname = 0;
+                }
             }
         }
         //This checks to ensure the name is not already in use
-        if ($type !== 3) {
+        if ($type < 3) {
             $checkname = $map->checkname($name);
         } else {
             $checkname = 0;
@@ -144,7 +160,7 @@ class newMapJoinController
         } elseif ($mapcheck->getCurrentDay() != 1) {
             //Echo error ID - this shows the map is not a new map
             return array("ERROR" => 17);
-        } elseif ($mapcheck->getGameType() != "Tutorial") {
+        } elseif ($mapcheck->getGameType() < 3) {
             if ($profile->getAccessAllGames()===0) {
                 //Echo error ID - this shows the player is trying to join a game they do not have access to
                 return array("ERROR" => 52);
@@ -222,10 +238,10 @@ class newMapJoinController
 
     public static function duplicateMap($mapController){
         $mapJoin = new newMapJoinController();
-        if ($mapController->getGameType() == 1) {
+        if ($mapController->getGameType() == 1 || $mapController->getGameType() == 3) {
             return $mapJoin->createMapFunction("", $mapController->getMaxPlayerCount(), $mapController->getEdgeSize(), $mapController->getDayDuration(), $mapController->getGameType());
         }
-        elseif ($mapController->getGameType() == 3) {
+        elseif ($mapController->getGameType() == 4) {
             return $mapJoin->createMapFunction($mapController->getName(), 1, $mapController->getEdgeSize(), "check",$mapController->getGameType());
         }
     }
@@ -241,6 +257,7 @@ class newMapJoinController
                 $mapIDClean = intval(preg_replace('#[^0-9]#i', '', $mapID));
                 $map = new mapController($mapIDClean);
                 $map->deleteMap();
+                modTrackingController::createNewTrack(5,$profile->getProfileID(),$map->getMapID(),$map->getGameType(),"","");
                 return array("ALERT"=>21,"DATA"=>$map->getName());
             }
         }

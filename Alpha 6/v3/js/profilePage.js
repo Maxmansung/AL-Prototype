@@ -121,7 +121,6 @@ function searchForSpirits(id) {
     } else {
         username = $("#profilePageSearchScreen").val();
     }
-    console.log(username+" and ID: "+id);
     ajax_All(38,3,username);
 }
 
@@ -131,7 +130,7 @@ function createSearchResults(data){
     var count = objectSize(data);
     if (count > 0){
         for (var x in data){
-            $(".profilesFound").append("<div class='col-11 d-flex flex-row my-1 justify-content-between align-items-center px-3 py-1 hoverHighlight' id='spirit+"+data[x].profile+"' onclick='findSpirit(this.id)'><div class='searchAvatarImageWrap d-flex flex-row justify-content-center align-items-center'><img class='searchAvatarImage' src='/avatarimages/"+data[x].profileImage+"'></div><div class='d-flex flex-column justify-content-center align-items-end'><div class='funkyFont font-size-3'>"+data[x].profile+"</div><div class='font-size-1 grayColour'>Last seen: "+data[x].login+"</div></div></div>");
+            $(".profilesFound").append("<div class='col-11 d-flex flex-row my-1 justify-content-between align-items-center px-3 py-1 hoverHighlight' id='spirit+"+data[x].profileID+"' onclick='findSpirit(this.id)'><div class='searchAvatarImageWrap d-flex flex-row justify-content-center align-items-center'><img class='searchAvatarImage' src='/avatarimages/"+data[x].profileImage+"'></div><div class='d-flex flex-column justify-content-center align-items-end'><div class='funkyFont font-size-3'>"+data[x].profile+"</div><div class='font-size-1 grayColour'>Last seen: "+data[x].login+"</div></div></div>");
         }
     } else {
         $(".profilesFound").append("<div class='funkyFont font-size-3 row justify-content-center'>No spirits match this name</div>")

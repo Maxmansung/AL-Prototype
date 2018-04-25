@@ -94,6 +94,7 @@ class mapPlayerController
                 if ($staminaClean != $stamina || $heatBonusClean != $heatBonus){
                     return array("ERROR"=>136);
                 } else {
+                    modTrackingController::createNewTrack(8,$profile->getProfileID(),$staminaClean,$avatar->getStamina(),$heatBonusClean,$avatar->getAvatarSurvivableTemp());
                     $avatar->setStamina($staminaClean);
                     $avatar->setAvatarSurvivableTemp($heatBonusClean);
                     $avatar->updateAvatar();
@@ -121,6 +122,7 @@ class mapPlayerController
                     if (count($map->getAvatars())>$maxPlayersClean){
                         $maxPlayersClean = count($map->getAvatars());
                     }
+                    modTrackingController::createNewTrack(6,$profile->getProfileID(),$maxPlayersClean,$map->getMaxPlayerCount(),$nightTempClean,$map->getBaseNightTemperature());
                     $map->setMaxPlayerCount($maxPlayersClean);
                     $map->setBaseNightTemperature($nightTempClean);
                     $map->updateMap();

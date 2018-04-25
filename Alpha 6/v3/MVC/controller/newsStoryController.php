@@ -68,8 +68,9 @@ class newsStoryController extends newsStory
                     } else {
                         if ($type === "new"){
                             $newsStory = new newsStoryController("");
-                            $newsStory->createNews($titleClean, $profileController->getProfileID(), $postText, $visibleClean);
+                            $newsStory->createNews($titleClean, $profileController->getProfileName(), $postText, $visibleClean);
                             $newsStory->insertNews();
+                            modTrackingController::createNewTrack(4,$profileController->getProfileID(),$titleClean,"","","");
                         } else {
                             $typeClean = intval(preg_replace('#[^0-9]#i', '', $type));
                             $newsStory = new newsStoryController($typeClean);
@@ -98,6 +99,7 @@ class newsStoryController extends newsStory
             $newsClean = intval(preg_replace('#[^0-9]#i', '', $newsID));
             $news = new newsStoryController($newsClean);
             $news->deleteNews();
+            modTrackingController::createNewTrack(3,$profileController->getProfileID(),$newsClean,$news->getTitle(),"","");
             return array("ALERT"=>20,"DATA"=>true);
         }
     }

@@ -13,6 +13,7 @@ class reporting implements reporting_Interface
     protected $details;
     protected $timestampCreated;
     protected $timestampResolved;
+    protected $resolvedBy;
 
 
     public function __toString()
@@ -121,5 +122,15 @@ class reporting implements reporting_Interface
     function setTimestampResolved($var)
     {
         $this->timestampResolved = $var;
+    }
+
+    function getResolvedBy()
+    {
+        return $this->resolvedBy;
+    }
+
+    function setResolvedBy($var)
+    {
+        $this->resolvedBy = $var;
     }
 }

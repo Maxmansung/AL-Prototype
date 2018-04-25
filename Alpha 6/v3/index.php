@@ -55,7 +55,7 @@ switch ($language){
         break;
 }
 
-if ($profile->getProfileID() == ""){
+if ($profile->getProfileID() == "" || $profile->getAccountType() > 7){
     $headerName = "/gamePages/login/template_pageTopSignout.php";
     switch($page){
         case "credits":
@@ -100,8 +100,11 @@ if ($profile->getProfileID() == ""){
         case "forum":
             $pageName = "/gamePages/forums/forumsMasterPage.php";
             break;
-        case "edit";
+        case "edit":
             $pageName = "/gamePages/profile/profileOverviewEdit.php";
+            break;
+        case "score":
+            $pageName = "/gamePages/leaderboard/leaderboardMain.php";
             break;
         case "none":
         default:

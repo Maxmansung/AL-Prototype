@@ -44,11 +44,36 @@ function ajax_All(type, view, data1, data2, data3, data4, data5, data6){
     //console.log("type="+type+"&view="+view+"&data1="+data1+"&data2="+data2+"&data3="+data3+"&data4="+data4+"&data5="+data5+"&data6="+data6)
 }
 
+//This ajax function is to get background information
+function ajax_background(type, view,data1){
+    var tool = new XMLHttpRequest();
+    tool.open("POST", "/MVC/ajax_php/ajax_MVC.php", true);
+    tool.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    tool.onreadystatechange = function () {
+        if (tool.readyState == 4 && tool.status == 200) {
+            //console.log(tool.responseText);
+            var response = JSON.parse(tool.responseText);
+            console.log(response);
+            if ("ERROR" in response){
+                errors(response.ERROR);
+            } else if ("ALERT" in response){
+                alerts(response.ALERT,response.DATA)
+            } else {
+                switchArray(type,response);
+            }
+        }
+    };
+    tool.send("type="+type+"&view="+view+"&data1="+data1+"&data2=&data3=&data4=&data5=&data6=");
+}
+
 
 function switchArray(type,response){
     console.log("Type: "+type);
     type = parseInt(type);
     switch(type){
+        case 0:
+            createNotifications(response.view);
+            break;
         case 35:
             showProfilePage(response.view);
             break;
@@ -60,6 +85,9 @@ function switchArray(type,response){
             break;
         case 49:
             createJoingameLinks(response.view);
+            break;
+        case 188:
+            leaderboardSetup(response.view);
             break;
         case 192:
             createPostViewPhone(response.view);
@@ -78,6 +106,12 @@ function switchArray(type,response){
             break;
         case 211:
             createEditPlayerAdmin(response.view);
+            break;
+        case 218:
+            makeReportsPage(response.view);
+            break;
+        case 220:
+            createEditUserItem(response.view);
             break;
         default:
             console.log("This view does not have an associated function currently");
@@ -147,6 +181,7 @@ function setLanguage(data){
 }
 
 function goToPage(data){
+    showLoading();
     if (data != "none" && data != "") {
         window.location.href = "/?page="+data;
     } else {

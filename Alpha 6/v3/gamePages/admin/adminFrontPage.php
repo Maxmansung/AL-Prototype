@@ -53,6 +53,15 @@ if (isset($accessed) === false){
                 </div>
             </div>';
             }
+            if ($profile->getAccessEditUsers()===1){
+                echo '<div class="adminLink clickable col-11 p-3 my-2" onclick = "selectPage(this.id)" id = "users" >
+                <div class="row justify-content-between align-items-center px-3" >
+                    <div class="col-9 d-flex flex-row flex-wrap align-items-center" ><div class="font-size-3 pr-3" > Edit Spirits </div ><div class="font-size-2 darkGrayColour" > This is used to give warnings and change spirit rankings </div ></div >
+                    <div class="font-size-4" ><i class="fas fa-users"></i></div >
+                </div >
+            </div >';
+
+            }
             ?>
         </div>
     </div>

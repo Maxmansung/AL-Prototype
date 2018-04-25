@@ -26,7 +26,7 @@ if (isset($_POST["type"])) {
             $data6 = htmlentities($_POST['data6'], ENT_QUOTES | ENT_SUBSTITUTE);
             switch ($type) {
                 case 0:
-                    //Used to show the avatar screen
+                    //Used to show the Alerts
                 case 9:
                     //Used to show the death screen
                 case 10:
@@ -53,6 +53,8 @@ if (isset($_POST["type"])) {
                     //This is used to show the nightfall page
                 case 49:
                     //This is used to show the join game page
+                case 188:
+                    //This is used to show the leaderboards
                 case 192:
                     //This is used to get the posts for a forum thread
                 case 193:
@@ -62,7 +64,11 @@ if (isset($_POST["type"])) {
                 case 210:
                     //This is used to get all of the current map views
                 case 211:
-                    //This is used to get al the detail of a single map for editing
+                    //This is used to get all the detail of a single map for editing
+                case 218:
+                    //This is used to get all the open reports
+                case 220:
+                    //This is used to show the admin page of searched players
                     $response = array("SUCCESS" => true);
                     //No actions performed
                     break;
@@ -230,6 +236,16 @@ if (isset($_POST["type"])) {
                     $response = playerMapZoneController::consumeItem($data1,$profile->getAvatar());
                     break;
                     //Returns ERROR or SUCCESS
+                case 186:
+                    //Used to close an alert
+                    $response = profileAlertController::removeAlertVisible($profile,$data1);
+                    break;
+                    //Returns ALERT
+                case 187:
+                    //Used to mark alerts as read
+                    $response = profileAlertController::markAsRead($profile,$data1);
+                    break;
+                    //Returns ERROR or ALERT
                 case 189:
                     //This is used for reporting posts
                     $response = reportingController::newReportPost($profile,$data1,$data2,$data3);
@@ -346,6 +362,21 @@ if (isset($_POST["type"])) {
                     $response = mapPlayerController::editMapStats($profile,$data1,$data2,$data3);
                     break;
                     //Returns ERROR or ALERT
+                case 219:
+                    //Used to mark a report as resolved
+                    $response = reportingController::resolveReport($data1,$data2,$profile);
+                    break;
+                    //Returns ERROR or ALERT
+                case 221:
+                    //Used to give a warning to a player
+                    $response = profileWarningController::givePlayerWarning($profile,$data1,$data2,$data3);
+                    //Returns ERROR or ALERT
+                    break;
+                case 222:
+                    //Used to change a players rank
+                    $response = profileController::changePlayerRank($profile,$data1,$data2);
+                    //Returns ERROR or ALERT
+                    break;
                 default:
                     $response = array("ERROR" => "No known AJAX type sent");
                     $control = 99999;
@@ -405,6 +436,22 @@ if (isset($_POST["type"])) {
                         break;
                     case 8:
                         $view = mapOverviewEditView::getSingleMapDetail($profile,$data1);
+                        $viewHUD = false;
+                        break;
+                    case 9:
+                        $view =leaderboardScores::getScoresType($data1);
+                        $viewHUD = false;
+                        break;
+                    case 10:
+                        $view = reportingController::getAllReports(false,$profile);
+                        $viewHUD = false;
+                        break;
+                    case 11:
+                        $view = profileSearchViewAdmin::searchSpiritResults($data1,$profile);
+                        $viewHUD = false;
+                        break;
+                    case 12:
+                        $view = profileAlertController::getAllAlerts($profile);
                         $viewHUD = false;
                         break;
                     default:

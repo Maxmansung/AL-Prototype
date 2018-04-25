@@ -11,7 +11,7 @@ if (isset($accessed) === false){
             <?php echo $text->loginMasterPageWriting();?>
         </div>
         <div class="col-12 mb-4 mt-3" align="center">
-            <button class="btn btn-primary justify-content-center align-items-center d-flex px-4" onclick="clickSignin()"><span><?php echo $text->loginMasterPagePlayNow();?></span></button>
+            <button class="btn btn-primary justify-content-center align-items-center d-flex px-4" onclick="clickRegister()"><span><?php echo $text->loginMasterPagePlayNow();?></span></button>
         </div>
     </div>
     <div class="whiteBackground row justify-content-between blackColour">

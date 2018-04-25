@@ -21,17 +21,26 @@ if (isset($accessed) === false){
     </div>
     <div class="col-10 lightGrayBackground mb-3 rounded">
         <div class="row justify-content-around align-items-center p-2">
-            <div class="col-3 d-flex flex-column justify-content-between align-items-center shrineBorder p-2 mt-2" id="soloScoreWrap">
-                <div class="font-size-2x font-weight-bold">Alone</div>
-                <div class="leaderboardNumber"></div>
+            <div class="col-4 px-1">
+                <div class="leaderboardSelect lightGrayBackground d-flex flex-column justify-content-between align-items-center p-2 mt-3" align="center" id="soloScoreWrap" onclick="goToPage('score&s=1')">
+                    <div class="font-size-4"><i class="fas fa-snowflake"></i></div>
+                    <div class="font-size-2x font-weight-bold">Alone</div>
+                    <div class="leaderboardNumber"></div>
+                </div>
             </div>
-            <div class="col-3 d-flex flex-column justify-content-between align-items-center shrineBorder p-2 mb-2" id="teamScoreWrap">
-                <div class="font-size-2x font-weight-bold">Clan</div>
-                <div class="leaderboardNumber"></div>
+            <div class="col-4 px-1">
+                <div class="leaderboardSelect lightGrayBackground d-flex flex-column justify-content-between align-items-center p-2 mb-3" align="center" id="teamScoreWrap" onclick="goToPage('score&s=2')">
+                    <div class="font-size-4"><i class="fas fa-bomb"></i></div>
+                    <div class="font-size-2x font-weight-bold">Clan</div>
+                    <div class="leaderboardNumber"></div>
+                </div>
             </div>
-            <div class="col-3 d-flex flex-column justify-content-between align-items-center shrineBorder p-2 mt-2" id="fullScoreWrap">
-                <div class="font-size-2x font-weight-bold">Town</div>
-                <div class="leaderboardNumber"></div>
+            <div class="col-4 px-1">
+                <div class="leaderboardSelect lightGrayBackground d-flex flex-column justify-content-between align-items-center p-2 mt-3" align="center" id="fullScoreWrap" onclick="goToPage('score&s=3')">
+                    <div class="font-size-4"><i class="fas fa-leaf"></i></div>
+                    <div class="font-size-2x font-weight-bold">Town</div>
+                    <div class="leaderboardNumber"></div>
+                </div>
             </div>
         </div>
     </div>

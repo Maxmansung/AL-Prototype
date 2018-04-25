@@ -21,4 +21,6 @@ interface reporting_Interface
     function setTimestampCreated($var);
     function getTimestampResolved();
     function setTimestampResolved($var);
+    function getResolvedBy();
+    function setResolvedBy($var);
 }

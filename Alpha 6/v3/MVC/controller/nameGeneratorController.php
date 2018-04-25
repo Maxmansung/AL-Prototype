@@ -15,22 +15,26 @@ class nameGeneratorController extends nameGenerator
     public static function createNewName($type){
         if ($type === "map"){
             $nameList = nameGeneratorModel::nameList("map");
-            $returnItem = self::createMapName($nameList);
+            $returnItem = self::createThreeName($nameList);
         } elseif ($type === "camp"){
             $nameListFirst = nameGeneratorModel::nameList("map");
             $nameList = nameGeneratorModel::nameList("camp");
-            $returnItem =  self::createTownName($nameListFirst,$nameList);
+            $returnItem =  self::createTwoName($nameListFirst,$nameList);
         } elseif ($type === "party"){
             $nameListFirst = nameGeneratorModel::nameList("map");
             $nameList = nameGeneratorModel::nameList("party");
-            $returnItem = self::createPartyName($nameListFirst,$nameList);
+            $returnItem = self::createTwoName($nameListFirst,$nameList);
+        } elseif ($type === "practice"){
+            $nameListFirst = nameGeneratorModel::nameList("map");
+            $nameList = nameGeneratorModel::nameList("practice");
+            $returnItem = self::createTwoName($nameListFirst,$nameList);
         } else {
             $returnItem =  array("ERROR"=>"Wrong Type of name");
         }
         return $returnItem;
     }
 
-    private static function createMapName($nameList){
+    private static function createThreeName($nameList){
         $length = count($nameList);
         $firstNum = rand(0,$length-1);
         $middleNum = rand(0,$length-1);
@@ -41,15 +45,7 @@ class nameGeneratorController extends nameGenerator
         return new nameGeneratorController($first,$middle,$last);
     }
 
-    private static function createTownName($nameListFirst,$nameListMid){
-        $firstNum = rand(0,count($nameListFirst)-1);
-        $middleNum = rand(0,count($nameListMid)-1);
-        $first = $nameListFirst[$firstNum]['firstName'];
-        $middle = $nameListMid[$middleNum]['middleName'];
-        return new nameGeneratorController($first,$middle,"");
-    }
-
-    private static function createPartyName($nameListFirst,$nameListMid){
+    private static function createTwoName($nameListFirst,$nameListMid){
         $firstNum = rand(0,count($nameListFirst)-1);
         $middleNum = rand(0,count($nameListMid)-1);
         $first = $nameListFirst[$firstNum]['firstName'];

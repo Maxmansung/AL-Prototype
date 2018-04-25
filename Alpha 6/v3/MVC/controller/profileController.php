@@ -271,11 +271,12 @@ class profileController extends profile
                 $this->setProfilePicture("generic.png");
                 $this->achievements = new stdClass();
                 // Add user info into the database table for the main site table
-                $userID = profileModel::insertProfile($this, "Insert");
-                if ($userID != 0) {
-                    profileDetailsController::newProfileCreation($userID);
+                profileModel::insertProfile($this, "Insert");
+                $checkPosted = new profileController($u);
+                if ($checkPosted->getProfileID() != 0) {
+                    profileDetailsController::newProfileCreation($checkPosted->getProfileID() );
                     // Email the user their activation link
-                    $response = emails::sendEmail($userID, $e, $this->getPassword(), "confirm");
+                    $response = emails::sendEmail($checkPosted->getProfileName(), $checkPosted->getProfileID() , $e, $this->getPassword(), "confirm");
                     if ($response === "SUCCESS") {
                         return array("ALERT" => 22,"DATA"=>$this->getEmail());
                     } else {
@@ -293,7 +294,7 @@ class profileController extends profile
         $u = preg_replace('#[^0-9]#i', '', $username);
         $e = filter_var($email, FILTER_SANITIZE_EMAIL);
         // Evaluate the lengths of the incoming $_GET variable
-        if (strlen($u) < 2 || strlen($e) < 5 || $password == "") {
+        if (strlen($e) < 5 || $password == "") {
             // Log this issue into a text file and email details to yourself
             return array("ERROR"=>0);
         }
@@ -308,7 +309,7 @@ class profileController extends profile
             return array("ERROR"=>2);
         }
         $checkprofile->getProfileAccess();
-        if ($checkprofile->getAccessActivated() === 0){
+        if ($checkprofile->getAccessActivated() === 1){
             return array("ERROR"=>3);
         }
         return array("ALERT"=>23,"DATA"=>$checkprofile->getProfileName());
@@ -324,7 +325,7 @@ class profileController extends profile
             $profile->setAccountType(7);
             $mapID = mapModel::getTutorialMap();
             if ($mapID != 0){
-                $response = newMapJoinController::addAvatar($mapID,$username);
+                $response = newMapJoinController::addAvatar($mapID,$profile);
                 if (array_key_exists("ERROR",$response)){
                     return $response;
                 } else {
@@ -401,7 +402,7 @@ class profileController extends profile
                     return array("ERROR" => 114);
                 } else {
                     // Email the user their activation link
-                    $response = emails::sendEmail($profile->getProfileID(),$profile->getEmail(),$profile->getPasswordRecovery(),"recover");
+                    $response = emails::sendEmail($profile->getProfileName(),$profile->getProfileID(),$profile->getEmail(),$profile->getPasswordRecovery(),"recover");
                     if ($response === "SUCCESS") {
                         return array("ALERT" => 13,"DATA"=>$email);
                     } else {
@@ -466,5 +467,34 @@ class profileController extends profile
         $profileDetails = new profileDetailsController($this->profileID);
         $response = $profileDetails->updateProfileDetails($bio,$age,$gender,$country);
         return $response;
+    }
+
+    public static function changePlayerRank($profile,$changeProfile,$rank){
+        $profile->getProfileAccess();
+        if ($profile->getAccessEditUsers() === 1){
+            $profileIDClean = intval(preg_replace(data::$cleanPatterns['num'],"",$changeProfile));
+            $newProfile = new profileController($profileIDClean);
+            $old = $newProfile->getAccountType();
+            if ($newProfile->getProfileID() !== $profileIDClean){
+                return array("ERROR"=>37);
+            } else {
+                if ($profile->getAccountType() >= $newProfile->getAccountType()) {
+                    return array("ERROR" => 28);
+                } else {
+                    $rankClean = intval(preg_replace(data::$cleanPatterns['num'],"",$rank));
+                    if ($profile->getAccountType() >= $rankClean){
+                        return array("ERROR"=>28);
+                    } else {
+                        modTrackingController::createNewTrack(9,$profile->getProfileID(),$newProfile->getProfileID(),$rankClean,$old,"");
+                        $newProfile->setAccountType($rankClean);
+                        $newProfile->uploadProfile();
+                        $dataArray = array("name"=>$newProfile->getProfileName(),"old"=>$old,"new"=>$newProfile->getAccountType());
+                        return array("ALERT"=>2,"DATA"=>$dataArray);
+                    }
+                }
+            }
+        } else {
+            return array("ERROR"=>28);
+        }
     }
 }

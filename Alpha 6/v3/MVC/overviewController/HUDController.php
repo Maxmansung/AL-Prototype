@@ -75,7 +75,7 @@ class HUDController
     public static function playerDeathKilling($avatarID,$profile){
         $profile->getProfileAccess();
         if ($profile->getAccessEditMap()===1){
-            $avatarIDClean = intval(preg_replace('#[^0-9]#i', '', $avatarID));
+            $avatarIDClean = intval(preg_replace(data::$cleanPatterns['num'], '', $avatarID));
             $avatar = new avatarController($avatarIDClean);
             if ($avatar->getAvatarID() === $avatarIDClean) {
                 dayEndingFunctions::playerDeath($avatar,3);
@@ -83,6 +83,7 @@ class HUDController
                 $profilePlayer->setAvatar(null);
                 $profilePlayer->setGameStatus("death");
                 $profilePlayer->uploadProfile();
+                modTrackingController::createNewTrack(7,$profile->getProfileID(),$profilePlayer->getProfileID(),$avatar->getMapID(),"","");
                 return array("ALERT"=>26,"DATA"=>$avatar->getProfileID());
             } else {
                 return array("ERROR"=>"This avatar does not exist");

@@ -26,6 +26,7 @@ class profile implements profile_Interface
     protected $accessActivated;
     protected $accessAllGames;
     protected $accessAdminPage;
+    protected $accessEditUsers;
 
     public function __toString()
     {
@@ -312,5 +313,15 @@ class profile implements profile_Interface
     function setAccessAdminPage($var)
     {
         $this->accessAdminPage = $var;
+    }
+
+    function getAccessEditUsers()
+    {
+        return $this->accessEditUsers;
+    }
+
+    function setAccessEditUsers($var)
+    {
+        $this->accessEditUsers = $var;
     }
 }

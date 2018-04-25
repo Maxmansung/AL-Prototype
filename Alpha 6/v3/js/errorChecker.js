@@ -154,9 +154,7 @@ function errors(id){
             alert("The lock is fully reinforced already");
             break;
         case 37:
-            if (!alert("This profile does not exist")) {
-                window.location.href = "/index.php";
-            }
+            createAlertBox(5,1,"There has been an error with the profile used",1);
             break;
         case 38:
             createAlertBox(5,1,"This map no longer exists to join",1);
@@ -403,48 +401,31 @@ function alerts(response,data){
             }
             break;
         case 1:
-            if(!alert(data)){window.location.reload();}
+            createAlertBox(2,1,"A warning has been given to <b>"+data['name']+"</b>, they now have <b>"+data['points']+"</b> points",1);
             break;
         case 2:
-            getRecipeList(data);
+            createAlertBox(2,1,"You have changed the rank of <b>"+data['name']+ "</b> from <b>"+data['old']+"</b> to <b>"+data['new']+"</b>",1);
             break;
         case 3:
-            var text = data.researchName;
-            if(!alert("You have researched a "+text)){window.location.reload();}
             break;
         case 4:
-            alert("No firepit has been built currently");
             break;
         case 5:
-            var text;
-            if (data === true){
-                text = "now waiting for the day to end."
-            } else {
-                text = "not ready for the day to end any more"
-            }
-            if(!alert("You are "+text)){window.location.reload();}
             break;
         case 6:
-            destroyResponse(data);
             break;
         case 7:
             createAlertBox(2,1,"You have joined the map: "+data,1);
             break;
         case 8:
-            if (!alert("You have deleted map: "+data)){window.location.reload();}
             break;
         case 9:
-            if(!alert("The '"+data+"' has been completed")){window.location.reload();}
             break;
         case 10:
-            alert("You have sent a message to "+data);
-            messageSent();
             break;
         case 11:
-            alert(data);
             break;
         case 12:
-            if (!alert(data)){window.location.reload();}
             break;
         case 13:
             var writing = "An email has been sent to: "+data+"\n You have 5mins to respond";
@@ -460,7 +441,6 @@ function alerts(response,data){
             createAlertBox(2,1,"Your thread has been created",1);
             break;
         case 17:
-            window.location.reload();
             break;
         case 18:
             createAlertBox(2,1,"Your report has been received, thank you",1);
@@ -491,6 +471,9 @@ function alerts(response,data){
             break;
         case 27:
             createAlertBox(2,1,"You have updated the map for: "+data,1);
+            break;
+        case 28:
+            createAlertBox(2,1,"The report has now been resolved and a message will be sent to the reporting player",1);
             break;
     }
 }
