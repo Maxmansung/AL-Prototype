@@ -49,6 +49,21 @@ class profileAlertController extends profileAlert
         }
     }
 
+    public static function createNewAlert($profileName,$messageText,$messageTitle,$dataID){
+        $profileID = profileModel::getProfileIDFromName($profileName);
+        if ($profileID != 0 && $profileID != "") {
+            $alert = new profileAlertController("");
+            $alert->setProfileID($profileID);
+            $alert->setAlertMessage($messageText);
+            $alert->setTitle($messageTitle);
+            $alert->setVisible(1);
+            $alert->setAlerting(1);
+            $alert->setDataType(1);
+            $alert->setDataID($dataID);
+            $alert->insertAlert();
+        }
+    }
+
     public static function getAllAlerts($profile){
         $list = profileAlertModel::getProfileAlerts($profile->getProfileID());
         $finalArry = [];

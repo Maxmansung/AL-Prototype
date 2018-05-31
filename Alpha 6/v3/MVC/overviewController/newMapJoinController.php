@@ -107,7 +107,7 @@ class newMapJoinController
                         $counter = 0;
                         $forestLoc = $map->createForestLocation($edge);
                         $lakeLoc = $map->createLakeLocation($edge);
-                        $shrineLoc = $map->createShrineLocation($edge, $map->getGameType());
+                        $shrineLoc = $map->createShrineLocation($edge);
                         for ($y = 0; $y < $edge; $y++) {
                             for ($x = 0; $x < $edge; $x++) {
                                 $zone = new zoneController("");
@@ -117,7 +117,7 @@ class newMapJoinController
                                     $finalZoneID .= "0";
                                 }
                                 $finalZoneID .= $counter;
-                                $zone->newZone($map->getMapID(), $finalZoneID, $x, $y, $forestLoc, $shrineLoc, $lakeLoc);
+                                $zone->newZone($map->getMapID(), $counter, $x, $y, $forestLoc, $shrineLoc, $lakeLoc);
                                 if ($zone->getProtectedType() !== "none") {
                                     $shrine = shrineController::createNewShrine($zone->getProtectedType(), $zone->getZoneID());
                                     $shrine->insertShrine();
@@ -148,7 +148,7 @@ class newMapJoinController
         $mapcheck = new mapController($mapID);
         if ($mapcheck->getMapID() == "") {
             return array("ERROR" => 38);
-        } elseif ($mapcheck->getMaxPlayerCount() < (count($mapcheck->getAvatars()))) {
+        } elseif ($mapcheck->getMaxPlayerCount() <= (count($mapcheck->getAvatars()))) {
             //Echo error ID - this shows the map has filled
             return array("ERROR" => 14);
         } elseif (array_search($profile->getProfileID(), $mapcheck->getAvatars())) {
@@ -194,13 +194,19 @@ class newMapJoinController
             $party = new partyController($avatar->getPartyID());
             $party->addMember($avatar->getAvatarID());
             $party->addPlayersKnown($avatar->getAvatarID());
+            if ($zone->getFindingChances() > 0){
+                $find = 1;
+            } else  {
+                $find = 0;
+            }
+            $party->addOverallZoneExploration($zone->getName(),$zone->getBiomeType(),$find);
             $party->uploadParty();
             //Update the players profile with the avatarID and set status to "in"
             $profile->setAvatar($avatar->getAvatarID());
             $profile->setGameStatus("in");
             $profile->uploadProfile();
             $mapcheck->updateMap();
-            chatlogMovementController::playerJoinsMap($avatar->getAvatarID());
+            chatlogMovementController::playerJoinsMap($avatar,$mapcheck->getCurrentDay());
             if ($mapcheck->getMaxPlayerCount() == count($mapcheck->getAvatars())) {
                 $check = self::duplicateMap($mapcheck);
                 if (array_key_exists("ERROR",$check)){
@@ -243,6 +249,8 @@ class newMapJoinController
         }
         elseif ($mapController->getGameType() == 4) {
             return $mapJoin->createMapFunction($mapController->getName(), 1, $mapController->getEdgeSize(), "check",$mapController->getGameType());
+        } else {
+            return array("ALERT"=>"There is not a map being made","DATA"=>"");
         }
     }
 

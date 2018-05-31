@@ -57,7 +57,7 @@ class profileController extends profile
             if ($_SESSION["ip"] != $checkprofile->getLoginIP()){
                 $checkprofile->setLoginIP(preg_replace('#[^0-9.]#', '', getenv('REMOTE_ADDR')));
                 $checkprofile->uploadProfile();
-                $response = array("ERROR"=>"IP address does not match");
+                $response = array("ALERT"=>"0","DATA"=>"IP");
             } else {
                 $response = array("SUCCESS"=>$checkprofile->getProfileID());
             }
@@ -86,6 +86,7 @@ class profileController extends profile
             switch ($type) {
                 case "main":
                     if (isset($_SESSION["ip"]) && isset($_SESSION["username"])) {
+                        $_SESSION["ip"] = preg_replace('#[^0-9.]#', '', getenv('REMOTE_ADDR'));
                         $response = profileController::checklogin();
                     } else {
                         $username = profileController::checkCookies();
@@ -337,45 +338,6 @@ class profileController extends profile
                 return array("ERROR" => "There are no tutorial maps currently, however your account has been activated");
             }
         }
-    }
-
-    public function confirmdeath(){
-        $deathScreen = new deathScreenController($this->profileID);
-        if ($deathScreen->getDayDuration() == "full" && $deathScreen->getGameType() != "Test") {
-            if ($deathScreen->getDeathAchievements() != "") {
-                $this->addAchievements($deathScreen->getDeathAchievements());
-            }
-            if ($deathScreen->getShrineScore() != ""){
-                $this->addShrineScores($deathScreen->getShrineScore());
-            }
-        }
-        if ($deathScreen->getDayDuration() == "check" && $deathScreen->getGameType() != "Test"){
-            if ($deathScreen->getDeathAchievements() != "") {
-                $this->addAchievementsSolo($deathScreen->getDeathAchievements());
-            }
-        }
-        if ($deathScreen->getGameType() == "Main") {
-            if ($deathScreen->getDeathStatistics() != "") {
-                foreach ($deathScreen->getDeathStatistics() as $type => $stat) {
-                    $this->addPlayStatistics($type, $stat);
-                }
-            }
-        }
-        $this->setGameStatus("ready");
-        $this->setAvatar(null);
-        $deathScreen->deleteDeathScreen();
-        $this->uploadProfile();
-        $profileAchievements = new profileAchievementController($this,$this->profileID);
-        if ($profileAchievements->getProfileScore() > 4){
-            if (data::$adminVar['autoTutorial'] == true) {
-                if ($this->accountType == 7) {
-                    $this->setAccountType(6);
-                    $this->uploadProfile();
-                    return array("ERROR" => 53);
-                }
-            }
-        }
-        return array("ERROR"=>56);
     }
 
     public static function createRecoveryPassword($e)

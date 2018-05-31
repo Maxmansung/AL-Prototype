@@ -27,6 +27,11 @@ class avatar implements avatar_Interface
     protected $shrineScore;
     protected $forumPosts;
     protected $statusArray;
+    protected $avatarImage;
+    protected $equipment;
+    protected $favourSolo;
+    protected $favourTeam;
+    protected $favourMap;
 
     public function __toString()
     {
@@ -49,6 +54,7 @@ class avatar implements avatar_Interface
         $output .= '/ '.json_encode($this->shrineScore);
         $output .= '/ '.json_encode($this->forumPosts);
         $output .= '/ '.json_encode($this->statusArray);
+        $output .= '/ '.json_encode($this->avatarImage);
         return $output;
     }
 
@@ -165,20 +171,26 @@ class avatar implements avatar_Interface
 
     function getReady()
     {
-        return $this->readiness;
+        if ($this->readiness === "dead"){
+            return "dead";
+        } else if ($this->readiness == 1){
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     function toggleReady($var)
     {
         if ($var === "ready"){
-           if ($this->readiness == true){
-               $this->readiness = false;
+           if ($this->readiness === 1){
+               $this->readiness = 0;
            }
            else{
-               $this->readiness = true;
+               $this->readiness = 1;
            }
         }
-        if ($var === "dead"){
+        else if ($var === "dead"){
             $this->readiness = "dead";
         }
     }
@@ -354,7 +366,11 @@ class avatar implements avatar_Interface
 
     function addAvatarTempRecord($day, $var)
     {
-        if(!key_exists($day,$this->avatarTempRecord)) {
+        if (is_array($this->avatarTempRecord)) {
+            if (!key_exists($day, $this->avatarTempRecord)) {
+                $this->avatarTempRecord[$day] = $var;
+            }
+        } else {
             $this->avatarTempRecord[$day] = $var;
         }
     }
@@ -469,5 +485,60 @@ class avatar implements avatar_Interface
 
     function removeSingleStatus($var){
         $this->statusArray[$var] = 0;
+    }
+
+    function getAvatarImage()
+    {
+        return $this->avatarImage;
+    }
+
+    function setAvatarImage($var)
+    {
+        $this->avatarImage = $var;
+    }
+
+    function getFavourSolo()
+    {
+        return $this->favourSolo;
+    }
+
+    function setFavourSolo($var)
+    {
+        $this->favourSolo = $var;
+    }
+
+    function increaseFavourSolo($var)
+    {
+        $this->favourSolo += $var;
+    }
+
+    function getFavourTeam()
+    {
+        return $this->favourTeam;
+    }
+
+    function setFavourTeam($var)
+    {
+        $this->favourTeam = $var;
+    }
+
+    function increaseFavourTeam($var)
+    {
+        $this->favourTeam += $var;
+    }
+
+    function getFavourMap()
+    {
+        return $this->favourMap;
+    }
+
+    function setFavourMap($var)
+    {
+        $this->favourMap = $var;
+    }
+
+    function increaseFavourMap($var)
+    {
+        $this->favourMap += $var;
     }
 }

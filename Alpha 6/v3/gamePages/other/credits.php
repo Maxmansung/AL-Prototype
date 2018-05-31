@@ -57,13 +57,14 @@ if (isset($accessed) === false){
                         Artist
                     </div>
                     <div class="row justify-content-center funkyFont font-size-3 creditsName col-11 mb-3">
-                        Lally
+                        Kiana
                     </div>
                     <div class="row font-size-2 grayColour pl-3">
                         Contact details:
                     </div>
-                    <div class="row grayColour justify-content-center font-size-1 pb-3">
-                        ?
+                    <div class="row grayColour justify-content-center font-size-1 pb-3 d-flex flex-column">
+                        <div class="clickableLink"><a class="unclickableLink" href="https://www.instagram.com/kianamosser/">Instagram</a></div>
+                        <div class="clickableLink"><a class="unclickableLink" href="https://twitter.com/kianamosser">Twitter</a></div>
                     </div>
                 </div>
                 <div class="col-11 creditsWrapper font-size-2 m-3" align="center">

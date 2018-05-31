@@ -13,6 +13,7 @@ class forumPost implements forumPost_Interface
     protected $postCount;
     protected $tableName;
     protected $newPost;
+    protected $reportedPost;
 
     public function __toString()
     {
@@ -24,6 +25,7 @@ class forumPost implements forumPost_Interface
         $output .= '/ '.$this->threadID;
         $output .= '/ '.$this->postCount;
         $output .= '/ '.$this->newPost;
+        $output .= '/ '.$this->reportedPost;
         return $output;
     }
 
@@ -118,5 +120,15 @@ class forumPost implements forumPost_Interface
     function setNewPost($var)
     {
         $this->newPost = $var;
+    }
+
+    function getReportedPost()
+    {
+        return $this->reportedPost;
+    }
+
+    function setReportedPost($var)
+    {
+        $this->reportedPost = $var;
     }
 }

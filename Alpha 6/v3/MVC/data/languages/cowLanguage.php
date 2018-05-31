@@ -423,6 +423,12 @@ class cowLanguage implements languageInterface
         return "Moo moo";
     }
 
+    //This is the link to the news page
+    function footerHelpfulNews()
+    {
+        return "Moos";
+    }
+
     //This is the title of the contact section
     function footerContactTitle()
     {
@@ -439,6 +445,12 @@ class cowLanguage implements languageInterface
     function footerContactCredits()
     {
         return "Mooo";
+    }
+
+    //This is the link to the Twitter page
+    function footerTwitterLink()
+    {
+        return "Moo @MooMooGame";
     }
 
 

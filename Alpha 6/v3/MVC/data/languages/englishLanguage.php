@@ -72,7 +72,7 @@ class englishLanguage implements languageInterface
             return "Unite the world...";
         }
         else {
-            return "Communicate with the rest of the map and work to unite the world. Perhaps together you can overcome this cycle and find peace?<br><br>Do you trust those around you enough to open your gates and let in the masses though...";
+            return "Communicate with the rest of the map and work to unite the world. Perhaps together you can overcome this cycle and find peace?<br><br>Do you trust those around you enough to open your gates and let in the masses though?";
         }
     }
 
@@ -83,7 +83,7 @@ class englishLanguage implements languageInterface
             return "Tear it apart...";
         }
         else {
-            return "Destroy the land around you as you scrape every last resource out of it. Dig, explode and even summon the will of the gods until all that remains is the cold hard stone below your feet";
+            return "Destroy the land around you as you scrape every last resource out of it. Dig, explode and even summon the will of the gods until all that remains is the cold hard stone below your feet.";
         }
     }
 
@@ -422,6 +422,12 @@ class englishLanguage implements languageInterface
         return "Bug Tracker";
     }
 
+    //This is the link to the news page
+    function footerHelpfulNews()
+    {
+        return "News";
+    }
+
     //This is the title of the contact section
     function footerContactTitle()
     {
@@ -438,6 +444,12 @@ class englishLanguage implements languageInterface
     function footerContactCredits()
     {
         return "Credits";
+    }
+
+    //This is the link to the credits page
+    function footerTwitterLink()
+    {
+        return "Twitter @ArcticLandsGame";
     }
 
 

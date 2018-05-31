@@ -26,22 +26,18 @@ class statusesController extends statuses
             $statusArray[1] = 0;
             $statusArray[2] = 1;
             $statusArray[5] = 0;
-            $statusArray[6] = 0;
-        } elseif ($statusArray[6] === 1){
-            $statusArray[1] = 1;
-            $statusArray[2] = 0;
-            $statusArray[5] = 0;
-            $statusArray[6] = 0;
         } elseif ($statusArray[5] === 1){
             $statusArray[1] = 0;
             $statusArray[2] = 0;
             $statusArray[5] = 0;
-            $statusArray[6] = 1;
         } elseif ($statusArray[2] === 1){
             $statusArray[1] = 0;
             $statusArray[2] = 1;
             $statusArray[5] = 0;
-            $statusArray[6] = 0;
+        } else {
+            $statusArray[1] = 1;
+            $statusArray[2] = 0;
+            $statusArray[5] = 0;
         }
         if ($statusArray[4] === 1) {
             $statusArray[4] = 0;
@@ -60,50 +56,18 @@ class statusesController extends statuses
     }
 
     public static function checkConsumable($statusArray,$statusEffect){
-        if ($statusEffect === 2) {
-            if ($statusArray[5] === 1) {
-                return statusesModel::getStatusResponse($statusEffect);
-            }
-        }
-        if ($statusEffect === 3) {
-            if ($statusArray[4] === 1) {
-                return statusesModel::getStatusResponse($statusEffect);
-            }
-        }
-        if ($statusEffect === 5){
-            if($statusArray[5] === 1){
-                return statusesModel::getStatusResponse($statusEffect);
+        $response = responseController::getStatusChangeType($statusEffect);
+        if (in_array($response->getFailStatus(),$statusArray) || $response->getFailStatus() === false){
+            if (!in_array($response->getSucceedStatus(),$statusArray) || $response->getSucceedStatus() === false){
+                return $response->getFailResponse();
             }
         }
         return true;
     }
 
-    public static function changeStatusConsume($statusArray,$statusEffect){
-        switch ($statusEffect){
-            case 2:
-                $statusArray[1] = 0;
-                $statusArray[2] = 0;
-                $statusArray[5] = 1;
-                break;
-            case 3:
-                $statusArray[4] = 1;
-                break;
-            case 4:
-                $statusArray[5] = 1;
-                break;
-            case 5:
-                $chance = rand(0,1);
-                if ($chance === 0){
-                    $statusArray[1] = 0;
-                    $statusArray[2] = 0;
-                    $statusArray[5] = 1;
-                }
-        }
-        return $statusArray;
-    }
-
-    public static function getStatusResponseSucceed($statusEffect){
-        return statusesModel::getStatusResponseSucceed($statusEffect);
+    public static function getStatusResponseSucceed($response){
+        $response = responseController::getStatusChangeType($response);
+        return $response->getSucceedResponse();
     }
 
 }

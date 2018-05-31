@@ -1,5 +1,5 @@
 var unreadArray = [];
-var loopload = setInterval(getAlertSetup, 60000);
+var loopload = setInterval(getAlertSetup, 300000);
 
 function createNotifications(data){
     createUnviewedList(data);

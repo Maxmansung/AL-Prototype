@@ -1,4 +1,5 @@
 <?php
+if (!defined('PROJECT_ROOT')) exit(include($_SERVER['DOCUMENT_ROOT']."/error/404.php"));
 class mapOverviewEditView
 {
 
@@ -33,7 +34,7 @@ class mapOverviewEditView
     {
         $this->mapVars = $mapController->returnVars();
         $this->getAvatarsAlive($mapController->getMapID());
-        $this->zones = zoneController::getAllZones($mapController->getMapID(),true);
+        $this->zones = zoneController::getAllZones($mapController->getMapID(),false);
 
     }
 

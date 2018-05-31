@@ -5,9 +5,25 @@ function selectPage(id){
     window.location.href = "/?page=admin&a="+id;
 }
 
+function newNewsBox(){
+    edited = -1;
+    $("#oldNewsPost").collapse();
+    $("#newsTitle").val('');
+    $("#postBoxTextbox").val('');
+
+}
+
+function directionPost(visibility){
+    if (edited === -1){
+        postNews(visibility);
+    } else {
+        editNews(visibility);
+    }
+}
+
 function postNews(visibiility){
-    var title = $("#newNewsPost #newsTitle").val();
-    var text = $("#newNewsPost .postBoxTextbox").val();
+    var title = $("#newsTitle").val();
+    var text = $("#postBoxTextbox").val();
     if (title.length < 3){
         errors(128);
     } else if (title.length > 30){
@@ -20,8 +36,8 @@ function postNews(visibiility){
 }
 
 function editNews(visibiility){
-    var title = $("#oldNewsPost #newsTitle").val();
-    var text = $("#oldNewsPost .postBoxTextbox").val();
+    var title = $("#newsTitle").val();
+    var text = $("#postBoxTextbox").val();
     if (title.length < 3){
         errors(128);
     } else if (title.length > 30){
@@ -74,8 +90,8 @@ function editNewsPost(id){
         }
     }
     $("#oldNewsPost").collapse();
-    $("#oldNewsPost #newsTitle").empty().val(allNews[final].title);
-    $("#oldNewsPost .postBoxTextbox").empty().val(allNews[final].postText);
+    $("#oldNewsPost #newsTitle").val(allNews[final].title);
+    $("#oldNewsPost #postBoxTextbox").val(allNews[final].postText);
 }
 
 function deleteNewsPost(id){

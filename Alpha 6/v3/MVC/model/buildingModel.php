@@ -16,7 +16,11 @@ class buildingModel extends building
             $this->name = $buildingModel['name'];
             $this->icon = $buildingModel['icon'];
             $this->description = $buildingModel['description'];
-            $this->itemsRequired = get_object_vars(json_decode($buildingModel['itemsRequired']));
+            if (is_object(json_decode($buildingModel['itemsRequired']))) {
+                $this->itemsRequired = get_object_vars(json_decode($buildingModel['itemsRequired']));
+            } else {
+                $this->itemsRequired = array();
+            }
             $this->buildingsRequired = $buildingModel['buildingsRequired'];
             $this->staminaRequired = intval($buildingModel['staminaRequired']);
             $this->canBeBuilt = false;
@@ -37,7 +41,11 @@ class buildingModel extends building
             $this->name = $buildingModel['name'];
             $this->icon = $buildingModel['icon'];
             $this->description = $buildingModel['description'];
-            $this->itemsRequired = get_object_vars(json_decode($buildingModel['itemsRequired']));
+            if (is_object(json_decode($buildingModel['itemsRequired']))) {
+                $this->itemsRequired = get_object_vars(json_decode($buildingModel['itemsRequired']));
+            } else {
+                $this->itemsRequired = array();
+            }
             $this->buildingsRequired = $buildingModel['buildingsRequired'];
             $this->staminaRequired = intval($buildingModel['staminaRequired']);
             $this->canBeBuilt = false;
@@ -53,19 +61,23 @@ class buildingModel extends building
 
     public static function insertBuilding($buildingController, $type){
         $db = db_conx::getInstance();
+        $zoneID = intval($buildingController->getZoneID());
+        $mapID = intval($buildingController->getMapID());
+        $buildingTemplateID = $buildingController->getBuildingTemplateID();
+        $fuelRemaining = intval($buildingController->getFuelRemaining());
+        $staminaSpent = intval($buildingController->getStaminaSpent());
+        $buildingID = $buildingController->getBuildingID();
         if ($type == "Insert") {
             $req = $db->prepare("INSERT INTO Building (zoneID, mapID,buildingTemplateID,fuelRemaining,staminaSpent) VALUES (:zoneID, :mapID, :buildingTemplateID,:fuelRemaining,:staminaSpent)");
         } elseif ($type == "Update"){
             $req = $db->prepare("UPDATE Building SET zoneID= :zoneID, mapID= :mapID, buildingTemplateID= :buildingTemplateID, fuelRemaining= :fuelRemaining,staminaSpent= :staminaSpent WHERE buildingID= :buildingID");
+            $req->bindParam(':buildingID', $buildingID);
         }
-        $req->bindParam(':zoneID', intval($buildingController->getZoneID()));
-        $req->bindParam(':mapID', intval($buildingController->getMapID()));
-        $req->bindParam(':buildingTemplateID', $buildingController->getBuildingTemplateID());
-        $req->bindParam(':fuelRemaining', intval($buildingController->getFuelRemaining()));
-        $req->bindParam(':staminaSpent', intval($buildingController->getStaminaSpent()));
-        if ($type == "Update") {
-            $req->bindParam(':buildingID', $buildingController->getBuildingID());
-        }
+        $req->bindParam(':zoneID', $zoneID);
+        $req->bindParam(':mapID', $mapID);
+        $req->bindParam(':buildingTemplateID', $buildingTemplateID);
+        $req->bindParam(':fuelRemaining', $fuelRemaining);
+        $req->bindParam(':staminaSpent', $staminaSpent);
         $req->execute();
     }
 

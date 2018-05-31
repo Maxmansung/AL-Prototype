@@ -7,7 +7,11 @@ class chatlogGroupController extends chatlogController
     {
         $this->chatlogType = "ChatlogGroup";
         if ($id != ""){
-            $chatLogModel = chatlogModel::getChatLogByID($id,$this->chatlogType);
+            if (is_object($id)){
+                $chatLogModel = $id;
+            } else {
+                $chatLogModel =chatlogModel::getChatLogByID($id, $this->chatlogType);
+            }
             $this->chatlogID = $chatLogModel->getChatlogID();
             $this->mapID = $chatLogModel->getMapID();
             $this->groupID = $chatLogModel->getGroupID();
@@ -21,14 +25,11 @@ class chatlogGroupController extends chatlogController
         }
     }
 
-    public function createNewLog($avatarID,$message,$partyID){
-        $avatar = new avatarController($avatarID);
-        $map = new mapController($avatar->getMapID());
-        $this->chatlogID = $this->getNewID($this->chatlogType);
+    public function createNewLog($avatar,$message,$partyID,$currentDay){
         $this->mapID = $avatar->getMapID();
         $this->groupID = $partyID;
         $this->avatarID = $avatar->getAvatarID();
-        $this->mapDay = $map->getCurrentDay();
+        $this->mapDay = $currentDay;
         $this->messageTime = time();
         $this->messageText = $message;
     }
@@ -51,67 +52,67 @@ class chatlogGroupController extends chatlogController
         return $logDetailsObject;
     }
 
-    public static function playerJoining($avatarID,$groupID){
+    public static function playerJoining($avatar,$groupID,$day){
         $log = new chatlogGroupController("");
         $message = "#name# has requested to join the party";
-        $log->createNewLog($avatarID,$message,$groupID);
+        $log->createNewLog($avatar,$message,$groupID,$day);
         $log->insertChatLogGroup();
     }
 
-    public static function playerKicking($avatarID,$groupID){
+    public static function playerKicking($avatar,$groupID,$day){
         $log = new chatlogGroupController("");
         $message = "A vote has been started to kick #name# from the party";
-        $log->createNewLog($avatarID,$message,$groupID);
+        $log->createNewLog($avatar,$message,$groupID,$day);
         $log->insertChatLogGroup();
     }
 
-    public static function joinSuccess($avatarID,$groupID){
+    public static function joinSuccess($avatar,$groupID,$day){
         $log = new chatlogGroupController("");
         $message = "#name# has successfully been added to the party, lets make them feel welcome!";
-        $log->createNewLog($avatarID,$message,$groupID);
+        $log->createNewLog($avatar,$message,$groupID,$day);
         $log->insertChatLogGroup();
     }
 
-    public static function kickSuccess($avatarID,$groupID){
+    public static function kickSuccess($avatar,$groupID,$day){
         $log = new chatlogGroupController("");
         $message = "The vote to kick #name# has failed, maybe you should discuss before you vote?";
-        $log->createNewLog($avatarID,$message,$groupID);
+        $log->createNewLog($avatar,$message,$groupID,$day);
         $log->insertChatLogGroup();
     }
 
-    public static function joinFail($avatarID,$groupID){
+    public static function joinFail($avatar,$groupID,$day){
         $log = new chatlogGroupController("");
         $message = "The request for #name# to join the party has been rejected";
-        $log->createNewLog($avatarID,$message,$groupID);
+        $log->createNewLog($avatar,$message,$groupID,$day);
         $log->insertChatLogGroup();
     }
 
-    public static function kickFail($avatarID,$groupID){
+    public static function kickFail($avatar,$groupID,$day){
         $log = new chatlogGroupController("");
         $message = "#name# has been forcefully removed from the party, took you long enough...";
-        $log->createNewLog($avatarID,$message,$groupID);
+        $log->createNewLog($avatar,$message,$groupID,$day);
         $log->insertChatLogGroup();
     }
 
-    public static function leaveGroup($avatarID,$groupID){
+    public static function leaveGroup($avatar,$groupID,$day){
         $log = new chatlogGroupController("");
         $message = "#name# has decided to leave the party, did someone do something to upset them?";
-        $log->createNewLog($avatarID,$message,$groupID);
+        $log->createNewLog($avatar,$message,$groupID,$day);
         $log->insertChatLogGroup();
     }
 
-    public static function cancelGroupRequest($avatarID,$groupID){
+    public static function cancelGroupRequest($avatar,$groupID,$day){
         $log = new chatlogGroupController("");
         $message = "#name# given up waiting to join the group";
-        $log->createNewLog($avatarID,$message,$groupID);
+        $log->createNewLog($avatar,$message,$groupID,$day);
         $log->insertChatLogGroup();
     }
 
-    public static function spiritBlessingGroup($avatarID,$groupID,$shrineID){
+    public static function spiritBlessingGroup($avatar,$groupID,$shrineID,$day){
         $log= new chatlogGroupController("");
         $shrine = new shrineController($shrineID);
         $message = $shrine->getShrineName()." favours your tribe and has helped you all against the cold";
-        $log->createNewLog($avatarID,$message,$groupID);
+        $log->createNewLog($avatar,$message,$groupID,$day);
         $log->insertChatLogGroup();
     }
 

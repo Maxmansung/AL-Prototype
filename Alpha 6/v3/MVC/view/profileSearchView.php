@@ -24,7 +24,7 @@ class profileSearchView
 
     public static function findProfiles($name){
         $nameClean = preg_replace('#[^A-Za-z0-9]#i', '', $name);
-        $nameArray = profileModel::findAllProfiles($nameClean);
+        $nameArray = profileModel::findAllProfiles($nameClean,10);
         $finalArray = [];
         foreach ($nameArray as $profile){
             $player = new profileSearchView($profile);

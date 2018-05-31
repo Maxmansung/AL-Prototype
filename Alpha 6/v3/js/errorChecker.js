@@ -8,49 +8,25 @@ function errors(id){
     var onclickValue = "";
     switch (id) {
         case 0:
-            title = "Tired";
-            text = "You don't have enough stamina to perform that action. Your stamina will be replenished overnight or you can try to find something to eat that could help";
-            image = "tired.png";
-            onclickValue = 0;
-            customAlertBox(title,text,image,onclickValue);
-            //alert("You don't have enough stamina");
+            createAlertBox(5,1,"You're too tired to do that, please wait until you have more energy");
             break;
         case 1:
-            title = "No Access";
-            text = "Something is preventing you from entering this zone, you may have to go around";
-            image = "direction.png";
-            onclickValue = 0;
-            customAlertBox(title,text,image,onclickValue);
-            //alert("You cannot enter this zone");
+            createAlertBox(5,1,"Something is preventing you from entering this zone, you'll have to go around");
             break;
         case 2:
-            alert("You shouldn't be able to move this far - (Please error report this message 'ERROR 2')");
+            createAlertBox(5,1,"You cant move any further, it's even scarier out there!");
             break;
         case 3:
-            title = "No Item";
-            text = "This item seems to have disappeared, sorry";
-            image = "shrug.png";
-            onclickValue = 0;
-            customAlertBox(title,text,image,onclickValue);
-            //alert("This item is no longer located here");
+            createAlertBox(5,1,"This item no longer exists in that location");
             break;
         case 4:
-            var depleted = $("#depletedzone").length;
-            if (depleted < 1) {
-                if (!alert('This zone has now been depleted')) {
-                    window.location.reload();
-                }
-            } else {
-                alert("There is nothing left to find here");
-            }
+            createAlertBox(3,1,"The zone has been stripped bare, there's nothing left to find");
             break;
         case 5:
-            if (!alert("Nothing was found after searching")) {
-                window.location.reload();
-            }
+            createAlertBox(5,1,"Your search found nothing, try harder!",1);
             break;
         case 6:
-            alert("There is no more room in your bag");
+            createAlertBox(5,1,"Not enough room in your bag for that");
             break;
         case 7:
             alert("This building is already built");
@@ -123,18 +99,8 @@ function errors(id){
         case 28:
             createAlertBox(0,1,"You do not have appropriate access to perform this action");
             break;
-        case 29:
-            if (!alert("The day has now ended!")) {
-                window.location.reload();
-            }
-            break;
         case 30:
             alert("The timer has not expired and the game cannot be ended yet - (Please error report this message 'ERROR 30')");
-            break;
-        case 31:
-            if (!alert("The day has not ended as there are not enough players!")) {
-                window.location.reload();
-            }
             break;
         case 32:
             alert("You cannot upgrade the storage if you don't have access the zone - (Please error report this message 'ERROR 32')");
@@ -163,7 +129,7 @@ function errors(id){
             alert("You do not have this building researched yet");
             break;
         case 40:
-            alert("There is nothing left to research at the moment. Please wait for an update");
+            createAlertBox(0,1,"You already know all of the available building designs");
             break;
         case 41:
             alert("You do not have the correct items in your storage");
@@ -217,28 +183,19 @@ function errors(id){
             }
             break;
         case 56:
-            if (!alert("Death has been confirmed, get back in there!")) {
-                window.location.reload();
-            }
+            createAlertBox(2,1,"You finish examining your recent life and feel the cold pulling you back in again. You know you can do better next time",1);
             break;
         case 57:
-            if (!alert("Stamina has been refreshed")) {
-                window.location.reload();
-            }
+            createAlertBox(2,1,"Your stamina has been refreshed for this test game",1);
             break;
         case 58:
             createAlertBox(1,1,"You have been logged out",1);
             break;
         case 59:
-            alert("This region makes you feel uneasy, its probably best not to disturb it too much - This Error shouldnt be seen, please bug report");
+            createAlertBox(4,1,"This region makes you feel uneasy, its probably best not to disturb it too much");
             break;
         case 60:
-            title = "Gods Unhappy";
-            text = "It seems you don't have the required sacrifice for this shrine.<br><br>Come back when you're ready to do what it takes";
-            image = "shrug.png";
-            onclickValue = 0;
-            customAlertBox(title,text,image,onclickValue);
-            //alert("You dont have the required sacrifice");
+            createAlertBox(4,1,"You don't have the required sacrifice required to please this god, come back when you're worthy");
             break;
         case 61:
             alert("This region has been locked away, please join the controlling party or break the lock down");
@@ -258,8 +215,14 @@ function errors(id){
         case 66:
             alert("With the world already spinning it seems sensible to sleep it off before you try anything like that again");
             break;
+        case 67:
+            createAlertBox(3,1,"You sense an emptiness and realise that this god has abandoned you. There is no point in worshipping here");
+            break;
+        case 68:
+            createAlertBox(4,1,"Your friends will be sad if you betray them for another party. Maybe you should commit to leaving first before you start trying to join other people");
+            break;
         case 100:
-            alert("This action does not work currently");
+            createAlertBox(5,1,"You do not have permission to perform this action",1);
             break;
         case 101:
             $("#username").addClass("is-invalid");
@@ -384,6 +347,8 @@ function errors(id){
         case 200:
             window.location.href="/nightfall.php";
             break;
+        case 29:
+        case 31:
         default:
             alert("UNKNOWN ERROR HAS OCCURED - Please send a bug report (Error ID = "+id+")");
             break;
@@ -396,7 +361,9 @@ function alerts(response,data){
         case 0:
             if (data === true) {
                 createAlertBox(1,1,"You are now logged in and a cookie has been created",1);
-            } else {
+            } else if (data === "IP"){
+                createAlertBox(0,1,"You have recently logged in from another IP address and so the page will refresh",1);
+            } else  {
                 createAlertBox(1,1,"You are now logged in",1);
             }
             break;
@@ -407,25 +374,51 @@ function alerts(response,data){
             createAlertBox(2,1,"You have changed the rank of <b>"+data['name']+ "</b> from <b>"+data['old']+"</b> to <b>"+data['new']+"</b>",1);
             break;
         case 3:
+            createAlertBox(2,1,"You have deleted the post by <b>"+data+"</b>, please make sure the report has been closed and any warnings are given if required",1);
             break;
         case 4:
+            createAlertBox(2,1,"Your comment has been posted",1);
             break;
         case 5:
+            createAlertBox(2,1,"You have edited the post by <b>"+data+"</b>",1);
             break;
         case 6:
+            createAlertBox(0,1,"Everyone is ready and the day has now ended, Good luck...",1);
             break;
         case 7:
             createAlertBox(2,1,"You have joined the map: "+data,1);
             break;
         case 8:
+            var count = "items are";
+            if (data.foundItems === 1){
+                count = "item is";
+            }
+            createAlertBox(2,1,"You have completely destroyed this zone<nl>"+data.foundItems+" "+count+" left amongst the charred remains",1);
             break;
         case 9:
+            createAlertBox(2,1,data,1);
             break;
         case 10:
+            var name = "";
+            var count = objectSize(data);
+            var counter = 0;
+            for (var x in data) {
+                counter++;
+                if (count-counter === 0) {
+                    name += data[x].identity;
+                } else if (count-counter === 1){
+                    name += data[x].identity + "</b> and <b>";
+                } else {
+                    name += data[x].identity + ", ";
+                }
+            }
+            createAlertBox(3,1,"This recipe requires the following items to be in your backpack: <b>"+name+"</b>");
             break;
         case 11:
+            createAlertBox(3,1,data);
             break;
         case 12:
+            createAlertBox(2,1,"You have worked out the designs for a "+data.researchName,1);
             break;
         case 13:
             var writing = "An email has been sent to: "+data+"\n You have 5mins to respond";
@@ -441,6 +434,7 @@ function alerts(response,data){
             createAlertBox(2,1,"Your thread has been created",1);
             break;
         case 17:
+            createAlertBox(2,1,"It took a lot of effort but you finally showed <b>"+data.player+"</b> how to make '<b>"+data.building+"'</b>",1);
             break;
         case 18:
             createAlertBox(2,1,"Your report has been received, thank you",1);
@@ -475,6 +469,31 @@ function alerts(response,data){
         case 28:
             createAlertBox(2,1,"The report has now been resolved and a message will be sent to the reporting player",1);
             break;
+        case 29:
+            createAlertBox(4,1,"You are already waiting to join the party: '<b>"+data.current+"</b>'<br><br>Do you want to cancel this request to join '<b>"+data.joining+"</b>'",4,"switchRequestParty",data.id);
+            break;
+        case 30:
+            createAlertBox(2,1,"You have now left '"+data+"', let's hope you can survive better alone...",1);
+            break;
+        case 31:
+            createAlertBox(0,1,data,1);
+            break;
+        case 32:
+            createAlertBox(2,1,"You have created a <b>"+data+"</b>",1);
+            break;
+        case 33:
+            createAlertBox(4,1,"Joining this party will cause you to lose favour with the <b>Cold Gods</b>.<br><br>Are you sure you still want to do it?",4,"confirmJoinParty","joinParty"+data);
+            break;
+        case 34:
+            createAlertBox(4,1,"Leaving this party will cause them to lose favour with the <b>War Gods</b>.<br><br>Are you sure you still want to do it?",2,"leavePartyConfirm2");
+            break;
+        case 35:
+            createAlertBox(4,1,"If you continue with this vote your party will lose favour with the <b>War Gods</b><br><br>Are you sure you still want to do this?",4,"voteOnPlayerConfirm","accept"+data);
+            break;
+        case 36:
+            createAlertBox(4,1,"If you accept this person into your party you will lose favour with the <b>Cold Gods</b><br><br>Are you sure you want to do this?",4,"voteOnPlayerConfirm","accept"+data);
+            break;
+
     }
 }
 
@@ -505,10 +524,10 @@ function getRecipeList(data){
 
 
 
-function createAlertBox(titleType,textType,data,buttontype,moreButton){
+function createAlertBox(titleType,textType,data,buttontype,moreButton,moreButtonID){
     var title = "Error";
     var text = "Error";
-    var buttons = '<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>';
+    var buttons = '<button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeButtonAlert">Close</button>';
     switch (titleType){
         case 1:
             title = "";
@@ -540,13 +559,16 @@ function createAlertBox(titleType,textType,data,buttontype,moreButton){
     }
     switch (buttontype){
         case 1:
-            buttons = '<button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="refreshPage()">Close</button>';
+            buttons = '<button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="refreshPage()" id="closeButtonAlert">Close</button>';
             break;
         case 2:
             buttons = '<button type="button" class="btn btn-dark" data-dismiss="modal">No</button><button type="button" class="btn btn-danger" data-dismiss="modal" onclick="'+moreButton+'()">Yes</button>';
             break;
         case 3:
             buttons = '<input type="text" id="passwordRequiredModal" class="form-control mx-2" autofocus><button type="button" class="btn btn-dark" data-dismiss="modal">No</button><button type="button" class="btn btn-danger" onclick="'+moreButton+'()">Yes</button>';
+            break;
+        case 4:
+            buttons = '<button type="button" class="btn btn-dark" data-dismiss="modal">No</button><button type="button" class="btn btn-danger" data-dismiss="modal" onclick="'+moreButton+'(this.id)" id="buttonID'+moreButtonID+'">Yes</button>';
             break;
         default:
             break;
@@ -557,5 +579,10 @@ function createAlertBox(titleType,textType,data,buttontype,moreButton){
     $('#alertBox').modal({
         backdrop: 'static',
         keyboard: false
+    });
+    $("#alertBox").keyup(function (event) {
+        if (event.keyCode == 13) {
+            $("#closeButtonAlert").click();
+        }
     });
 }

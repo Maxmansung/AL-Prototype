@@ -4,6 +4,7 @@ require_once(PROJECT_ROOT . "/MVC/baseController/forumPost.php");
 require_once(PROJECT_ROOT."/MVC/model/forumPostModel.php");
 class forumPostController extends forumPost
 {
+    static $perPage = 10;
     protected $avatarImage;
     protected $timeFormat;
 
@@ -27,75 +28,94 @@ class forumPostController extends forumPost
             $this->postText = $threadModel->postText;
             $this->threadID = $threadModel->threadID;
             $this->postCount = $threadModel->postCount;
+            $this->reportedPost = $threadModel->reportedPost;
             $this->timeFormat = $this->makeTime();
         }
     }
 
-    private static function getAllPostsThread($threadID,$table,$avatarTrue,$profile){
+    private static function getAllPostsThread($threadID,$table,$avatarTrue,$profile,$count){
         $array = forumPostModel::getAllPosts($threadID,$table);
         $finalArray = [];
+        $counter = 0;
+        if ($count == 0){
+            foreach ($array as $thread){
+                $counter++;
+            }
+            $count = ceil($counter/forumPostController::$perPage);
+            $counter = 0;
+        }
+        $minShow = forumPostController::$perPage * ($count-1);
+        $maxShow = $minShow+forumPostController::$perPage;
+        $profile->getProfileAccess();
         foreach ($array as $post) {
-            $temp = new forumPostController($post['postID'], $table);
-            if ($avatarTrue !== false) {
-                $avatar = new avatarController($profile->getAvatar());
-                if ($avatarTrue === true) {
-                    if (in_array($temp->getPostID(), $avatar->getForumPosts())) {
-                        $avatar->removeForumPosts($temp->getPostID());
-                        $avatar->updateAvatar();
+            if ($counter >= $minShow && $counter < $maxShow) {
+                $temp = new forumPostController($post['postID'], $table);
+                if ($avatarTrue !== false) {
+                    $avatar = new avatarController($profile->getAvatar());
+                    if ($avatarTrue === true) {
+                        if (in_array($temp->getPostID(), $avatar->getForumPosts())) {
+                            $avatar->removeForumPosts($temp->getPostID());
+                            $avatar->updateAvatar();
+                            $temp->setNewPost(true);
+                        } else {
+                            $temp->setNewPost(false);
+                        }
+                    } else if ($avatarTrue === "party") {
+
+                    }
+                    $partyZone = partyZonePlayerController::getSinglePlayerDetails($temp->getCreatorID(), $profile->getAvatar());
+                    if ($partyZone->getAvatarID() != "") {
+                        $profilePlayer = new profileController($partyZone->getAvatarName());
+                        $temp->setCreatorID($profilePlayer->getProfileName());
+                        $temp->setAvatarImage($profilePlayer->getProfilePicture());
+                    } else {
+                        $temp->setCreatorID("Unknown");
+                        $temp->setAvatarImage("Unknown.png");
+                    }
+                } else {
+                    if (in_array($temp->getPostID(), $profile->getForumPosts())) {
+                        $profile->removeForumPosts($temp->getPostID());
+                        $profile->uploadProfile();
                         $temp->setNewPost(true);
                     } else {
                         $temp->setNewPost(false);
                     }
-                } else if ($avatarTrue === "party"){
-
+                    $profilePlayer = new profileController($temp->getCreatorID());
+                    if ($profilePlayer->getProfilePicture() != null) {
+                        $temp->setAvatarImage($profilePlayer->getProfilePicture());
+                    } else {
+                        $temp->setAvatarImage("generic.png");
+                    }
+                    if ($profile->getAccessEditForum() === 0){
+                        $temp->setReportedPost(0);
+                    }
                 }
-                $partyZone = partyZonePlayerController::getSinglePlayerDetails($temp->getCreatorID(),$profile->getAvatar());
-                if ($partyZone->getAvatarID() != "") {
-                    $profilePlayer = new profileController($partyZone->getAvatarName());
-                    $temp->setCreatorID($profilePlayer->getProfileName());
-                    $temp->setAvatarImage($profilePlayer->getProfilePicture());
-                } else {
-                    $temp->setCreatorID("Unknown");
-                    $temp->setAvatarImage("Unknown.png");
-                }
-            } else {
-                if (in_array($temp->getPostID(),$profile->getForumPosts())){
-                    $profile->removeForumPosts($temp->getPostID());
-                    $profile->uploadProfile();
-                    $temp->setNewPost(true);
-                } else {
-                    $temp->setNewPost(false);
-                }
-                $profilePlayer = new profileController($temp->getCreatorID());
-                if ($profilePlayer->getProfilePicture() != null) {
-                    $temp->setAvatarImage($profilePlayer->getProfilePicture());
-                } else {
-                    $temp->setAvatarImage("generic.png");
-                }
+                $finalArray[$temp->getPostCount()] = $temp->returnVars();
             }
-            $finalArray[$temp->getPostCount()] = $temp->returnVars();
+            $counter++;
         }
+        $finalArray["count"] = $counter;
         return $finalArray;
     }
 
 
-    public static function getAllPosts($tableDefinition,$threadID,$personalProfile)
+    public static function getAllPosts($tableDefinition,$threadID,$count,$personalProfile)
     {
         switch ($tableDefinition){
             case "mc":
                 $thread = new forumThreadController($threadID,"forumThreadsMap");
-                $threads = self::getAllPostsThread($threadID,"forumPostsMap",true,$personalProfile);
-                $response = ["threads"=>$threads,"title"=>$thread->getThreadTitle()];
+                $threads = self::getAllPostsThread($threadID,"forumPostsMap",true,$personalProfile,$count);
+                $response = ["postList"=>$threads,"title"=>$thread->getThreadTitle(),"maxPosts"=>forumPostController::$perPage];
                 break;
             case "pc":
                 $thread = new forumThreadController($threadID,"forumThreadsParty");
-                $threads = self::getAllPostsThread($threadID,"forumPostsParty","party",$personalProfile);
-                $response = ["threads"=>$threads,"title"=>$thread->getThreadTitle()];
+                $threads = self::getAllPostsThread($threadID,"forumPostsParty","party",$personalProfile,$count);
+                $response = ["postList"=>$threads,"title"=>$thread->getThreadTitle(),"maxPosts"=>forumPostController::$perPage];
                 break;
             default:
                 $thread = new forumThreadController($threadID,"forumThreadsGeneral");
-                $threads = self::getAllPostsThread($threadID,"forumPostsGeneral",false,$personalProfile);
-                $response = ["threads"=>$threads,"title"=>$thread->getThreadTitle()];
+                $threads = self::getAllPostsThread($threadID,"forumPostsGeneral",false,$personalProfile,$count);
+                $response = ["postList"=>$threads,"title"=>$thread->getThreadTitle(),"maxPosts"=>forumPostController::$perPage];
                 break;
         }
         return $response;
@@ -167,6 +187,7 @@ class forumPostController extends forumPost
         $post->editable = 1;
         $post->postText = $postText;
         $post->threadID = $threadID;
+        $post->reportedPost = 0;
         $thread = new forumThreadController($threadID,"forumThreadsParty");
         $post->postCount = $thread->getPosts();
         $post->insertPost();
@@ -186,6 +207,7 @@ class forumPostController extends forumPost
         $post->editable = 1;
         $post->postText = $postText;
         $post->threadID = $threadID;
+        $post->reportedPost = 0;
         $thread = new forumThreadController($threadID,"forumThreadsMap");
         $post->postCount = $thread->getPosts();
         $post->insertPost();
@@ -207,6 +229,7 @@ class forumPostController extends forumPost
         $post->editable = 1;
         $post->postText = $postText;
         $post->threadID = $threadID;
+        $post->reportedPost = 0;
         $thread = new forumThreadController($threadID,"forumThreadsGeneral");
         $post->postCount = $thread->getPosts();
         $post->insertPost();
@@ -272,6 +295,45 @@ class forumPostController extends forumPost
                 break;
         }
 
+    }
+
+    public static function modifyPost($profile, $category, $postID, $text, $type){
+        $profile->getProfileAccess();
+        if ($profile->getAccessEditForum() === 1){
+            $postIDClean = preg_replace(data::$cleanPatterns['num'],"",$postID);
+            $tableName = forumPostController::convertCodeTable($category);
+            $post = new forumPostController($postIDClean, $tableName);
+            if ($post->getReportedPost() === 1){
+                if ($post->getEditable() === 1) {
+                    if ($type === "Delete") {
+                        $postText = "$%* This post has been deleted $%*";
+                        $post->setEditable(0);
+                    } else {
+                        $postText = self::checkPostError($text);
+                        if (is_array($postText)) {
+                            if (array_key_exists("ERROR", $postText)) {
+                                return $postText;
+                            }
+                        }
+                    }
+                    $post->setPostText($postText);
+                    $post->setReportedPost(0);
+                    $post->updatePost();
+                    modTrackingController::createNewTrack(11, $profile->getProfileID(), $post->getPostID(), $type, "", "");
+                    if ($type === "Delete") {
+                        return array("ALERT" => 3, "DATA" => $post->getCreatorID());
+                    } else {
+                        return array("ALERT" => 5, "DATA" => $post->getCreatorID());
+                    }
+                } else {
+                    return array("ERROR"=>"This post is not editable");
+                }
+            } else {
+                return array("ERROR"=>"You cannot edit unreported posts");
+            }
+        } else {
+            return array("ERROR"=>28);
+        }
     }
 
 }

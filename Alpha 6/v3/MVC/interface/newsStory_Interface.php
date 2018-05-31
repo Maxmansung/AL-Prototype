@@ -14,6 +14,7 @@ interface newsStory_Interface
     function setPostText($var);
     function getComments();
     function setComments($var);
+    function increaseComments();
     function getMonth();
     function getDay();
     function autoDayMonth();

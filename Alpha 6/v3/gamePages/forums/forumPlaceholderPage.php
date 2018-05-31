@@ -1,6 +1,10 @@
 <?php
+if (isset($accessed) === false){
+    header("location:/");
+    exit("No access");
+}
 ?>
-<div class="col-md-6 col-12 font-size-2 standardWrapper p-3" id="forumRulesLarge">
+<div class="col-md-6 col-12 font-size-2 standardWrapper p-3 mb-3 mb-md-0" id="forumRulesLarge">
     <div class="row">
         <div class="col-12 font-size-3 font-weight-bold">
             Reminder

@@ -7,8 +7,12 @@ class itemController extends item
 
     public function __construct($id)
     {
-        if ($id != "") {
-            $itemModel = itemModel::getItem($id);
+        if ($id != ""){
+            if (is_object($id)){
+                $itemModel = $id;
+            } else {
+                $itemModel = itemModel::getItem($id);
+            }
             $this->itemID = $itemModel->itemID;
             $this->mapID = $itemModel->mapID;
             $this->itemTemplateID = $itemModel->itemTemplateID;
@@ -17,7 +21,6 @@ class itemController extends item
             $this->description = $itemModel->description;
             $this->itemType = $itemModel->itemType;
             $this->findingChances = $itemModel->findingChances;
-            $this->fuelValue = $itemModel->fuelValue;
             $this->maxCharges = $itemModel->maxCharges;
             $this->currentCharges = $itemModel->currentCharges;
             $this->itemStatus = $itemModel->itemStatus;
@@ -39,7 +42,6 @@ class itemController extends item
         $this->description = $itemModel->description;
         $this->itemType = $itemModel->itemType;
         $this->findingChances = $itemModel->findingChances;
-        $this->fuelValue = $itemModel->fuelValue;
         $this->maxCharges = $itemModel->maxCharges;
         $this->currentCharges = $itemModel->currentCharges;
         $this->itemStatus = $itemModel->itemStatus;
@@ -60,7 +62,6 @@ class itemController extends item
         $this->description = $itemModel->description;
         $this->itemType = $itemModel->itemType;
         $this->findingChances = $itemModel->findingChances;
-        $this->fuelValue = $itemModel->fuelValue;
         $this->maxCharges = $itemModel->maxCharges;
         $this->currentCharges = $itemModel->currentCharges;
         $this->itemStatus = $itemModel->itemStatus;
@@ -115,11 +116,11 @@ class itemController extends item
 
     //This returns each of the items within an array (either the backpack or the zone)
     public static function getItemsAsObjects($mapID,$locationType,$locationID){
-        $itemArray = itemModel::getItemIDsFromLocation($mapID,$locationType,$locationID);
+        $itemArray = itemModel::getItemsFromLocation($mapID,$locationType,$locationID);
         $finalArray = [];
         foreach ($itemArray as $item){
-            $tempItem = new itemController(intval($item));
-            $finalArray[intval($item)] = new itemController($tempItem);
+            $tempItem = new itemController($item);
+            $finalArray[$tempItem->getItemID()] = new itemController($tempItem);
         }
         return $finalArray;
     }

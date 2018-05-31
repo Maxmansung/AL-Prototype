@@ -246,6 +246,11 @@ class profileDetails implements profileDetails_Interface
         $this->soloLeaderboard = $var;
     }
 
+    function addSoloLeaderboard($var)
+    {
+        $this->soloLeaderboard += $var;
+    }
+
     function getTeamLeaderboard()
     {
         return $this->teamLeaderboard;
@@ -256,6 +261,11 @@ class profileDetails implements profileDetails_Interface
         $this->teamLeaderboard = $var;
     }
 
+    function addTeamLeaderboard($var)
+    {
+        $this->teamLeaderboard += $var;
+    }
+
     function getFullLeaderboard()
     {
         return $this->fullLeaderboard;
@@ -264,5 +274,10 @@ class profileDetails implements profileDetails_Interface
     function setFullLeaderboard($var)
     {
         $this->fullLeaderboard = $var;
+    }
+
+    function addFullLeaderboard($var)
+    {
+        $this->fullLeaderboard += $var;
     }
 }

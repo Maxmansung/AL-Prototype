@@ -9,6 +9,9 @@ class storageModel extends storage
         $this->items = json_decode($storageModel['items']);
         $this->maximumCapacity = intval($storageModel['maximumCapacity']);
         $this->storageLevel = intval($storageModel['storageLevel']);
+        $this->lockBuilt = intval($storageModel['lockBuilt']);
+        $this->lockStrength = intval($storageModel['lockStrength']);
+        $this->lockMax = intval($storageModel['lockMax']);
     }
 
 
@@ -17,7 +20,7 @@ class storageModel extends storage
         $db = db_conx::getInstance();
         $req = $db->prepare('SELECT * FROM Storage WHERE storageID= :storageID OR zoneID= :zoneID LIMIT 1');
         $req->bindParam(':storageID', $storageID);
-        $req->bindParam(':zoneID', intval($zoneID));
+        $req->bindParam(':zoneID', $zoneID);
         $req->execute();
         $storageModel = $req->fetch();
         return new storageModel($storageModel);
@@ -26,16 +29,27 @@ class storageModel extends storage
 
     public static function insertStorage($storageController, $type){
         $db = db_conx::getInstance();
+        $storageID = intval($storageController->getStorageID());
+        $zoneID = intval($storageController->getZoneID());
+        $items = json_encode($storageController->getItems());
+        $maximumCapacity = intval($storageController->getMaximumCapacity());
+        $storageLevel = intval($storageController->getStorageLevel());
+        $lockBuilt = intval($storageController->getLockBuilt());
+        $lockStrength = intval($storageController->getLockStrength());
+        $lockMax = intval($storageController->getLockMax());
         if ($type == "Insert") {
-            $req = $db->prepare("INSERT INTO Storage (storageID, zoneID, items, maximumCapacity, storageLevel) VALUES (:storageID,:zoneID,:items,:maximumCapacity, :storageLevel)");
+            $req = $db->prepare("INSERT INTO Storage (zoneID, items, maximumCapacity, storageLevel,lockBuilt,lockStrength,lockMax) VALUES (:zoneID,:items,:maximumCapacity, :storageLevel,:lockBuilt,:lockStrength, :lockMax)");
         } elseif ($type == "Update"){
-            $req = $db->prepare("UPDATE Storage SET zoneID= :zoneID, items= :items,maximumCapacity= :maximumCapacity, storageLevel= :storageLevel WHERE storageID= :storageID");
+            $req = $db->prepare("UPDATE Storage SET zoneID= :zoneID, items= :items,maximumCapacity= :maximumCapacity, storageLevel= :storageLevel, lockBuilt= :lockBuilt, lockStrength= :lockStrength, lockMax= :lockMax WHERE storageID= :storageID");
+            $req->bindParam(':storageID', $storageID);
         }
-        $req->bindParam(':storageID', $storageController->getStorageID());
-        $req->bindParam(':zoneID', $storageController->getZoneID());
-        $req->bindParam(':items', json_encode($storageController->getItems()));
-        $req->bindParam(':maximumCapacity', $storageController->getMaximumCapacity());
-        $req->bindParam(':storageLevel', $storageController->getStorageLevel());
+        $req->bindParam(':zoneID', $zoneID);
+        $req->bindParam(':items', $items);
+        $req->bindParam(':maximumCapacity', $maximumCapacity);
+        $req->bindParam(':storageLevel', $storageLevel);
+        $req->bindParam(':lockBuilt', $lockBuilt);
+        $req->bindParam(':lockStrength', $lockStrength);
+        $req->bindParam(':lockMax', $lockMax);
         $req->execute();
     }
 

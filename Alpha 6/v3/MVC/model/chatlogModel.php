@@ -11,11 +11,17 @@ class chatlogModel extends chatlog
         $this->mapDay = intval($chatModel['mapDay']);
         $this->messageTime = intval($chatModel['messageTime']);
         $this->messageText = $chatModel['messageText'];
-        $this->groupID = $chatModel['groupID'];
+        if (isset($chatModel['groupID'])) {
+            $this->groupID = intval($chatModel['groupID']);
+        }
         $this->zoneID = intval($chatModel['zoneID']);
         $this->messageTimestamp = $chatModel['messageTime'];
-        $this->buildingID = $chatModel['buildingID'];
-        $this->otherVar = $chatModel['otherVar'];
+        if (isset($chatModel['buildingID'])) {
+            $this->buildingID = $chatModel['buildingID'];
+        }
+        if (isset($chatModel['otherVar'])) {
+            $this->otherVar = $chatModel['otherVar'];
+        }
         $this->messageType = intval($chatModel['messageType']);
     }
 
@@ -31,11 +37,11 @@ class chatlogModel extends chatlog
         $messageText = $chatController->getMessageText();
         $messageType = intval($chatController->getMessageType());
         if ($type == "Insert") {
-            $req = $db->prepare("INSERT INTO ".$chatlogType." (chatID, mapID, zoneID, avatarID, mapDay, messageTime, messageText, messageType) VALUES (:chatID, :mapID, :zoneID, :avatarID, :mapDay, :messageTime, :messageText, :messageType)");
+            $req = $db->prepare("INSERT INTO ".$chatlogType." (mapID, zoneID, avatarID, mapDay, messageTime, messageText, messageType) VALUES (:mapID, :zoneID, :avatarID, :mapDay, :messageTime, :messageText, :messageType)");
         } elseif ($type == "Update") {
             $req = $db->prepare("UPDATE  ".$chatlogType."  SET mapID= :mapID, zoneID= :zoneID, avatarID= :avatarID, mapDay= :mapDay, messageTime= :messageTime, messageText= :messageText WHERE chatID= :chatID");
+            $req->bindParam(':chatID',$chatID);
         }
-        $req->bindParam(':chatID',$chatID);
         $req->bindParam(':mapID', $mapID);
         $req->bindParam(':zoneID', $zoneID);
         $req->bindParam(':avatarID', $avatarID);
@@ -49,57 +55,81 @@ class chatlogModel extends chatlog
     public static function insertChatLogGroup($chatController, $type){
         $chatlogType = $chatController->getChatlogType();
         $db = db_conx::getInstance();
+        $chatID = intval($chatController->getChatlogID());
+        $mapID =intval($chatController->getMapID());
+        $groupID = intval($chatController->getGroupID());
+        $avatarID = $chatController->getAvatarID();
+        $mapDay = intval($chatController->getMapDay());
+        $messageTime = intval($chatController->getMessageTime());
+        $messageText = $chatController->getMessageText();
+        $messageType = intval($chatController->getMessageType());
         if ($type == "Insert") {
-            $req = $db->prepare("INSERT INTO ".$chatlogType." (chatID, mapID, groupID, avatarID, mapDay, messageTime, messageText, messageType) VALUES (:chatID, :mapID, :groupID, :avatarID, :mapDay, :messageTime, :messageText, :messageType)");
+            $req = $db->prepare("INSERT INTO ".$chatlogType." (mapID, groupID, avatarID, mapDay, messageTime, messageText, messageType) VALUES (:mapID, :groupID, :avatarID, :mapDay, :messageTime, :messageText, :messageType)");
         } elseif ($type == "Update") {
             $req = $db->prepare("UPDATE  ".$chatlogType."  SET mapID= :mapID, groupID= :groupID, avatarID= :avatarID, mapDay= :mapDay, messageTime= :messageTime, messageText= :messageText WHERE chatID= :chatID");
+            $req->bindParam(':chatID', $chatID);
         }
-        $req->bindParam(':chatID', intval($chatController->getChatlogID()));
-        $req->bindParam(':mapID', $chatController->getMapID());
-        $req->bindParam(':groupID', $chatController->getGroupID());
-        $req->bindParam(':avatarID', $chatController->getAvatarID());
-        $req->bindParam(':mapDay', intval($chatController->getMapDay()));
-        $req->bindParam(':messageTime', $chatController->getMessageTime());
-        $req->bindParam(':messageText', $chatController->getMessageText());
-        $req->bindParam(':messageType', intval($chatController->getMessageType()));
+        $req->bindParam(':mapID', $mapID);
+        $req->bindParam(':groupID', $groupID);
+        $req->bindParam(':avatarID', $avatarID);
+        $req->bindParam(':mapDay', $mapDay);
+        $req->bindParam(':messageTime', $messageTime);
+        $req->bindParam(':messageText', $messageText);
+        $req->bindParam(':messageType', $messageType);
         $req->execute();
     }
 
     public static function insertChatLogBuilding($chatController, $type){
         $chatlogType = $chatController->getChatlogType();
         $db = db_conx::getInstance();
+        $chatID = intval($chatController->getChatlogID());
+        $mapID =intval($chatController->getMapID());
+        $zoneID = intval($chatController->getZoneID());
+        $buildingID = $chatController->getBuildingID();
+        $mapDay = intval($chatController->getMapDay());
+        $messageTime = intval($chatController->getMessageTime());
+        $messageText = $chatController->getMessageText();
+        $messageType = intval($chatController->getMessageType());
         if ($type == "Insert") {
-            $req = $db->prepare("INSERT INTO ".$chatlogType." (chatID, mapID, zoneID, buildingID, mapDay, messageTime, messageText, messageType) VALUES (:chatID, :mapID, :zoneID, :buildingID, :mapDay, :messageTime, :messageText, :messageType)");
+            $req = $db->prepare("INSERT INTO ".$chatlogType." (mapID, zoneID, buildingID, mapDay, messageTime, messageText, messageType) VALUES (:mapID, :zoneID, :buildingID, :mapDay, :messageTime, :messageText, :messageType)");
         } elseif ($type == "Update") {
             $req = $db->prepare("UPDATE  ".$chatlogType."  SET mapID= :mapID, zoneID= :zoneID, buildingID= :buildingID, mapDay= :mapDay, messageTime= :messageTime, messageText= :messageText WHERE chatID= :chatID");
+            $req->bindParam(':chatID', $chatID);
         }
-        $req->bindParam(':chatID', intval($chatController->getChatlogID()));
-        $req->bindParam(':mapID', $chatController->getMapID());
-        $req->bindParam(':zoneID', $chatController->getZoneID());
-        $req->bindParam(':buildingID', $chatController->getBuildingID());
-        $req->bindParam(':mapDay', intval($chatController->getMapDay()));
-        $req->bindParam(':messageTime', $chatController->getMessageTime());
-        $req->bindParam(':messageText', $chatController->getMessageText());
-        $req->bindParam(':messageType', intval($chatController->getMessageType()));
+        $req->bindParam(':mapID', $mapID);
+        $req->bindParam(':zoneID', $zoneID);
+        $req->bindParam(':buildingID', $buildingID);
+        $req->bindParam(':mapDay', $mapDay);
+        $req->bindParam(':messageTime', $messageTime);
+        $req->bindParam(':messageText', $messageText);
+        $req->bindParam(':messageType', $messageType);
         $req->execute();
     }
 
     public static function insertChatlogOther($chatController, $type){
         $chatlogType = $chatController->getChatlogType();
         $db = db_conx::getInstance();
+        $chatID = intval($chatController->getChatlogID());
+        $mapID =intval($chatController->getMapID());
+        $zoneID = intval($chatController->getZoneID());
+        $otherVar = $chatController->getOtherVar();
+        $mapDay = intval($chatController->getMapDay());
+        $messageTime = intval($chatController->getMessageTime());
+        $messageText = $chatController->getMessageText();
+        $messageType = intval($chatController->getMessageType());
         if ($type == "Insert") {
-            $req = $db->prepare("INSERT INTO ".$chatlogType." (chatID, mapID, zoneID, otherVar, mapDay, messageTime, messageText, messageType) VALUES (:chatID, :mapID, :zoneID, :otherVar, :mapDay, :messageTime, :messageText, :messageType)");
+            $req = $db->prepare("INSERT INTO ".$chatlogType." (mapID, zoneID, otherVar, mapDay, messageTime, messageText, messageType) VALUES (:mapID, :zoneID, :otherVar, :mapDay, :messageTime, :messageText, :messageType)");
         } elseif ($type == "Update") {
             $req = $db->prepare("UPDATE  ".$chatlogType."  SET mapID= :mapID, zoneID= :zoneID, otherVar= :otherVar, mapDay= :mapDay, messageTime= :messageTime, messageText= :messageText WHERE chatID= :chatID");
+            $req->bindParam(':chatID', $chatID);
         }
-        $req->bindParam(':chatID', intval($chatController->getChatlogID()));
-        $req->bindParam(':mapID', $chatController->getMapID());
-        $req->bindParam(':zoneID', $chatController->getZoneID());
-        $req->bindParam(':otherVar', $chatController->getOtherVar());
-        $req->bindParam(':mapDay', intval($chatController->getMapDay()));
-        $req->bindParam(':messageTime', $chatController->getMessageTime());
-        $req->bindParam(':messageText', $chatController->getMessageText());
-        $req->bindParam(':messageType', intval($chatController->getMessageType()));
+        $req->bindParam(':mapID', $mapID);
+        $req->bindParam(':zoneID', $zoneID);
+        $req->bindParam(':otherVar', $otherVar);
+        $req->bindParam(':mapDay', $mapDay);
+        $req->bindParam(':messageTime', $messageTime);
+        $req->bindParam(':messageText', $messageText);
+        $req->bindParam(':messageType', $messageType);
         $req->execute();
     }
 
@@ -112,15 +142,6 @@ class chatlogModel extends chatlog
             return new chatlogModel($chatLogModel);
     }
 
-    //This returns the next value in the counter columnn in order to add to the new item information
-    public static function createMessageID($type){
-        $db = db_conx::getInstance();
-        $req = $db->prepare('SELECT chatID FROM '.$type.' ORDER BY chatID DESC LIMIT 1');
-        $req->execute();
-        $tempID = $req->fetch();
-        return $tempID['chatID']+1;
-    }
-
 
     public static function getAllZoneActions($type, $zoneID){
         $db = db_conx::getInstance();
@@ -129,6 +150,7 @@ class chatlogModel extends chatlog
         $req->execute();
         $logArray = $req->fetchAll();
         $counter = 0;
+        $logModelArray = [];
         foreach ($logArray as $log){
             $tempLog = new chatlogModel($log);
             $tempLog->setChatlogType($type);
@@ -147,6 +169,7 @@ class chatlogModel extends chatlog
         $req->execute();
         $logArray = $req->fetchAll();
         $counter = 0;
+        $logModelArray = [];
         foreach ($logArray as $log){
             $tempLog = new chatlogModel($log);
             $tempLog->setChatlogType($type);
@@ -164,6 +187,7 @@ class chatlogModel extends chatlog
         $req->execute();
         $logArray = $req->fetchAll();
         $counter = 0;
+        $logModelArray = [];
         foreach ($logArray as $log){
             $tempLog = new chatlogModel($log);
             $tempLog->setChatlogType($type);
@@ -181,6 +205,7 @@ class chatlogModel extends chatlog
         $req->execute();
         $logArray = $req->fetchAll();
         $counter = 0;
+        $logModelArray = [];
         foreach ($logArray as $log){
             $tempLog = new chatlogModel($log);
             $tempLog->setChatlogType($type);

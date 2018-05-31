@@ -97,6 +97,11 @@ class newsStory implements newsStory_Interface
         $this->comments = $var;
     }
 
+    function increaseComments()
+    {
+        $this->comments++;
+    }
+
     function getMonth()
     {
         return $this->month;

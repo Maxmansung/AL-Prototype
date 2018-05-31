@@ -8,10 +8,11 @@ class forumPostModel extends forumPost
         $this->postID = intval($postModel['postID']);
         $this->creatorID = $postModel['creatorID'];
         $this->postDate = intval($postModel['postDate']);
-        $this->editable = $postModel['editable'];
+        $this->editable = intval($postModel['editable']);
         $this->postText = $postModel['postText'];
         $this->threadID = intval($postModel['threadID']);
         $this->postCount = intval($postModel['postCount']);
+        $this->reportedPost = intval($postModel['reportedPost']);
     }
 
     public static function insertForumPost($postController,$type){
@@ -19,15 +20,16 @@ class forumPostModel extends forumPost
         $postID = intval($postController->getPostID());
         $creatorID = $postController->getCreatorID();
         $postDate = intval($postController->getPostDate());
-        $editable = $postController->getEditable();
+        $editable = intval($postController->getEditable());
         $postText = $postController->getPostText();
         $threadID = intval($postController->getThreadID());
         $postCount = intval($postController->getPostCount());
+        $reportedPost = intval($postController->getReportedPost());
         $db = db_conx::getInstance();
         if ($type == "Insert") {
-            $req = $db->prepare("INSERT INTO ".$table." (postID, creatorID, postDate, editable, postText, threadID, postCount) VALUES (:postID, :creatorID, :postDate, :editable, :postText, :threadID, :postCount)");
+            $req = $db->prepare("INSERT INTO ".$table." (postID, creatorID, postDate, editable, postText, threadID, postCount, reportedPost) VALUES (:postID, :creatorID, :postDate, :editable, :postText, :threadID, :postCount, :reportedPost)");
         } elseif ($type == "Update"){
-            $req = $db->prepare("UPDATE ".$table." SET creatorID= :creatorID, postDate= :postDate, editable= :editable, postText= :postText, threadID= :threadID, postCount= :postCount WHERE postID= :postID");
+            $req = $db->prepare("UPDATE ".$table." SET creatorID= :creatorID, postDate= :postDate, editable= :editable, postText= :postText, threadID= :threadID, postCount= :postCount, reportedPost= :reportedPost WHERE postID= :postID");
         }
         $req->bindParam(':postID', $postID);
         $req->bindParam(':creatorID', $creatorID);
@@ -36,6 +38,7 @@ class forumPostModel extends forumPost
         $req->bindParam(':postText', $postText);
         $req->bindParam(':threadID', $threadID);
         $req->bindParam(':postCount', $postCount);
+        $req->bindParam(':reportedPost', $reportedPost);
         $req->execute();
     }
 

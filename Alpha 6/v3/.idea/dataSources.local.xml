@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal">
+    <data-source name="Private Hosting" uuid="0be83a98-8649-4fc9-964a-7a2cdcaf1182">
+      <database-info product="MySQL" version="5.5.56-MariaDB" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.44 ( Revision: b3cda4f864902ffdde495b9df93937c3e20009be )">
+        <extra-name-characters>#@</extra-name-characters>
+        <identifier-quote-string>`</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="exact" quoted-identifiers="exact" />
+      <user-name>arcticHosting</user-name>
+      <introspection-schemas>*:ArcticLands</introspection-schemas>
+      <ssh-properties>
+        <enabled>false</enabled>
+        <proxy-host>195.110.59.18</proxy-host>
+        <proxy-port>22</proxy-port>
+        <user>root</user>
+        <use-password>true</use-password>
+      </ssh-properties>
+    </data-source>
+    <data-source name="SQL Errors" uuid="b24d7045-5d3c-4d26-82a8-71773dc642d2">
+      <database-info product="MySQL" version="5.5.56-MariaDB" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.44 ( Revision: b3cda4f864902ffdde495b9df93937c3e20009be )">
+        <extra-name-characters>#@</extra-name-characters>
+        <identifier-quote-string>`</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="exact" quoted-identifiers="exact" />
+      <secret-storage>master_key</secret-storage>
+      <user-name>arcticHosting</user-name>
+      <introspection-schemas>*:performance_schema</introspection-schemas>
+    </data-source>
+    <data-source name="information_schema" uuid="01f858dc-01ba-4b7f-9f2e-91e395e3decd">
+      <database-info product="MySQL" version="5.5.56-MariaDB" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.44 ( Revision: b3cda4f864902ffdde495b9df93937c3e20009be )">
+        <extra-name-characters>#@</extra-name-characters>
+        <identifier-quote-string>`</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="exact" quoted-identifiers="exact" />
+      <secret-storage>master_key</secret-storage>
+      <user-name>arcticHosting</user-name>
+      <introspection-schemas>*:information_schema</introspection-schemas>
+    </data-source>
+  </component>
+</project>

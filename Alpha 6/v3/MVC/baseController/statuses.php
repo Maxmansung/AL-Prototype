@@ -25,6 +25,12 @@ class statuses implements statuses_Interface
         return get_object_vars($this);
     }
 
+    function returnViewVars(){
+        $this->statusModifier = null;
+        $this->startingStat = null;
+        return get_object_vars($this);
+    }
+
     function getStatusID()
     {
         return $this->statusID;

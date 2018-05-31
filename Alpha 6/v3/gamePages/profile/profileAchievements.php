@@ -24,21 +24,21 @@ if (isset($accessed) === false){
             <div class="col-4 px-1">
                 <div class="leaderboardSelect lightGrayBackground d-flex flex-column justify-content-between align-items-center p-2 mt-3" align="center" id="soloScoreWrap" onclick="goToPage('score&s=1')">
                     <div class="font-size-4"><i class="fas fa-snowflake"></i></div>
-                    <div class="font-size-2x font-weight-bold">Alone</div>
+                    <div class="font-size-2x font-weight-bold">Cold Gods</div>
                     <div class="leaderboardNumber"></div>
                 </div>
             </div>
             <div class="col-4 px-1">
                 <div class="leaderboardSelect lightGrayBackground d-flex flex-column justify-content-between align-items-center p-2 mb-3" align="center" id="teamScoreWrap" onclick="goToPage('score&s=2')">
                     <div class="font-size-4"><i class="fas fa-bomb"></i></div>
-                    <div class="font-size-2x font-weight-bold">Clan</div>
+                    <div class="font-size-2x font-weight-bold">War Gods</div>
                     <div class="leaderboardNumber"></div>
                 </div>
             </div>
             <div class="col-4 px-1">
                 <div class="leaderboardSelect lightGrayBackground d-flex flex-column justify-content-between align-items-center p-2 mt-3" align="center" id="fullScoreWrap" onclick="goToPage('score&s=3')">
                     <div class="font-size-4"><i class="fas fa-leaf"></i></div>
-                    <div class="font-size-2x font-weight-bold">Town</div>
+                    <div class="font-size-2x font-weight-bold">Life Gods</div>
                     <div class="leaderboardNumber"></div>
                 </div>
             </div>

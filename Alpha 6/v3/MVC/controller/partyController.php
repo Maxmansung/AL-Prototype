@@ -52,13 +52,14 @@ class partyController extends party
         return new partyController($partyModel);
     }
 
-    public static function removeAllInvites($playerID){
+    public static function removeAllInvites($playerID,$day){
         $partyModelList = partyModel::removeInvites($playerID);
         foreach ($partyModelList as $party){
-            $partyController = new partyController($party->getPartyID());
+            $partyController = new partyController($party);
             $partyController->removePendingRequests($playerID);
             $partyController->uploadParty();
-            chatlogGroupController::cancelGroupRequest($playerID,$partyController->getPartyID());
+            $avatar = new avatarController($playerID);
+            chatlogGroupController::cancelGroupRequest($avatar,$partyController->getPartyID(),$day);
         }
     }
 
@@ -78,5 +79,19 @@ class partyController extends party
             $finalArray[$party] = $temp;
         }
         return $finalArray;
+    }
+
+
+    //This function empties a party when the last player leaves it
+    public function emptyParty()
+    {
+        $this->removeAllZoneExploration();
+        $this->setMembers(array());
+        $this->setPlayersKnown(array());
+        $this->setPendingBans(array());
+        $this->setPendingRequests(array());
+        $partyName = str_replace($this->getMapID(), "", $this->getPartyID());
+        $this->setPartyName($partyName);
+        chatlogGroupController::deleteGroupLogs($this->getPartyID());
     }
 }

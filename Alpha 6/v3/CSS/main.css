@@ -27,6 +27,10 @@
     .pageSize{
         min-height: 550px;
     }
+
+    .resize-font-size-1{
+        font-size: 60%;
+    }
 }
 @media (min-width: 576px) and (max-width: 768px) {
     .bannerImage{
@@ -38,6 +42,15 @@
     }
     .pageSize{
         min-height: 550px;
+    }
+
+    .tempShrineImage{
+        width: 100px;
+        height: 100px;
+    }
+
+    .resize-font-size-1{
+        font-size: 65%;
     }
 }
 @media (min-width: 768px) and (max-width: 992px) {
@@ -51,6 +64,15 @@
     .pageSize{
         min-height: 550px;
     }
+
+    .tempShrineImage{
+        width: 150px;
+        height: 150px;
+    }
+
+    .resize-font-size-1{
+        font-size: 70%;
+    }
 }
 @media (min-width: 992px) and (max-width: 1200px) {
     .bannerImage{
@@ -62,6 +84,15 @@
     }
     .pageSize{
         min-height: 550px;
+    }
+
+    .tempShrineImage{
+        width: 200px;
+        height: 200px;
+    }
+
+    .resize-font-size-1{
+        font-size: 75%;
     }
 }
 @media (min-width: 1200px){
@@ -75,6 +106,19 @@
     .pageSize{
         min-height: 550px;
     }
+
+    .tempShrineImage{
+        width: 250px;
+        height: 250px;
+    }
+
+    .resize-font-size-1{
+        font-size: 80%;
+    }
+}
+
+.border{
+    border: 1px solid;
 }
 
 .font-size-1{
@@ -101,6 +145,21 @@
     font-size: 300%;
 }
 
+.font-size-6{
+    font-size: 500%;
+}
+
+.zoneWriting{
+    font-size: 400%;
+    color: red;
+    font-family: Woodcut;
+}
+
+.zoneCoordWriting{
+    color: black;
+    font-weight: bold;
+}
+
 .clickable{
     cursor: pointer;
 }
@@ -124,6 +183,11 @@
     text-decoration: underline;
     cursor: pointer;
     color: rgba(150,150,200,1);
+}
+
+.clickableTransparent:hover{
+    cursor: pointer;
+    opacity: 0.5;
 }
 
 .unclickableLink:link, .unclickableLink:visited{
@@ -540,11 +604,6 @@ span.btn-dark:not(:disabled):not(.disabled):active:focus, .btn-dark:not(:disable
     border-bottom: 2px solid rgba(180,180,180,1);
 }
 
-.textImageEmoji{
-    max-width: 20px;
-    max-height: 20px;
-}
-
 .joinGameMapWrapper{
     border-radius: 10px;
 }
@@ -757,4 +816,379 @@ span.btn-dark:not(:disabled):not(.disabled):active:focus, .btn-dark:not(:disable
 
 .adminUserEditWrapper:hover{
     background: linear-gradient(90deg, rgba(100,100,100,0.1), rgba(100,100,100,0.4));
+}
+
+#emojiWrapper{
+    border: 2px solid grey;
+    background: white;
+}
+
+#postBoxTextbox{
+    height: 200px;
+}
+
+.thermometerImage{
+    max-height: 120px;
+}
+
+.backpackWrapper{
+    border: 2px solid lightgray;
+}
+
+.itemObject{
+    width: 26px;
+    height: 26px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0,0,0,0) url("/images/gamePage/items/border.png") 26px 26px;
+}
+
+.itemObject:hover{
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+.itemImage{
+    width: 20px;
+    height: 20px;
+}
+
+.itemLocationButton{
+    border: 2px solid lightgray;
+}
+
+.itemLocationButton:hover{
+    cursor: pointer;
+    background: rgba(0,0,0,0.2);
+}
+
+.itemLocationBorder1{
+    border-left: 2px solid lightgray;
+    border-right: 2px solid lightgray;
+    border-top: 2px solid lightgray;
+}
+
+.itemLocationBorder2{
+    border-left: 2px solid lightgray;
+    border-right: 2px solid lightgray;
+    border-top: 2px solid lightgray;
+}
+
+.itemObjectChest{
+    width: 26px;
+    height: 26px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.itemObjectChest:hover{
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+.itemObjectChestNumber{
+    margin-top: -5px;
+}
+
+.popover{
+    max-width: 160px !important;
+}
+
+.popover-header{
+    color: black !important;
+}
+
+.popover-body {
+    font-size: 80%;
+}
+
+.buildingItem{
+    max-width: 20px;
+    max-height: 20px;
+}
+
+.buildingItemWrap{
+    border-radius: 5px;
+    background: rgba(180,180,255,0.5);
+}
+
+.singleBuildingWrapper{
+    border-bottom: 2px dashed rgba(180,180,180,0.5);
+}
+
+.buildingImage{
+    max-width: 24px;
+    max-height: 24px;
+}
+
+.buildingBreakPadding{
+    width: 30px;
+}
+
+.zoneImageWrapper{
+    border: 2px solid rgba(100,100,100,1);
+    height: 518px;
+    background-size: auto 512px;
+    background-position: center center;
+}
+
+.zoneImageWrapperPhone{
+    border: 2px solid rgba(100,100,100,1);
+    height: 576px;
+    background-size: auto 576px;
+    background-position: center center;
+}
+
+.zoneImageInternal{
+    height: 512px;
+    width: 512px;
+    background-size: 512px 512px;
+    background-repeat: no-repeat;
+}
+
+.zoneImageInternalPhone{
+    height: 570px;
+    width: 300px;
+    background-size: 300px 570px;
+    background-repeat: no-repeat;
+}
+
+.zoneAvatarImageWrap{
+    height: 90px;
+    width: 45px;
+}
+
+.zoneAvatarImageWrapPhone{
+    height: 94px;
+    width: 49px;
+}
+
+.inzoneAvatarImage{
+    height: 90px;
+    width: 45px;
+}
+
+.zoneActionsWrap{
+    width: 400px;
+}
+
+.zoneOtherAvatarWrap{
+    height: 180px;
+    width: 80px;
+}
+
+.zoneOtherAvatarWrapPhone{
+    height: 60px;
+    width: 180px;
+}
+
+.zoneMapWrapper{
+    width: 80px;
+    height: 80px;
+}
+
+.zoneDepletedWrap{
+    width:100px
+}
+
+.zoneBuildingsImageWrap{
+    width: 160px;
+    height: 130px;
+    margin-bottom: 20px;
+}
+
+.clickableActionButton{
+    border: 2px solid;
+    border-radius: 5px;
+    width: 50px;
+    height: 50px;
+    font-size: 240%;
+}
+
+.clickableActionButton:hover{
+    color: rgba(100,100,100,1);
+    cursor: pointer;
+    border: 2px solid rgba(100,100,100,1);
+}
+
+.actionButtonWriting{
+    width: 60px;
+}
+
+.buildingImageOverlay{
+    position: absolute;
+}
+
+.zoneOtherAvatarWrapSingle{
+    width: 20px;
+    height: 40px;
+}
+
+.zoneOtherAvatarWrapSingle:hover{
+    cursor: pointer;
+    opacity: 0.5;
+}
+
+.zoneOtherAvatarSingle{
+    max-width: 16px;
+    max-height: 34px;
+}
+
+.phoneHighlightBorder{
+    border: 2px dashed rgba(100,100,100,0.3);
+    border-radius: 3px;
+}
+
+.phoneHighlightBorder:active{
+    background: rgba(100,100,100,0.3);
+}
+
+.partyAvatarImage{
+    max-height: 30px;
+}
+
+.zonePartyMemberSingleWrap{
+    border-radius: 10px;
+}
+
+.zoneAvatarImage{
+    width: 200px;
+    height: 400px;
+}
+
+.backgroundImageAvatarSmallWrapper{
+    opacity: 0.1;
+    position: absolute;
+    width: 100%;
+}
+
+.zoneEquipmentBorder{
+    border: 2px solid black;
+    border-radius: 10px;
+}
+
+.zoneCurrentEquipmentIcon{
+    max-width: 75px;
+    height: auto;
+}
+
+.zoneNextEquipmentIcon{
+    max-width: 50px;
+    height: auto;
+}
+
+.zoneCurrentEquipmentArrows{
+    max-height: 50px;
+    width: auto;
+}
+
+.normalBorder{
+    border: 2px solid  rgba(150,150,150,0.7);;
+}
+
+.researchUpgradeImage{
+    width: 30px;
+}
+
+.teachResearchWrap{
+    border-radius: 10px;
+    background-color: rgba(150,200,150,0.2);
+}
+
+.teachResearchWrap:hover{
+    background-color: rgba(150,200,150,0.5);
+}
+
+.extraSpacer{
+    width: 30px;
+}
+
+.zoneBuildingLocks{
+    height: 50px;
+}
+
+.zoneShrineImage{
+    width: 200px;
+    max-height: 200px;
+}
+
+.mapZoneBox{
+    position: relative;
+    width: 22px;
+    height: 22px;
+    border: 1px solid black;
+}
+
+.mapZoneBox:hover{
+    border: 1px solid purple;
+    cursor: pointer;
+}
+
+.mapZoneImageOverlay{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+}
+
+.roundedButton{
+    border-radius: 15px 15px 0 0;
+    border: 2px solid;
+}
+
+.HUDstatusImage{
+    width: 20px;
+    height: 20px;
+}
+
+.HUDstatusImageWrapper{
+    width: 22px;
+    height: 22px;
+}
+
+.HUDstatuses{
+    min-height: 24px;
+}
+
+.messagePlayerName{
+    border-radius: 10px;
+}
+
+.zoneLogsWrapper{
+    max-height: 200px;
+    overflow: auto;
+}
+
+/*Remove or replace of these eventually*/
+
+.tempImageWriting{
+    background: white;
+    color: black;
+    font-size: 60%;
+}
+
+.tempPaddingPhone{
+    height: 70px;
+}
+
+.temppaddingPhone2{
+    height: 70px;
+}
+
+.tempPadding2{
+    height: 10px;
+}
+
+.tempHolder{
+    min-height: 25px;
+}
+
+.tempImageDeath{
+    height: 180px;
+    background: rgba(120,80,220,0.2);
 }

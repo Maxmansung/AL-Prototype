@@ -10,13 +10,13 @@ class deathScreen implements deathScreen_Interface
     protected $deathDay;
     protected $nightTemp;
     protected $survivableTemp;
-    protected $deathStatistics;
     protected $deathAchievements;
     protected $gameType;
-    protected $shrineScore;
     protected $deathType;
-    protected $partyPlayersLeft;
     protected $dayDuration;
+    protected $favourSolo;
+    protected $favourTeam;
+    protected $favourMap;
 
     function returnVars(){
         return get_object_vars($this);
@@ -72,16 +72,6 @@ class deathScreen implements deathScreen_Interface
         $this->survivableTemp = $var;
     }
 
-    function getDeathStatistics()
-    {
-        return $this->deathStatistics;
-    }
-
-    function setDeathStatistics($var)
-    {
-        $this->deathStatistics = $var;
-    }
-
     function getDeathAchievements()
     {
         return $this->deathAchievements;
@@ -110,16 +100,6 @@ class deathScreen implements deathScreen_Interface
         $this->gameType = $var;
     }
 
-    function getShrineScore()
-    {
-        return $this->shrineScore;
-    }
-
-    function setShrineScore($var)
-    {
-        $this->shrineScore = $var;
-    }
-
     function getDeathType()
     {
         return $this->deathType;
@@ -130,16 +110,6 @@ class deathScreen implements deathScreen_Interface
         $this->deathType = $var;
     }
 
-    function getPartyPlayersLeft()
-    {
-        return $this->partyPlayersLeft;
-    }
-
-    function setPartyPlayersLeft($var)
-    {
-        $this->partyPlayersLeft = $var;
-    }
-
     function getDayDuration()
     {
         return $this->dayDuration;
@@ -148,5 +118,35 @@ class deathScreen implements deathScreen_Interface
     function setDayDuration($var)
     {
         $this->dayDuration = $var;
+    }
+
+    function getFavourSolo()
+    {
+        return $this->favourSolo;
+    }
+
+    function setFavourSolo($var)
+    {
+        $this->favourSolo = $var;
+    }
+
+    function getFavourTeam()
+    {
+        return $this->favourTeam;
+    }
+
+    function setFavourTeam($var)
+    {
+        $this->favourTeam = $var;
+    }
+
+    function getFavourMap()
+    {
+        return $this->favourMap;
+    }
+
+    function setFavourMap($var)
+    {
+        $this->favourMap = $var;
     }
 }

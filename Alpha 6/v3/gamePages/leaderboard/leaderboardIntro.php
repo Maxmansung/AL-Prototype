@@ -17,7 +17,7 @@ if (isset($accessed) === false){
     </div>
 </div>
 <div class="row darkGrayBackground whiteColour justify-content-center justify-content-sm-between my-3 mx-2 p-2">
-    <div class="col-11 col-sm-6 col-md-4 d-flex flex-column justify-content-center align-items-center order-1 order-sm-1 blueColour lightGrayBackground">IMAGE HERE</div>
+    <div class="col-11 col-sm-6 col-md-4 d-flex flex-column justify-content-center align-items-center order-1 order-sm-1 blueColour lightGrayBackground"><img src="/images/gamePage/shrines/ice_shrine.png" class="tempShrineImage d-none d-sm-flex"></div>
     <div class="col-11 col-sm-6 col-md-8 p-3 d-flex flex-column order-2 order-sm-2">
         <div class="font-weight-bold  font-size-2x pb-2" align="left">War Gods</div>
         <div class="font-size-2">These gods favour the waring tribes. Find a friend, make a base but don't get too strong. Together you can become more than the individual but beware of those around that might try to take what you have.<br><br>Battle those around to become the last tribe standing</div>

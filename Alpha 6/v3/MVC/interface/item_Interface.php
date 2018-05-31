@@ -18,8 +18,6 @@ interface item_Interface
     function setItemType($var);
     function getFindingChances();
     function setFindingChances($var);
-    function getFuelValue();
-    function setFuelValue($var);
     function getMaxCharges();
     function setMaxCharges($var);
     function getCurrentCharges();

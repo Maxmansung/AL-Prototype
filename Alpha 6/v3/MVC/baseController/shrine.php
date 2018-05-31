@@ -21,6 +21,9 @@ class shrine implements shrine_Interface
     protected $maxParty;
     protected $shrineBonus;
     protected $blessingMessage;
+    protected $typeName;
+    protected $shrineOverallType;
+    protected $shrineAlertMessage;
 
 
     public function __toString()
@@ -29,8 +32,8 @@ class shrine implements shrine_Interface
         $output .= '/ '.$this->mapID;
         $output .= '/ '.$this->zoneID;
         $output .= '/ '.$this->shrineType;
-        $output .= '/ '.$this->history;
-        $output .= '/ '.$this->currentArray;
+        $output .= '/ '.json_encode($this->history);
+        $output .= '/ '.json_encode($this->currentArray);
         $output .= '/ '.$this->shrineName;
         $output .= '/ '.$this->description;
         $output .= '/ '.$this->shrineIcon;
@@ -85,50 +88,6 @@ class shrine implements shrine_Interface
     function setShrineType($var)
     {
         $this->shrineType = $var;
-    }
-
-    function getHistory()
-    {
-        return $this->history;
-    }
-
-    function setHistory($var)
-    {
-        $this->history = $var;
-    }
-
-    function addHistory($key, $var)
-    {
-        if (key_exists($key,$this->history)){
-            $current = intval($this->history[$key]);
-            $this->history[$key] = $current + intval($var);
-        } else {
-            $this->history[$key] = $var;
-        }
-    }
-
-    function getHistoryDay($key){
-        return $this->history[$key];
-    }
-
-    function getCurrentArray()
-    {
-        return $this->currentArray;
-    }
-
-    function setCurrentArray($var)
-    {
-        $this->currentArray = $var;
-    }
-
-    function addCurrentArray($key, $var)
-    {
-       if (key_exists($key,$this->currentArray)){
-           $current = intval($this->currentArray[$key]);
-           $this->currentArray[$key] = $current + intval($var);
-       } else {
-           $this->currentArray[$key] = $var;
-       }
     }
 
     function getShrineName()
@@ -207,14 +166,6 @@ class shrine implements shrine_Interface
         $this->worshipDescription = $var;
     }
 
-    function calculateTotalTribute(){
-        $total = 0;
-        foreach ($this->currentArray as $value){
-            $total += $value;
-        }
-        $this->totalTribute = $total;
-    }
-
     function getTotalTribute(){
         return $this->totalTribute;
     }
@@ -275,5 +226,108 @@ class shrine implements shrine_Interface
     function setBlessingMessage($var)
     {
         $this->blessingMessage = $var;
+    }
+
+    function getTypeName()
+    {
+        return $this->typeName;
+    }
+
+    function setTypeName($var)
+    {
+        $this->typeName = $var;
+    }
+
+    function getOverallType()
+    {
+        return $this->shrineOverallType;
+    }
+
+    function setOverallType($var)
+    {
+        $this->shrineOverallType = $var;
+    }
+
+    function getShrineAlertMessage()
+    {
+        return $this->shrineAlertMessage;
+    }
+
+    protected function getShrineFactory($id)
+    {
+        $object = new shrine1();
+        switch ($id){
+            case 1:
+                $object = new shrine1();
+                break;
+            case 2:
+                $object = new shrine2();
+                break;
+            case 3:
+                $object = new shrine3();
+                break;
+        }
+        $this->setShrineName($object->getShrineName());
+        $this->setDescription($object->getDescription());
+        $this->setShrineIcon($object->getShrineIcon());
+        $this->setWorshipCost($object->getWorshipCost());
+        $this->setWorshipDescription($object->getWorshipDescription());
+        $this->setShrineBonus($object->getShrineBonus());
+        $this->setBlessingMessage($object->getBlessingMessage());
+        $this->setMaxParty($object->getMaxParty());
+        $this->setMinParty($object->getMinParty());
+        $this->setTypeName($object->getTypeName());
+        $this->setOverallType($object->getOverallType());
+    }
+
+    protected function createShrineType($id){
+        $object = "";
+        switch ($id){
+            case 1:
+                $object = new shrineSolo();
+                break;
+            case 2:
+                $object = new shrineTeam();
+                break;
+            case 3:
+                $object = new shrineMap();
+                break;
+        }
+        $this->setMaxParty($object->getMaxPlayers());
+        $this->setMinParty($object->getMinPlayers());
+        $this->setTypeName($object->getTypeName());
+        $this->setOverallType($id);
+    }
+
+    function shrineRanks($map,$known){
+        $results = "";
+        switch ($this->getOverallType()){
+            case 1:
+                $results = shrineSolo::getCurrentRankings($map,$this,$known);
+                break;
+            case 2:
+                $results = shrineTeam::getCurrentRankings($map,$this);
+                break;
+            case 3:
+                $results = shrineMap::getCurrentRankings($map,$this);
+                break;
+        }
+        return $results;
+    }
+
+    function checkShrineFavour($rankingsList,$personalID,$partyID){
+        $result = "";
+        switch ($this->getOverAllType()){
+            case 1:
+                $result = shrineSolo::checkIfFavoured($rankingsList,$personalID);
+                break;
+            case 2:
+                $result = shrineTeam::checkIfFavoured($rankingsList,$partyID);
+                break;
+            case 3:
+                $result = shrineMap::checkIfFavoured($rankingsList);
+                break;
+        }
+        return $result;
     }
 }

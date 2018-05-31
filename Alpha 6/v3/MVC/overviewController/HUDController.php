@@ -6,8 +6,8 @@ class HUDController
     private static $infiniteStamina = true;
 
 
-    public static function changeReady($avatarID){
-        $avatar = new avatarController($avatarID);
+    public static function changeReady($profile){
+        $avatar = new avatarController($profile->getAvatar());
         $map = new mapController($avatar->getMapID());
         $avatar->toggleReady("ready");
         $avatar->updateAvatar();
@@ -15,24 +15,25 @@ class HUDController
             $counter = 0;
             foreach ($map->getAvatars() as $avatarTemp){
                 $single = new avatarController($avatarTemp);
-                if ($single->getReady() == true){
+                if ($single->getReady() === 1){
                     $counter++;
                 }
             }
             if ($counter >= $map->getMaxPlayerCount()) {
-                HUDController::dayEndingCheck($avatarID,"normal");
-                return array("ERROR" => 29);
+                HUDController::dayEndingCheck($map,"normal");
+                //An ALERT is made to mark the day ending
+                return array("ALERT" => 6,"DATA"=>"");
             } else {
-                return array("ERROR" => 31);
+                return array("SUCCESS" => true);
             }
         }
-        return array("ERROR"=>"This has been disabled on multiplayer maps");
+        return array("ERROR"=>"This has been disabled on real time maps");
     }
 
     public static function adminDayEnding($profile){
         $profile->getProfileAccess();
         if ($profile->getAccessEditMap()===1){
-            HUDController::dayEndingCheck($profile->getAvatar(),"admin");
+            //HUDController::dayEndingCheck($profile->getAvatar(),"admin");
             return array("ERROR" => 29);
         } else {
             $response = array("ERROR"=>28);
@@ -40,12 +41,10 @@ class HUDController
         return $response;
     }
 
-    public static function dayEndingCheck($avatarID,$type)
+    public static function dayEndingCheck($map,$type)
     {
-        $avatarTemp = new avatarController($avatarID);
-        $map = new mapController($avatarTemp->getMapID());
         if (count($map->getAvatars()) >= $map->getMaxPlayerCount() || $type === "admin") {
-            dayEndingFunctions::mapDayEnds($map->getMapID());
+            dayEndingFunctions::mapDayEnds($map);
         }
     }
 
@@ -63,9 +62,14 @@ class HUDController
     public static function refreshStamina($avatarID){
         if (HUDController::$infiniteStamina === true) {
             $avatar = new avatarController($avatarID);
-            $avatar->setStamina($avatar->getMaxStamina());
-            $avatar->updateAvatar();
-            return array("ERROR"=>57);
+            $map = new mapController($avatar->getMapID());
+            if ($map->getGameType() === 5) {
+                $avatar->setStamina($avatar->getMaxStamina());
+                $avatar->updateAvatar();
+                return array("ERROR"=>57);
+            } else {
+                return array("ERROR"=>100);
+            }
         } else {
             return array("ERROR"=>100);
         }

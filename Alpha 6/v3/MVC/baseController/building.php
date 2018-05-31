@@ -25,6 +25,7 @@ class building implements building_Interface
     protected $buildingTypeID;
     protected $tutorialKnown;
     protected $mainKnown;
+    protected $parentBuilt;
 
 
     public function __toString()
@@ -214,10 +215,14 @@ class building implements building_Interface
 
     function checkCanBeBuilt(){
         $this->canBeBuilt = true;
-        foreach ($this->itemsRequired as $item){
-            if ($item["materialNeeded"] > $item["materialOwned"]){
-                $this->canBeBuilt = false;
+        if ($this->parentBuilt === true) {
+            foreach ($this->itemsRequired as $item) {
+                if ($item["materialNeeded"] > $item["materialOwned"]) {
+                    $this->canBeBuilt = false;
+                }
             }
+        } else {
+            $this->canBeBuilt = false;
         }
     }
 
@@ -274,5 +279,15 @@ class building implements building_Interface
     function setMapID($var)
     {
         $this->mapID = $var;
+    }
+
+    function getParentBuilt()
+    {
+        return $this->parentBuilt;
+    }
+
+    function setParentBuilt($var)
+    {
+        $this->parentBuilt = $var;
     }
 }

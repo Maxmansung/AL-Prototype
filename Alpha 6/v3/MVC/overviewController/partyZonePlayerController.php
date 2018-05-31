@@ -70,6 +70,22 @@ class partyZonePlayerController
 
     ////////////CONTROLLER FUNCTIONS///////////
 
+
+    //This function checks if a player has favour with a god that will be lost by leaving the current party
+    public static function checkTeamFavour($avatarID){
+        $avatar = new avatarController($avatarID);
+        $map = new mapController($avatar->getMapID());
+        $party = new partyController($avatar->getPartyID());
+        $shrineTeam = new shrineTeam();
+        if (count($party->getMembers())===$shrineTeam->getMinPlayers()){
+            $check = shrineActionsController::checkFavour($avatar->getPartyID(),$map->getCurrentDay(),2);
+            if ($check === true) {
+                return array("ALERT" => 34, "DATA" => "");
+            }
+        }
+        return self::leaveParty($avatarID);
+    }
+
     //This function causes a player to leave their current party
     public static function leaveParty($avatarID){
         $avatar = new avatarController($avatarID);
@@ -91,16 +107,40 @@ class partyZonePlayerController
                 $newParty->uploadParty();
                 $party->uploadParty();
                 $avatar->updateAvatar();
-                chatlogGroupController::leaveGroup($avatar->getAvatarID(),$party->getPartyID());
-                return array("SUCCESS"=>true);
+                $map = new mapController($avatar->getMapID());
+                $shrineTeam = new shrineTeam();
+                if (count($party->getMembers()) < $shrineTeam->getMinPlayers()){
+                    shrineActionsController::deleteTeamFavour($party->getPartyID(),$map->getCurrentDay());
+                }
+                chatlogGroupController::leaveGroup($avatar,$party->getPartyID(),$map->getCurrentDay());
+                return array("ALERT"=>30,"DATA"=>$party->getPartyName());
+            }
+        }
+    }
+
+    //This function checks if a player has favour with a god that will be lost by joining a new party
+    public static function checkSoloFavour($avatarID,$playerID){
+        $avatar = new avatarController($avatarID);
+        $map = new mapController($avatar->getMapID());
+        $check = shrineActionsController::checkFavour($avatarID,$map->getCurrentDay(),1);
+        $party = new partyController($avatar->getPartyID());
+        $shrineTeam = new shrineTeam();
+        if (count($party->getMembers())>=$shrineTeam->getMinPlayers()){
+            return array("ERROR"=>68);
+        } else {
+            if ($check === true) {
+                return array("ALERT" => 33, "DATA" => $playerID);
+            } else {
+                return self::joinParty($avatarID, $playerID);
             }
         }
     }
 
     //This function adds a request to join a specific party
     public static function joinParty($avatarID,$playerID){
-        $otherPlayer = new avatarController($playerID);
-        if ($otherPlayer->getAvatarID() != $playerID || $playerID == ""){
+        $playerIDClean = preg_replace(data::$cleanPatterns['num'],"",$playerID);
+        $otherPlayer = new avatarController($playerIDClean);
+        if ($otherPlayer->getAvatarID() != $playerIDClean || $playerIDClean == ""){
             return array("ERROR" => 20);
         } else {
             $newParty = new partyController($otherPlayer->getPartyID());
@@ -108,17 +148,29 @@ class partyZonePlayerController
             if (in_array($newPlayer->getAvatarID(), $newParty->getMembers()) === true) {
                 return array("ERROR" => 21);
             } if (partyModel::findPendingRequests($otherPlayer->getMapID(),$newPlayer->getAvatarID()) == true){
-                return array("ERROR"=> 54);
+                $party = partyModel::findPendingRequestsItem($otherPlayer->getMapID(),$newPlayer->getAvatarID());
+                return array("ALERT"=> 29,"DATA"=>array("current"=>$party->getPartyName(),"joining"=>$newParty->getPartyName(),"id"=>$otherPlayer->getAvatarID()));
             } else {
                 if ($newPlayer->getAvatarID() != "") {
                     $newParty->addPendingRequests($newPlayer->getAvatarID());
                     $newParty->uploadParty();
-                    chatlogGroupController::playerJoining($avatarID, $newParty->getPartyID());
+                    $map = new mapController($otherPlayer->getMapID());
+                    chatlogGroupController::playerJoining($newPlayer, $newParty->getPartyID(),$map->getCurrentDay());
                     return array("SUCCESS" => true);
                 } else {
                     return array("ERROR"=>"Somehow you are not logged in when requesting to join");
                 }
             }
+        }
+    }
+
+    //This function adds a request to join a specific party
+    public static function joinPartyOverride($avatarID,$playerID){
+        $response = self::cancelJoin($avatarID);
+        if (!key_exists("ERROR",$response)){
+            return self::joinParty($avatarID,$playerID);
+        } else {
+            return $response;
         }
     }
 
@@ -132,7 +184,8 @@ class partyZonePlayerController
         } else {
             $party->addPendingBans($votedPlayer->getAvatarID());
             $party->uploadParty();
-            chatlogGroupController::playerKicking($votedPlayer->getAvatarID(),$party->getPartyID());
+            $map = new mapController($votedPlayer->getMapID());
+            chatlogGroupController::playerKicking($votedPlayer,$party->getPartyID(),$map->getCurrentDay());
             $response = self::votingOnPlayer($avatar->getAvatarID(),$votedPlayer->getAvatarID(),"accept");
             return $response;
         }
@@ -158,30 +211,90 @@ class partyZonePlayerController
             } else {
                 return array("ERROR" => 23);
             }
-            $avatar->updateAvatar();
-            $checkingVotes = self::calculateVotes($avatar->getPartyID(),$votedPlayer->getAvatarID());
+            $test = self::checkVotes($avatar->getPartyID(),$votedPlayer,$type,$avatarID);
+            if (array_key_exists("SUCCESS",$test)) {
+                $avatar->updateAvatar();
+                $checkingVotes = self::calculateVotes($avatar->getPartyID(), $votedPlayer);
+            } else {
+                $checkingVotes = $test;
+            }
             return $checkingVotes;
         }
     }
 
-    //This function empties a party when the last player leaves it
-    private static function emptyParty($partyModel)
-    {
-        $partyModel->removeAllZoneExploration();
-        $partyModel->setMembers(array());
-        $partyModel->setPlayersKnown(array());
-        $partyModel->setPendingBans(array());
-        $partyModel->setPendingRequests(array());
-        $partyName = str_replace($partyModel->getMapID(), "", $partyModel->getPartyID());
-        $partyModel->setPartyName($partyName);
-        chatlogGroupController::deleteGroupLogs($partyModel->getPartyID());
+    //This function applies the players vote regarding another player
+    public static function votingOnPlayerFinal($avatarID,$playerID,$type){
+        $avatar = new avatarController($avatarID);
+        $votedPlayer = new avatarController($playerID);
+        $exists = false;
+        foreach ($avatar->getPartyVote() as $player=>$vote){
+            if ($votedPlayer->getAvatarID() == $player){
+                $exists = true;
+            }
+        }
+        if ($exists != true){
+            return array("ERROR" => 22);
+        } else {
+            if ($type == "accept") {
+                $avatar->changePartyVote($votedPlayer->getAvatarID(), 1);
+            } elseif ($type == "reject"){
+                $avatar->changePartyVote($votedPlayer->getAvatarID(), 2);
+            } else {
+                return array("ERROR" => 23);
+            }
+            $avatar->updateAvatar();
+            $checkingVotes = self::calculateVotes($avatar->getPartyID(), $votedPlayer);
+            return $checkingVotes;
+        }
     }
 
     //This functions calculates if a player will join or be rejected from a group from the posted votes
-    private static function calculateVotes($partyID,$playerVotedOn)
+    private static function checkVotes($partyID,$votedOn,$type,$avatarID)
     {
         $party = new partyController($partyID);
-        $votedOn = new avatarController($playerVotedOn);
+        $voters = $party->getMembers();
+        $total = count($voters);
+        $votesFor = 0;
+        $sixty = $total * 0.599;
+        foreach ($voters as $player) {
+            $currentPlayer = new avatarController($player);
+            $playersVotes = $currentPlayer->getPartyVote();
+            if ($type === "accept") {
+                if ($playersVotes[$votedOn->getAvatarID()] == 1 || $currentPlayer->getAvatarID() === $avatarID) {
+                    $votesFor++;
+                    if ($votesFor > $sixty) {
+                        if ($votedOn->getPartyID() === $party->getPartyID()) {
+                            $shrineTeam = new shrineTeam();
+                            if (count($party->getMembers()) === $shrineTeam->getMinPlayers()) {
+                                return array("ALERT" => 35, "DATA" => "".$votedOn->getAvatarID());
+                            }
+                            $shrineSolo = new shrineSolo();
+                            if (count($party->getMembers()) === $shrineSolo->getMinPlayers()) {
+                                return array("ALERT" => 36, "DATA" => "".$votedOn->getAvatarID());
+                            }
+                        } else {
+                            $shrineTeam = new shrineTeam();
+                            if (count($party->getMembers()) === $shrineTeam->getMaxPlayers()) {
+                                return array("ALERT" => 35, "DATA" => "".$votedOn->getAvatarID());
+                            }
+                            $shrineSolo = new shrineSolo();
+                            if (count($party->getMembers()) === $shrineSolo->getMaxPlayers()) {
+                                return array("ALERT" => 36, "DATA" => "".$votedOn->getAvatarID());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return array("SUCCESS"=>true);
+    }
+
+
+
+    //This functions calculates if a player will join or be rejected from a group from the posted votes
+    private static function calculateVotes($partyID,$votedOn)
+    {
+        $party = new partyController($partyID);
         $voters = $party->getMembers();
         $total = count($voters);
         $votesFor = 0;
@@ -195,9 +308,9 @@ class partyZonePlayerController
                 $votesFor++;
                 if ($votesFor > $sixty) {
                     if ($votedOn->getPartyID() === $party->getPartyID()) {
-                        return self::completeKickPlayer($votedOn->getAvatarID());
+                        return self::completeKickPlayer($party,$votedOn);
                     } else {
-                        return self::acceptPlayerParty($party->getPartyID(), $votedOn->getAvatarID());
+                        return self::acceptPlayerParty($party, $votedOn);
                     }
                 }
             }
@@ -205,112 +318,122 @@ class partyZonePlayerController
                 $votesAgainst++;
                 if ($votesAgainst > $forty) {
                     if ($votedOn->getPartyID() === $party->getPartyID()) {
-                        return self::completeRejectKickPlayer($votedOn->getAvatarID());
+                        return self::completeRejectKickPlayer($party,$votedOn);
                     } else {
-                        return self::rejectPlayerParty($party->getPartyID(), $votedOn->getAvatarID());
+                        return self::rejectPlayerParty($party, $votedOn);
                     }
                 }
             }
         }
-        return array("SUCCESS"=>"No changes");
+        return array("ALERT"=>31,"DATA"=>"Your vote has been taken into consideration, more votes are needed for a decision to be made though");
     }
 
     //This function kicks a player from the party
-    private static function completeKickPlayer($playerVotedOn)
+    private static function completeKickPlayer($party, $avatar)
     {
-        $avatar = new avatarController($playerVotedOn);
-        $party = new partyController($avatar->getPartyID());
-        chatlogGroupController::kickSuccess($avatar->getAvatarID(),$avatar->getPartyID());
+        $map = new mapController($avatar->getMapID());
+        chatlogGroupController::kickSuccess($avatar,$avatar->getPartyID(),$map->getCurrentDay());
         $newParty = partyController::getEmptyParty($avatar->getMapID());
         $newParty->setZoneExploration($party->getZoneExploration());
         $newParty->setPlayersKnown($party->getPlayersKnown());
         $newParty->addMember($avatar->getAvatarID());
         $party->removeMember($avatar->getAvatarID());
+        $shrineTeam = new shrineTeam();
+        if (count($party->getMembers()) < $shrineTeam->getMinPlayers()){
+            shrineActionsController::deleteTeamFavour($avatar->getPartyID(),$map->getCurrentDay());
+        }
         $party->removePendingBans($avatar->getAvatarID());
-        $members = $party->getMembers();
-        self::removeMapVotes($members,$avatar->getAvatarID());
-        $avatar->setPartyID($newParty->getPartyID());
+        self::removeMapVotes($avatar);
         $avatar->clearVotes();
+        $avatar->setPartyID($newParty->getPartyID());
         $newParty->uploadParty();
-        $party->uploadParty();
         $avatar->updateAvatar();
-        partyController::removeAllInvites($avatar->getAvatarID());
-        return array("SUCCESS"=>true);
+        partyController::removeAllInvites($avatar->getAvatarID(),$map->getCurrentDay());
+        if (count($newParty->getMembers())< 3){
+            $party = self::resetGroupVotes($party);
+        }
+        $party->uploadParty();
+        return array("ALERT"=>31,"DATA"=>$avatar->getProfileID()." has been kicked from the party");
+    }
+
+    private static function resetGroupVotes($party){
+        $party->setPendingBans(array());
+        $avatars = avatarController::getAvatarsInArray($party->getMembers(),true);
+        foreach ($avatars as $single){
+            $single->clearVotes();
+            $single->updateAvatar();
+        }
+        return $party;
     }
 
     //This functions rejects kicking a player from the party
-    private static function completeRejectKickPlayer($playerVotedOn){
-        $avatar = new avatarController($playerVotedOn);
-        $party = new partyController($avatar->getPartyID());
-        chatlogGroupController::kickFail($avatar->getAvatarID(),$avatar->getPartyID());
+    private static function completeRejectKickPlayer($party,$avatar){
+        $map = new mapController($avatar->getMapID());
+        chatlogGroupController::kickFail($avatar,$avatar->getPartyID(),$map->getCurrentDay());
         $party->removePendingBans($avatar->getAvatarID());
-        $members = $party->getMembers();
-        self::removePartyVotes($members,$avatar->getAvatarID());
+        self::removeMapVotes($avatar);
         $party->uploadParty();
-        return array("SUCCESS"=>true);
+        return array("ALERT"=>31,"DATA"=>$avatar->getProfileID()." is not being kicked from the party");
     }
 
     //This function transfers a player into a new party
-    private static function acceptPlayerParty($partyID,$playerVotedOn){
-        $avatar = new avatarController($playerVotedOn);
+    private static function acceptPlayerParty($newParty,$avatar){
         $oldParty = new partyController($avatar->getPartyID());
-        $newParty = new partyController($partyID);
-        chatlogGroupController::joinSuccess($avatar->getAvatarID(),$newParty->getPartyID());
+        $map = new mapController($avatar->getMapID());
+        chatlogGroupController::joinSuccess($avatar,$newParty->getPartyID(),$map->getCurrentDay());
         $newParty->addMember($avatar->getAvatarID());
         $newParty->removePendingRequests($avatar->getAvatarID());
         $newParty->combinePlayersKnown($oldParty->getPlayersKnown());
         $newParty->combineZoneExploration($oldParty->getZoneExploration());
-        $members = $newParty->getMembers();
-        self::removeMapVotes($members,$avatar->getAvatarID());
+        self::removeMapVotes($avatar);
         $oldParty->removeMember($avatar->getAvatarID());
-        if (count($oldParty->getMembers())<= 0){
-            self::emptyParty($oldParty);
+        $shrineSolo = new shrineSolo();
+        if (count($newParty->getMembers())> $shrineSolo->getMaxPlayers()){
+            $soloMember = $newParty->getMembers();
+            foreach ($soloMember as $tempAvatar)
+                shrineActionsController::deleteSoloFavour($tempAvatar,$map->getCurrentDay());
+        }
+        $shrineTeam = new shrineTeam();
+        if (count($oldParty->getMembers()) > $shrineTeam->getMaxPlayers()){
+            shrineActionsController::deleteTeamFavour($avatar->getPartyID(),$map->getCurrentDay());
+        }
+        if (count($oldParty->getMembers()) < 1){
+            $oldParty->emptyParty();
         }
         $avatar->setPartyID($newParty->getPartyID());
         $avatar->clearVotes();
         $oldParty->uploadParty();
         $newParty->uploadParty();
         $avatar->updateAvatar();
-        return array("SUCCESS"=>"Accepted");
+        return array("ALERT"=>31,"DATA"=>$avatar->getProfileID()." has now joined the party");
     }
 
     //This function cancels a players request to join a party
-    private static function rejectPlayerParty($partyID,$playerVotedOn){
-        $party = new partyController($partyID);
-        $avatar = new avatarController($playerVotedOn);
+    private static function rejectPlayerParty($party,$avatar){
         $party->removePendingRequests($avatar->getAvatarID());
-        $members = $party->getMembers();
-        chatlogGroupController::joinFail($avatar->getAvatarID(),$party->getPartyID());
-        self::removePartyVotes($members,$avatar->getAvatarID());
+        $map = new mapController($avatar->getMapID());
+        chatlogGroupController::joinFail($avatar,$party->getPartyID(),$map->getCurrentDay());
+        self::removeMapVotes($avatar);
         $party->uploadParty();
-        return array("SUCCESS"=>"Rejected");
+        return array("ALERT"=>31,"DATA"=>$avatar->getProfileID()." has failed to be accepted into the party");
     }
 
     //This resets the groups votes surrounding a player
-    private static function removePartyVotes($membersArray,$playerVotedOn)
+    private static function removeMapVotes($playerVote)
     {
-        $avatarCurrent = new avatarController($playerVotedOn);
-        foreach ($membersArray as $player) {
+        $mapPlayers = avatarModel::getAllMapAvatars($playerVote->getMapID());
+        foreach ($mapPlayers as $player) {
             $avatar = new avatarController($player);
-            $avatar->changePartyVote($avatarCurrent->getAvatarID(), 0);
+            $avatar->changePartyVote($playerVote->getAvatarID(), 0);
             $avatar->updateAvatar();
         }
     }
 
-    //This resets the votes of all players surrounding a player
-    private static function removeMapVotes($avatarArray,$playerVotedOn){
-        $avatarCurrent = new avatarController($playerVotedOn);
-        foreach ($avatarArray as $avatar){
-            $newAvatar = new avatarController($avatar);
-            $newAvatar->changePartyVote($avatarCurrent->getAvatarID(), 0);
-            $newAvatar->updateAvatar();
-        }
-    }
-
     //This function changes the name of a players group
-    public static function changeGroupName($avatarID,$newName){
+    public static function changeGroupName($avatarID,$name){
         $avatar = new avatarController($avatarID);
         $party = new partyController($avatar->getPartyID());
+        $newName = preg_replace(data::$cleanPatterns['textSpace'],"",$name);
         if (count($party->getMembers())>1){
             return array("ERROR" => 25);
         } else {
@@ -323,104 +446,82 @@ class partyZonePlayerController
                 } else {
                     $party->setPartyName($newName);
                     $party->uploadParty();
-                    return array("SUCCESS"=>true);
+                    return array("ALERT"=>9,"DATA"=>"Your party name has now been changed");
                 }
             }
         }
     }
 
-    public static function cancelJoin($avatarID,$playerID){
-        $otherPlayer = new avatarController($playerID);
+    public static function cancelJoin($avatarID){
         $avatar = new avatarController($avatarID);
-        if ($otherPlayer->getAvatarID() != $playerID){
+        $party = partyModel::findPendingRequestsItem($avatar->getMapID(),$avatar->getAvatarID());
+        $newParty = new partyController($party);
+        if ($newParty->getPartyID() == ""){
             return array("ERROR" => 20);
         } else {
-            $newParty = new partyController($otherPlayer->getPartyID());
             if (in_array($avatar->getAvatarID(), $newParty->getMembers()) === true) {
                 return array("ERROR" => 21);
             } else {
                 $newParty->removePendingRequests($avatar->getAvatarID());
                 $newParty->uploadParty();
-                chatlogGroupController::cancelGroupRequest($avatar->getAvatarID(),$newParty->getPartyID());
+                $map = new mapController($avatar->getMapID());
+                chatlogGroupController::cancelGroupRequest($avatar,$newParty->getPartyID(),$map->getCurrentDay());
                 return array("SUCCESS"=>true);
             }
         }
     }
 
-    public static function getResearchTeaching($avatarID,$playerID){
-        $otherPlayer = new avatarController($playerID);
-        if ($otherPlayer->getAvatarID() != $playerID){
-            return array("ERROR" => 20);
-        } else {
-            $player = new avatarController($avatarID);
-            if ($player->getStamina() < 2){
-                return array("ERROR"=>0);
-            } else {
-                $unknownResearch = [];
-                foreach ($player->getResearched() as $research) {
-                    if (!in_array($research, $otherPlayer->getResearched())) {
-                        array_push($unknownResearch, $research);
+    static function getUnknownResearch($other,$self,$view)
+    {
+        $buildingList = buildingView::getAllBuildingsView();
+        $knownList = $self->getResearched();
+        $finalList = [];
+        foreach ($knownList as $item){
+            if (!in_array($item,$other->getResearched())) {
+                if (in_array($buildingList[$item]->getBuildingsRequired(), $other->getResearched())) {
+                    $building = $buildingList[$item];
+                    if ($view === true) {
+                        array_push($finalList, $building->returnVars());
+                    } else {
+                        array_push($finalList, $item);
                     }
-                }
-                if (count($unknownResearch)>0){
-                    $buildingsArray = [];
-                    foreach ($unknownResearch as $research){
-                        $canResearch = true;
-                        $building = new buildingController("");
-                        $building->createNewBuilding($research,$player->getZoneID());
-                        $buildingRequired = $building->getBuildingsRequired();
-                        if ($buildingRequired !== 0 && $buildingRequired !== "0") {
-                            if (!in_array($buildingRequired,$otherPlayer->getResearched())){
-                                $canResearch = false;
-                            }
-                        }
-                        if ($canResearch == true) {
-                            $buildingsArray[$research] = array("templateID" => $building->getBuildingTemplateID(), "buildingName" => $building->getName(), "icon" => $building->getIcon());
-                        }
-                    }
-                    return array("research"=>$buildingsArray,"player"=>$otherPlayer->getAvatarID());
-                } else {
-                    return array("ERROR"=>47);
                 }
             }
         }
-
+        return $finalList;
     }
 
-    public static function teachPlayerResearch($playerID,$avatarID,$research)
+    public static function teachPlayerResearch($avatarID,$playerID,$research)
     {
         $avatar = new avatarController($avatarID);
         if ($avatar->getStamina() < 2) {
             return array("ERROR" => 0);
         } else {
-            if (!in_array($research, $avatar->getResearched())) {
+            $cleanResearch = preg_replace(data::$cleanPatterns['text'],"",$research);
+            if (!in_array($cleanResearch, $avatar->getResearched())) {
                 return array("ERROR" => 39);
             } else {
-                $otherPlayer = new avatarController($playerID);
-                if ($otherPlayer->getAvatarID() != $playerID) {
+                $playerIDClean = preg_replace(data::$cleanPatterns['num'],"",$playerID);
+                $otherPlayer = new avatarController($playerIDClean);
+                if ($otherPlayer->getAvatarID() != $playerIDClean) {
                     return array("ERROR" => 48);
                 } else {
-                    if (in_array($research, $otherPlayer->getResearched())) {
-                        return array("ERROR" => 49);
+                    if ($otherPlayer->getZoneID() !== $avatar->getZoneID()){
+                        return array("ERROR"=>"Player is not in the correct zone to do this action");
                     } else {
-                        $building = new buildingController("");
-                        $building->createNewBuilding($research, $otherPlayer->getZoneID());
-                        if ($building->getBuildingTemplateID() != $research) {
-                            return array("ERROR" => 50);
+                        $list = self::getUnknownResearch($otherPlayer, $avatar, false);
+                        if (!in_array($research, $list)) {
+                            return array("ERROR" => 49);
                         } else {
-                            $buildingRequired = $building->getBuildingsRequired();
-                            if ($buildingRequired !== 0 && $buildingRequired !== "0") {
-                                if (!in_array($buildingRequired, $otherPlayer->getResearched())) {
-                                    return array("ERROR" => 51);
-                                }
-                            }
                             $avatar->useStamina(2);
-                            $avatar->addPlayStatistics("research",2);
+                            $avatar->addPlayStatistics("research", 2);
                             $otherPlayer->addResearched($research);
                             $avatar->updateAvatar();
                             $otherPlayer->updateAvatar();
-                            chatlogPersonalController::teachPlayerResearch($avatar->getAvatarID(),$building->getName(),$otherPlayer->getProfileID());
-                            return array("SUCCESS"=>true);
+                            $building = buildingController::createBlankBuilding($cleanResearch);
+                            $map = new mapController($avatar->getMapID());
+                            chatlogPersonalController::teachPlayerResearch($avatar, $building->getName(), $otherPlayer->getProfileID(), $map->getCurrentDay());
+                            return array("ALERT" => 17, "DATA" => array("player" => $otherPlayer->getProfileID(), "building" => $building->getName()));
                         }
                     }
                 }

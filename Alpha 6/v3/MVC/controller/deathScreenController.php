@@ -16,41 +16,35 @@ class deathScreenController extends deathScreen
             $this->deathDay = $deathModel->deathDay;
             $this->nightTemp = $deathModel->nightTemp;
             $this->survivableTemp = $deathModel->survivableTemp;
-            $this->deathStatistics = $deathModel->deathStatistics;
             $this->deathAchievements = $deathModel->deathAchievements;
             if (is_object($this->deathAchievements)) {
                 $this->achievementDetails = achievementController::getAchievements($this->deathAchievements);
             }
             $this->gameType = $deathModel->gameType;
-            $this->shrineScore = $deathModel->shrineScore;
-            if (is_object($this->shrineScore)) {
-                $this->shrineDisplay = buildingLevels::getShrineDetails($this->shrineScore);
-            }
             $this->deathType = $deathModel->getDeathType();
-            $this->partyPlayersLeft = $deathModel->partyPlayersLeft;
             $this->dayDuration = $deathModel->dayDuration;
+            $this->favourSolo = $deathModel->getFavourSolo();
+            $this->favourTeam = $deathModel->getFavourTeam();
+            $this->favourMap = $deathModel->getFavourMap();
         }
     }
 
-    public static function createNewDeathScreen($avatar,$deathTemp,$cause){
-        $profile = new profileController($avatar->getProfileID());
-        $map = new mapController($avatar->getMapID());
-        $party = new partyController($avatar->getPartyID());
+    public static function createNewDeathScreen($avatar,$cause,$deathTemp,$nightTemp,$partyName,$map){
         $deathScreen = new deathScreenController("");
+        $profile = new profileController($avatar->getProfileID());
         $deathScreen->setProfileID($profile->getProfileID());
         $deathScreen->setMapID($map->getName());
-        $deathScreen->setPartyName($party->getPartyName());
+        $deathScreen->setPartyName($partyName);
         $deathScreen->setDeathDay($map->getCurrentDay());
-        $deathScreen->setNightTemp(intval($map->getBaseNightTemperature()));
+        $deathScreen->setNightTemp($nightTemp);
         $deathScreen->setSurvivableTemp($deathTemp);
-        $deathScreen->setDeathStatistics($avatar->getPlayStatistics());
         $deathScreen->setDeathAchievements($avatar->getAchievements());
         $deathScreen->setGameType($map->getGameType());
-        $deathScreen->setShrineScore($avatar->getShrineScore());
         $deathScreen->setDeathType(intval($cause));
-        $totalLeft = count($party->getMembers())-1;
-        $deathScreen->setPartyPlayersLeft(intval($totalLeft));
         $deathScreen->setDayDuration($map->getDayDuration());
+        $deathScreen->setFavourSolo($avatar->getFavourSolo());
+        $deathScreen->setFavourTeam($avatar->getFavourTeam());
+        $deathScreen->setFavourMap($avatar->getFavourMap());
         $deathScreen->insertDeathScreen();
     }
 
@@ -64,16 +58,6 @@ class deathScreenController extends deathScreen
 
     public function deleteDeathScreen(){
         deathScreenModel::deleteDeathScreen($this->profileID);
-    }
-
-    public function getShrineDetails(){
-        $tempArray = [];
-        foreach ($this->shrineScore as $key=>$value){
-            $shrine = shrineController::createBlankShrine($key);
-            $tempArray[$key] = $shrine->returnVars();
-            $tempArray[$key]["score"] = $value;
-        }
-        $this->setShrineScore($tempArray);
     }
 
 }

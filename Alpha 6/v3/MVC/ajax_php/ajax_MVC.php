@@ -4,9 +4,9 @@ if (isset($_POST["type"])) {
     include_once(PROJECT_ROOT."/MVC/filesInclude.php");
     $type = intval(preg_replace('#[^0-9]#i', '', $_POST['type']));
     $response = profileController::userlogin();
-    $excludedRequests = array(213,204,198,197,196,49);
+    $excludedRequests = array(226,225,213,204,198,197,196,49);
     $check = in_array($type,$excludedRequests);
-    if (array_key_exists("ERROR",$response) && $check === false ){
+    if (!array_key_exists("SUCCESS",$response) && $check === false ){
         echo json_encode($response);
     } else {
         if (isset($response["SUCCESS"])) {
@@ -25,33 +25,29 @@ if (isset($_POST["type"])) {
             $data5 = htmlentities($_POST['data5'], ENT_QUOTES | ENT_SUBSTITUTE);
             $data6 = htmlentities($_POST['data6'], ENT_QUOTES | ENT_SUBSTITUTE);
             switch ($type) {
+                //UNUSED FUNCTIONS:
                 case 0:
                     //Used to show the Alerts
+                case 2:
+                    //Used to show an individual player
                 case 9:
-                    //Used to show the death screen
+                    //Used to get the Main game page information
                 case 10:
-                    //Used to show the firepit screen
+                case 11:
                 case 12:
-                    //Used to show the Actions screen
                 case 19:
-                    //Used to show the map screen
                 case 24:
-                    //Used to show the a single zones information
                 case 25:
-                    //Used to show the a single zones information
                 case 35:
-                    //Used to show the players profile page
                 case 36:
-                    //Used to show players profile edit page
                 case 38:
-                    //Used to show the players that are searched for
                 case 39:
-                    //Used to show the players that are searched for
+                case 41:
                 case 42:
-                    //This is used to show the special buildings page
                 case 47:
-                    //This is used to show the nightfall page
                 case 49:
+                    //This is used to show the deathscreen page
+                case 53:
                     //This is used to show the join game page
                 case 188:
                     //This is used to show the leaderboards
@@ -69,18 +65,17 @@ if (isset($_POST["type"])) {
                     //This is used to get all the open reports
                 case 220:
                     //This is used to show the admin page of searched players
+                case 225:
+                    //This is used to show the news page
+                case 226:
+                    //This is used to show a single news page
                     $response = array("SUCCESS" => true);
                     //No actions performed
                     break;
                 case 1:
                     //Used to perform a recipe
-                    $response = playerMapZoneController::useRecipe($data1, $profile->getAvatar());
+                    $response = playerMapZoneController::useRecipe($data3, $profile->getAvatar());
                     //Returns ERROR or ALERT or SUCCESS
-                    break;
-                case 2:
-                    //Used to upgrade sleeping bag
-                    $response = buildingItemController::upgradeSleepingBag($profile->getAvatar());
-                    //Returns ERROR or SUCCESS
                     break;
                 case 3:
                     //Used to perform research
@@ -89,59 +84,52 @@ if (isset($_POST["type"])) {
                     break;
                 case 5:
                     //Used for building in adding stamina to buildings
-                    $spent = intval(preg_replace('#[^0-9]#i', '', $_POST['cost']));
-                    $response = buildingItemController::buildBuilding($data1, $profile->getAvatar(), $spent);
+                    $response = buildingItemController::buildBuilding($profile->getAvatar(),$data1,$data3, $data4);
                     //Returns ERROR or SUCCESS
                     break;
                 case 6:
                     //Used to change a players ready status
-                    $response = HUDController::changeReady($profile->getAvatar());
-                    //Returns ERROR or ALERT
+                    $response = HUDController::changeReady($profile);
+                    //Returns ERROR, ALERT or SUCCESS
                     break;
                 case 7:
                     //Used to confirm a players death
-                    $response = $profile->confirmdeath();
+                    $response = dayEndingFunctions::confirmDeath($profile);
                     //Returns ERROR
                     break;
                 case 8:
                     //Used to complete a research
-                    $response = buildingItemController::completeResearch($profile->getAvatar(),intval($data1));
+                    $response = buildingItemController::completeResearch($profile->getAvatar(),$data3);
                     //Returns ERROR or ALERT
                     break;
-                case 11:
-                    //Used when an item is dropped into the firepit
-                    $response = buildingItemController::firepitDrop($data1, $profile->getAvatar());
-                    //Returns ERROR or SUCCESS
-                    break;
                 case 14:
-                    //Used when a player reinforces a lock
-                    $response = buildingItemController::impactLock($profile->getAvatar(),"break", $data1);
+                    //Used when a player reinforces the fence
+                    $response = buildingItemController::impactLock($profile->getAvatar(), "Fence");
                     //Returns ERROR or SUCCESS
                     break;
                 case 16:
                     //Used to drop an item into the storage
-                    $response = buildingItemController::storageItemTransfer($data1, $profile->getAvatar());
+                    $response = buildingItemController::storageItemTransfer($data3, $profile->getAvatar());
                     //Returns ERROR or SUCCESS
                     break;
                 case 17:
-                    //Used to upgrade the storage building
-                    $response = buildingItemController::upgradeStorage($profile->getAvatar());
+                    //Used to pick up an item from the storage
+                    $response = buildingItemController::pickItem($data3,$profile->getAvatar());
                     //Returns ERROR or SUCCESS
                     break;
                 case 18:
-                    //Used when a player reinforces a lock
-                    $response = buildingItemController::impactLock($profile->getAvatar(), "reinforce", $data1);
+                    //Used when a player reinforces the chest
+                    $response = buildingItemController::impactLock($profile->getAvatar(), "Chest");
                     //Returns ERROR or SUCCESS
                     break;
                 case 20:
                     //Used when a player moves on the map
-                    $response = playerMapZoneController::moveAvatar($profile->getAvatar(), $data1);
+                    $response = playerMapZoneController::moveAvatar($profile->getAvatar(), $data3);
                     //Returns ERROR or SUCCESS
                     break;
-                case 44:
                 case 21:
                     //Used when a player drops an item
-                    $response = playerMapZoneController::dropItem($data1, $profile->getAvatar());
+                    $response = playerMapZoneController::dropItem($data2, $profile->getAvatar());
                     //Returns ERROR or SUCCESS
                     break;
                 case 22:
@@ -186,18 +174,17 @@ if (isset($_POST["type"])) {
                     break;
                 case 32:
                     //Used when a player wants to cancel a request to join a party
-                    $response = partyZonePlayerController::cancelJoin($profile->getAvatar(), $data1);
+                    $response = partyZonePlayerController::cancelJoin($profile->getAvatar());
                     //Returns ERROR or ALERT
                     break;
                 case 33:
-                    //Used when a player wants to check if they can teach another player something
-                    $response = partyZonePlayerController::getResearchTeaching($profile->getAvatar(), $data1);
+                    //Used to cancel a request and make a new one
+                    $response = partyZonePlayerController::joinPartyOverride($profile->getAvatar(),$data1);
                     //Returns ERROR or ALERT
                     break;
                 case 34:
                     //Used when a player wants to teach another player something
-                    $player = preg_replace('#[^A-Za-z0-9_\s]#i', '', $_POST['other']);
-                    $response = partyZonePlayerController::teachPlayerResearch($player, $profile->getAvatar(), $data1);
+                    $response = partyZonePlayerController::teachPlayerResearch( $profile->getAvatar(), $data1,$data2);
                     //Returns ERROR or ALERT
                     break;
                 case 37:
@@ -210,18 +197,18 @@ if (isset($_POST["type"])) {
                     $response = newMapJoinController::addAvatar($data1, $profile);
                     //Returns ERROR or ALERT
                     break;
-                case 41:
-                    //This is used to join a player to a game
-                    $response = newMapJoinController::deleteGame($data1, $profile);
-                    //Returns ERROR
-                    break;
                 case 43;
                     //This is used when a shrine is worshiped at
                     $response = playerMapZoneController::worshipShrine($data1, $profile->getAvatar());
                     break;
+                case 44:
+                    //This is used to pick up an item from the ground
+                    $response = playerMapZoneController::pickItem($data3,$profile->getAvatar());
+                    break;
+                //Returns ERROR or SUCCESS
                 case 45:
                     //Used to upgrade sleeping bag
-                    $response = buildingItemController::upgradeBackpack($profile->getAvatar());
+                    $response = buildingItemController::upgradeBackpack($profile->getAvatar(),$data3);
                     //Returns ERROR or SUCCESS
                     break;
                 case 46:
@@ -233,9 +220,34 @@ if (isset($_POST["type"])) {
                     break;
                 case 48:
                     //Used when an item is consumed
-                    $response = playerMapZoneController::consumeItem($data1,$profile->getAvatar());
+                    $response = playerMapZoneController::consumeItem($data3,$profile->getAvatar());
                     break;
                     //Returns ERROR or SUCCESS
+                case 50:
+                    //Used when a player wants to join another players party
+                    $response = partyZonePlayerController::checkSoloFavour($profile->getAvatar(), $data1);
+                    //Returns ERROR or ALERT
+                    break;
+                case 51:
+                    //Used when a player leave a party
+                    $response = partyZonePlayerController::checkTeamFavour($profile->getAvatar());
+                    //Returns ERROR or ALERT
+                    break;
+                case 52:
+                    //Used when a player leave a party
+                    $response = partyZonePlayerController::votingOnPlayerFinal($profile->getAvatar(),$data1,"accept");
+                    //Returns ERROR or ALERT
+                    break;
+                case 184:
+                    //Used to report a comment on the news stories
+                    $response = reportingController::newReportComment($profile,$data1,$data2);
+                    break;
+                    //Returns ERROR or ALERT
+                case 185:
+                    //Used to comment on the news page
+                    $response = newsCommentsController::createComment($profile,$data1,$data2);
+                    break;
+                    //Returns ERROR or ALERT
                 case 186:
                     //Used to close an alert
                     $response = profileAlertController::removeAlertVisible($profile,$data1);
@@ -377,6 +389,26 @@ if (isset($_POST["type"])) {
                     $response = profileController::changePlayerRank($profile,$data1,$data2);
                     //Returns ERROR or ALERT
                     break;
+                case 223:
+                    //Used to delete a forum post
+                    $response = forumPostController::modifyPost($profile,$data1,$data2,$data3,"Delete");
+                    //Returns ERROR or ALERT
+                    break;
+                case 224:
+                    //Used to edit a forum post
+                    $response = forumPostController::modifyPost($profile,$data1,$data2,$data3,"Edit");
+                    //Returns ERROR or ALERT
+                    break;
+                case 227:
+                    //Used to delete a comment post
+                    $response = newsCommentsController::modifyComment($profile,$data1,$data2,"Delete");
+                    //Returns ERROR or ALERT
+                    break;
+                case 228:
+                    //Used to delete a comment post
+                    $response = newsCommentsController::modifyComment($profile,$data1,$data2,"Edit");
+                    //Returns ERROR or ALERT
+                    break;
                 default:
                     $response = array("ERROR" => "No known AJAX type sent");
                     $control = 99999;
@@ -397,11 +429,8 @@ if (isset($_POST["type"])) {
 
                 $viewHUD = true;
                 switch ($control) {
-                    case "x":
-                        //This returns the avatar view item
-
-                        //$view = new constructionView($profile->getAvatar());
-                        //$view = $view->returnVars();
+                    case "HUD":
+                        $view = "";
                         break;
                     case 1:
                         $view = joinGameView::createView($profile);
@@ -418,12 +447,13 @@ if (isset($_POST["type"])) {
                         break;
                     case 4:
                         //This finds the threads that match a group
-                        $view = forumThreadController::getAllThreads($data1,$profile);
+                        $view = forumThreadController::getAllThreads($data1,$data2,$profile);
                         $viewHUD = false;
                         break;
                     case 5:
                         //This finds the posts that match a thread
-                        $view = forumPostController::getAllPosts($data1,$data2,$profile);
+                        $view['posts'] = forumPostController::getAllPosts($data1,$data3,$data4,$profile);
+                        $view['threads'] = forumThreadController::getAllThreads($data1,$data2,$profile);
                         $viewHUD = false;
                         break;
                     case 6:
@@ -454,14 +484,32 @@ if (isset($_POST["type"])) {
                         $view = profileAlertController::getAllAlerts($profile);
                         $viewHUD = false;
                         break;
+                    case 13:
+                        $view = newsStoryController::getNewsPage($data1);
+                        $viewHUD = false;
+                        break;
+                    case 14:
+                        $view = ingameOverview::createIngameOverview($profile,$data1,$data2);
+                        break;
+                    case 15:
+                        $view = otherAvatarView::createNewView($profile->getAvatar(),$data1);
+                        break;
+                    case 16:
+                        $view = shrineView::createTestView($profile->getAvatar());
+                        break;
+                    case 17:
+                        $view = mapView::getView($profile->getAvatar());
+                        break;
+                    case 18:
+                        $view = deathScreenView::getDeathView($profile->getProfileID());
+                        $viewHUD = false;
+                        break;
                     default:
                         $view = array("ERROR" => "Somehow you found a 2nd error, this shouldn't be seen - Control =" . $control);
                         $viewHUD = false;
                 }
                 if ($viewHUD === true) {
-                    //$tempHUD = new HUDView($profile->getAvatar());
-                    //$HUD = $tempHUD->returnVars();
-                    $HUD = array("ERROR"=>"No HUD created currently");
+                    $HUD = HUDView::createView($profile);
                     echo json_encode(array("view" => $view, "HUD" => $HUD));
                 } else {
                     echo json_encode(array("view" => $view));
@@ -473,6 +521,9 @@ if (isset($_POST["type"])) {
     include_once(PROJECT_ROOT."/MVC/filesInclude.php");
     $response = profileController::userlogin();
     if (!array_key_exists("ERROR", $response)) {
+        if (array_key_exists("ALERT",$response)){
+            $response = profileController::userlogin();
+        }
         $profile = new profileController($response["SUCCESS"]);
         if ($profile->getGameStatus() === "death"){
             $death = new deathScreenController($profile->getProfileID());

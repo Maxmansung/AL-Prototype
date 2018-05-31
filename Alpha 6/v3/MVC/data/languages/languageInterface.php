@@ -74,9 +74,11 @@ interface languageInterface
     function footerHelpfulHelp();
     function footerHelpfulWiki();
     function footerHelpfulBug();
+    function footerHelpfulNews();
     function footerContactTitle();
     function footerContactCreator();
     function footerContactCredits();
+    function footerTwitterLink();
 
     //THE FORUM THREADS PAGE
     function forumThreadsTitle($var);

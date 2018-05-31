@@ -11,12 +11,6 @@ interface shrine_Interface
     function setZoneID($var);
     function getShrineType();
     function setShrineType($var);
-    function getHistory();
-    function setHistory($var);
-    function addHistory($key,$var);
-    function getCurrentArray();
-    function setCurrentArray($var);
-    function addCurrentArray($key,$var);
     function getShrineName();
     function setShrineName($var);
     function getDescription();

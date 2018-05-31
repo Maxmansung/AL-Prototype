@@ -37,8 +37,4 @@ class chatlogController extends chatlog
         chatlogModel::insertChatlogOther($this, "Insert");
     }
 
-    function getNewID($type){
-        return chatlogModel::createMessageID($type);
-    }
-
 }

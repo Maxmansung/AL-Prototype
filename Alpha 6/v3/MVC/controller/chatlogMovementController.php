@@ -7,7 +7,11 @@ class chatlogMovementController extends chatlogController
     {
         $this->chatlogType = "ChatlogMovement";
         if ($id != ""){
-            $chatLogModel = chatlogModel::getChatLogByID($id,$this->chatlogType);
+            if (is_object($id)){
+                $chatLogModel = $id;
+            } else {
+                $chatLogModel =chatlogModel::getChatLogByID($id, $this->chatlogType);
+            }
             $this->chatlogID = $chatLogModel->getChatlogID();
             $this->mapID = $chatLogModel->getMapID();
             $this->zoneID = $chatLogModel->getZoneID();
@@ -21,14 +25,11 @@ class chatlogMovementController extends chatlogController
         }
     }
 
-    public function createNewLog($avatarID,$message){
-        $avatar = new avatarController($avatarID);
-        $map = new mapController($avatar->getMapID());
-        $this->chatlogID = $this->getNewID($this->chatlogType);
+    public function createNewLog($avatar,$message,$currentDay){
         $this->mapID = $avatar->getMapID();
         $this->zoneID = $avatar->getZoneID();
         $this->avatarID = $avatar->getAvatarID();
-        $this->mapDay = $map->getCurrentDay();
+        $this->mapDay = $currentDay;
         $this->messageTime = time();
         $this->messageText = $message;
     }
@@ -55,7 +56,7 @@ class chatlogMovementController extends chatlogController
         return $logDetailsObject;
     }
 
-    public static function enterNewZone($avatarID,$direction){
+    public static function enterNewZone($avatar,$direction,$day){
         $log = new chatlogMovementController("");
         $directionNew = "ERROR";
         if ($direction === "n"){
@@ -68,12 +69,12 @@ class chatlogMovementController extends chatlogController
             $directionNew = "east";
         }
         $message = "There are tracks suggesting that #name# came here from the ".$directionNew;
-        $log->createNewLog($avatarID,$message);
+        $log->createNewLog($avatar,$message,$day);
         $log->insertChatLogZone();
     }
 
 
-    public static function leaveCurrentZone($avatarID,$direction){
+    public static function leaveCurrentZone($avatar,$direction,$day){
         $log = new chatlogMovementController("");
         $directionNew = "ERROR";
         if ($direction === "n"){
@@ -86,28 +87,28 @@ class chatlogMovementController extends chatlogController
             $directionNew = "west";
         }
         $message = "The tracks suggest that #name# left the zone to the ".$directionNew;
-        $log->createNewLog($avatarID,$message);
+        $log->createNewLog($avatar,$message,$day);
         $log->insertChatLogZone();
     }
 
-    public static function playerJoinsMap($avatarID){
+    public static function playerJoinsMap($avatar,$day){
         $log = new chatlogMovementController("");
         $message = "The mess is all that's left to show that #name# lived here until recently";
-        $log->createNewLog($avatarID,$message);
+        $log->createNewLog($avatar,$message,$day);
         $log->insertChatLogZone();
     }
 
-    public static function destroyBiome($avatarID){
+    public static function destroyBiome($avatar,$day){
         $log = new chatlogMovementController("");
         $message = "A huge explosion appears to have happened here, the only thing left is a burnt outline of #name#";
-        $log->createNewLog($avatarID,$message);
+        $log->createNewLog($avatar,$message,$day);
         $log->insertChatLogZone();
     }
 
-    public static function testing($avatarID){
+    public static function testing($avatar,$day){
         $log = new chatlogMovementController("");
         $message = "This is a testing script, please ignore it!!";
-        $log->createNewLog($avatarID,$message);
+        $log->createNewLog($avatar,$message,$day);
         $log->insertChatLogZone();
     }
 }

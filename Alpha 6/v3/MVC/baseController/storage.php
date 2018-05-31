@@ -1,12 +1,16 @@
 <?php
 if (!defined('PROJECT_ROOT')) exit(include($_SERVER['DOCUMENT_ROOT'] . "/error/404.php"));
-class storage
+require_once(PROJECT_ROOT . "/MVC/interface/storage_Interface.php");
+class storage implements storage_Interface
 {
     protected $storageID;
     protected $zoneID;
     protected $items;
     protected $maximumCapacity;
     protected $storageLevel;
+    protected $lockBuilt;
+    protected $lockStrength;
+    protected $lockMax;
 
     public function __toString()
     {
@@ -77,4 +81,33 @@ class storage
         $this->storageLevel = $var;
     }
 
+    function getLockBuilt()
+    {
+        return $this->lockBuilt;
+    }
+
+    function setLockBuilt($var)
+    {
+        $this->lockBuilt = $var;
+    }
+
+    function getLockStrength()
+    {
+        return $this->lockStrength;
+    }
+
+    function setLockStrength($var)
+    {
+        $this->lockStrength = $var;
+    }
+
+    function getLockMax()
+    {
+        return $this->lockMax;
+    }
+
+    function setLockMax($var)
+    {
+        $this->lockMax = $var;
+    }
 }

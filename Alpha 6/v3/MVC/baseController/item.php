@@ -12,7 +12,6 @@ class item implements item_Interface
     protected $description;
     protected $itemType;
     protected $findingChances;
-    protected $fuelValue;
     protected $maxCharges;
     protected $usable;
     protected $currentCharges;
@@ -31,7 +30,6 @@ class item implements item_Interface
         $output .= '/ '.$this->icon;
         $output .= '/ '.$this->description;
         $output .= '/ '.$this->itemType;
-        $output .= '/ '.$this->fuelValue;
         $output .= '/ '.$this->maxCharges;
         $output .= '/ '.$this->currentCharges;
         $output .= '/ '.$this->itemStatus;
@@ -97,16 +95,6 @@ class item implements item_Interface
     function setItemType($var)
     {
         $this->itemType = $var;
-    }
-
-    function getFuelValue()
-    {
-        return $this->fuelValue;
-    }
-
-    function setFuelValue($var)
-    {
-        $this->fuelValue = $var;
     }
 
     function getMaxCharges()

@@ -40,8 +40,8 @@ function goToLink(id){
 function createNews(data){
     $("#newsListWrapper").empty();
     for (var x in data){
-        $("#newsListWrapper").append("<div class='col-12 row align-items-center justify-content-between py-1 my-1 px-md-5 px-4 newsLinkWrapper' id='newsLink"+x+"'></div>");
-        $("#newsLink"+x).append('<div class="newsDate d-flex flex-column align-items-center"><div><strong>'+data[x].month+'</strong></div><div>'+data[x].day+'</div></div><div class="mr-md-auto mr-0 ml-auto ml-md-4 d-flex flex-column"><div class="font-weight-bold">'+data[x].title+'</div><div class="darkGrayColour font-size-2">By '+data[x].author+'</div></div></div><div class="d-none d-md-block"><i class="far fa-comments"></i>  <span class="blueColour">'+data[x].comments+' </span>'+textNewsComments()+'</div>')
+        $("#newsListWrapper").append("<div class='col-12 row align-items-center justify-content-between py-1 my-1 px-md-5 px-4 newsLinkWrapper' id='newsLink"+data[x].newsID+"' onclick='clickNews(this.id)'></div>");
+        $("#newsLink"+data[x].newsID).append('<div class="newsDate d-flex flex-column align-items-center"><div><strong>'+data[x].month+'</strong></div><div>'+data[x].day+'</div></div><div class="mr-md-auto mr-0 ml-auto ml-md-4 d-flex flex-column"><div class="font-weight-bold">'+data[x].title+'</div><div class="darkGrayColour font-size-2">By '+data[x].author+'</div></div></div><div class="d-none d-md-block"><i class="far fa-comments"></i>  <span class="blueColour">'+data[x].comments+' </span>'+textNewsComments()+'</div>')
     }
 }
 
@@ -82,4 +82,9 @@ function createMaps(data){
 
 function joinMap(id){
     ajax_All(40,0,id);
+}
+
+function clickNews(id){
+    var newID = id.slice(8)
+    window.location.href = "/?page=news&n="+newID;
 }

@@ -37,4 +37,10 @@ interface zone_interface
     function getCounter();
     function setCounter($var);
     function adjustCounter($var);
+    function getLockBuilt();
+    function setLockBuilt($var);
+    function getLockStrength();
+    function setLockStrength($var);
+    function getLockMax();
+    function setLockMax($var);
 }

@@ -1,0 +1,28 @@
+.roleplayTextFormat{
+    border-radius: 10px;
+    background: rgba(100,100,130,1);
+    color: rgba(255,255,255,1);
+}
+
+.deletedTextFormat{
+    color: rgba(180,180,180,1);
+    background: rgba(100,10,10,0.6);
+    border-radius: 20px;
+}
+
+.textImageEmoji{
+    max-width: 20px;
+    max-height: 20px;
+}
+
+.emojiSelect{
+    border-radius: 0;
+    width: 26px;
+    height: 26px;
+    border: 1px solid rgba(0,0,0,0);
+}
+
+.emojiSelect :hover{
+    border: 1px solid rgba(0,0,0,1);
+    cursor: pointer;
+}

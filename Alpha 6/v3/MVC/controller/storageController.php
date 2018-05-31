@@ -7,18 +7,24 @@ class storageController extends storage
 
     public function __construct($id,$zone)
     {
-        if ($id != "" || $zone != "") {
-            $checkStorage = storageModel::getStorage($id,$zone);
+        if ($id != "" || $zone != ""){
+            if (is_object($id)){
+                $checkStorage = $id;
+            } else {
+                $checkStorage = storageModel::getStorage($id,$zone);
+            }
             $this->storageID = $checkStorage->getStorageID();
             $this->zoneID = $checkStorage->getZoneID();
             $this->items = $checkStorage->getItems();
             $this->maximumCapacity = $checkStorage->getMaximumCapacity();
             $this->storageLevel = $checkStorage->getStorageLevel();
+            $this->lockBuilt = $checkStorage->getLockBuilt();
+            $this->lockStrength = $checkStorage->getLockStrength();
+            $this->lockMax = $checkStorage->getLockMax();
         }
     }
 
     public function storageView(){
-        $this->setUpgradeObjects();
         return $this->returnVars();
     }
 
@@ -35,29 +41,8 @@ class storageController extends storage
         $this->items = array();
         $this->maximumCapacity = $maximum;
         $this->storageLevel = 1;
-    }
-
-    public function upgradeStorage(){
-        $this->storageLevel += 1;
-        $this->maximumCapacity += 5;
-        $this->uploadStorage();
-    }
-
-    public function checkUpgradeCost(){
-        return buildingLevels::storageUpgradeCost($this->storageLevel);
-    }
-
-    private function setUpgradeObjects(){
-        $upgrade = $this->checkUpgradeCost();
-        $itemsArray = [];
-        foreach ($upgrade as $item => $count) {
-            $itemObject = new itemController("");
-            $itemObject->createBlankItem($item);
-            for ($x = 0; $x < $count; $x++) {
-                $itemsArray[$itemObject->getIdentity() . $x] = $itemObject->returnVars();
-            }
-
-        }
-        $this->upgradeItems = $itemsArray;
+        $this->lockStrength = 0;
+        $this->lockBuilt = 0;
+        $this->lockMax = 0;
     }
 }

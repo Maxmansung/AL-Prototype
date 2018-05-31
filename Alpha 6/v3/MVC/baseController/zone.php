@@ -18,6 +18,9 @@ class zone implements zone_interface
     protected $zoneOutpostName = 0;
     protected $zoneSurvivableTemperatureModifier = 0;
     protected $counter = 0;
+    protected $lockBuilt;
+    protected $lockStrength;
+    protected $lockMax;
 
     public function objectToArray(){
         return get_object_vars($this);
@@ -40,6 +43,8 @@ class zone implements zone_interface
         $output .= '/ '.$this->zoneOutpostName;
         $output .= '/ '.$this->zoneSurvivableTemperatureModifier;
         $output .= '/ '.$this->counter;
+        $output .= '/ '.$this->lockStrength;
+        $output .= '/ '.$this->lockBuilt;
         return $output;
     }
 
@@ -109,8 +114,12 @@ class zone implements zone_interface
 
     function addAvatar($var)
     {
-        array_push($this->avatars,$var);
-        $this->avatars = array_values($this->avatars);
+        if (is_array($this->avatars)) {
+            array_push($this->avatars, $var);
+            $this->avatars = array_values($this->avatars);
+        } else {
+            $this->avatars = [$var];
+        }
     }
 
     function removeAvatar($var)
@@ -236,5 +245,35 @@ class zone implements zone_interface
     function adjustCounter($var)
     {
         $this->counter += $var;
+    }
+
+    function getLockBuilt()
+    {
+        return $this->lockBuilt;
+    }
+
+    function setLockBuilt($var)
+    {   
+        $this->lockBuilt = $var;
+    }
+
+    function getLockStrength()
+    {
+        return $this->lockStrength;
+    }
+
+    function setLockStrength($var)
+    {
+        $this->lockStrength = $var;
+    }
+
+    function getLockMax()
+    {
+        return $this->lockMax;
+    }
+
+    function setLockMax($var)
+    {
+        $this->lockMax = $var;
     }
 }

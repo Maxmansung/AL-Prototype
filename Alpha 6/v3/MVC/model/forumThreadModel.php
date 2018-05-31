@@ -51,11 +51,18 @@ class forumThreadModel extends forumThread
 
     public static function getAllThreads($threadDefinition,$table){
         $db = db_conx::getInstance();
-        $req = $db->prepare('SELECT threadID FROM '.$table.' WHERE threadDefinition= :threadDefinition');
+        $req = $db->prepare('SELECT threadID FROM '.$table.' WHERE threadDefinition= :threadDefinition AND stickyThread = 0');
         $req->execute(array('threadDefinition' => $threadDefinition));
         $threadIDArray = $req->fetchAll();
         return $threadIDArray;
+    }
 
+    public static function getAllThreadsSticky($threadDefinition,$table){
+        $db = db_conx::getInstance();
+        $req = $db->prepare('SELECT threadID FROM '.$table.' WHERE threadDefinition= :threadDefinition AND stickyThread = 1');
+        $req->execute(array('threadDefinition' => $threadDefinition));
+        $threadIDArray = $req->fetchAll();
+        return $threadIDArray;
     }
 
     //This returns the next value in the counter columnn in order to add to the new item information

@@ -67,4 +67,15 @@ interface avatar_Interface
     function getStatusArray();
     function setStatusArray($var);
     function changeStatusArray($var);
+    function getAvatarImage();
+    function setAvatarImage($var);
+    function getFavourSolo();
+    function setFavourSolo($var);
+    function increaseFavourSolo($var);
+    function getFavourTeam();
+    function setFavourTeam($var);
+    function increaseFavourTeam($var);
+    function getFavourMap();
+    function setFavourMap($var);
+    function increaseFavourMap($var);
 }

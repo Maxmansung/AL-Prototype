@@ -16,14 +16,23 @@ if (isset($accessed) === false){
             </div>
             <div class="d-flex flex-column align-items-center">
                 <div class="font-weight-bold"><?php echo $text->footerHelpfulTitle() ?></div>
+                <div class="clickableLink font-size-2"  onclick="goToPage('news')"><?php echo $text->footerHelpfulNews() ?></div>
                 <div class="clickableLink font-size-2"  onclick="goToPage('help')"><?php echo $text->footerHelpfulHelp() ?></div>
                 <div class="clickableLink font-size-2"><a class="unclickableLink" href="https://arcticlandshelp.miraheze.org/wiki/Main_Page"><?php echo $text->footerHelpfulWiki() ?></a></div>
                 <div class="clickableLink font-size-2"><a class="unclickableLink" href="http://arcticlandstest.xyz/bugTrack/login_page.php"><?php echo $text->footerHelpfulBug() ?></a></div>
+                <form class="mt-2" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                    <input type="hidden" name="cmd" value="_s-xclick">
+                    <input type="hidden" name="hosted_button_id" value="WYSQSBY5FVL4J">
+                    <input type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
+                    <img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+                </form>
+
             </div>
             <div class="d-flex flex-column align-items-end">
                 <div class="font-weight-bold"><?php echo $text->footerContactTitle() ?></div>
                 <div class="clickableLink font-size-2"><a class="unclickableLink" href="mailto:admin@arctic-lands.com"><?php echo $text->footerContactCreator() ?></a></div>
                 <div class="clickableLink font-size-2" onclick="goToPage('credits')"><?php echo $text->footerContactCredits() ?></div>
+                <div class="clickableLink font-size-2"><a class="unclickableLink" href="https://twitter.com/ArcticLandsGame"><?php echo $text->footerTwitterLink() ?></a></div>
             </div>
         </div>
     </div>

@@ -5,16 +5,16 @@ class newsStoryModel extends newsStory
 
     private function __construct($newsModel)
     {
-        $this->newsID = $newsModel['newsID'];
+        $this->newsID = intval($newsModel['newsID']);
         $this->title = $newsModel['title'];
         $this->author = $newsModel['author'];
-        $this->timestampPosted = $newsModel['timestampPosted'];
+        $this->timestampPosted = intval($newsModel['timestampPosted']);
         if (isset($newsModel['postText'])) {
             $this->postText = $newsModel['postText'];
         }
-        $this->comments = $newsModel['comments'];
+        $this->comments = intval($newsModel['comments']);
         $this->autoDayMonth();
-        $this->visible = $newsModel['visible'];
+        $this->visible = intval($newsModel['visible']);
     }
 
 
@@ -44,7 +44,7 @@ class newsStoryModel extends newsStory
 
     public static function getAllVisibleNews(){
         $db = db_conx::getInstance();
-        $req = $db->prepare("SELECT * FROM newsTable");
+        $req = $db->prepare("SELECT newsID, title, author, timestampPosted, comments, visible FROM newsTable WHERE visible = 1");
         $req->execute();
         $newsModel = $req->fetchAll();
         $finalArray = [];
@@ -64,11 +64,11 @@ class newsStoryModel extends newsStory
         $db = db_conx::getInstance();
         $title = $newsController->getTitle();
         $author = $newsController->getAuthor();
-        $timestampPosted = $newsController->getTimestampPosted();
+        $timestampPosted = intval($newsController->getTimestampPosted());
         $postText = $newsController->getPostText();
-        $comments = $newsController->getComments();
-        $visible = $newsController->getVisible();
-        $newsID =  $newsController->getNewsID();
+        $comments = intval($newsController->getComments());
+        $visible = intval($newsController->getVisible());
+        $newsID =  intval($newsController->getNewsID());
         if ($type == "Insert") {
             $req = $db->prepare("INSERT INTO newsTable (title, author, timestampPosted, postText, comments, visible) VALUES (:title, :author, :timestampPosted, :postText, :comments, :visible)");
         } elseif ($type == "Update"){

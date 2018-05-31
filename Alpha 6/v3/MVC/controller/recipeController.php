@@ -8,7 +8,11 @@ class recipeController extends recipe
     public function __construct($id)
     {
         if ($id != ""){
-            $recipe = recipeModel::findRecipe($id);
+            if (is_object($id)){
+                $recipe = $id;
+            } else {
+                $recipe = recipeModel::findRecipe($id);
+            }
             $this->recipeID = $recipe->recipeID;
             $this->description = $recipe->description;
             $this->requiredItems = $recipe->requiredItems;
@@ -20,10 +24,28 @@ class recipeController extends recipe
         }
     }
 
-    public static function findRecipe($itemArray,$buildingArray){
+    public static function findRecipe($itemArray,$buildingArray,$object){
         $recipeArray1 = recipeModel::recipesRequiringItem($itemArray);
         $recipeArray2 = recipeModel::recipesRequiringBuilding($buildingArray);
-        $recipeArrayFinal = array_merge($recipeArray1,$recipeArray2);
+        $recipeArrayFinal = [];
+        foreach ($recipeArray1 as $single) {
+            $temp = new recipeController($single);
+            if ($object === true) {
+                $recipeArrayFinal[$single->getRecipeID()] = $temp;
+            } else {
+                $temp->createView();
+                $recipeArrayFinal[$single->getRecipeID()] = $temp->returnVars();
+            }
+        }
+        foreach ($recipeArray2 as $single) {
+            $temp = new recipeController($single);
+            if ($object === true) {
+                $recipeArrayFinal[$single->getRecipeID()] = $temp;
+            } else {
+                $temp->createView();
+                $recipeArrayFinal[$single->getRecipeID()] = $temp->returnVars();
+            }
+        }
         return $recipeArrayFinal;
     }
 
@@ -59,6 +81,15 @@ class recipeController extends recipe
                 return "I0001";
                 break;
         }
+    }
+
+    function createView()
+    {
+        $this->requiredItems = "";
+        $this->requiredBuildings = "";
+        $this->consumedItems =  "";
+        $this->generatedItems =  "";
+        $this->recipeComment =  "";
     }
 
 }

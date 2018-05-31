@@ -178,12 +178,8 @@ class mapController extends map
         return array($x,$y);
     }
 
-    public function createShrineLocation($edge,$type){
-        if ($type !== "Tutorial") {
-            $shrineArray = array("S001", "S002", "S003");
-        } else {
-            $shrineArray = array("S001", "S004", "S003");
-        }
+    public function createShrineLocation($edge){
+        $shrineArray = array(1, 2, 3);
         $finalArray = array();
         $counter = 0;
         foreach ($shrineArray as $shrine){

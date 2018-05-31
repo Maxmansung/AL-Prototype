@@ -6,8 +6,12 @@ class newsStoryController extends newsStory
 {
     public function __construct($id)
     {
-        if ($id != ""){
-            $newsModel = newsStoryModel::newsList($id);
+        if ($id != "") {
+            if (is_object($id)) {
+                $newsModel = $id;
+            } else {
+                $newsModel = newsStoryModel::newsList($id);
+            }
             $this->newsID = $newsModel->getNewsID();
             $this->title = $newsModel->getTitle();
             $this->author = $newsModel->getAuthor();
@@ -52,6 +56,18 @@ class newsStoryController extends newsStory
         newsStoryModel::insertNews($this,"Update");
     }
 
+    public static function getNewsPage($type){
+        if ($type == ""){
+            $news = self::getAllVisibleNews();
+            return $news;
+        } else {
+            $newsItem = new newsStoryController($type);
+            $news = $newsItem->returnVars();
+            $comments = newsCommentsController::getAllNewsComments($newsItem->getNewsID());
+            return array("DATA"=>$news,"COMMENT"=>$comments);
+        }
+    }
+
     public static function postingNews($profileController, $title, $postText, $visible, $type){
         $profileController->getProfileAccess();
         if ($profileController->getAccessPostNews()===1) {
@@ -66,6 +82,7 @@ class newsStoryController extends newsStory
                     if (strlen($postText) < 10) {
                         return array("ERROR" => 130);
                     } else {
+                        $postText = htmlentities($postText, ENT_QUOTES | ENT_SUBSTITUTE);
                         if ($type === "new"){
                             $newsStory = new newsStoryController("");
                             $newsStory->createNews($titleClean, $profileController->getProfileName(), $postText, $visibleClean);
@@ -93,7 +110,7 @@ class newsStoryController extends newsStory
 
     public static function deleteNewsController($profileController, $newsID){
         $profileController->getProfileAccess();
-        if ($profileController->getAccessPostNews()===1){
+        if ($profileController->getAccessPostNews()===0){
             return array("ERROR"=>28);
         } else {
             $newsClean = intval(preg_replace('#[^0-9]#i', '', $newsID));

@@ -83,8 +83,12 @@ class modTrackingController extends modTracking
                 $info2 = "Warning: ".$details2;
                 break;
             case 11:
-                $info1 = "";
-                $info2 = "";
+                $info1 = "Post: ".$details1;
+                $info2 = "Type: ".$details2;
+                break;
+            case 12:
+                $info1 = "Comment: ".$details1;
+                $info2 = "Type: ".$details2;
                 break;
             default:
                 $info1 = "";

@@ -20,8 +20,8 @@ class recipe implements recipe_Interface
         $output .= '/ '.$this->description;
         $output .= '/ '.$this->requiredItems;
         $output .= '/ '.$this->requiredBuildings;
-        $output .= '/ '.$this->consumedItems;
-        $output .= '/ '.$this->generatedItems;
+        $output .= '/ '.json_encode($this->consumedItems);
+        $output .= '/ '.json_encode($this->generatedItems);
         $output .= '/ '.$this->recipeComment;
         $output .= '/ '.$this->recipeImage;
         return $output;

@@ -7,7 +7,11 @@ class chatlogWorldController extends chatlogController
     {
         $this->chatlogType = "ChatlogWorld";
         if ($id != ""){
-            $chatLogModel = chatlogModel::getChatLogByID($id, $this->chatlogType);
+            if (is_object($id)){
+                $chatLogModel = $id;
+            } else {
+                $chatLogModel =chatlogModel::getChatLogByID($id, $this->chatlogType);
+            }
             $this->chatlogID = $chatLogModel->getChatlogID();
             $this->mapID = $chatLogModel->getMapID();
             $this->zoneID = $chatLogModel->getZoneID();
@@ -20,14 +24,11 @@ class chatlogWorldController extends chatlogController
         }
     }
 
-    public function createNewLog($zoneID,$otherVar,$message){
-        $zone = new zoneController($zoneID);
-        $map = new mapController($zone->getMapID());
-        $this->chatlogID = $this->getNewID($this->chatlogType);
+    public function createNewLog($zone,$otherVar,$message,$currentDay){
         $this->mapID = $zone->getMapID();
         $this->zoneID = $zone->getZoneID();
         $this->otherVar = $otherVar;
-        $this->mapDay = $map->getCurrentDay();
+        $this->mapDay = $currentDay;
         $this->messageTime = time();
         $this->messageText = $message;
     }
@@ -45,12 +46,11 @@ class chatlogWorldController extends chatlogController
         return $logDetailsObject;
     }
 
-    public static function shrineBonusGained($zoneID){
+    public static function shrineBonusGained($zone,$day){
         $log = new chatlogWorldController("");
-        $shrineID = shrineController::findShrine($zoneID);
-        $shrine = new shrineController($shrineID);
+        $shrine = shrineController::findShrine($zone->getZoneID());
         $message = $shrine->getBlessingMessage();
-        $log->createNewLog($shrine->getZoneID(),$shrine->getShrineType(),$message);
+        $log->createNewLog($zone,$shrine->getShrineType(),$message,$day);
         $log->insertChatLogWorld();
     }
 

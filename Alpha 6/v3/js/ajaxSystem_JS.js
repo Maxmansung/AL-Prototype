@@ -53,7 +53,7 @@ function ajax_background(type, view,data1){
         if (tool.readyState == 4 && tool.status == 200) {
             //console.log(tool.responseText);
             var response = JSON.parse(tool.responseText);
-            console.log(response);
+            //console.log(response);
             if ("ERROR" in response){
                 errors(response.ERROR);
             } else if ("ALERT" in response){
@@ -70,9 +70,50 @@ function ajax_background(type, view,data1){
 function switchArray(type,response){
     console.log("Type: "+type);
     type = parseInt(type);
+    if ("HUD" in response){
+        buildGamePageHUD(response.HUD);
+    }
     switch(type){
         case 0:
             createNotifications(response.view);
+            break;
+        case 2:
+        case 30:
+        case 32:
+        case 33:
+        case 50:
+            createOtherAvatarPage(response.view);
+            break;
+        case 6:
+            if (response.HUD.readyStat === false){
+                createAlertBox(0, 1, "The day will not end until you are marked as ready");
+            } else {
+                createAlertBox(0, 1, "The day will not end until everyone else on the map is ready");
+            }
+            break;
+        case 1:
+        case 3:
+        case 5:
+        case 9:
+        case 14:
+        case 16:
+        case 17:
+        case 18:
+        case 20:
+        case 21:
+        case 22:
+        case 23:
+        case 26:
+        case 28:
+        case 29:
+        case 44:
+        case 45:
+        case 48:
+        case 51:
+            buildGamePageMain(response.view);
+            break;
+        case 11:
+            createShrinePage(response.view);
             break;
         case 35:
             showProfilePage(response.view);
@@ -83,14 +124,20 @@ function switchArray(type,response){
         case 38:
             createSearchResults(response.view);
             break;
+        case 41:
+            createMapPage(response.view);
+            break;
         case 49:
             createJoingameLinks(response.view);
+            break;
+        case 53:
+            createDeathPage(response.view);
             break;
         case 188:
             leaderboardSetup(response.view);
             break;
         case 192:
-            createPostViewPhone(response.view);
+            createPostView(response.view);
             break;
         case 193:
             saveThreadsData(response.view);
@@ -112,6 +159,12 @@ function switchArray(type,response){
             break;
         case 220:
             createEditUserItem(response.view);
+            break;
+        case 225:
+            createNewsOverview(response.view);
+            break;
+        case 226:
+            createSingleNewsPage(response.view);
             break;
         default:
             console.log("This view does not have an associated function currently");
@@ -172,7 +225,13 @@ function showLoading(){
 
 function activateTooltips() {
     $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
+        $('[data-toggle="tooltip"]').tooltip({
+            trigger : 'hover'
+        })
+    });
+    var is_touch_device = ("ontouchstart" in window) || window.DocumentTouch && document instanceof DocumentTouch;
+    $(function () {
+        $('[data-toggle="popover"]').popover({trigger: is_touch_device ? "" : "hover"})
     });
 }
 

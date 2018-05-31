@@ -53,9 +53,10 @@ class reportingController extends reporting
     static function newReportPost($reporter,$postID,$forumType,$details){
         if ((time()-$reporter->getReportTimer()) > 1800) {
             $detailsClean = preg_replace(data::$cleanPatterns['special'], '', $details);
+            $postClean = preg_replace(data::$cleanPatterns['num'],"",$postID);
             $report = new reportingController("");
             $tableName = forumPostController::convertCodeTable($forumType);
-            $post = new forumPostController($postID, $tableName);
+            $post = new forumPostController($postClean, $tableName);
             $report->setReporter($reporter->getProfileName());
             $report->setReportType(1);
             $report->setReportObject(($forumType . "+" . $postID));
@@ -64,7 +65,38 @@ class reportingController extends reporting
             $report->setDetails($detailsClean);
             $report->setTimestampCreated(time());
             $check = reportingModel::findReportExists($report);
+            $post->setReportedPost(1);
             if ($check === false) {
+                $post->updatePost();
+                $response = $report->postReport();
+                $reporter->setReportTimer(time());
+                $reporter->uploadProfile();
+                return array("ALERT" => 18, "DATA" => $response);
+            } else {
+                return array("ERROR" => 127);
+            }
+        } else {
+            return array("ERROR"=>126);
+        }
+    }
+
+    static function newReportComment($reporter,$commentID,$details){
+        if ((time()-$reporter->getReportTimer()) > 1800) {
+            $detailsClean = preg_replace(data::$cleanPatterns['special'], '', $details);
+            $commentClean = preg_replace(data::$cleanPatterns['num'],"",$commentID);
+            $comment = new newsCommentsController($commentClean);
+            $report = new reportingController("");
+            $report->setReporter($reporter->getProfileName());
+            $report->setReportType(3);
+            $report->setReportObject(($comment->getCommentID()));
+            $report->setReportedPlayer($comment->getAuthorID());
+            $report->setResolved(0);
+            $report->setDetails($detailsClean);
+            $report->setTimestampCreated(time());
+            $check = reportingModel::findReportExists($report);
+            $comment->setReported(1);
+            if ($check === false) {
+                $comment->updateComment();
                 $response = $report->postReport();
                 $reporter->setReportTimer(time());
                 $reporter->uploadProfile();

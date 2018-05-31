@@ -110,7 +110,21 @@ class partyModel extends party
         } else {
             return false;
         }
+    }
 
+    public static function findPendingRequestsItem($mapID, $profileID){
+        $adjustedProfile = "%".$profileID."%";
+        $db = db_conx::getInstance();
+        $req = $db->prepare('SELECT * FROM Party WHERE mapID= :mapID AND pendingRequests LIKE :playerID LIMIT 1');
+        $req->bindParam(':mapID', $mapID);
+        $req->bindParam(':playerID', $adjustedProfile);
+        $req->execute();
+        $partyModel = $req->fetch();
+        if (count($partyModel) > 0){
+            return new partyModel($partyModel);
+        } else {
+            return false;
+        }
     }
 
     public static function findAllMapParties($mapID){

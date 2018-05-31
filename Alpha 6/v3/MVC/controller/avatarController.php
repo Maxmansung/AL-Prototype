@@ -13,6 +13,8 @@ class avatarController extends avatar
             } else {
                 $avatarModel = avatarModel::findAvatarID($id);
             }
+            $equipmentClass = "equipment".$avatarModel->getTempModLevel();
+            $equipment = new $equipmentClass();
             $this->avatarID = $avatarModel->getAvatarID();
             $this->profileID = $avatarModel->getProfileID();
             $this->mapID = $avatarModel->getMapID();
@@ -20,11 +22,11 @@ class avatarController extends avatar
             $this->maxStamina = $avatarModel->getMaxStamina();
             $this->zoneID = $avatarModel->getZoneID();
             $this->inventory = $avatarModel->getInventory();
-            $this->maxInventorySlots = $avatarModel->getMaxInventorySlots();
+            $this->maxInventorySlots = (intval($avatarModel->getMaxInventorySlots())+intval($equipment->getBackpackBonus()));
             $this->partyID = $avatarModel->getPartyID();
             $this->readiness = $avatarModel->getReady();
             $this->avatarTempRecord = $avatarModel->getavatarTempRecord();
-            $this->avatarSurvivableTemp = $avatarModel->getAvatarSurvivableTemp();
+            $this->avatarSurvivableTemp = (intval($avatarModel->getAvatarSurvivableTemp())+intval($equipment->getHeatBonus()));
             $this->achievements = $avatarModel->getAchievements();
             $this->partyVote = $avatarModel->getPartyVote();
             $this->researchStats = $avatarModel->getResearchStats();
@@ -36,6 +38,10 @@ class avatarController extends avatar
             $this->statusArray = $avatarModel->getStatusArray();
             $this->findingChanceMod = $avatarModel->getFindingChanceMod();
             $this->findingChanceFail = $avatarModel->getFindingChanceFail();
+            $this->avatarImage = $avatarModel->getAvatarImage();
+            $this->favourSolo = $avatarModel->getFavourSolo();
+            $this->favourTeam = $avatarModel->getFavourTeam();
+            $this->favourMap = $avatarModel->getFavourMap();
         }
     }
 
@@ -58,16 +64,28 @@ class avatarController extends avatar
         $this->tempModLevel = 1;
         $this->shrineScore = array();
         $this->statusArray = statusesController::createStatusArray();
+        $this->avatarImage = "avatarTemp.png";
+        $this->favourSolo = 0;
+        $this->favourTeam = 0;
+        $this->favourMap = 0;
         $newID = $this->insertAvatar();
         $this->avatarID = $newID;
         return $newID;
     }
 
     public function insertAvatar(){
+        $equipmentClass = "equipment".$this->getTempModLevel();
+        $equipment = new $equipmentClass();
+        $this->maxInventorySlots = (intval($this->getMaxInventorySlots())-intval($equipment->getBackpackBonus()));
+        $this->avatarSurvivableTemp = (intval($this->getAvatarSurvivableTemp())-intval($equipment->getHeatBonus()));
         return avatarModel::insertAvatar($this,"Insert");
     }
 
     public function updateAvatar(){
+        $equipmentClass = "equipment".$this->getTempModLevel();
+        $equipment = new $equipmentClass();
+        $this->maxInventorySlots = (intval($this->getMaxInventorySlots())-intval($equipment->getBackpackBonus()));
+        $this->avatarSurvivableTemp = (intval($this->getAvatarSurvivableTemp())-intval($equipment->getHeatBonus()));
         avatarModel::insertAvatar($this,"Update");
     }
 
@@ -82,13 +100,7 @@ class avatarController extends avatar
         //This makes a section of the map for the number of player in it
         //This selects a random zone between the players maximum zone number and the players minimum
         $zoneNumber = rand(($partitionMap*$playerCount),(($partitionMap*($playerCount+1))-1));
-        $count = 4 - (strlen((string)$zoneNumber));
-        $finalZoneID = "z";
-        for ($i = 0; $i < $count; $i++) {
-            $finalZoneID .= "0";
-        }
-        $finalZoneID .= $zoneNumber;
-        $this->zoneID = zoneController::getZoneIDfromName($finalZoneID,$mapID);
+        $this->zoneID = zoneController::getZoneIDfromName($zoneNumber,$mapID);
     }
 
     private function startParty($mapID){
@@ -127,17 +139,6 @@ class avatarController extends avatar
         return 0;
     }
 
-
-    public static function getItemBonuses($mapID,$avatarID)
-    {
-        $response = itemController::getItemsAsObjects($mapID, "backpack", $avatarID);
-        $bonus = 0;
-        foreach ($response as $item) {
-            $bonus += $item->getSurvivalBonus();
-        }
-        return $bonus;
-    }
-
     public static function addNewPostsMap($mapID,$postID){
         $array = avatarModel::getAllMapAvatars($mapID);
         foreach ($array as $avatar){
@@ -155,6 +156,20 @@ class avatarController extends avatar
             $total += 1;
         }
         return $total;
+    }
+
+    public static function getAvatarsInArray($array,$object){
+        $newArray = avatarModel::getAvatarsInArray($array);
+        $finalArray = [];
+        foreach ($newArray as $avatar){
+            $temp = new avatarController($avatar);
+            if ($object === true) {
+                $finalArray[$temp->getAvatarID()] = $temp;
+            } else{
+                $finalArray[$temp->getAvatarID()] = $temp->returnVars();
+            }
+        }
+        return $finalArray;
     }
 
 }

@@ -16,4 +16,6 @@ interface forumPost_Interface
     function setThreadID($var);
     function getPostCount();
     function setPostCount($var);
+    function getReportedPost();
+    function setReportedPost($var);
 }

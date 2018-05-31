@@ -3,29 +3,40 @@ if (!defined('PROJECT_ROOT')) exit(include($_SERVER['DOCUMENT_ROOT'] . "/error/4
 class dayEndingFunctions
 {
 
-    public static function mapDayEnds($mapID){
-        $map = new mapController($mapID);
+    public static function mapDayEnds($map){
         $deathCounter = 0;
         $deleted = false;
+
+        //This happens before any players die (Sacrificing yourself for a god is the greatest honour right?
+        dayEndingFunctions::calculateShrineBonuses($map);
+
         $avatarArray = avatarController::getAllMapAvatars($map->getMapID(),false);
         foreach ($avatarArray as $single) {
-            $stats = buildingLevels::getTotalSurviveTemp($single->getAvatarID());
+            $zone = new zoneController($single->getZoneID());
+            $biomeClass = "biome".$zone->getBiomeType();
+            $biome = new $biomeClass();
+            $party = new partyController($single->getPartyID());
+            $stats = buildingLevels::getTotalSurviveTemp($single,$zone,$biome,$party,false);
             $checkStatus = statusesController::checkStatuses($single->getStatusArray());
             if ($single->getReady() === "dead") {
                 $deathCounter++;
             } elseif ($checkStatus === "dead") {
-                dayEndingFunctions::playerDeath($single->getAvatarID(),2);
+                $statsAdjusted = buildingLevels::getTotalSurviveTemp($single,$zone,$biome,$party,true);
+                $nightAdjusted = buildingLevels::totalNightTemp($map,$biome,true);
+                dayEndingFunctions::playerDeath($single,2,$statsAdjusted,$nightAdjusted,$party,$map,$zone);
                 $deathCounter++;
             }elseif ($stats < $map->getBaseNightTemperature()) {
                 if ($checkStatus === "risk") {
-                    dayEndingFunctions::playerDeath($single->getAvatarID(),1);
+                    $statsAdjusted = buildingLevels::getTotalSurviveTemp($single,$zone,$biome,$party,true);
+                    $nightAdjusted = buildingLevels::totalNightTemp($map,$biome,true);
+                    dayEndingFunctions::playerDeath($single,1,$statsAdjusted,$nightAdjusted,$party,$map,$zone);
                     $deathCounter++;
                 } else {
-                    chatlogPersonalController::getFrozen($single->getAvatarID());
-                    dayEndingFunctions::playerSurvives($single->getAvatarID(),"cold");
+                    chatlogPersonalController::getFrozen($single,$map->getCurrentDay());
+                    dayEndingFunctions::playerSurvives($single,"cold",$stats,$map,$zone);
                 }
             } else {
-                dayEndingFunctions::playerSurvives($single->getAvatarID(),"normal");
+                dayEndingFunctions::playerSurvives($single,"normal",$stats,$map,$zone);
             }
         }
         if ($deathCounter !== $map->getMaxPlayerCount()) {
@@ -36,48 +47,30 @@ class dayEndingFunctions
             $map->updateMap();
         } else {
             $map->updateMap();
-            dayEndingFunctions::mapEndingActions($map->getMapID());
+            dayEndingFunctions::mapEndingActions($map);
             $deleted = true;
         }
         if ($deleted == false) {
-            dayEndingFunctions::buildingChanges($map->getMapID());
+            //THIS NEEDED TO BE CLEANED UP A LOT!
+            //dayEndingFunctions::buildingChanges($map->getMapID());
+
             dayEndingFunctions::updateZoneInfo($map->getMapID());
             dayEndingFunctions::changeMapItems($map->getMapID());
-            dayEndingFunctions::calculateShrineBonuses($map->getMapID());
-            shrineController::resetShrines($map->getMapID());
             $map->updateMap();
         }
     }
 
-    public static function testPlayerSurvival($single,$nightTemp){
-        $stats = buildingLevels::getTotalSurviveTemp($single->getAvatarID());
-        $checkStatus = statusesController::checkStatuses($single->getStatusArray());
-        if ($single->getReady() === "dead") {
-            return 3;
-        } elseif ($checkStatus === "dead") {
-            return 2;
-        }elseif ($stats < $nightTemp) {
-            if ($checkStatus === "risk") {
-                return 1;
-            } else {
-                return 0;
-            }
-        } else {
-            return true;
-        }
-    }
-
-    public static function playerDeath($avatar,$deathType){
-        $temp = buildingLevels::getTotalSurviveTemp($avatar->getAvatarID());
-        deathScreenController::createNewDeathScreen($avatar,$temp,$deathType);
+    public static function playerDeath($avatar,$deathType,$playerTemp,$nightTemp,$party,$map,$zone){
+        deathScreenController::createNewDeathScreen($avatar,$deathType,$playerTemp,$nightTemp,$party->getPartyName(),$map);
         $avatar->toggleReady("dead");
-        $party = new partyController($avatar->getPartyID());
         $party->removeMember($avatar->getAvatarID());
+        if (count($party->getMembers()) < 1){
+            $party->emptyParty();
+        }
         $party->uploadParty();
         $profile = new profileController($avatar->getProfileID());
         $profile->setGameStatus("death");
         $profile->uploadProfile();
-        $zone = new zoneController($avatar->getZoneID());
         foreach ($avatar->getInventory() as $item){
             $avatar->removeInventoryItem($item);
             $itemTemp = new itemController($item);
@@ -90,53 +83,37 @@ class dayEndingFunctions
         $avatar->updateAvatar();
     }
 
-    public static function playerSurvives($avatarID,$modifier){
-        $newAvatar = new avatarController($avatarID);
-        $map = new mapController($newAvatar->getMapID());
-        $temp = buildingLevels::getTotalSurviveTemp($avatarID);
-        $newAvatar->addAvatarTempRecord($map->getCurrentDay(),$temp);
-        if ($newAvatar->getReady() == true) {
-            $newAvatar->toggleReady("ready");
+    public static function playerSurvives($avatar,$modifier,$playerTemp,$map,$zone){
+        $avatar->addAvatarTempRecord($map->getCurrentDay(),$playerTemp);
+        if ($avatar->getReady() === 1) {
+            $avatar->toggleReady("ready");
         }
-        $newAvatar->setStamina($newAvatar->getMaxStamina());
-        $statusArray = statusesController::changeStatuses($newAvatar->getStatusArray());
-        $newAvatar->setStatusArray($statusArray);
+        $avatar->setStamina($avatar->getMaxStamina());
+        $statusArray = statusesController::changeStatuses($avatar->getStatusArray());
+        $avatar->setStatusArray($statusArray);
         if ($map->getGameType() == "Tutorial"){
             if ($map->getCurrentDay() == 5){
-                $newAvatar->addAchievement("A005");
+                $avatar->addAchievement("A005");
             } elseif ($map->getCurrentDay() == 10){
-                $newAvatar->addAchievement("A006");
+                $avatar->addAchievement("A006");
 
             }
         }
         if ($modifier === "cold"){
-            $newAvatar->changeStatusArray(3);
+            $avatar->changeStatusArray(3);
         }
-        $zone = new zoneController($newAvatar->getZoneID());
         $biome = array("CAMPING",$zone->getBiomeType());
         $response = achievementController::checkAchievement($biome);
         if ($response !== false) {
-            $newAvatar->addAchievement($response);
+            $avatar->addAchievement($response);
         }
-        $newAvatar->updateAvatar();
+        $avatar->updateAvatar();
     }
 
     public static function buildingChanges($mapID){
         //This function sets out the changes to all the firepits across the map
         $firepitArray = buildingController::getMapBuildings($mapID,"Firepit");
         foreach ($firepitArray as $firepit){
-            $currentFuel = $firepit->getFuelRemaining();
-            if ($currentFuel> 4){
-                $currentFuel = floor($currentFuel/1.5);
-            } else {
-                $currentFuel = $currentFuel-2;
-            }
-            $firepit->setFuelRemaining($currentFuel);
-            $firepit->postBuildingDatabase();
-            $value = buildingItemController::firepitCheck($firepit->getBuildingID());
-            if (array_key_exists("ERROR",$value) !== true){
-                //In this situation we want the error to occur therefore this function is currently left blank as it should always occur
-            }
         }
         //This function creates a small animal in each zones with a trap
         $trapArray = buildingController::getMapBuildings($mapID,"Trap");
@@ -209,68 +186,124 @@ class dayEndingFunctions
         itemController::changeAllItems("I0003","I0005",$mapID);
     }
 
-    public static function mapEndingActions($mapID){
-        $map = new mapController($mapID);
+    public static function mapEndingActions($map){
         $map->deleteMap();
     }
 
-
-    public static function calculateShrineBonuses($mapID){
-        $highest = shrineController::highestScoreShrine($mapID);
-        $map = new mapController($mapID);
-        if ($highest === "ERROR"){
-            //This means that no shrine has any tribute to it
-        } elseif (is_array($highest)){
-            //This means that 2 or more shrines have the same amount of tribute as the highest
-            $parties = partyController::findAllParties($mapID);
-            foreach ($highest as $shrine){
-                self::giveShrineBonuses($shrine,$parties,$map);
-            }
-        } else {
-            //This means a single shrine had the highest score
-            $parties = partyController::findAllParties($mapID);
-            self::giveShrineBonuses($highest,$parties,$map);
-        }
-
-    }
-
-    private static function giveShrineBonuses($shrineID,$allParties,$map){
-        $shrine = new shrineController($shrineID);
-        chatlogWorldController::shrineBonusGained($shrine->getZoneID());
-        foreach ($allParties as $single){
-            $single->setTempBonus(0);
-            $single->uploadParty();
-            if (count($single->getMembers()) <= $shrine->getMaxParty()){
-                if (count($single->getMembers()) >= $shrine->getMinParty()){
-                    foreach ($single->getMembers() as $member){
-                        $avatar = new avatarController($member);
-                        $avatar->addShineScore($shrine->getShrineType(),$map->getCurrentDay());
-                        buildingLevels::performShrineBonus($shrine->getShrineBonusType(),$shrine->getShrineBonusReward(),$avatar,$shrine->getShrineID());
-                        $avatar->updateAvatar();
+    private static function calculateShrineBonuses($map){
+        $shrineArray = shrineController::findMapShrines($map->getMapID());
+        foreach ($shrineArray as $shrine){
+            $results = $shrine->shrineRanks($map,array());
+            if ($shrine->getOverallType() === 1){
+                $list = shrineSolo::getRewardedPlayers($results);
+                foreach ($list as $player){
+                    $tempAvatar = new avatarController($player);
+                    $currentScore = $tempAvatar->getFavourSolo() + $map->getCurrentDay();
+                    $tempAvatar->setFavourSolo($currentScore);
+                    self::giveShrineBonus($shrine,$tempAvatar,$map->getCurrentDay());
+                }
+            } else if ($shrine->getOverallType() === 2){
+                $list = shrineTeam::getRewardedPlayers($results);
+                foreach ($list as $party){
+                    $tempParty = new partyController($party);
+                    foreach ($tempParty->getMembers() as $avatar){
+                        $tempAvatar = new avatarController($avatar);
+                        $currentScore = $tempAvatar->getFavourTeam() + $map->getCurrentDay();
+                        $tempAvatar->setFavourTeam($currentScore);
+                        self::giveShrineBonus($shrine,$tempAvatar,$map->getCurrentDay());
+                    }
+                }
+            } else if ($shrine->getOverallType() === 3){
+                $check = shrineMap::getRewardedPlayers($results);
+                if ($check === true){
+                    $list = avatarController::getAllMapAvatars($map->getMapID(),false);
+                    foreach ($list as $tempAvatar){
+                        $currentScore = $tempAvatar->getFavourMap() + $map->getCurrentDay();
+                        $tempAvatar->setFavourMap($currentScore);
+                        self::giveShrineBonus($shrine,$tempAvatar,$map->getCurrentDay());
                     }
                 }
             }
         }
+    }
 
+    static function giveShrineBonus($shrine,$avatar,$day){
+        $bonus = $shrine->getShrineBonus();
+        $messageText = "";
+        $messageTitle = "";
+        if(key_exists("ITEM",$bonus)){
+            $item = new itemController("");
+            $item->createNewItemByID($bonus["ITEM"],$avatar->getMapID(),$avatar->getAvatarID(),"backpack");
+            $item->insertItem();
+            $backpack = itemModel::getItemIDsFromLocation($avatar->getMapID(),"backpack",$avatar->getAvatarID());
+            $avatar->setInventory($backpack);
+            $messageText = $shrine->getShrineAlertMessage();
+            $messageTitle = "Cold God's Champion";
+        } else if(key_exists("STAMINA",$bonus)){
+            $avatar->useStamina((intval($bonus['STAMINA'])*-1));
+            $messageText = $shrine->getShrineAlertMessage();
+            $messageTitle = "War God's Champion";
+
+        } else if (key_exists("ZONES",$bonus)){
+
+            $messageText = $shrine->getShrineAlertMessage();
+            $messageTitle = "Life God's Champion";
+        }
+        $data = $day;
+        profileAlertController::createNewAlert($avatar->getProfileID(),$messageText,$messageTitle,$data);
+        $avatar->updateAvatar();
     }
 
     public static function updateZoneInfo($mapID){
-        $zoneArray = zoneController::getAllZones($mapID);
-        foreach ($zoneArray as $zoneObject) {
-            $zone = new zoneController($zoneObject->getZoneID());
+        $zoneArray = zoneController::getAllZones($mapID,true);
+        foreach ($zoneArray as $zone) {
             $zone->setCounter(0);
-            if ($zoneObject->getFindingChances() < 1) {
-                $biome = new biomeTypeController($zoneObject->getBiomeType());
+            if ($zone->getFindingChances() < 1) {
+                $biomeClass = "biome".$zone->getBiomeType();
+                $biome = new $biomeClass();
                 if ($biome->getFinalType() !== 1) {
                     $zone->setBiomeType($zone->getBiomeType() - 1);
                     $zone->resetFindingChances();
-                    $zone->setCounter(0);
                 }
             } else {
                 $zone->setFindingChances($zone->getFindingChances() + 1);
             }
             $zone->updateZone();
         }
+    }
+
+
+
+    public static function confirmDeath($profile){
+        $deathScreen = new deathScreenController($profile->getProfileID());
+        $details = new profileDetailsController($profile->getProfileID());
+        if ($deathScreen->getGameType() !== 5) {
+            if ($deathScreen->getDayDuration() == "full") {
+                if ($deathScreen->getDeathAchievements() != "") {
+                    $details->addAchievements($deathScreen->getDeathAchievements());
+                }
+                $details->increaseMainGames();
+            } else {
+                if ($deathScreen->getDeathAchievements() != "") {
+                    $details->addAchievementsSolo($deathScreen->getDeathAchievements());
+                }
+                $details->increaseSpeedGames();
+            }
+            $checker = buildingLevels::checkFavourGained($deathScreen->getDayDuration(),$deathScreen->getGameType());
+            if ($checker === true) {
+                $details->addSoloLeaderboard($deathScreen->getFavourSolo());
+                $details->addTeamLeaderboard($deathScreen->getFavourTeam());
+                $details->addFullLeaderboard($deathScreen->getFavourMap());
+            } else if ($checker === "life"){
+                $details->addFullLeaderboard($deathScreen->getFavourMap());
+            }
+        }
+        $profile->setGameStatus("ready");
+        $profile->setAvatar(null);
+        $deathScreen->deleteDeathScreen();
+        $details->uploadProfile();
+        $profile->uploadProfile();
+        return array("ERROR"=>56);
     }
 
 

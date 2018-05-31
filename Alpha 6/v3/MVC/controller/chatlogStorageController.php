@@ -7,7 +7,11 @@ class chatlogStorageController extends chatlogController
     {
         $this->chatlogType = "ChatlogStorage";
         if ($id != ""){
-            $chatLogModel = chatlogModel::getChatLogByID($id, $this->chatlogType);
+            if (is_object($id)){
+                $chatLogModel = $id;
+            } else {
+                $chatLogModel =chatlogModel::getChatLogByID($id, $this->chatlogType);
+            }
             $this->chatlogID = $chatLogModel->getChatlogID();
             $this->mapID = $chatLogModel->getMapID();
             $this->zoneID = $chatLogModel->getZoneID();
@@ -21,14 +25,11 @@ class chatlogStorageController extends chatlogController
         }
     }
 
-    public function createNewLog($avatarID,$message){
-        $avatar = new avatarController($avatarID);
-        $map = new mapController($avatar->getMapID());
-        $this->chatlogID = $this->getNewID($this->chatlogType);
+    public function createNewLog($avatar,$message,$currentDay){
         $this->mapID = $avatar->getMapID();
         $this->zoneID = $avatar->getZoneID();
         $this->avatarID = $avatar->getAvatarID();
-        $this->mapDay = $map->getCurrentDay();
+        $this->mapDay = $currentDay;
         $this->messageTime = time();
         $this->messageText = $message;
     }
@@ -54,24 +55,24 @@ class chatlogStorageController extends chatlogController
         return $logDetailsObject;
     }
 
-    public static function dropInStorage($avatarID,$itemName){
+    public static function dropInStorage($avatar,$itemName,$day){
         $log = new chatlogStorageController("");
         $message = "#name# put a <span class='itemLogName'>".$itemName."</span> into the storage";
-        $log->createNewLog($avatarID,$message);
+        $log->createNewLog($avatar,$message,$day);
         $log->insertChatLogZone();
     }
 
-    public static function takeFromStorage($avatarID,$itemName){
+    public static function takeFromStorage($avatar,$itemName,$day){
         $log = new chatlogStorageController("");
         $message = "#name# took a <span class='itemLogName'>".$itemName."</span> out of the storage";
-        $log->createNewLog($avatarID,$message);
+        $log->createNewLog($avatar,$message,$day);
         $log->insertChatLogZone();
     }
 
-    public static function upgradeStorage($avatarID,$storageLevel){
+    public static function upgradeStorage($avatar,$storageLevel,$day){
         $log = new chatlogStorageController("");
         $message = "The storage was upgraded to <strong>Level ".$storageLevel."</strong> by #name#";
-        $log->createNewLog($avatarID,$message);
+        $log->createNewLog($avatar,$message,$day);
         $log->insertChatLogZone();
     }
 }

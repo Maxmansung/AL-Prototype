@@ -6,8 +6,12 @@ class buildingController extends building
 {
     public function __construct($id)
     {
-        if ($id != "") {
-            $buildingModel = buildingModel::getBuilding($id);
+        if ($id != ""){
+            if (is_object($id)){
+                $buildingModel = $id;
+            } else {
+                $buildingModel = buildingModel::getBuilding($id);
+            }
             $this->buildingID = $buildingModel->buildingID;
             $this->zoneID = $buildingModel->zoneID;
             $this->mapID = $buildingModel->mapID;
@@ -25,6 +29,7 @@ class buildingController extends building
             $this->tutorialKnown = $buildingModel->tutorialKnown;
             $this->mainKnown = $buildingModel->mainKnown;
             $this->buildingTypeID = $buildingModel->buildingTypeID;
+            $this->setIsBuilt($this->checkBuilt());
         }
     }
 
@@ -50,6 +55,24 @@ class buildingController extends building
         $this->tutorialKnown = $buildingModel->tutorialKnown;
         $this->mainKnown = $buildingModel->mainKnown;
         $this->buildingTypeID = $buildingModel->buildingTypeID;
+    }
+
+    public static function createBlankBuilding($buildingTemplateID){
+        $buildingModel = buildingModel::newbuilding($buildingTemplateID);
+        $object = new buildingController("");
+        $object->buildingTemplateID = $buildingModel->buildingTemplateID;
+        $object->fuelBuilding = $buildingModel->fuelBuilding;
+        $object->name = $buildingModel->name;
+        $object->icon = $buildingModel->icon;
+        $object->description = $buildingModel->description;
+        $object->itemsRequired = $buildingModel->itemsRequired;
+        $object->buildingsRequired = $buildingModel->buildingsRequired;
+        $object->staminaRequired = $buildingModel->staminaRequired;
+        $object->buildingType = $buildingModel->buildingType;
+        $object->tutorialKnown = $buildingModel->tutorialKnown;
+        $object->mainKnown = $buildingModel->mainKnown;
+        $object->buildingTypeID = $buildingModel->buildingTypeID;
+        return $object;
     }
 
     //This adds a new building to the database
@@ -97,12 +120,13 @@ class buildingController extends building
         }
     }
 
-    public function getBuildingsArray($zoneID){
+    public static function getBuildingsArray($zoneID){
         $buildingArray = buildingModel::buildingsList();
         $zoneBuildingArray = buildingModel::zoneBuildingsArray($zoneID);
         foreach ($buildingArray as $key=>$item) {
             if (array_key_exists($key,$zoneBuildingArray)){
-               $buildingArray[$key] = $zoneBuildingArray[$key];
+                $buildTest = new buildingController($zoneBuildingArray[$key]);
+                $buildingArray[$key] = $buildTest;
             }
         }
         return $buildingArray;
@@ -118,19 +142,6 @@ class buildingController extends building
             $counter++;
         }
         return $array;
-    }
-
-    public static function getZoneTempBonus($buildingList,$zoneID){
-        $returnTemp = 0;
-        foreach ($buildingList as $building){
-            $returnTemp += self::getBuildingTempBonus($building,$zoneID);
-        }
-        return $returnTemp;
-    }
-
-    public static function getFirepitBonus($zoneID){
-        $firePitID = self::returnBuildingID("Firepit");
-        return self::getBuildingTempBonus($firePitID,$zoneID);
     }
 
     public static function getLockValue($zoneID){
@@ -231,35 +242,6 @@ class buildingController extends building
         }
         return $check;
 
-    }
-
-    private static function getBuildingTempBonus($buildingID,$zoneID){
-        switch ($buildingID){
-            case "B0001":
-                $firepitBuilding = buildingController::getConstructedBuildingID("Firepit",$zoneID);
-                if (array_key_exists("ERROR",$firepitBuilding)){
-                    return 0;
-                } else {
-                    $firepit = new firepitController($firepitBuilding);
-                    return $firepit->getTemperatureIncrease();
-                }
-                break;
-            case "B0003":
-                return 0;
-                break;
-            case "B0011":
-                $firepitBuilding = buildingController::getConstructedBuildingID("Firepit",$zoneID);
-                if (array_key_exists("ERROR",$firepitBuilding)){
-                    return 0;
-                } else {
-                    $rockBuilding = buildingController::getConstructedBuildingID("HeatRock",$zoneID);
-                    $temp = 2*floor(sqrt($rockBuilding->getFuelRemaining()*0.8));
-                    return $temp;
-                }
-            default:
-                return 0;
-                break;
-        }
     }
 }
 

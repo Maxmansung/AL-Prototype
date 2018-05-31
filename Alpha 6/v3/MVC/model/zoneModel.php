@@ -6,20 +6,23 @@ class zoneModel extends zone
     private function __construct($zoneModel)
     {
         $this->zoneID = intval($zoneModel['zoneID']);
-        $this->name = $zoneModel['name'];
+        $this->name = intval($zoneModel['name']);
         $this->mapID = intval($zoneModel['mapID']);
-        $this->coordinateX = $zoneModel['coordinateX'];
-        $this->coordinateY = $zoneModel['coordinateY'];
+        $this->coordinateX = intval($zoneModel['coordinateX']);
+        $this->coordinateY = intval($zoneModel['coordinateY']);
         $this->avatars = json_decode($zoneModel['avatars']);
         $this->buildings = json_decode($zoneModel['buildings']);
-        $this->controllingParty = $zoneModel['controllingParty'];
+        $this->controllingParty = intval($zoneModel['controllingParty']);
         $this->protectedZoneType = $zoneModel['protectedZoneType'];
         $this->storage = $zoneModel['storageBuilt'];
-        $this->findingChances = $zoneModel['findingChances'];
-        $this->biomeType = $zoneModel['biomeType'];
+        $this->findingChances = intval($zoneModel['findingChances']);
+        $this->biomeType = intval($zoneModel['biomeType']);
         $this->zoneOutpostName = $zoneModel['zoneOutpostName'];
-        $this->zoneSurvivableTemperatureModifier = $zoneModel['zoneSurvivableTemperatureModifier'];
-        $this->counter = $zoneModel['counter'];
+        $this->zoneSurvivableTemperatureModifier = intval($zoneModel['zoneSurvivableTemperatureModifier']);
+        $this->counter = intval($zoneModel['counter']);
+        $this->lockBuilt = intval($zoneModel['lockBuilt']);
+        $this->lockStrength = intval($zoneModel['lockStrength']);
+        $this->lockMax = intval($zoneModel['lockMax']);
     }
 
     public static function findZoneID($zoneID){
@@ -58,10 +61,13 @@ class zoneModel extends zone
 
     public static function findZoneCoords($zone){
         $db = db_conx::getInstance();
-        $req = $db->prepare('SELECT zoneID FROM Zone WHERE mapID= :mapID AND coordinateY= :coordY AND coordinateX= :coordX LIMIT 1');
-        $req->bindParam(':mapID', $zone->getMapID());
-        $req->bindParam(':coordY', $zone->getCoordinateY());
-        $req->bindParam(':coordX', $zone->getCoordinateX());
+        $mapID = intval($zone->getMapID());
+        $coordY = intval($zone->getCoordinateY());
+        $coordX = intval($zone->getCoordinateX());
+        $req = $db->prepare('SELECT * FROM Zone WHERE mapID= :mapID AND coordinateY= :coordY AND coordinateX= :coordX LIMIT 1');
+        $req->bindParam(':mapID', $mapID);
+        $req->bindParam(':coordY', $coordY);
+        $req->bindParam(':coordX', $coordX);
         $req->execute();
         $zoneModel = $req->fetch();
         return new zoneModel($zoneModel);
@@ -70,10 +76,10 @@ class zoneModel extends zone
     public static function insertZone($controller, $type){
         $db = db_conx::getInstance();
         $zoneID = intval($controller->getZoneID());
-        $name2 = $controller->getName();
+        $name2 = intval($controller->getName());
         $mapID = intval($controller->getMapID());
-        $coordinateX = $controller->getCoordinateX();
-        $coordinateY = $controller->getCoordinateY();
+        $coordinateX = intval($controller->getCoordinateX());
+        $coordinateY = intval($controller->getCoordinateY());
         $avatars = json_encode($controller->getAvatars());
         $buildings = json_encode($controller->getBuildings());
         $controllingParty = intval($controller->getControllingParty());
@@ -87,10 +93,13 @@ class zoneModel extends zone
         $zoneOutpostName = $controller->getZoneOutpostName();
         $zoneSurvivableTemperatureModifier = intval($controller->getZoneSurvivableTemperatureModifier());
         $counter = intval($controller->getCounter());
+        $lockBuilt = intval($controller->getLockBuilt());
+        $lockStrength = intval($controller->getLockStrength());
+        $lockMax = intval($controller->getLockMax());
         if ($type == "Insert") {
-            $req = $db->prepare("INSERT INTO Zone (name, mapID, coordinateX, coordinateY, avatars, buildings, controllingParty, protectedZoneType, storageBuilt, findingChances, biomeType, zoneOutpostName, zoneSurvivableTemperatureModifier, counter) VALUES (:name2, :mapID, :coordinateX, :coordinateY, :avatars, :buildings, :controllingParty, :protectedZoneType, :storage2, :findingChances, :biomeType, :zoneOutpostName, :zoneSurvivableTemperatureModifier, :counter)");
+            $req = $db->prepare("INSERT INTO Zone (name, mapID, coordinateX, coordinateY, avatars, buildings, controllingParty, protectedZoneType, storageBuilt, findingChances, biomeType, zoneOutpostName, zoneSurvivableTemperatureModifier, counter, lockBuilt, lockStrength, lockMax) VALUES (:name2, :mapID, :coordinateX, :coordinateY, :avatars, :buildings, :controllingParty, :protectedZoneType, :storage2, :findingChances, :biomeType, :zoneOutpostName, :zoneSurvivableTemperatureModifier, :counter, :lockBuilt, :lockStrength, :lockMax)");
         } elseif ($type == "Update") {
-            $req = $db->prepare("UPDATE Zone SET name= :name2, mapID= :mapID, coordinateX= :coordinateX, coordinateY= :coordinateY, avatars= :avatars, buildings= :buildings, controllingParty= :controllingParty, protectedZoneType= :protectedZoneType, storageBuilt= :storage2, findingChances= :findingChances, biomeType= :biomeType, zoneOutpostName= :zoneOutpostName, zoneSurvivableTemperatureModifier= :zoneSurvivableTemperatureModifier, counter= :counter WHERE zoneID= :zoneID");
+            $req = $db->prepare("UPDATE Zone SET name= :name2, mapID= :mapID, coordinateX= :coordinateX, coordinateY= :coordinateY, avatars= :avatars, buildings= :buildings, controllingParty= :controllingParty, protectedZoneType= :protectedZoneType, storageBuilt= :storage2, findingChances= :findingChances, biomeType= :biomeType, zoneOutpostName= :zoneOutpostName, zoneSurvivableTemperatureModifier= :zoneSurvivableTemperatureModifier, counter= :counter, lockBuilt= :lockBuilt, lockStrength= :lockStrength, lockMax= :lockMax WHERE zoneID= :zoneID");
             $req->bindParam(':zoneID', $zoneID);
         }
         $req->bindParam(':name2', $name2);
@@ -107,6 +116,9 @@ class zoneModel extends zone
         $req->bindParam(':zoneOutpostName', $zoneOutpostName);
         $req->bindParam(':zoneSurvivableTemperatureModifier', $zoneSurvivableTemperatureModifier);
         $req->bindParam(':counter', $counter);
+        $req->bindParam(':lockBuilt', $lockBuilt);
+        $req->bindParam(':lockStrength', $lockStrength);
+        $req->bindParam(':lockMax', $lockMax);
         $req->execute();
         if ($type == "Insert"){
             return intval($db->lastInsertId());

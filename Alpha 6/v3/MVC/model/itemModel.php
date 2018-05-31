@@ -13,7 +13,6 @@ class itemModel extends item
             $this->description = $itemModel['description'];
             $this->itemType = intval($itemModel['itemtype']);
             $this->findingChances = intval($itemModel['findingchances']);
-            $this->fuelValue = intval($itemModel['fuelvalue']);
             $this->maxCharges = intval($itemModel['maxcharges']);
             $this->currentCharges = intval($itemModel['currentcharges']);
             $this->itemStatus = $itemModel['itemstatus'];
@@ -38,7 +37,6 @@ class itemModel extends item
                 $this->description = $itemModel['description'];
             }if (isset($itemModel['itemType'])) {
                 $this->itemType = intval($itemModel['itemType']);
-                $this->fuelValue = intval($itemModel['fuelvalue']);
                 $this->maxCharges = intval($itemModel['maxcharges']);
                 $this->currentCharges = intval($itemModel['maxcharges']);
                 $this->usable = intval($itemModel['useable']);
@@ -93,7 +91,7 @@ class itemModel extends item
 
     public static function getItem($itemID){
         $db = db_conx::getInstance();
-        $req = $db->prepare('SELECT Item.ItemID, Item.MapID, Item.itemTemplateID, Item.locationID, Item.itemLocation, ItemTemplate.identity, ItemTemplate.icon, ItemTemplate.description, ItemTemplate.itemtype, ItemTemplate.findingchances, ItemTemplate.fuelvalue, ItemTemplate.maxcharges, ItemTemplate.biomeLocations, ItemTemplate.useable, Item.itemstatus,  Item.currentcharges, ItemTemplate.survivalBonus, ItemTemplate.statusImpact FROM Item INNER JOIN ItemTemplate ON Item.itemTemplateID = ItemTemplate.templateID AND Item.ItemID = :itemID');
+        $req = $db->prepare('SELECT Item.ItemID, Item.MapID, Item.itemTemplateID, Item.locationID, Item.itemLocation, ItemTemplate.identity, ItemTemplate.icon, ItemTemplate.description, ItemTemplate.itemtype, ItemTemplate.findingchances, ItemTemplate.maxcharges, ItemTemplate.biomeLocations, ItemTemplate.useable, Item.itemstatus,  Item.currentcharges, ItemTemplate.survivalBonus, ItemTemplate.statusImpact FROM Item INNER JOIN ItemTemplate ON Item.itemTemplateID = ItemTemplate.templateID AND Item.ItemID = :itemID');
         $req->execute(array('itemID' => $itemID));
         $itemModel = $req->fetch();
         return new itemModel($itemModel);
@@ -125,7 +123,7 @@ class itemModel extends item
     public static function getItemArray($itemArray){
         $search = implode(',',$itemArray);
         $db = db_conx::getInstance();
-        $req = $db->prepare('SELECT Item.ItemID, Item.MapID, Item.itemTemplateID, Item.itemLocation, Item.locationID, ItemTemplate.identity, ItemTemplate.icon, ItemTemplate.description, ItemTemplate.itemtype, ItemTemplate.findingchances, ItemTemplate.fuelvalue, ItemTemplate.maxcharges, ItemTemplate.biomeLocations, ItemTemplate.useable, Item.itemstatus,  Item.currentcharges, ItemTemplate.survivalBonus, ItemTemplate.statusImpact FROM Item INNER JOIN ItemTemplate ON Item.itemTemplateID = ItemTemplate.templateID AND Item.ItemID IN ('.$search.')');
+        $req = $db->prepare('SELECT Item.ItemID, Item.MapID, Item.itemTemplateID, Item.itemLocation, Item.locationID, ItemTemplate.identity, ItemTemplate.icon, ItemTemplate.description, ItemTemplate.itemtype, ItemTemplate.findingchances, ItemTemplate.maxcharges, ItemTemplate.biomeLocations, ItemTemplate.useable, Item.itemstatus,  Item.currentcharges, ItemTemplate.survivalBonus, ItemTemplate.statusImpact FROM Item INNER JOIN ItemTemplate ON Item.itemTemplateID = ItemTemplate.templateID AND Item.ItemID IN ('.$search.')');
         $req->execute();
         $itemModel = $req->fetchAll();
         $foundItems = [];
@@ -165,7 +163,7 @@ class itemModel extends item
 
     public static function getItemsFromLocation($mapID,$locationType,$locationID){
         $db = db_conx::getInstance();
-        $req = $db->prepare('SELECT Item.ItemID, Item.MapID, Item.itemTemplateID, ItemTemplate.identity, Item.itemLocation, Item.locationID, ItemTemplate.icon, ItemTemplate.description, ItemTemplate.itemtype, ItemTemplate.findingchances, ItemTemplate.fuelvalue, ItemTemplate.maxcharges, ItemTemplate.biomeLocations, ItemTemplate.useable, Item.itemstatus,  Item.currentcharges, ItemTemplate.survivalBonus, ItemTemplate.statusImpact FROM Item INNER JOIN ItemTemplate ON Item.itemTemplateID = ItemTemplate.templateID WHERE MapID= :mapID AND itemLocation= :locationType AND locationID= :locationID');
+        $req = $db->prepare('SELECT Item.ItemID, Item.MapID, Item.itemTemplateID, ItemTemplate.identity, Item.itemLocation, Item.locationID, ItemTemplate.icon, ItemTemplate.description, ItemTemplate.itemtype, ItemTemplate.findingchances, ItemTemplate.maxcharges, ItemTemplate.biomeLocations, ItemTemplate.useable, Item.itemstatus,  Item.currentcharges, ItemTemplate.survivalBonus, ItemTemplate.statusImpact FROM Item INNER JOIN ItemTemplate ON Item.itemTemplateID = ItemTemplate.templateID WHERE MapID= :mapID AND itemLocation= :locationType AND locationID= :locationID');
         $req->bindParam(':mapID', $mapID);
         $req->bindParam(':locationType', $locationType);
         $req->bindParam(':locationID', $locationID);
@@ -175,7 +173,7 @@ class itemModel extends item
         $counter = 0;
         foreach ($itemModel as $item) {
             $newObject = new itemModel($item);
-            $foundItems[$newObject->getIdentity().$counter] = $newObject->returnVars();
+            $foundItems[$newObject->getIdentity().$counter] = $newObject;
             $counter++;
         }
         ksort($foundItems);
@@ -195,5 +193,18 @@ class itemModel extends item
             array_push($itemArray,$item['ItemID']);
         }
         return $itemArray;
+    }
+
+    public static function getItemIDsFromLocationGround($mapID,$locationType,$locationID,$itemTemplate){
+        $db = db_conx::getInstance();
+        $req = $db->prepare('SELECT ItemID FROM Item WHERE MapID= :mapID AND itemLocation= :locationType AND locationID= :locationID AND itemTemplateID= :itemTemplate LIMIT 1');
+        $req->bindParam(':mapID', $mapID);
+        $req->bindParam(':locationType', $locationType);
+        $req->bindParam(':locationID', $locationID);
+        $req->bindParam(':itemTemplate', $itemTemplate);
+        $req->execute();
+        $itemModel = $req->fetch();
+        $itemID = $itemModel['ItemID'];
+        return $itemID;
     }
 }

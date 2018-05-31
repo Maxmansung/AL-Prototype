@@ -64,6 +64,9 @@ if ($profile->getProfileID() == "" || $profile->getAccountType() > 7){
         case "help":
             $pageName = "/gamePages/other/helpPage.php";
             break;
+        case "news":
+            $pageName = "/gamePages/other/news.php";
+            break;
         case "none":
             $pageName = "/gamePages/login/loginMasterPage.php";
             break;
@@ -83,6 +86,9 @@ if ($profile->getProfileID() == "" || $profile->getAccountType() > 7){
             break;
         case "help":
             $pageName = "/gamePages/other/helpPage.php";
+            break;
+        case "news":
+            $pageName = "/gamePages/other/news.php";
             break;
         case "join":
             $pageName = "/gamePages/joinGame/joinGameMasterPage.php";
@@ -132,18 +138,19 @@ if ($profile->getProfileID() == "" || $profile->getAccountType() > 7){
     <link rel="stylesheet" href="/CSS/main.css">
     <link rel="stylesheet" href="/CSS/bootstrap/bootstrap.css">
     <link rel="stylesheet" href="/CSS/colours.css">
+    <link rel="stylesheet" href="/CSS/textFormat.css">
     <link rel="icon" href="images/baseImages/iconSnowman.png" type="image/x-icon"/>
     <link rel="shortcut icon" href="images/baseImages/iconSnowman.png" type="image/x-icon"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>Arctic Lands Prototype</title>
+    <title>Arctic Lands Game</title>
 </head>
 <script src="/js/jquery-3.3.1.min.js"></script>
 <script src="/js/ajaxSystem_JS.js"></script>
 <script src="/js/errorChecker.js"></script>
 <script src="/js/textFormatting.js"></script>
 <script src="/js/languageJavascript/<?php echo $javascript?>.js"></script>
-<script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/all.js" integrity="sha384-xymdQtn1n3lH2wcu0qhcdaOpQwyoarkgLVxC/wZ5q7h9gHtxICrpcaSUfygqZGOe" crossorigin="anonymous"></script>
 <body class="bg-al-black">
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'].$headerName);

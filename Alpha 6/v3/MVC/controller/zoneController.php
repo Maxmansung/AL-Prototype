@@ -28,6 +28,9 @@ class zoneController extends zone
             $this->zoneOutpostName = $zoneModel->getZoneOutpostName();
             $this->zoneSurvivableTemperatureModifier = $zoneModel->getZoneSurvivableTemperatureModifier();
             $this->counter = $zoneModel->getCounter();
+            $this->lockBuilt = $zoneModel->getLockBuilt();
+            $this->lockStrength = $zoneModel->getLockStrength();
+            $this->lockMax = $zoneModel->getLockMax();
         }
     }
 
@@ -47,7 +50,7 @@ class zoneController extends zone
                 break;
         }
         $model = zoneModel::findZoneCoords($this);
-        return new zoneController($model->getZoneID());
+        return new zoneController($model);
     }
 
     //This posts the new zone to the database
@@ -78,6 +81,9 @@ class zoneController extends zone
         $this->zoneSurvivableTemperatureModifier = 0;
         $id = $this->postZone();
         $this->zoneID = $id;
+        $this->lockBuilt = 0;
+        $this->lockStrength = 0;
+        $this->lockMax = 0;
     }
 
 
@@ -174,12 +180,12 @@ class zoneController extends zone
 
 
     //This returns an array of all the zones within a map
-    public static function getAllZones($mapID,$var){
+    public static function getAllZones($mapID,$object){
         $zoneModel = zoneModel::findMapZones($mapID);
         $zoneList = [];
         foreach ($zoneModel as $zone){
             $temp = new zoneController($zone);
-            if ($var === true){
+            if ($object === false){
                 $zoneList[$temp->getZoneID()] = $temp->returnVars();
             } else {
                 $zoneList[$temp->getZoneID()] = $temp;
