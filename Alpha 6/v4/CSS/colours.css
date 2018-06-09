@@ -1,0 +1,111 @@
+.blackColour{
+    color: #000000;
+}
+
+.grayColour{
+    color: #999999;
+}
+
+.darkGrayColour{
+    color: #333333;
+}
+
+.greenColour{
+    color: #AFF016;
+}
+
+.blueColour{
+    color: #1F51AC;
+}
+
+.redColour{
+    color: rgba(255,0,0,1);
+}
+
+.orangeColour{
+    color: #FFAE18;
+}
+
+.whiteColour{
+    color: #FFFFFF
+}
+
+.whiteBackground{
+    background-color: #ffffff;
+}
+
+.lightGrayBackground{
+    background-color: rgba(220,220,220,0.8);
+}
+
+.grayBackground{
+    background-color: #bbbbbb;
+}
+
+.darkGrayBackground{
+    background-color: #333333;
+}
+
+.blueBackground{
+    background-color: #1F51AC;
+}
+
+.redBackground{
+    background-color: #C91285;
+}
+
+.greenBackground{
+    background-color: #AFF016;
+}
+
+.blackBackground{
+    background-color: #000000;
+}
+
+.redBackgroundTransparent{
+    background-color: rgba(255,0,0,0.2);
+}
+
+.greenBackgroundTransparent{
+    background-color: rgba(0,255,0,0.2);
+}
+
+.blackBorder{
+    border-color: rgba(0,0,0,1);
+}
+
+.whiteBorder{
+    border-color: rgba(255,255,255,1);
+}
+
+.biomeBackground1{
+    background-color: #CFA97D;
+}
+
+.biomeBackground2{
+    background-color: #D7E0DF;
+}
+
+.biomeBackground3{
+    background-color: #AEC254;
+}
+
+.biomeBackground4{
+    background-color: #67A152;
+}
+
+.biomeBackground5{
+    background-color: #3094B8;
+}
+
+.biomeBackground6{
+    background-color: #88AFBD;
+}
+
+.biomeBackground100{
+    background-color: #F5EDFF;
+}
+
+.biomeBackgroundx{
+    background-color: #000000;
+}

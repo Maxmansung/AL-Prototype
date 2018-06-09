@@ -1,0 +1,1220 @@
+@font-face {
+    font-family: "Delicious";
+    src: url("/CSS/fonts/Delicious-Roman.otf")
+}
+
+@font-face {
+    font-family: "Modius Frigid";
+    src: url("/CSS/fonts/Modius'Frigid'.otf");
+}
+
+@font-face {
+    font-family: "Woodcut";
+    src: url("/CSS/fonts/Woodcut.otf");
+}
+
+@media (max-width: 576px) {
+    .bannerImage{
+        max-height: 25px;
+    }
+    #rulesText{
+        font-size: 80%;
+    }
+    .forumPostAvatar {
+        max-width: 80px;
+        max-height: 80px;
+    }
+    .pageSize{
+        min-height: 550px;
+    }
+
+    .resize-font-size-1{
+        font-size: 60%;
+    }
+}
+@media (min-width: 576px) and (max-width: 768px) {
+    .bannerImage{
+        max-height: 35px;
+    }
+    .forumPostAvatar {
+        max-width: 80px;
+        max-height: 80px;
+    }
+    .pageSize{
+        min-height: 550px;
+    }
+
+    .tempShrineImage{
+        width: 100px;
+        height: 100px;
+    }
+
+    .resize-font-size-1{
+        font-size: 65%;
+    }
+}
+@media (min-width: 768px) and (max-width: 992px) {
+    .bannerImage{
+        max-height: 45px;
+    }
+    .forumPostAvatar {
+        max-width: 60px;
+        max-height: 60px;
+    }
+    .pageSize{
+        min-height: 550px;
+    }
+
+    .tempShrineImage{
+        width: 150px;
+        height: 150px;
+    }
+
+    .resize-font-size-1{
+        font-size: 70%;
+    }
+}
+@media (min-width: 992px) and (max-width: 1200px) {
+    .bannerImage{
+        max-height: 45px;
+    }
+    .forumPostAvatar {
+        max-width: 70px;
+        max-height: 70px;
+    }
+    .pageSize{
+        min-height: 550px;
+    }
+
+    .tempShrineImage{
+        width: 200px;
+        height: 200px;
+    }
+
+    .resize-font-size-1{
+        font-size: 75%;
+    }
+}
+@media (min-width: 1200px){
+    .bannerImage{
+        max-height: 45px;
+    }
+    .forumPostAvatar {
+        max-width: 80px;
+        max-height: 80px;
+    }
+    .pageSize{
+        min-height: 550px;
+    }
+
+    .tempShrineImage{
+        width: 250px;
+        height: 250px;
+    }
+
+    .resize-font-size-1{
+        font-size: 80%;
+    }
+}
+
+.border{
+    border: 1px solid;
+}
+
+.font-size-1{
+    font-size: 60%;
+}
+
+.font-size-2{
+    font-size: 80%;
+}
+
+.font-size-2x{
+    font-size: 110%;
+}
+
+.font-size-3{
+    font-size: 150%;
+}
+
+.font-size-4{
+    font-size: 200%;
+}
+
+.font-size-5{
+    font-size: 300%;
+}
+
+.font-size-6{
+    font-size: 500%;
+}
+
+.zoneWriting{
+    font-size: 400%;
+    color: red;
+    font-family: Woodcut;
+}
+
+.zoneCoordWriting{
+    color: black;
+    font-weight: bold;
+}
+
+.clickable{
+    cursor: pointer;
+}
+
+.clickableFlash:hover{
+    cursor: pointer;
+    color: #36454f;
+}
+
+.clickableFlashMore:hover{
+    cursor: pointer;
+    color: rgba(150,150,200,1);
+}
+
+.clickableBorder:hover{
+    cursor: pointer;
+    border-color: #333333;
+}
+
+.clickableLink:hover{
+    text-decoration: underline;
+    cursor: pointer;
+    color: rgba(150,150,200,1);
+}
+
+.clickableTransparent:hover{
+    cursor: pointer;
+    opacity: 0.5;
+}
+
+.unclickableLink:link, .unclickableLink:visited{
+    text-decoration: none;
+    color: inherit;
+}
+
+.hoverForumWrap{
+    border: 3px solid rgba(0,0,0,0);
+    border-radius: 10px;
+}
+
+.hoverForumWrapDisabled{
+    border: 3px solid rgba(0,0,0,0);
+    border-radius: 10px;
+    opacity: 0.5;
+}
+
+.hoverForumWrapDisabled:hover{
+    cursor: no-drop;
+}
+
+.hoverForumWrap:hover{
+    cursor: pointer;
+    opacity: 0.8;
+    border: 3px solid black;
+}
+
+.grayBorder{
+    border: 1px solid rgba(187, 189, 191, 1);
+}
+
+#phoneImage{
+    background: url("/images/loginPage/phonesImage.png");
+    background-color: #bbbbbb;
+    background-position: center bottom;
+    background-repeat: no-repeat;
+    -o-background-size: contain;
+    -moz-background-size: contain;
+    -webkit-background-size: contain;
+}
+
+.profilePageImage{
+    width: inherit;
+}
+
+.flagImage{
+    width: 32px;
+    height: 32px;
+}
+
+.indexPageTitle{
+    text-shadow: 0 0 8px #000000, 0 0 8px #000000;
+}
+
+.bg-al-black{
+    color: #ffffff;
+    background: url("/images/baseImages/mountainsDarker.jpg");
+    background-color: #000000;
+    background-position: center top;
+    background-repeat: no-repeat;
+    -o-background-size: auto;
+    -moz-background-size: auto;
+    -webkit-background-size: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.grayTransparentBackground{
+    background: rgba(100,100,100,0.4);
+    min-height: 700px;
+}
+
+#alertBar{
+    background-color: rgba(0,0,0,0.9);
+    border-radius: 10px;
+}
+
+.funkyFont{
+    font-family: Woodcut;
+}
+
+.customNavbarButton{
+    color: rgba(50,180,240,1);
+    font-weight: bold;
+    border: 3px solid rgba(0,0,0,0);
+}
+
+.customNavbarButton:hover, .customNavbarButton:active{
+    border-bottom: 3px solid rgba(50,180,240,1);
+    cursor: pointer;
+}
+
+.newsDate{
+    background-color: #bbbbbb;
+    border: 2px solid rgba(0,0,0,0.9);
+    -moz-box-shadow:    0 0 20px 2px rgba(0,0,0,0.9);
+    -webkit-box-shadow: 0 0 20px 2px rgba(0,0,0,0.9);
+    box-shadow:         0 0 20px 2px rgba(0,0,0,0.9);
+    color: black;
+    font-size: 100%;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    padding: 5px 0 5px 0;
+}
+
+.loader {
+    border: 12px solid #dddddd; /* Light grey */
+    border-top: 12px solid #1F51AC; /* Blue */
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.hoverHighlight:hover{
+    cursor: pointer;
+    background: rgba(180,180,180,0.8);
+    border-radius: 10px;
+}
+
+#loadingScreen{
+    background: #ffffff;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+#loadingScreen2{
+    background: rgba(255,255,255,0.6);
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+#loadingImage{
+    border: 3px solid black;
+    border-radius: 40px;
+    max-height: 400px;
+}
+
+.login-window{
+    background: rgba(50,50,50,0.5);
+    z-index: 10;
+    height: 100%;
+}
+
+.loginWrapper{
+    background: #FFFFFF;
+    border-radius: 10px;
+}
+
+.modal-header{
+    border-bottom: none !important;
+}
+
+.modal-footer{
+    border-top: none !important;
+}
+
+.pageBottom{
+    border-top: 2px solid #cccccc;
+}
+
+.avatarImage{
+    max-height: 200px;
+    max-width: inherit;
+}
+
+.achievementShowoff{
+    width: inherit;
+}
+
+.singleAchievementWrapper{
+    border: 2px solid #dddddd;
+    border-radius: 5px;
+}
+
+.favAchivementBorder{
+    border-top: 2px solid #dddddd;
+    border-left: 2px solid #dddddd;
+    border-right: 2px solid #dddddd;
+    border-radius: 5px 5px 0 0;
+}
+
+.favAchivementBorderSelected{
+    border-top: 2px solid #555555;
+    border-left: 2px solid #555555;
+    border-right: 2px solid #555555;
+    -moz-box-shadow:    0 0 10px 2px rgba(85,85,85,1) inset;
+    -webkit-box-shadow: 0 0 10px 2px rgba(85,85,85,1) inset;
+    box-shadow:         0 0 10px 2px rgba(85,85,85,1) inset;
+    border-radius: 5px 5px 0 0;
+}
+
+.achievementImage{
+    max-height: 28px;
+    max-width: 28px;
+}
+
+.achievementWrapper{
+    width: 28px;
+    height: 28px;
+}
+
+.achievementWrapperInner{
+    border: 2px solid rgba(220,220,220,1);
+    border-radius: 10px;
+    -moz-box-shadow:    0 0 20px 2px rgba(220,220,220,0.9) inset;
+    -webkit-box-shadow: 0 0 20px 2px rgba(220,220,220,0.9) inset;
+    box-shadow:         0 0 20px 2px rgba(220,220,220,0.9) inset;
+}
+
+span.btn-dark{
+    color: #fff;
+    background-color: #343a40;
+    border-color: #343a40;
+}
+
+span.btn-dark:hover {
+    color: #fff;
+    background-color: #23272b;
+    border-color: #1d2124;
+}
+
+span.btn-dark:focus, .btn-dark.focus {
+    box-shadow: 0 0 0 0.2rem rgba(52, 58, 64, 0.5);
+}
+
+span.btn-dark.disabled, .btn-dark:disabled {
+    color: #fff;
+    background-color: #343a40;
+    border-color: #343a40;
+}
+
+span.btn-dark:not(:disabled):not(.disabled):active, .btn-dark:not(:disabled):not(.disabled).active,
+.show > .btn-dark.dropdown-toggle {
+    color: #fff;
+    background-color: #1d2124;
+    border-color: #171a1d;
+}
+
+span.btn-dark:not(:disabled):not(.disabled):active:focus, .btn-dark:not(:disabled):not(.disabled).active:focus,
+.show > .btn-dark.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.2rem rgba(52, 58, 64, 0.5);
+}
+
+.btn-dark-label{
+    color: #fff !important;
+    background-color: #343a40 !important;
+    border-color: #343a40 !important;
+}
+
+.searchAvatarImage{
+    max-width: 40px;
+    max-height: 40px;
+}
+
+.searchAvatarImageWrap{
+    width: 40px;
+    height: 40px;
+}
+
+.searchAdminAvatarImage{
+    max-height: 80px;
+    max-width: 80px;
+}
+
+.forumTypeImage{
+    border-radius: 10px 10px 0 0;
+    background: rgba(180,180,180,1);
+    height: 150px;
+}
+
+.forumTypeText{
+    background: rgba(255,255,255,1);
+    border-top: 2px solid rgba(100,100,100,1);
+    border-radius: 0 0 10px 10px;
+    height: 130px;
+}
+
+.forumRulesWrap{
+    background: rgba(180,180,180,1);
+    border-radius: 10px;
+}
+
+.forumTypeImagePhone{
+    border-radius: 10px 0 0 10px;
+    background: rgba(180,180,180,1);
+
+}
+
+.forumTypeTextPhone{
+    background: rgba(255,255,255,1);
+    border-left: 2px solid rgba(100,100,100,1);
+    border-radius: 0 10px 10px 0;
+}
+
+.forumPhoneHeight{
+    height: 100px;
+    border: 3px solid rgba(0,0,0,0);
+    border-radius: 10px;
+}
+
+.forumPhoneHeight:active{
+    border: 3px solid rgba(0,0,0,1);
+    opacity: 0.8;
+}
+
+.forumPhoneHeightDisabled{
+    height: 100px;
+    border: 3px solid rgba(0,0,0,0);
+    border-radius: 10px;
+    opacity: 0.5;
+}
+
+.horizontalLine{
+    border-top: 2px solid rgba(180,180,180,1);
+}
+
+.standardWrapper{
+    background: rgba(255,255,255,1);
+    border: 1px solid rgba(187, 189, 191, 1);
+    color: rgba(0,0,0,1);
+}
+
+.standardWrapperTitle{
+    border-bottom: 2px solid rgba(150,150,150,1);
+}
+
+.threadTitleWrap1{
+    border-radius: 2px;
+    color: #000000;
+    border: 3px solid rgba(31,81,172,1);
+}
+
+.threadTitleWrap1:hover, .threadTitleWrap1:active{
+    background: linear-gradient(90deg, rgba(200,200,200,1), rgba(245,245,245,1));
+}
+
+.threadTitleWrap2{
+    border-radius: 2px;
+    color: #000000;
+    border: 3px solid rgba(200,200,200,1);
+}
+
+.threadSelected{
+    background: linear-gradient(90deg, rgba(31,81,172,0.5), rgba(245,245,245,0));
+}
+
+.threadTitleWrap2:hover, .threadTitleWrap2:active{
+    background: linear-gradient(90deg, rgba(220,220,220,1), rgba(245,245,245,1));
+}
+
+#forumThreadsWrapper{
+    background: linear-gradient(90deg, rgba(100,100,100,1) 50%, rgba(180,180,180,1) 50%);
+}
+
+#forumThreadsTitle{
+    background: rgba(180,180,180,1);
+}
+
+.threadSingleDetails{
+
+}
+
+.threadSingleTitle{
+}
+
+.forumTitleMain{
+    color: #FFFFFF;
+    background: rgba(31,81,172,1);
+    border: 2px solid rgba(31,81,172,1);
+}
+
+#forumPostHeader{
+    border: 1px solid rgba(50,50,50,0.5);
+    background: rgba(220,220,220,1);
+    -moz-box-shadow:    0 0 5px 1px rgba(50,50,50,0.5) inset;
+    -webkit-box-shadow: 0 0 5px 1px rgba(50,50,50,0.5) inset;
+    box-shadow:         0 0 5px 1px rgba(50,50,50,0.5) inset;
+
+}
+
+.forumPostAvatar{
+    -moz-box-shadow:    0 0 3px 1px rgba(0,0,0,1);
+    -webkit-box-shadow: 0 0 3px 1px rgba(0,0,0,1);
+    box-shadow:         0 0 3px 1px rgba(0,0,0,1);
+    z-index: 10;
+}
+
+.forumPostDirectionButtonsWrapper{
+    border-top: 2px solid rgba(180,180,180,1);
+    border-bottom: 2px solid rgba(180,180,180,1);
+}
+
+.joinGameMapWrapper{
+    border-radius: 10px;
+}
+
+.tutorialMapWrapper{
+    background: linear-gradient(90deg, rgba(0,0,255,0.3), rgba(0,0,255,0));
+}
+
+.tutorialMapWrapper:hover{
+    background: linear-gradient(90deg, rgba(0,0,255,0.4), rgba(0,0,255,0.1));
+    cursor: pointer;
+}
+
+.tutorialMapWrapper .mapJoinButton{
+    border-radius: 5px;
+    background: rgba(50,50,255,1);
+    color: rgba(255,255,255,1);
+    border: 3px solid rgba(0,0,255,0);
+}
+
+.tutorialMapWrapper:hover .mapJoinButton{
+    border: 3px solid rgba(0,0,255,1);
+
+}
+
+.fullMapWrapper{
+    background: linear-gradient(90deg, rgba(255,100,0,0.3), rgba(255,100,0,0));
+}
+
+.fullMapWrapper:hover{
+    background: linear-gradient(90deg, rgba(255,100,0,0.4), rgba(255,100,0,0.1));
+    cursor: pointer;
+}
+
+.fullMapWrapper .mapJoinButton{
+    border-radius: 5px;
+    background: rgba(255,130,30,1);
+    color: rgba(255,255,255,1);
+    border: 3px solid rgba(0,0,255,0);
+}
+
+.fullMapWrapper:hover .mapJoinButton{
+    border: 3px solid rgba(255,100,0,1);
+
+}
+
+.customGameMapWrapper{
+    background: linear-gradient(90deg, rgba(0,255,0,0.3), rgba(0,255,0,0));
+}
+
+.customGameMapWrapper:hover{
+    background: linear-gradient(90deg, rgba(0,255,0,0.4), rgba(0,255,0,0.1));
+    cursor: pointer;
+}
+
+.customGameMapWrapper .mapJoinButton{
+    border-radius: 5px;
+    background: rgba(50,255,50,1);
+    color: rgba(255,255,255,1);
+    border: 3px solid rgba(0,0,255,0);
+}
+
+.customGameMapWrapper:hover .mapJoinButton{
+    border: 3px solid rgba(0,255,0,1);
+
+}
+
+.testingGameMapWrapper{
+    background: linear-gradient(90deg, rgba(255,0,0,0.3), rgba(255,0,0,0));
+}
+
+.testingGameMapWrapper:hover{
+    background: linear-gradient(90deg, rgba(255,0,0,0.4), rgba(255,0,0,0.1));
+    cursor: pointer;
+}
+
+.testingGameMapWrapper .mapJoinButton{
+    border-radius: 5px;
+    background: rgba(255,50,50,1);
+    color: rgba(255,255,255,1);
+    border: 3px solid rgba(0,0,255,0);
+}
+
+.testingGameMapWrapper:hover .mapJoinButton{
+    border: 3px solid rgba(255,0,0,1);
+
+}
+
+.importantLinkWrapper{
+    border-bottom: 1px solid rgba(150,150,150,1);
+    border-radius: 5px 5px 0 0;
+}
+
+.importantLinkWrapper:hover, .newsLinkWrapper:hover{
+    background: linear-gradient(90deg, rgba(180,180,180,0.3), rgba(180,180,180,0.1));
+    cursor: pointer;
+}
+
+.creditsWrapper{
+    border: 2px solid rgba(180,180,180,0.5);
+}
+
+.creditsName{
+    border-bottom: 2px solid rgba(180,180,180, 0.3);
+}
+
+.adminLink{
+    border-radius: 10px;
+    background: linear-gradient(90deg, rgba(80,80,80,0.2), rgba(80,80,80,0));
+    border: 2px solid rgba(0,0,0,0);
+}
+
+.adminLink:hover{
+    border: 2px solid rgba(10,10,10,.6);
+    background: linear-gradient(90deg, rgba(80,80,180,0.2), rgba(80,80,80,0));
+}
+
+.newsLinkLive{
+    border-radius: 10px;
+    background: linear-gradient(90deg, rgba(0,200,0,0.2), rgba(0,200,0,0));
+}
+
+.newsLinkLive:hover{
+    background: linear-gradient(90deg, rgba(0,200,0,0.4), rgba(0,200,0,0.1));
+}
+
+.newsLinkDraft{
+    border-radius: 10px;
+    background: linear-gradient(90deg, rgba(200,0,0,0.2), rgba(200,0,0,0));
+}
+
+.newsLinkDraft:hover{
+    background: linear-gradient(90deg, rgba(200,0,0,0.4), rgba(200,0,0,0.1));
+}
+
+.adminCreateInfo{
+    border: 2px solid rgba(180,180,180,0.6);
+}
+
+.singleMapWrapperAdmin{
+    border-radius: 10px;
+    background: linear-gradient(90deg, rgba(80,80,180,0.2), rgba(80,80,80,0));
+}
+
+.adminPlayerDetailsWrapper{
+    border-radius: 10px;
+    background: linear-gradient(90deg, rgba(80,80,80,0), rgba(80,80,180,0.2));;
+}
+
+.deadPlayerWrapper{
+    border-radius: 10px;
+    background: rgba(255,70,0,0.2);
+}
+
+.borderWrapperAchievements{
+    border: 2px solid #555555;
+}
+
+.selectableAchievementSingle{
+    border: 2px solid rgba(50,50,50,0);
+}
+
+.selectableAchievementSingle:hover{
+    border: 2px solid rgba(50,50,50,1);
+    cursor: pointer;
+}
+
+.shrineBorder{
+    border: 2px solid rgba(150,150,150,1);
+    border-radius: 10px;
+}
+
+#soloScoreWrap{
+    background: linear-gradient(0deg, rgba(0,0,255,0.4), rgba(0,0,255,0.1));
+}
+
+#teamScoreWrap{
+    background: linear-gradient(0deg, rgba(255,0,0,0.4), rgba(255,0,0,0.1));
+}
+
+#fullScoreWrap{
+    background: linear-gradient(0deg, rgba(0,255,0,0.4), rgba(0,255,0,0.1));
+}
+
+.leaderboardSelect{
+    border-radius: 50% 50% 5% 5%;
+    border-width: 2px;
+    border-style: solid;
+    border-color: rgba(100,100,100,1);
+}
+
+.leaderboardSelect:hover{
+    border-color: rgba(0,0,0,1);
+    cursor: pointer;
+    color: rgba(20,20,90,1);
+}
+
+.leaderboardPlayer1{
+    background: rgba(0,0,0,0.1);
+}
+
+.leaderboardPlayer2{
+    background: rgba(0,0,0,0.2);
+}
+
+.adminUserEditWrapper{
+    background: linear-gradient(90deg, rgba(100,100,100,0), rgba(100,100,100,0.2));
+    border-radius: 5px;
+}
+
+.adminUserEditWrapper:hover{
+    background: linear-gradient(90deg, rgba(100,100,100,0.1), rgba(100,100,100,0.4));
+}
+
+#emojiWrapper{
+    border: 2px solid grey;
+    background: white;
+}
+
+#postBoxTextbox{
+    height: 200px;
+}
+
+.thermometerImage{
+    max-height: 120px;
+}
+
+.backpackWrapper{
+    border: 2px solid lightgray;
+}
+
+.itemObject{
+    width: 26px;
+    height: 26px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0,0,0,0) url("/images/gamePage/items/border.png") 26px 26px;
+}
+
+.itemObject:hover{
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+.itemImage{
+    width: 20px;
+    height: 20px;
+}
+
+.itemLocationButton{
+    border: 2px solid lightgray;
+}
+
+.itemLocationButton:hover{
+    cursor: pointer;
+    background: rgba(0,0,0,0.2);
+}
+
+.itemLocationBorder1{
+    border-left: 2px solid lightgray;
+    border-right: 2px solid lightgray;
+    border-top: 2px solid lightgray;
+}
+
+.itemLocationBorder2{
+    border-left: 2px solid lightgray;
+    border-right: 2px solid lightgray;
+    border-top: 2px solid lightgray;
+}
+
+.itemObjectChest{
+    width: 26px;
+    height: 26px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.itemObjectChest:hover{
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+.itemObjectChestNumber{
+    margin-top: -5px;
+}
+
+.popover{
+    max-width: 160px !important;
+}
+
+.popover-header{
+    color: black !important;
+}
+
+.popover-body {
+    font-size: 80%;
+}
+
+.buildingItem{
+    max-width: 20px;
+    max-height: 20px;
+}
+
+.buildingItemWrap{
+    border-radius: 5px;
+    background: rgba(180,180,255,0.5);
+}
+
+.singleBuildingWrapper{
+    border-bottom: 2px dashed rgba(180,180,180,0.5);
+}
+
+.buildingImage{
+    max-width: 24px;
+    max-height: 24px;
+}
+
+.buildingBreakPadding{
+    width: 30px;
+}
+
+.zoneImageWrapper{
+    border: 2px solid rgba(100,100,100,1);
+    height: 518px;
+    background-size: auto 512px;
+    background-position: center center;
+}
+
+.zoneImageWrapperPhone{
+    border: 2px solid rgba(100,100,100,1);
+    height: 576px;
+    background-size: auto 576px;
+    background-position: center center;
+}
+
+.zoneImageInternal{
+    height: 512px;
+    width: 512px;
+    background-size: 512px 512px;
+    background-repeat: no-repeat;
+}
+
+.zoneImageInternalPhone{
+    height: 570px;
+    width: 300px;
+    background-size: 300px 570px;
+    background-repeat: no-repeat;
+}
+
+.zoneAvatarImageWrap{
+    height: 90px;
+    width: 45px;
+}
+
+.zoneAvatarImageWrapPhone{
+    height: 94px;
+    width: 49px;
+}
+
+.inzoneAvatarImage{
+    height: 90px;
+    width: 45px;
+}
+
+.zoneActionsWrap{
+    width: 400px;
+}
+
+.zoneOtherAvatarWrap{
+    height: 180px;
+    width: 80px;
+}
+
+.zoneOtherAvatarWrapPhone{
+    height: 60px;
+    width: 180px;
+}
+
+.zoneMapWrapper{
+    width: 80px;
+    height: 80px;
+}
+
+.zoneDepletedWrap{
+    width:100px
+}
+
+.zoneBuildingsImageWrap{
+    width: 160px;
+    height: 130px;
+    margin-bottom: 20px;
+}
+
+.clickableActionButton{
+    border: 2px solid;
+    border-radius: 5px;
+    width: 50px;
+    height: 50px;
+    font-size: 240%;
+}
+
+.clickableActionButton:hover{
+    color: rgba(100,100,100,1);
+    cursor: pointer;
+    border: 2px solid rgba(100,100,100,1);
+}
+
+.actionButtonWriting{
+    width: 60px;
+}
+
+.buildingImageOverlay{
+    position: absolute;
+}
+
+.zoneOtherAvatarWrapSingle{
+    width: 20px;
+    height: 40px;
+}
+
+.zoneOtherAvatarWrapSingle:hover{
+    cursor: pointer;
+    opacity: 0.5;
+}
+
+.zoneOtherAvatarSingle{
+    max-width: 16px;
+    max-height: 34px;
+}
+
+.phoneHighlightBorder{
+    border: 2px dashed rgba(100,100,100,0.3);
+    border-radius: 3px;
+}
+
+.phoneHighlightBorder:active{
+    background: rgba(100,100,100,0.3);
+}
+
+.partyAvatarImage{
+    max-height: 30px;
+}
+
+.zonePartyMemberSingleWrap{
+    border-radius: 10px;
+}
+
+.zoneAvatarImage{
+    width: 200px;
+    height: 400px;
+}
+
+.backgroundImageAvatarSmallWrapper{
+    opacity: 0.1;
+    position: absolute;
+    width: 100%;
+}
+
+.zoneEquipmentBorder{
+    border: 2px solid black;
+    border-radius: 10px;
+}
+
+.zoneCurrentEquipmentIcon{
+    max-width: 75px;
+    height: auto;
+}
+
+.zoneNextEquipmentIcon{
+    max-width: 50px;
+    height: auto;
+}
+
+.zoneCurrentEquipmentArrows{
+    max-height: 50px;
+    width: auto;
+}
+
+.normalBorder{
+    border: 2px solid  rgba(150,150,150,0.7);;
+}
+
+.researchUpgradeImage{
+    width: 30px;
+}
+
+.teachResearchWrap{
+    border-radius: 10px;
+    background-color: rgba(150,200,150,0.2);
+}
+
+.teachResearchWrap:hover{
+    background-color: rgba(150,200,150,0.5);
+}
+
+.extraSpacer{
+    width: 30px;
+}
+
+.zoneBuildingLocks{
+    height: 50px;
+}
+
+.zoneShrineImage{
+    width: 200px;
+    max-height: 200px;
+}
+
+.mapZoneBox{
+    position: relative;
+    width: 22px;
+    height: 22px;
+    border: 1px solid black;
+}
+
+.mapZoneBox:hover{
+    border: 1px solid purple;
+    cursor: pointer;
+}
+
+.mapZoneImageOverlay{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+}
+
+.roundedButton{
+    border-radius: 15px 15px 0 0;
+    border: 2px solid;
+}
+
+.HUDstatusImage{
+    width: 20px;
+    height: 20px;
+}
+
+.HUDstatusImageWrapper{
+    width: 22px;
+    height: 22px;
+}
+
+.HUDstatuses{
+    min-height: 24px;
+}
+
+.messagePlayerName{
+    border-radius: 10px;
+}
+
+.zoneLogsWrapper{
+    max-height: 200px;
+    overflow: auto;
+}
+
+.zoneOtherAvatarWrapPhonePopup{
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    z-index: 100;
+    margin-top: -100px;
+}
+
+.phoneAvatarListImage{
+    max-width: 30px;
+    max-height: 60px;
+}
+
+.zoneAvatarOtherButtons{
+    z-index: 100;
+}
+
+/*Remove or replace of these eventually*/
+
+.tempImageWriting{
+    background: white;
+    color: black;
+    font-size: 60%;
+}
+
+.tempPaddingPhone{
+    height: 80px;
+}
+
+.temppaddingPhone2{
+    height: 60px;
+}
+
+.tempPadding2{
+}
+
+.tempHolder{
+    min-height: 25px;
+}
+
+.tempImageDeath{
+    height: 180px;
+    background: rgba(120,80,220,0.2);
+}
+
+.itemTestImage{
+    max-width: 25px;
+    max-height: 25px;
+}
+
+.itemTestWrapper{
+    border: 2px solid lightgray;
+    padding: 3px;
+}
