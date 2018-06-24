@@ -30,10 +30,6 @@ interface building_Interface
     function setStaminaSpent($var);
     function getBuildingType();
     function setBuildingType($var);
-    function getTutorialKnown();
-    function setTutorialKnown($var);
-    function getMainKnown();
-    function setMainKnown($var);
     function getBuildingTypeID();
     function setBuildingTypeID($var);
 }

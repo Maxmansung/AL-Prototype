@@ -45,8 +45,8 @@
     }
 
     .tempShrineImage{
-        width: 100px;
-        height: 100px;
+        width: 150px;
+        height: 150px;
     }
 
     .resize-font-size-1{
@@ -108,8 +108,8 @@
     }
 
     .tempShrineImage{
-        width: 250px;
-        height: 250px;
+        width: 200px;
+        height: 200px;
     }
 
     .resize-font-size-1{
@@ -1116,26 +1116,6 @@ span.btn-dark:not(:disabled):not(.disabled):active:focus, .btn-dark:not(:disable
     max-height: 200px;
 }
 
-.mapZoneBox{
-    position: relative;
-    width: 22px;
-    height: 22px;
-    border: 1px solid black;
-}
-
-.mapZoneBox:hover{
-    border: 1px solid purple;
-    cursor: pointer;
-}
-
-.mapZoneImageOverlay{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 20px;
-    height: 20px;
-}
-
 .roundedButton{
     border-radius: 15px 15px 0 0;
     border: 2px solid;
@@ -1179,6 +1159,15 @@ span.btn-dark:not(:disabled):not(.disabled):active:focus, .btn-dark:not(:disable
 
 .zoneAvatarOtherButtons{
     z-index: 100;
+}
+
+.directionButtonWrapper{
+    width: 40px;
+    height: 40px;
+}
+
+.zoneInformationBox{
+    border: 2px solid rgba(180,180,180,1);
 }
 
 /*Remove or replace of these eventually*/

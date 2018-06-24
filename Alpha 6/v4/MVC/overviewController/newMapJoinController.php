@@ -2,7 +2,7 @@
 if (!defined('PROJECT_ROOT')) exit(include($_SERVER['DOCUMENT_ROOT'] . "/error/404.php"));
 class newMapJoinController
 {
-    private $inventMain = 4;
+    private $inventMain = 5;
     private $inventTutorial = 6;
     private $stamina = 20;
     private $staminaTest = 100;
@@ -12,7 +12,7 @@ class newMapJoinController
     private $minPlayer = 1;
     private $maxPlayers = 40;
     private $minEdge = 3;
-    private $maxEdge = 30;
+    private $maxEdge = 20;
 
     public static function createNewMap($name,$player,$edge,$length,$profile,$type){
         $profile->getProfileAccess();
@@ -112,10 +112,6 @@ class newMapJoinController
                             for ($x = 0; $x < $edge; $x++) {
                                 $zone = new zoneController("");
                                 $zone->newZone($map->getMapID(), $counter, $x, $y, $forestLoc, $shrineLoc, $lakeLoc);
-                                if ($zone->getProtectedType() !== "none") {
-                                    $shrine = shrineController::createNewShrine($zone->getProtectedType(), $zone->getZoneID());
-                                    $shrine->insertShrine();
-                                }
                                 $counter += 1;
                             }
                         }
@@ -210,7 +206,7 @@ class newMapJoinController
         $count = $size * $size;
         $exploration = [];
         for ($x = 0; $x < $count; $x++) {
-            $exploration[$x] = array("x","x");
+            $exploration[$x] = array("x","x",0);
         }
         return $exploration;
     }

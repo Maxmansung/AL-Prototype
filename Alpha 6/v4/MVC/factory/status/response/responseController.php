@@ -4,21 +4,11 @@ class responseController
 {
 
     protected $changeType;
-    protected $failResponse;
-    protected $succeedResponse;
     protected $failStatus;
     protected $succeedStatus;
 
     function getChangeType(){
         return $this->changeType;
-    }
-
-    function getFailResponse(){
-        return $this->failResponse;
-    }
-
-    function getSucceedResponse(){
-        return $this->succeedResponse;
     }
 
     function getFailStatus(){

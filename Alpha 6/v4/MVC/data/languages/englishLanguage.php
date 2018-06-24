@@ -1,4 +1,4 @@
-<?php
+    <?php
 if (!defined('PROJECT_ROOT')) exit(include($_SERVER['DOCUMENT_ROOT']."/error/404.php"));
 include_once ($_SERVER['DOCUMENT_ROOT']."/MVC/data/languages/languageInterface.php");
 class englishLanguage implements languageInterface
@@ -395,7 +395,7 @@ class englishLanguage implements languageInterface
     //This is the current version of the game
     function footerGameVersion()
     {
-        return "Version: 6.3 (Alpha)";
+        return "Version: 6.4 (Alpha)";
     }
 
     //This is the title of the helpful links
@@ -463,7 +463,7 @@ class englishLanguage implements languageInterface
             case "g":
                 return "General Chat";
                 break;
-            case "mx":
+            case "mc":
                 return "Map Chat";
                 break;
             case "pc":

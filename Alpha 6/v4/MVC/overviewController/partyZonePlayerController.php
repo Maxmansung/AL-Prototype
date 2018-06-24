@@ -74,11 +74,10 @@ class partyZonePlayerController
     //This function checks if a player has favour with a god that will be lost by leaving the current party
     public static function checkTeamFavour($avatarID){
         $avatar = new avatarController($avatarID);
-        $map = new mapController($avatar->getMapID());
         $party = new partyController($avatar->getPartyID());
         $shrineTeam = new shrineTeam();
         if (count($party->getMembers())===$shrineTeam->getMinPlayers()){
-            $check = shrineActionsController::checkFavour($avatar->getPartyID(),$map->getCurrentDay(),2);
+            $check = shrineActionsController::checkFavour($avatar->getPartyID(),$avatar->getCurrentDay(),2);
             if ($check === true) {
                 return array("ALERT" => 34, "DATA" => "");
             }
@@ -107,12 +106,11 @@ class partyZonePlayerController
                 $newParty->uploadParty();
                 $party->uploadParty();
                 $avatar->updateAvatar();
-                $map = new mapController($avatar->getMapID());
                 $shrineTeam = new shrineTeam();
                 if (count($party->getMembers()) < $shrineTeam->getMinPlayers()){
-                    shrineActionsController::deleteTeamFavour($party->getPartyID(),$map->getCurrentDay());
+                    shrineActionsController::deleteTeamFavour($party->getPartyID());
                 }
-                chatlogGroupController::leaveGroup($avatar,$party->getPartyID(),$map->getCurrentDay());
+                chatlogGroupController::leaveGroup($avatar,$party->getPartyID());
                 return array("ALERT"=>30,"DATA"=>$party->getPartyName());
             }
         }
@@ -473,12 +471,12 @@ class partyZonePlayerController
 
     static function getUnknownResearch($other,$self,$view)
     {
-        $buildingList = buildingView::getAllBuildingsView();
         $knownList = $self->getResearched();
         $finalList = [];
-        foreach ($knownList as $item){
-            if (!in_array($item,$other->getResearched())) {
-                if (in_array($buildingList[$item]->getBuildingsRequired(), $other->getResearched())) {
+        $buildingList = factoryClassArray::createAllBuildings();
+        foreach ($knownList as $item) {
+            if (!in_array($item, $other->getResearched())) {
+                if (in_array($buildingList[$item]->getBuildingsRequired(), $other->getResearched()) || $buildingList[$item]->getBuildingsRequired() === 0) {
                     $building = $buildingList[$item];
                     if ($view === true) {
                         array_push($finalList, $building->returnVars());
@@ -497,7 +495,7 @@ class partyZonePlayerController
         if ($avatar->getStamina() < 2) {
             return array("ERROR" => 0);
         } else {
-            $cleanResearch = preg_replace(data::$cleanPatterns['text'],"",$research);
+            $cleanResearch = intval(preg_replace(data::$cleanPatterns['text'],"",$research));
             if (!in_array($cleanResearch, $avatar->getResearched())) {
                 return array("ERROR" => 39);
             } else {
@@ -510,21 +508,45 @@ class partyZonePlayerController
                         return array("ERROR"=>"Player is not in the correct zone to do this action");
                     } else {
                         $list = self::getUnknownResearch($otherPlayer, $avatar, false);
-                        if (!in_array($research, $list)) {
+                        if (!in_array($cleanResearch, $list)) {
                             return array("ERROR" => 49);
                         } else {
                             $avatar->useStamina(2);
-                            $avatar->addPlayStatistics("research", 2);
-                            $otherPlayer->addResearched($research);
+                            $otherPlayer->addResearched($cleanResearch);
                             $avatar->updateAvatar();
                             $otherPlayer->updateAvatar();
-                            $building = buildingController::createBlankBuilding($cleanResearch);
+                            $name = "building".$cleanResearch;
+                            $building = new $name();
                             $map = new mapController($avatar->getMapID());
                             chatlogPersonalController::teachPlayerResearch($avatar, $building->getName(), $otherPlayer->getProfileID(), $map->getCurrentDay());
                             return array("ALERT" => 17, "DATA" => array("player" => $otherPlayer->getProfileID(), "building" => $building->getName()));
                         }
                     }
                 }
+            }
+        }
+    }
+
+    public static function markMapZone($avatarID,$zoneID,$marking){
+        $avatar = new avatarController($avatarID);
+        if ($avatar->getAvatarID() !== $avatarID){
+            return array("ERROR"=>"You are not currently logged in");
+        } else {
+            $markingClean = intval(preg_replace(data::$cleanPatterns['num'],"",$marking));
+            if ($markingClean < 0 || $markingClean > 5){
+                return array("ERROR"=>"The marking has gone wrong somehow");
+            } else {
+                $zoneClean = intval(preg_replace(data::$cleanPatterns['num'],"",$zoneID));
+                $zone = new zoneController($zoneClean);
+                if ($zone->getMapID() !== $avatar->getMapID()){
+                    return array("ERROR"=>"Somehow you have selected a zone that is not on your map");
+                } else {
+                    $party = new partyController($avatar->getPartyID());
+                    $party->markZoneExploration($zone->getName(),$markingClean);
+                    $party->uploadParty();
+                    return array("SUCCESS"=>true);
+                }
+
             }
         }
     }

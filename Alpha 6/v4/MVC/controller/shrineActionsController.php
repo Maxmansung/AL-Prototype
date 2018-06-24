@@ -20,22 +20,20 @@ class shrineActionsController extends shrineActions
             $this->partyName = $actionModel->getPartyName();
             $this->mapID = $actionModel->getMapID();
             $this->currentDay = $actionModel->getCurrentDay();
-            $this->shrineID = $actionModel->getShrineID();
             $this->shrineType = $actionModel->getShrineType();
             $this->worshipTime = $actionModel->getWorshipTime();
         }
     }
 
-    public static function createNewWorship($avatar,$party,$map,$shrine){
+    public static function createNewWorship($avatar,$party,$shrine){
         $action = new shrineActionsController("");
         $action->setAvatar($avatar->getAvatarID());
         $action->setProfileName($avatar->getProfileID());
         $action->setPartyID($party->getPartyID());
         $action->setPartyName($party->getPartyName());
-        $action->setMapID($map->getMapID());
-        $action->setCurrentDay($map->getCurrentDay());
-        $action->setShrineID($shrine->getShrineID());
-        $action->setShrineType($shrine->getShrineType());
+        $action->setMapID($avatar->getMapID());
+        $action->setCurrentDay($avatar->getCurrentDay());
+        $action->setShrineType($shrine->getShrineID());
         $action->setWorshipTime(time());
         $action->insertAction();
     }

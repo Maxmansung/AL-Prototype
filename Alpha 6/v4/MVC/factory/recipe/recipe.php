@@ -130,7 +130,7 @@ class recipe implements recipe_Interface
             }
         }
         foreach ($buildingArray as $buildingID){
-            $name = "item".$buildingID;
+            $name = "building".$buildingID;
             $building = new $name();
             if ($building->getGivesRecipe() !== null) {
                 foreach ($building->getGivesRecipe() as $recipeID) {

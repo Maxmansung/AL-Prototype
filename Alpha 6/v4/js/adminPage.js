@@ -236,6 +236,7 @@ function createMapDetails(data,map){
 }
 
 function createDeadPlayerDeatils(data){
+    $("#mapDetailsDeadAdminWrapper").empty();
     var size = objectSize(data);
     if (size !== 0) {
         $("#mapDetailsDeadAdminWrapper").append('<div class="row font-size-2 p-2 deadPlayerWrapper">' +

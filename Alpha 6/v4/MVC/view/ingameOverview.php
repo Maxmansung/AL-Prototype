@@ -36,6 +36,7 @@ class ingameOverview
     protected $actions;
     protected $shrineScores;
     protected $eventsList;
+    protected $mapInformation;
 
 
     function __construct($avatar,$zone,$map,$party,$type,$secondView)
@@ -45,7 +46,11 @@ class ingameOverview
         $storage = new storageController("", $avatar->getZoneID());
         $accessCheck = buildingItemController::lockChecker($avatar,$zone,$storage,true);
         if ($accessCheck === true) {
-            $this->itemChest = itemView::getAllItemsView($avatar->getMapID(), "storage", $storage->getStorageID());
+            if (is_array($storage->getItems())) {
+                $this->itemChest = itemView::getArrayView($storage->getItems());
+            } else {
+                $this->itemChest = [];
+            }
             $this->storageDetails = $storage->returnVars();
         } else {
             $this->itemChest = "Locked";
@@ -100,8 +105,7 @@ class ingameOverview
         } else if ($secondView === 3){
             $this->shrineScores = shrineView::createAllShrineView($avatar,$party,$map);
         }
-        $shrine = new shrineController(80);
-        $this->getTest = $shrine->getShrineAlertMessage();
+        $this->mapInformation = mapView::getView($avatar,$party);
     }
 
     function returnVars(){

@@ -20,7 +20,6 @@ class avatar implements avatar_Interface
     protected $partyVote;
     protected $researchStats;
     protected $researched;
-    protected $playStatistics;
     protected $tempModLevel;
     protected $findingChanceMod;
     protected $findingChanceFail;
@@ -32,6 +31,8 @@ class avatar implements avatar_Interface
     protected $favourSolo;
     protected $favourTeam;
     protected $favourMap;
+    protected $currentDay;
+    protected $currentFavour;
 
     public function __toString()
     {
@@ -49,7 +50,6 @@ class avatar implements avatar_Interface
         $output .= '/ '.$this->avatarSurvivableTemp;
         $output .= '/ '.json_encode($this->partyVote);
         $output .= '/ '.json_encode($this->researched);
-        $output .= '/ '.json_encode($this->playStatistics);
         $output .= '/ '.$this->tempModLevel;
         $output .= '/ '.json_encode($this->shrineScore);
         $output .= '/ '.json_encode($this->forumPosts);
@@ -324,34 +324,6 @@ class avatar implements avatar_Interface
         }
     }
 
-    function getPlayStatistics()
-    {
-        return $this->playStatistics;
-    }
-
-    function setPlayStatistics($var)
-    {
-        $this->playStatistics = $var;
-    }
-
-    function addPlayStatistics($var, $count)
-    {
-       if (!empty($this->playStatistics[$var])){
-           $this->playStatistics[$var] = intval($this->playStatistics[$var])+$count;
-       } else {
-           $this->playStatistics[$var] = $count;
-       }
-    }
-
-    function removePlayStatistics($var, $count)
-    {
-        if (!empty($this->playStatistics[$var])){
-            $this->playStatistics[$var] = intval($this->playStatistics[$var])-$count;
-        } else {
-            $this->playStatistics[$var] = 0;
-        }
-    }
-
     function getTempModLevel()
     {
         return $this->tempModLevel;
@@ -538,5 +510,46 @@ class avatar implements avatar_Interface
     function increaseFavourMap($var)
     {
         $this->favourMap += $var;
+    }
+
+    function getCurrentDay()
+    {
+        return $this->currentDay;
+    }
+
+    function setCurrentDay($var)
+    {
+        $this->currentDay = $var;
+    }
+
+    function getCurrentFavour()
+    {
+       return $this->currentFavour;
+    }
+
+    function setCurrentFavour($var)
+    {
+        $this->currentFavour = $var;
+    }
+
+    function addCurrentFavour($var)
+    {
+        if(!in_array($var,$this->currentFavour)){
+            array_push($this->currentFavour,$var);
+        }
+    }
+
+    function removeCurrentFavour($var)
+    {
+        if(in_array($var,$this->currentFavour)){
+            $key = array_search($var, $this->currentFavour);
+            unset($this->currentFavour[$key]);
+            $this->currentFavour = array_values($this->currentFavour);
+        }
+    }
+
+    function resetCurrentFavour()
+    {
+        $this->currentFavour = array();
     }
 }

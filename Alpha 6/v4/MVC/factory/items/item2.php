@@ -14,11 +14,12 @@ class item2 extends item
         $this->survivalBonus = -1;
         $this->statusImpact = 1;
         $this->givesRecipe = array(2);
+        $this->dayEndChanges = false;
     }
-    function consumeItem()
-    {
-        return false;
 
+    function consumeItem($avatar)
+    {
+        return array("ERROR"=>"This item cannot be consumed, please bug report this (Item2)");
     }
 
 }

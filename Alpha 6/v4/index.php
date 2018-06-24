@@ -112,6 +112,9 @@ if ($profile->getProfileID() == "" || $profile->getAccountType() > 7){
         case "score":
             $pageName = "/gamePages/leaderboard/leaderboardMain.php";
             break;
+        case "nightfall":
+            $pageName = "/gamePages/other/nightfall.php";
+            break;
         case "none":
         default:
             if ($profile->getGameStatus() == "death") {
@@ -146,6 +149,7 @@ if ($profile->getProfileID() == "" || $profile->getAccountType() > 7){
     <link rel="stylesheet" href="/CSS/bootstrap/bootstrap.css">
     <link rel="stylesheet" href="/CSS/colours.css">
     <link rel="stylesheet" href="/CSS/textFormat.css">
+    <link rel="stylesheet" href="/CSS/mapScaler.css">
     <link rel="icon" href="images/baseImages/iconSnowman.png" type="image/x-icon"/>
     <link rel="shortcut icon" href="images/baseImages/iconSnowman.png" type="image/x-icon"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">

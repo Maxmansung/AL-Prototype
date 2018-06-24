@@ -8,10 +8,8 @@ class avatarModel extends avatar
         $this->profileID = $avatarModel['profileID'];
         $this->mapID = intval($avatarModel['mapID']);
         $this->stamina = intval($avatarModel['stamina']);
-        $this->maxStamina = intval($avatarModel['maxstamina']);
         $this->zoneID = intval($avatarModel['zoneID']);
         $this->inventory = json_decode($avatarModel['inventory']);
-        $this->maxInventorySlots = intval($avatarModel['maxinventoryslots']);
         $this->partyID = intval($avatarModel['partyID']);
         $this->readiness = $avatarModel['readiness'];
         if (is_object(json_decode($avatarModel['avatarTempRecord']))) {
@@ -19,7 +17,6 @@ class avatarModel extends avatar
         } else {
             $this->avatarTempRecord = array();
         }
-        $this->avatarSurvivableTemp = intval($avatarModel['avatarsurvivabletemp']);
         if (is_object(json_decode($avatarModel['achievements']))) {
             $this->achievements = get_object_vars(json_decode($avatarModel['achievements']));
         } else {
@@ -32,13 +29,8 @@ class avatarModel extends avatar
         }
         $this->researchStats = (json_decode($avatarModel['researchStats']));
         $this->researched = (json_decode($avatarModel['researched']));
-        if (is_object(json_decode($avatarModel['playStatistics']))) {
-            $this->playStatistics = get_object_vars(json_decode($avatarModel['playStatistics']));
-        } else {
-            $this->playStatistics = array();
-        }
         $this->tempModLevel = intval($avatarModel['tempModLevel']);
-        $this->findingChanceMod = intval($avatarModel['findingChanceMod']);
+        $this->findingChanceMod = 0;
         $this->findingChanceFail = intval($avatarModel['findingChanceFail']);
         if (is_object(json_decode($avatarModel['shrineScore']))) {
             $this->shrineScore = get_object_vars(json_decode($avatarModel['shrineScore']));
@@ -55,6 +47,7 @@ class avatarModel extends avatar
         $this->favourSolo = $avatarModel['favourSolo'];
         $this->favourTeam = $avatarModel['favourTeam'];
         $this->favourMap = $avatarModel['favourMap'];
+        $this->currentFavour = json_decode($avatarModel['currentFavour']);
     }
 
     public static function findAvatarID($avatarID){
@@ -72,21 +65,16 @@ class avatarModel extends avatar
         $profileID = $controller->getProfileID();
         $mapID = intval($controller->getMapID());
         $stamina = $controller->getStamina();
-        $maxStamina = $controller->getMaxStamina();
         $zoneID = intval($controller->getZoneID());
         $inventory = json_encode($controller->getInventory());
-        $maxInventorySlots = $controller->getMaxInventorySlots();
         $partyID = intval($controller->getPartyID());
         $readiness = $controller->getReady();
         $avatarTempRecord = json_encode($controller->getavatarTempRecord());
-        $avatarSurvivableTemp = $controller->getAvatarSurvivableTemp();
         $achievements = json_encode($controller->getachievements());
         $partyVote = json_encode($controller->getPartyVote());
         $researchStats = json_encode($controller->getResearchStats());
         $researched = json_encode($controller->getResearched());
-        $playStatistics = json_encode($controller->getPlayStatistics());
         $tempModLevel = $controller->getTempModLevel();
-        $findingChanceMod = $controller->getFindingChanceMod();
         $findingChanceFail = $controller->getFindingChanceFail();
         $shrineScore = json_encode($controller->getShrineScore());
         $forumPosts = json_encode($controller->getForumPosts());
@@ -95,30 +83,26 @@ class avatarModel extends avatar
         $favourSolo = intval($controller->getFavourSolo());
         $favourTeam = intval($controller->getFavourTeam());
         $favourMap = intval($controller->getFavourMap());
+        $currentFavour = json_encode($controller->getCurrentFavour());
         if ($type == "Insert") {
-            $req = $db->prepare("INSERT INTO Avatar (avatarID, profileID, mapID, stamina, maxstamina, zoneID, inventory, maxinventoryslots, partyID, readiness, avatarTempRecord, avatarsurvivabletemp, achievements, partyVote, researchStats, researched, playStatistics, tempModLevel, findingChanceMod, findingChanceFail, shrineScore, forumPosts, statusArray,avatarImage, favourSolo, favourTeam, favourMap) VALUES (:avatarID, :profileID, :mapID, :stamina, :maxStamina, :zoneID, :inventory, :maxInventorySlots, :partyID, :readiness, :avatarTempRecord, :avatarSurvivableTemp, :achievements, :partyVote, :researchStats, :researched, :playStatistics, :tempModLevel, :findingChanceMod, :findingChanceFail, :shrineScore, :forumPosts, :statusArray, :avatarImage,:favourSolo, :favourTeam, :favourMap)");
+            $req = $db->prepare("INSERT INTO Avatar (profileID, mapID, stamina, zoneID, inventory, partyID, readiness, avatarTempRecord, achievements, partyVote, researchStats, researched, tempModLevel, findingChanceFail, shrineScore, forumPosts, statusArray,avatarImage, favourSolo, favourTeam, favourMap,currentFavour) VALUES (:profileID, :mapID, :stamina, :zoneID, :inventory, :partyID, :readiness, :avatarTempRecord, :achievements, :partyVote, :researchStats, :researched, :tempModLevel, :findingChanceFail, :shrineScore, :forumPosts, :statusArray, :avatarImage,:favourSolo, :favourTeam, :favourMap,:currentFavour)");
         } elseif ($type == "Update") {
-            $req = $db->prepare("UPDATE Avatar SET profileID= :profileID, mapID= :mapID, stamina= :stamina, maxstamina= :maxStamina, zoneID = :zoneID, inventory= :inventory, maxinventoryslots= :maxInventorySlots, partyID= :partyID, readiness= :readiness, avatarTempRecord= :avatarTempRecord, avatarsurvivabletemp= :avatarSurvivableTemp, achievements= :achievements, partyVote= :partyVote, researchStats= :researchStats, researched= :researched, playStatistics= :playStatistics, tempModLevel= :tempModLevel, findingChanceMod= :findingChanceMod, findingChanceFail= :findingChanceFail, shrineScore= :shrineScore, forumPosts= :forumPosts, statusArray= :statusArray, avatarImage= :avatarImage, favourSolo= :favourSolo, favourTeam= :favourTeam, favourMap= :favourMap WHERE avatarID= :avatarID");;
+            $req = $db->prepare("UPDATE Avatar SET profileID= :profileID, mapID= :mapID, stamina= :stamina, zoneID = :zoneID, inventory= :inventory, partyID= :partyID, readiness= :readiness, avatarTempRecord= :avatarTempRecord, achievements= :achievements, partyVote= :partyVote, researchStats= :researchStats, researched= :researched, tempModLevel= :tempModLevel, findingChanceFail= :findingChanceFail, shrineScore= :shrineScore, forumPosts= :forumPosts, statusArray= :statusArray, avatarImage= :avatarImage, favourSolo= :favourSolo, favourTeam= :favourTeam, favourMap= :favourMap, currentFavour= :currentFavour WHERE avatarID= :avatarID");
+            $req->bindParam(':avatarID', $avatarID);
         }
-        $req->bindParam(':avatarID', $avatarID);
         $req->bindParam(':profileID', $profileID);
         $req->bindParam(':mapID', $mapID);
         $req->bindParam(':stamina', $stamina);
-        $req->bindParam(':maxStamina', $maxStamina);
         $req->bindParam(':zoneID', $zoneID);
         $req->bindParam(':inventory', $inventory);
-        $req->bindParam(':maxInventorySlots', $maxInventorySlots);
         $req->bindParam(':partyID', $partyID);
         $req->bindParam(':readiness', $readiness);
         $req->bindParam(':avatarTempRecord', $avatarTempRecord);
-        $req->bindParam(':avatarSurvivableTemp', $avatarSurvivableTemp);
         $req->bindParam(':achievements', $achievements);
         $req->bindParam(':partyVote', $partyVote);
         $req->bindParam(':researchStats', $researchStats);
         $req->bindParam(':researched', $researched);
-        $req->bindParam(':playStatistics', $playStatistics);
         $req->bindParam(':tempModLevel', $tempModLevel);
-        $req->bindParam(':findingChanceMod', $findingChanceMod);
         $req->bindParam(':findingChanceFail', $findingChanceFail);
         $req->bindParam(':shrineScore', $shrineScore);
         $req->bindParam(':forumPosts', $forumPosts);
@@ -127,6 +111,7 @@ class avatarModel extends avatar
         $req->bindParam(':favourSolo', $favourSolo);
         $req->bindParam(':favourTeam', $favourTeam);
         $req->bindParam(':favourMap', $favourMap);
+        $req->bindParam(':currentFavour', $currentFavour);
         $req->execute();
         if ($type == "Insert"){
             $check = intval($db->lastInsertId());
@@ -185,6 +170,15 @@ class avatarModel extends avatar
             $avatarArray[$tempID] = new avatarModel($avatar);
         }
         return $avatarArray;
+    }
+
+    public static function resetShrineRewards($mapID){
+        $db = db_conx::getInstance();
+        $var = json_encode(array());
+        $req = $db->prepare('UPDATE Avatar SET currentFavour= :favour WHERE mapID= :mapID');
+        $req->bindParam(':favour', $var);
+        $req->bindParam(':mapID', $mapID);
+        $req->execute();
     }
 
 }

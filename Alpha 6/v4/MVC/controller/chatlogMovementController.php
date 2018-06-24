@@ -25,11 +25,11 @@ class chatlogMovementController extends chatlogController
         }
     }
 
-    public function createNewLog($avatar,$message,$currentDay){
+    public function createNewLog($avatar,$message){
         $this->mapID = $avatar->getMapID();
         $this->zoneID = $avatar->getZoneID();
         $this->avatarID = $avatar->getAvatarID();
-        $this->mapDay = $currentDay;
+        $this->mapDay = $avatar->getCurrentDay();
         $this->messageTime = time();
         $this->messageText = $message;
     }
@@ -56,7 +56,7 @@ class chatlogMovementController extends chatlogController
         return $logDetailsObject;
     }
 
-    public static function enterNewZone($avatar,$direction,$day){
+    public static function enterNewZone($avatar,$direction){
         $log = new chatlogMovementController("");
         $directionNew = "ERROR";
         if ($direction === "n"){
@@ -69,12 +69,12 @@ class chatlogMovementController extends chatlogController
             $directionNew = "east";
         }
         $message = "There are tracks suggesting that #name# came here from the ".$directionNew;
-        $log->createNewLog($avatar,$message,$day);
+        $log->createNewLog($avatar,$message);
         $log->insertChatLogZone();
     }
 
 
-    public static function leaveCurrentZone($avatar,$direction,$day){
+    public static function leaveCurrentZone($avatar,$direction){
         $log = new chatlogMovementController("");
         $directionNew = "ERROR";
         if ($direction === "n"){
@@ -87,28 +87,28 @@ class chatlogMovementController extends chatlogController
             $directionNew = "west";
         }
         $message = "The tracks suggest that #name# left the zone to the ".$directionNew;
-        $log->createNewLog($avatar,$message,$day);
+        $log->createNewLog($avatar,$message);
         $log->insertChatLogZone();
     }
 
-    public static function playerJoinsMap($avatar,$day){
+    public static function playerJoinsMap($avatar){
         $log = new chatlogMovementController("");
         $message = "The mess is all that's left to show that #name# lived here until recently";
-        $log->createNewLog($avatar,$message,$day);
+        $log->createNewLog($avatar,$message);
         $log->insertChatLogZone();
     }
 
-    public static function destroyBiome($avatar,$day){
+    public static function destroyBiome($avatar){
         $log = new chatlogMovementController("");
         $message = "A huge explosion appears to have happened here, the only thing left is a burnt outline of #name#";
-        $log->createNewLog($avatar,$message,$day);
+        $log->createNewLog($avatar,$message);
         $log->insertChatLogZone();
     }
 
-    public static function testing($avatar,$day){
+    public static function testing($avatar){
         $log = new chatlogMovementController("");
         $message = "This is a testing script, please ignore it!!";
-        $log->createNewLog($avatar,$message,$day);
+        $log->createNewLog($avatar,$message);
         $log->insertChatLogZone();
     }
 }

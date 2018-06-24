@@ -27,10 +27,9 @@ class buildingController extends building
             $this->itemsRequired = $class->itemsRequired;
             $this->buildingsRequired = $class->buildingsRequired;
             $this->staminaRequired = $class->staminaRequired;
-            $this->tutorialKnown = $class->tutorialKnown;
-            $this->mainKnown = $class->mainKnown;
             $this->buildingTypeID = $class->buildingTypeID;
             $this->buildingType = $class->buildingType;
+            $this->badBiomes = $class->badBiomes;
             $this->setIsBuilt($this->checkBuilt());
         }
     }
@@ -52,10 +51,9 @@ class buildingController extends building
         $this->itemsRequired = $class->itemsRequired;
         $this->buildingsRequired = $class->buildingsRequired;
         $this->staminaRequired = $class->staminaRequired;
-        $this->tutorialKnown = $class->tutorialKnown;
-        $this->mainKnown = $class->mainKnown;
         $this->buildingTypeID = $class->buildingTypeID;
         $this->buildingType = $class->buildingType;
+        $this->badBiomes = $class->badBiomes;
         $this->setIsBuilt($this->checkBuilt());
     }
 
@@ -103,11 +101,11 @@ class buildingController extends building
 
     public static function getBuildingsArray($zoneID){
         $zoneBuildingArray = buildingModel::zoneBuildingsArray($zoneID);
-        $buildingArray = self::getAllBuildings();
-        for($x = 1; $x<=building::$totalBuildings;$x++) {
-            if (array_key_exists($x, $zoneBuildingArray)) {
-                $buildTest = new buildingController($zoneBuildingArray[$x]);
-                $buildingArray[$x] = $buildTest;
+        $buildingArray = factoryClassArray::createAllBuildings();
+        foreach($buildingArray as $building) {
+            if (array_key_exists($building->getBuildingTemplateID(), $zoneBuildingArray)) {
+                $buildTest = new buildingController($zoneBuildingArray[$building->getBuildingTemplateID()]);
+                $buildingArray[$building->getBuildingTemplateID()] = $buildTest;
             }
         }
         return $buildingArray;
@@ -135,16 +133,6 @@ class buildingController extends building
         }
     }
 
-    public static function getAllBuildings(){
-        $buildingArray = [];
-        for($x = 1; $x<=building::$totalBuildings;$x++) {
-            $builtTemp = "building" . $x;
-            $class = new $builtTemp();
-            $buildingArray[$x] = $class;
-        }
-        return $buildingArray;
-    }
-
     public static function lockTotal($lock){
         $storageID = buildingController::returnBuildingID("StorageLock");
         $gateID =  buildingController::returnBuildingID("GateLock");
@@ -161,7 +149,7 @@ class buildingController extends building
     }
 
     public static function getStartingBuildings(){
-        return array(1,2,3);
+        return array(1,2,3,13);
     }
 
     //////////////////////THIS NEED TO BE CHANGED IF BUILDING ID'S CHANGE /////////////////////////
@@ -170,65 +158,49 @@ class buildingController extends building
     public static function returnBuildingID($buildingName){
         switch ($buildingName) {
             case "Firepit":
-                $buildingType = "B0001";
+                $buildingType = 1;
                 break;
             case "Storage":
-                $buildingType = "B0002";
+                $buildingType = 2;
                 break;
             case "Outpost":
-                $buildingType = "B0003";
+                $buildingType = 3;
                 break;
             case "StorageLock":
-                $buildingType = "B0004";
+                $buildingType = 4;
                 break;
             case "GateLock":
-                $buildingType = "B0005";
+                $buildingType = 5;
                 break;
             case "Capture":
-                $buildingType = "B0006";
+                $buildingType = 6;
                 break;
             case "Trap":
-                $buildingType = "B0007";
+                $buildingType = 7;
                 break;
             case "Smoke":
-                $buildingType = "B0008";
+                $buildingType = 8;
                 break;
             case "GateReinforce":
-                $buildingType = "B0009";
+                $buildingType = 9;
                 break;
             case "ButcherTable":
-                $buildingType = "B0010";
+                $buildingType = 10;
                 break;
             case "HeatRock":
-                $buildingType = "B0011";
+                $buildingType = 11;
                 break;
             case "Seedling":
-                $buildingType = "B0012";
+                $buildingType = 12;
                 break;
             case "firepitCage":
-                $buildingType = "B0013";
+                $buildingType = 13;
                 break;
             default:
                 $buildingType = "";
                 break;
         }
         return $buildingType;
-    }
-
-    public static function checkIfLock($buildingType){
-        switch ($buildingType) {
-            case "B0004":
-                $check = true;
-                break;
-            case "B0005":
-                $check = true;
-                break;
-            default:
-                $check = false;
-                break;
-        }
-        return $check;
-
     }
 }
 

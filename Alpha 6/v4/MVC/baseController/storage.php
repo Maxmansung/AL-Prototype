@@ -50,11 +50,10 @@ class storage implements storage_Interface
         $this->items = $var;
     }
 
-    function addItem($var){
-        if (!in_array($var, $this->items)) {
-            array_push($this->items, $var);
-            $this->items = array_values($this->items);
-        }
+    function addItem($var)
+    {
+        array_push($this->items, $var);
+        $this->items = array_values($this->items);
     }
 
     function removeItem($var){

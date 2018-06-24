@@ -23,7 +23,7 @@ if (isset($accessed) === false){
                 </div>
                 <div class="row justify-content-center">
                     <div class="d-flex flex-column justify-content-center align-items-center">
-                        <button class="btn d-flex btn-dark" onclick="getMapView()">Map</button>
+                        <button class="btn d-flex btn-dark" onclick="changeView(5)">Map</button>
                         <div class="d-flex zoneCoordWriting"></div>
                     </div>
                 </div>

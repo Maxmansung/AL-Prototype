@@ -269,6 +269,11 @@ class zone implements zone_interface
         $this->lockStrength = $var;
     }
 
+    function decreaseLockStrength($var)
+    {
+        $this->lockStrength -= $var;
+    }
+
     function getLockMax()
     {
         return $this->lockMax;
@@ -277,6 +282,11 @@ class zone implements zone_interface
     function setLockMax($var)
     {
         $this->lockMax = $var;
+    }
+
+    function decreaseLockMax($var)
+    {
+        $this->lockMax -= $var;
     }
 
     function getZoneItems()

@@ -124,4 +124,22 @@ class zoneModel extends zone
         $req->bindParam(':zoneItems', $zoneItems);
         $req->execute();
     }
+
+    public static function getMapShrines($mapID)
+    {
+        $db = db_conx::getInstance();
+        $req = $db->prepare("SELECT * FROM Zone WHERE mapID= :mapID AND protectedZoneType != 'none'");
+        $req->bindParam(':mapID', $mapID);
+        $req->execute();
+        $zoneModel = $req->fetchAll();
+        $finalArray = [];
+        $counter = 0;
+        foreach ($zoneModel as $zone){
+            $zone = new zoneModel($zone);
+            $finalArray[$counter] = $zone;
+            $counter++;
+        }
+        return $finalArray;
+
+    }
 }

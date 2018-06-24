@@ -43,7 +43,7 @@ class mapOverviewEditView
         $newArray = [];
         $deadArray = [];
         foreach ($list as $avatar){
-            if ($avatar->getReady() != "dead"){
+            if ($avatar->getReady() !== "dead"){
                 $newArray[$avatar->getAvatarID()] = $avatar->returnVars();
             } else {
                 array_push($deadArray,$avatar->getProfileID());

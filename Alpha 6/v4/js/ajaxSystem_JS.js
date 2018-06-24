@@ -124,6 +124,7 @@ function switchArray(type,response){
         case 38:
             createSearchResults(response.view);
             break;
+        case 10:
         case 41:
             createMapPage(response.view);
             break;

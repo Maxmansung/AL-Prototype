@@ -155,7 +155,7 @@ class forumPostController extends forumPost
                     $thread = new forumThreadController($threadID, "forumThreadsMap");
                     $avatar = new avatarController($profile->getAvatar());
                     if ($avatar->getMapID() == $thread->getThreadDefinition()) {
-                        $postID = self::newMapPost($profile->getAvatar(), $postText, $threadID);
+                        $postID = self::newMapPost($avatar, $postText, $threadID);
                     } else {
                         $postID = array("ERROR" => 45);
                     }
@@ -164,7 +164,7 @@ class forumPostController extends forumPost
                     $thread = new forumThreadController($threadID, "forumThreadsParty");
                     $avatar = new avatarController($profile->getAvatar());
                     if ($avatar->getPartyID() == $thread->getThreadDefinition()) {
-                        $postID = self::newPartyPost($profile->getAvatar(), $postText, $threadID);
+                        $postID = self::newPartyPost($avatar, $postText, $threadID);
                     } else {
                         $postID = array("ERROR" => 45);
                     }
@@ -177,8 +177,7 @@ class forumPostController extends forumPost
         return $postID;
     }
 
-    private static function newPartyPost($avatarID,$postText,$threadID){
-        $avatar = new avatarController($avatarID);
+    private static function newPartyPost($avatar,$postText,$threadID){
         $post = new forumPostController("","");
         $post->tableName = "forumPostsParty";
         $post->postID = forumPostModel::createThreadID($post->tableName);
@@ -197,12 +196,11 @@ class forumPostController extends forumPost
         return array("ALERT"=>15,"DATA"=>$post->getPostID());
     }
 
-    private static function newMapPost($avatarID,$postText,$threadID){
-        $avatar = new avatarController($avatarID);
+    private static function newMapPost($avatar,$postText,$threadID){
         $post = new forumPostController("","");
         $post->tableName = "forumPostsMap";
         $post->postID = forumPostModel::createThreadID($post->tableName);
-        $post->creatorID = $avatar->getProfileID();
+        $post->creatorID = $avatar->getAvatarID();
         $post->postDate = time();
         $post->editable = 1;
         $post->postText = $postText;

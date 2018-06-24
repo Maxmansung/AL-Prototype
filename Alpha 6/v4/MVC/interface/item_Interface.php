@@ -2,10 +2,6 @@
 if (!defined('PROJECT_ROOT')) exit(include($_SERVER['DOCUMENT_ROOT']."/error/404.php"));
 interface item_Interface
 {
-    function getItemID();
-    function setItemID($var);
-    function getMapID();
-    function setMapID($var);
     function getItemTemplateID();
     function setItemTemplateID($var);
     function getIdentity();

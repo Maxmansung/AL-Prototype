@@ -5,12 +5,6 @@ interface shrine_Interface
 
     function getShrineID();
     function setShrineID($var);
-    function getMapID();
-    function setMapID($var);
-    function getZoneID();
-    function setZoneID($var);
-    function getShrineType();
-    function setShrineType($var);
     function getShrineName();
     function setShrineName($var);
     function getDescription();

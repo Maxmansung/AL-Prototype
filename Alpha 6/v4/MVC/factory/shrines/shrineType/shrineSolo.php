@@ -25,7 +25,7 @@ class shrineSolo extends shrineType
         $votingArray = [];
         $sortingArray = [];
         foreach ($list as $action){
-            if ($action->getShrineID() == $shrine->getShrineID()) {
+            if ($action->getShrineType() == $shrine->getShrineID()) {
                 if (isset($votingArray[$action->getAvatar()])) {
                     $temp = $votingArray[$action->getAvatar()][0];
                 } else {

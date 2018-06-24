@@ -13,8 +13,8 @@ class equipment3 extends equipment
         $this->cost1Count = 1;
         $this->cost2Item = null;
         $this->cost2Count = 0;
-        $this->upgrade1 = 1;
-        $this->upgrade2 = 2;
+        $this->upgrade1 = 6;
+        $this->upgrade2 = 7;
         $this->equipImage = "sleepingIcon1";
     }
 

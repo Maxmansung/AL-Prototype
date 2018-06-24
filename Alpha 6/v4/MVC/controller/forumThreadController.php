@@ -63,19 +63,24 @@ class forumThreadController extends forumThread
                 $postTable = str_replace("Threads", "Posts", $table);
                 $reply = forumPostModel::getMostRecentPost($temp->getThreadID(), $postTable);
                 if ($avatarTrue !== false) {
+                    $avatar = new avatarController($profile->getAvatar());
                     if ($avatarTrue === true) {
-                        $avatar = new avatarController($profile->getAvatar());
                         $newArray = forumPostController::getAvatarPostThreadsArray($avatar->getForumPosts());
                     } else if ($avatarTrue === "party") {
 
                     }
-                    $avatar = new avatarController($profile->getAvatar());
                     $party = new partyController($avatar->getPartyID());
-                    if (in_array($temp->getCreatorID(), $party->getMembers()) == true) {
+                    if (in_array($temp->getCreatorID(), $party->getPlayersKnown()) == true) {
                         $avatar = new avatarController($temp->getCreatorID());
                         $temp->setCreatorID($avatar->getProfileID());
                     } else {
                         $temp->setCreatorID("Unknown");
+                    }
+                    if (in_array($temp->getLastPostBy(), $party->getPlayersKnown()) == true) {
+                        $avatar = new avatarController($temp->getLastPostBy());
+                        $temp->setLastPostBy($avatar->getProfileID());
+                    } else {
+                        $temp->setLastPostBy("Unknown");
                     }
                 } else {
                     $newArray = forumPostController::getProfilePostThreadsArray($profile->getForumPosts());
@@ -85,7 +90,6 @@ class forumThreadController extends forumThread
                 } else {
                     $temp->setNewPost(false);
                 }
-                $temp->setLastPostBy($reply);
                 $finalArray[$temp->getLastUpdate()] = $temp->returnVars();
             }
             if ($sticky === false) {

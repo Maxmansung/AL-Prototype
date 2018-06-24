@@ -6,8 +6,6 @@ class responseSnack extends responseController
     function __construct()
     {
         $this->changeType = "Snack";
-        $this->failResponse = "You're not hungry enough to eat something so disgusting looking any more";
-        $this->succeedResponse = "It barely touches the sides and leaves you unsure if you're still hungry or not...";
         $this->failStatus = 5;
         $this->succeedStatus = false;
     }

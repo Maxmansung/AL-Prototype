@@ -24,7 +24,7 @@ class profileAlertModel extends profileAlert
 
     public static function getProfileAlerts($profileID) {
         $db = db_conx::getInstance();
-        $req = $db->prepare('SELECT * FROM profileAlerts WHERE profileID= :id LIMIT 10');
+        $req = $db->prepare('SELECT * FROM profileAlerts WHERE profileID= :id AND visible= 1 LIMIT 10');
         $req->execute(array('id' => $profileID));
         $alertModel = $req->fetchAll();
         $finalArray = [];

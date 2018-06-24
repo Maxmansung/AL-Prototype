@@ -13,12 +13,11 @@ class building3 extends building
         $this->staminaRequired = 5;
         $this->fuelBuilding = 0;
         $this->buildingTypeID = 2;
-        $this->tutorialKnown = 1;
-        $this->mainKnown = 1;
         $this->isBuilt = false;
         $this->staminaSpent = 0;
         $this->setTypeVars();
         $this->givesRecipe = array();
+        $this->badBiomes = [100];
     }
 
     public function postBuildingDatabase(){
@@ -27,9 +26,20 @@ class building3 extends building
 
     public function newBuildingFunctions($zone,$avatar)
     {
+        $zone->setControllingParty($avatar->getPartyID());
+        $zone->setZoneOutpostName(nameGeneratorController::getNameAsText("camp"));
         $zone->updateZone();
         $avatar->updateAvatar();
+    }
 
+    public function dayEndingActions($map)
+    {
+        return true;
+    }
+
+    public function getTempBonus()
+    {
+        return 0;
     }
 
 }

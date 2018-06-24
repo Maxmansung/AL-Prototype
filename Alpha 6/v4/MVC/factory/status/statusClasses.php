@@ -2,7 +2,7 @@
 if (!defined('PROJECT_ROOT')) exit(include($_SERVER['DOCUMENT_ROOT']."/error/404.php"));
 
 //CONTROLLER CLASS
-include_once(PROJECT_ROOT."/MVC/controller/statusesController.php");
+include_once(PROJECT_ROOT."/MVC/factory/status/statuses.php");
 
 //ALL STATUS CLASSES
 include_once(PROJECT_ROOT."/MVC/factory/status/status1.php");

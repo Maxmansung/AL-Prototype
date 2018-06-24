@@ -23,7 +23,7 @@ class shrineMap extends shrineType
         $votingArray["shrine"] = $shrine->getShrineName();
         $votingArray['count'] = 0;
         foreach ($list as $action) {
-            if ($action->getShrineID() !== $shrine->getShrineID()) {
+            if ($action->getShrineType() !== $shrine->getShrineID()) {
                 $votingArray["check"] = false;
             } else {
                 $votingArray['count']++;

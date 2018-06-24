@@ -8,6 +8,7 @@ class dayEndingFunctions
         $deleted = false;
 
         //This happens before any players die (Sacrificing yourself for a god is the greatest honour right?
+        avatarModel::resetShrineRewards($map->getMapID());
         dayEndingFunctions::calculateShrineBonuses($map);
 
         $avatarArray = avatarController::getAllMapAvatars($map->getMapID(),false);
@@ -17,7 +18,7 @@ class dayEndingFunctions
             $biome = new $biomeClass();
             $party = new partyController($single->getPartyID());
             $stats = buildingLevels::getTotalSurviveTemp($single,$zone,$biome,$party,false);
-            $checkStatus = statusesController::checkStatuses($single->getStatusArray());
+            $checkStatus = statuses::checkStatuses($single->getStatusArray());
             if ($single->getReady() === "dead") {
                 $deathCounter++;
             } elseif ($checkStatus === "dead") {
@@ -51,11 +52,8 @@ class dayEndingFunctions
             $deleted = true;
         }
         if ($deleted == false) {
-            //THIS NEEDED TO BE CLEANED UP A LOT!
-            //dayEndingFunctions::buildingChanges($map->getMapID());
-
             dayEndingFunctions::updateZoneInfo($map->getMapID());
-            dayEndingFunctions::changeMapItems($map->getMapID());
+            dayEndingFunctions::buildingChanges($map);
             $map->updateMap();
         }
     }
@@ -85,7 +83,7 @@ class dayEndingFunctions
             $avatar->toggleReady("ready");
         }
         $avatar->setStamina($avatar->getMaxStamina());
-        $statusArray = statusesController::changeStatuses($avatar->getStatusArray());
+        $statusArray = statuses::changeStatuses($avatar->getStatusArray());
         $avatar->setStatusArray($statusArray);
         if ($map->getGameType() == "Tutorial"){
             if ($map->getCurrentDay() == 5){
@@ -98,6 +96,9 @@ class dayEndingFunctions
         if ($modifier === "cold"){
             $avatar->changeStatusArray(3);
         }
+        $itemObjects = factoryClassArray::createAllItems();
+        $itemArray = self::itemChanges($avatar->getInventory(),$itemObjects);
+        $avatar->setInventory($itemArray);
         $biome = array("CAMPING",$zone->getBiomeType());
         $response = achievementController::checkAchievement($biome);
         if ($response !== false) {
@@ -111,7 +112,7 @@ class dayEndingFunctions
     }
 
     private static function calculateShrineBonuses($map){
-        $shrineArray = shrineController::findMapShrines($map->getMapID());
+        $shrineArray = zoneController::getMapShrines($map->getMapID());
         foreach ($shrineArray as $shrine){
             $results = $shrine->shrineRanks($map,array());
             if ($shrine->getOverallType() === 1){
@@ -147,26 +148,15 @@ class dayEndingFunctions
         }
     }
 
-    static function giveShrineBonus($shrine,$avatar,$day){
+    static function giveShrineBonus($shrine,$avatar){
         $bonus = $shrine->getShrineBonus();
-        $messageText = "";
-        $messageTitle = "";
         if(key_exists("ITEM",$bonus)){
             $avatar->addInventoryItem($bonus["ITEM"]);
-            $messageText = $shrine->getShrineAlertMessage();
-            $messageTitle = "Cold God's Champion";
-        } else if(key_exists("STAMINA",$bonus)){
-            $avatar->useStamina((intval($bonus['STAMINA'])*-1));
-            $messageText = $shrine->getShrineAlertMessage();
-            $messageTitle = "War God's Champion";
-
-        } else if (key_exists("ZONES",$bonus)){
-
-            $messageText = $shrine->getShrineAlertMessage();
-            $messageTitle = "Life God's Champion";
         }
-        $data = $day;
-        profileAlertController::createNewAlert($avatar->getProfileID(),$messageText,$messageTitle,$data);
+        $messageTitle = $shrine->getShrineAlertTitle();
+        $messageText = $shrine->getShrineAlertMessage();
+        $avatar->addCurrentFavour($shrine->getShrineID());
+        profileAlertController::createNewAlert($avatar->getProfileID(),$messageText,$messageTitle,$avatar->getCurrentDay());
         $avatar->updateAvatar();
     }
 
@@ -184,6 +174,9 @@ class dayEndingFunctions
             } else {
                 $zone->setFindingChances($zone->getFindingChances() + 1);
             }
+            $itemObjects = factoryClassArray::createAllItems();
+            $itemArray = self::itemChanges($zone->getZoneItems(),$itemObjects);
+            $zone->setZoneItems($itemArray);
             $zone->updateZone();
         }
     }
@@ -220,6 +213,31 @@ class dayEndingFunctions
         $details->uploadProfile();
         $profile->uploadProfile();
         return array("ERROR"=>56);
+    }
+
+    public static function itemChanges($itemArray,$itemObjects)
+    {
+        foreach ($itemArray as $key=>$item){
+            if ($itemObjects[$item]->getDayEndChanges() === true){
+                $effect = $itemObjects[$item]->dayEnding();
+                if(array_key_exists("ITEM",$effect)){
+                    $itemArray[$key] = $effect["ITEM"];
+                }
+            }
+        }
+        return $itemArray;
+    }
+
+    public static function buildingChanges($map)
+    {
+        $buildingList = factoryClassArray::createAllBuildings();
+        foreach ($buildingList as $building){
+            $response = $building->dayEndingActions($map);
+            if ($response !== true){
+                echo $response;
+                exit();
+            }
+        }
     }
 
 

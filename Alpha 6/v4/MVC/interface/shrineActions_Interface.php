@@ -16,8 +16,6 @@ interface shrineActions_Interface
     function setMapID($var);
     function getCurrentDay();
     function setCurrentDay($var);
-    function getShrineID();
-    function setShrineID($var);
     function getShrineType();
     function setShrineType($var);
     function getWorshipTime();

@@ -115,7 +115,7 @@ class buildingItemController
                         //Building does not have enough materials to build it
                         return array("ERROR" => 8);
                     } else {
-                        if (buildingItemController::checkBuildingAvailable($id,$zone->getZoneID()) === false) {
+                        if (in_array($zone->getBiomeType(),$selectedBuilding->getBadBiomes())) {
                             //Building cannot be built in this zone
                             return array("ERROR" => 65);
                         } else {
@@ -127,7 +127,8 @@ class buildingItemController
                                     return array("ERROR" => 9);
                                 }
                             }
-                            if (($selectedBuilding->getStaminaSpent() + $stamina) > $selectedBuilding->getStaminaRequired()) {
+                            if (($selectedBuilding->getStaminaSpent() + $stamina) > $selectedBuilding->getStaminaRequired())
+                            {
                                 $stamina = $selectedBuilding->getStaminaRequired() - $selectedBuilding->getStaminaSpent();
                             }
                             if ($selectedBuilding->getZoneID() == null){
@@ -136,7 +137,6 @@ class buildingItemController
                                 $selectedBuilding->setFuelRemaining(0);
                             }
                             $avatar->useStamina($stamina);
-                            $avatar->addPlayStatistics("build", $stamina);
                             $response = achievementController::checkAchievement(array("ACTION","BUILD"));
                             if ($response !== false) {
                                 $avatar->addAchievement($response);
@@ -248,7 +248,6 @@ class buildingItemController
         }
         if ($checker == false) {
             $avatar->useStamina(1);
-            $avatar->addPlayStatistics("break", 1);
             $avatar->updateAvatar();
             if ($buildingName === "Chest") {
                 $temp = $storage->getLockStrength();
@@ -280,7 +279,6 @@ class buildingItemController
             if ($buildingName === "Chest") {
                 if ($storage->getLockStrength() < $storage->getLockMax()) {
                     $avatar->useStamina(1);
-                    $avatar->addPlayStatistics("build", 1);
                     $avatar->updateAvatar();
                     $temp = $storage->getLockStrength();
                     $temp++;
@@ -293,7 +291,6 @@ class buildingItemController
             } else {
                 if ($zone->getLockStrength() < $zone->getLockMax()) {
                     $avatar->useStamina(1);
-                    $avatar->addPlayStatistics("build", 1);
                     $avatar->updateAvatar();
                     $temp = $zone->getLockStrength();
                     $temp++;
@@ -364,19 +361,14 @@ class buildingItemController
             foreach ($counter as $id){
                 $avatar->removeInventoryItem($id);
             }
+
+            //This is used to prevent the avatars stats from changing when they are returned to the server
+            $avatar->setMaxInventorySlots(intval($avatar->getMaxInventorySlots())-intval($currentBackpack->getBackpackBonus()));
+            $avatar->setAvatarSurvivableTemp(intval($avatar->getAvatarSurvivableTemp())-intval($currentBackpack->getHeatBonus()));
+            $avatar->setMaxInventorySlots(intval($avatar->getMaxInventorySlots())+intval($backpackController->getBackpackBonus()));
+            $avatar->setAvatarSurvivableTemp(intval($avatar->getAvatarSurvivableTemp())+intval($backpackController->getHeatBonus()));
+
             $avatar->setTempModLevel($typeClean);
-            //This is used to reset the temperature bonus and give the new temperature bonus
-            $resetTemp = $avatar->getAvatarSurvivableTemp();
-            $resetTemp = $resetTemp-$currentBackpack->getHeatBonus();
-            $resetTemp = $resetTemp+$backpackController->getHeatBonus();
-            $resetSize = $avatar->getMaxInventorySlots();
-
-            //This is used to reset the backpack size bonus and give the new backpack size
-            $avatar->setAvatarSurvivableTemp($resetTemp);
-            $resetSize = $resetSize-$currentBackpack->getBackpackBonus();
-            $resetSize = $resetSize+$backpackController->getBackpackBonus();
-            $avatar->setMaxInventorySlots($resetSize);
-
             $map = new mapController($avatar->getMapID());
             chatlogPersonalController::upgradeBackpack($avatar, $backpackController->getEquipName(),$map->getCurrentDay());
             $avatar->updateAvatar();
@@ -400,7 +392,6 @@ class buildingItemController
             } else {
                 $avatar->adjustResearchStatsStamina(1);
                 $avatar->useStamina(1);
-                $avatar->addPlayStatistics("research",1);
                 $response = achievementController::checkAchievement(array("ACTION","RESEARCH"));
                 if ($response !== false) {
                     $avatar->addAchievement($response);
@@ -413,7 +404,7 @@ class buildingItemController
 
     //This function finds the researched buildings that aren't known to a player and the types left to research
     public static function getAvailableResearchOptions($avatar,$type){
-        $list = buildingController::getAllBuildings();
+        $list = factoryClassArray::createAllBuildings();
         $unknownList = [];
         $unknownTypeList = [];
         foreach ($list as $building){
@@ -441,9 +432,11 @@ class buildingItemController
         } else if ($type === "view") {
             $final = [];
             foreach ($unknownTypeList as $type) {
-                $class = "buildingType".$type;
-                $temp = new $class();
-                $final[$type] = $temp->returnVars();
+                if (!array_key_exists($type,$final)) {
+                    $class = "buildingType" . $type;
+                    $temp = new $class();
+                    $final[$type] = $temp->returnVars();
+                }
             }
             return $final;
         } else {
@@ -451,7 +444,9 @@ class buildingItemController
             foreach ($list as $building){
                 if (!in_array($building->getBuildingTemplateID(),$avatar->getResearched())) {
                     if ($building->getBuildingTypeID() === $type) {
-                        array_push($final, $building->getBuildingTemplateID());
+                        if(in_array($building->getBuildingTemplateID(),$unknownList)) {
+                            array_push($final, $building->getBuildingTemplateID());
+                        }
                     }
                 }
             }
@@ -462,16 +457,16 @@ class buildingItemController
     //This function finds the player a new researched building
     public static function completeResearch($avatarID,$type)
     {
-        $typeClean = intval(preg_replace(data::$cleanPatterns['num'],"",$type));
+        $typeClean = intval(preg_replace(data::$cleanPatterns['num'], "", $type));
         $avatar = new avatarController($avatarID);
-        if ($avatar->getResearchStatsStamina() < buildingLevels::researchStaminaLevels($avatar->getResearchStatsLevel())) {
-            return array("ERROR"=>"You have not completed your research yet");
+        if ($avatar->getResearchStatsStamina() < buildingLevels::researchStaminaLevels($avatar->getResearchStatsLevel()))
+        {
+            return array("ERROR" => "You have not completed your research yet");
         } else {
-            $list = self::getAvailableResearchOptions($avatar,$typeClean);
-            if (count($list) < 1){
-                return array("ERROR"=>40);
-            }
-            else {
+            $list = self::getAvailableResearchOptions($avatar, $typeClean);
+            if (count($list) < 1) {
+                return array("ERROR" => 40);
+            } else {
                 $buildingFound = rand(0, (count($list) - 1));
                 if (in_array($list[$buildingFound], $avatar->getResearched())) {
                     return array("ERROR" => "This research is already known");
@@ -482,7 +477,7 @@ class buildingItemController
                     $building = new buildingController("");
                     $building->createNewBuilding($list[$buildingFound], $avatar->getZoneID());
                     $map = new mapController($avatar->getMapID());
-                    chatlogPersonalController::findNewResearch($avatar, $building->getName(),$map->getCurrentDay());
+                    chatlogPersonalController::findNewResearch($avatar, $building->getName(), $map->getCurrentDay());
                     $avatar->updateAvatar();
                     return array("ALERT" => 12, "DATA" => array("researchName" => $building->getName(), "researchIcon" => $building->getIcon(), "researchDescription" => $building->getDescription()));
                 }
@@ -508,7 +503,7 @@ class buildingItemController
                 if (!in_array($buildings->getBuildingTemplateID(), $avatar->getResearched())) {
                     unset($buildingsList[$key]);
                 }
-                if (self::checkBuildingAvailable($buildings->getBuildingTemplateID(), $zone->getZoneID()) === false) {
+                if (in_array($zone->getBiomeType(),$buildings->getBadBiomes())) {
                     unset($buildingsList[$key]);
                 }
             }
@@ -624,68 +619,4 @@ class buildingItemController
         }
         return true;
     }
-
-
-//////////////////////THIS NEED TO BE CHANGED IF BUILDING ID'S CHANGE /////////////////////////
-
-    private static function newBuildingFunctions($completedBuilding, $zoneItem,$avatarItem)
-    {
-        $buildingID = $completedBuilding->getBuildingTemplateID();
-        switch ($buildingID) {
-            case "B0002":
-                $storage = new storageController("", "");
-                $storage->createStorage($zoneItem->getZoneID(), "10");
-                $zoneItem->setStorage(1);
-                $storage->insertStorage();
-                break;
-            case "B0003":
-                $zoneItem->setControllingParty($avatarItem->getPartyID());
-                $zoneItem->setZoneOutpostName(nameGeneratorController::getNameAsText("camp"));
-                break;
-            case "B0004":
-                $storage = new storageController("",$zoneItem->getZoneID());
-                $storage->setLockBuilt(1);
-                $storage->setLockStrength(20);
-                $storage->setLockMax(20);
-                $storage->uploadStorage();
-                break;
-            case "B0005":
-                $zoneItem->setLockBuilt(1);
-                $zoneItem->setLockStrength(20);
-                $zoneItem->setLockMax(20);
-                break;
-            case "B0006":
-                $zoneItem->setControllingParty($avatarItem->getPartyID());
-                $zoneItem->removeBuilding($buildingID);
-                $completedBuilding->setStaminaSpent(0);
-                break;
-            case "B0009":
-                $gate = buildingController::getConstructedBuildingID("GateLock",$completedBuilding->getZoneID());
-                $gate->modifyFuelRemaining($completedBuilding->getFuelBuilding());
-                $gate->postBuildingDatabase();
-                break;
-            default:
-                break;
-        }
-        return $zoneItem;
-    }
-
-    private static function checkBuildingAvailable($buildingType,$zoneID){
-        switch ($buildingType){
-            case "B0012":
-                $zone = new zoneController($zoneID);
-                if ($zone->getBiomeType() >0 && $zone->getBiomeType() <4){
-                    return true;
-                } else {
-                    return false;
-                }
-                break;
-            default:
-                return true;
-                break;
-        }
-    }
-
-
-
 }

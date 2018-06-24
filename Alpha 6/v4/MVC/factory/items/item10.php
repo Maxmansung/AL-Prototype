@@ -10,14 +10,15 @@ class item10 extends item
         $this->icon = "boneMax";
         $this->description = "All that's left of a small creature, perhaps it could be made into something though";
         $this->itemType = 2;
-        $this->usable = 0;
+        $this->usable = false;
         $this->survivalBonus = 0;
         $this->statusImpact = 1;
         $this->givesRecipe = array();
+        $this->dayEndChanges = false;
     }
-    function consumeItem()
-    {
-        return false;
 
+    function consumeItem($avatar)
+    {
+        return array("ERROR"=>"This item cannot be consumed, please bug report this (Item10)");
     }
 }

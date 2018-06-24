@@ -180,20 +180,26 @@ class party implements party_Interface
     function addOverallZoneExploration($var,$biome,$depleted)
     {
         $varInt = intval($var);
-        $this->overallZoneExploration[$varInt] = array($biome,$depleted);
+        $marker = $this->overallZoneExploration[$varInt][2];
+        $this->overallZoneExploration[$varInt] = array($biome,$depleted,$marker);
     }
 
     function removeZoneExploration($var)
     {
         $varInt = intval($var);
-        $this->overallZoneExploration[$varInt] = array("x","x");
+        $this->overallZoneExploration[$varInt] = array("x","x",0);
     }
 
     function removeAllZoneExploration()
     {
         foreach ($this->overallZoneExploration as $key => $zone) {
-            $this->overallZoneExploration[$key] = array("x","x");
+            $this->overallZoneExploration[$key] = array("x","x",0);
         }
+    }
+
+    function markZoneExploration($var,$marking){
+        $varInt = intval($var);
+        $this->overallZoneExploration[$varInt][2] = $marking;
     }
 
     function getTempBonus(){
@@ -225,14 +231,17 @@ class party implements party_Interface
     function addOverallZoneExplorationDetailed($var1,$biome,$depleted){
         $varInt = intval($var1);
         if ($this->overallZoneExploration[$varInt][0] == "x"){
-            $this->overallZoneExploration[$varInt] = array($biome,$depleted);
+            $marker = $this->overallZoneExploration[$varInt][2];
+            $this->overallZoneExploration[$varInt] = array($biome,$depleted,$marker);
         } else {
             if (intval($biome) < intval($this->overallZoneExploration[$varInt][0])) {
-                $this->overallZoneExploration[$varInt] = array($biome, $depleted);
+                $marker = $this->overallZoneExploration[$varInt][2];
+                $this->overallZoneExploration[$varInt] = array($biome, $depleted,$marker);
             }
             if (intval($biome) === intval($this->overallZoneExploration[$varInt][0])) {
                 if ($depleted === 0) {
-                    $this->overallZoneExploration[$varInt] = array($biome, $depleted);
+                    $marker = $this->overallZoneExploration[$varInt][2];
+                    $this->overallZoneExploration[$varInt] = array($biome, $depleted,$marker);
                 }
             }
         }

@@ -7,14 +7,14 @@ class equipment2 extends equipment
     {
         $this->equipmentID = 2;
         $this->equipName = "Better Rags";
-        $this->heatBonus = 1;
+        $this->heatBonus = 3;
         $this->backpackBonus = 0;
         $this->cost1Item = 20;
-        $this->cost1Count = 2;
+        $this->cost1Count = 1;
         $this->cost2Item = null;
         $this->cost2Count = 0;
-        $this->upgrade1 = 1;
-        $this->upgrade2 = 3;
+        $this->upgrade1 = 4;
+        $this->upgrade2 = 5;
         $this->equipImage = "sleepingIcon1";
     }
 

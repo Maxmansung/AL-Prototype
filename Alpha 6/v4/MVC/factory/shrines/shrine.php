@@ -3,20 +3,12 @@ if (!defined('PROJECT_ROOT')) exit(include($_SERVER['DOCUMENT_ROOT'] . "/error/4
 require_once(PROJECT_ROOT . "/MVC/interface/shrine_Interface.php");
 class shrine implements shrine_Interface
 {
-
     protected $shrineID;
-    protected $mapID;
-    protected $zoneID;
-    protected $shrineType;
-    protected $history;
-    protected $currentArray;
     protected $shrineName;
     protected $description;
     protected $shrineIcon;
     protected $worshipCost;
     protected $worshipDescription;
-    protected $currentArrayView;
-    protected $totalTribute;
     protected $minParty;
     protected $maxParty;
     protected $shrineBonus;
@@ -24,16 +16,12 @@ class shrine implements shrine_Interface
     protected $typeName;
     protected $shrineOverallType;
     protected $shrineAlertMessage;
+    protected $shrineAlertTitle;
 
 
     public function __toString()
     {
         $output = $this->shrineID;
-        $output .= '/ '.$this->mapID;
-        $output .= '/ '.$this->zoneID;
-        $output .= '/ '.$this->shrineType;
-        $output .= '/ '.json_encode($this->history);
-        $output .= '/ '.json_encode($this->currentArray);
         $output .= '/ '.$this->shrineName;
         $output .= '/ '.$this->description;
         $output .= '/ '.$this->shrineIcon;
@@ -58,36 +46,6 @@ class shrine implements shrine_Interface
     function setShrineID($var)
     {
         $this->shrineID = $var;
-    }
-
-    function getMapID()
-    {
-        return $this->mapID;
-    }
-
-    function setMapID($var)
-    {
-        $this->mapID = $var;
-    }
-
-    function getZoneID()
-    {
-        return $this->zoneID;
-    }
-
-    function setZoneID($var)
-    {
-        $this->zoneID = $var;
-    }
-
-    function getShrineType()
-    {
-        return $this->shrineType;
-    }
-
-    function setShrineType($var)
-    {
-        $this->shrineType = $var;
     }
 
     function getShrineName()
@@ -164,10 +122,6 @@ class shrine implements shrine_Interface
     function setWorshipDescription($var)
     {
         $this->worshipDescription = $var;
-    }
-
-    function getTotalTribute(){
-        return $this->totalTribute;
     }
 
     function getMinParty()
@@ -258,32 +212,14 @@ class shrine implements shrine_Interface
         $this->shrineAlertMessage = $var;
     }
 
-    protected function getShrineFactory($id)
+    function getShrineAlertTitle()
     {
-        $object = new shrine1();
-        switch ($id){
-            case 1:
-                $object = new shrine1();
-                break;
-            case 2:
-                $object = new shrine2();
-                break;
-            case 3:
-                $object = new shrine3();
-                break;
-        }
-        $this->setShrineName($object->getShrineName());
-        $this->setDescription($object->getDescription());
-        $this->setShrineIcon($object->getShrineIcon());
-        $this->setWorshipCost($object->getWorshipCost());
-        $this->setWorshipDescription($object->getWorshipDescription());
-        $this->setShrineBonus($object->getShrineBonus());
-        $this->setBlessingMessage($object->getBlessingMessage());
-        $this->setShrineAlertMessage($object->getShrineAlertMessage());
-        $this->setMaxParty($object->getMaxParty());
-        $this->setMinParty($object->getMinParty());
-        $this->setTypeName($object->getTypeName());
-        $this->setOverallType($object->getOverallType());
+        return $this->shrineAlertTitle;
+    }
+
+    function setShrineAlertTitle($var)
+    {
+        $this->shrineAlertTitle = $var;
     }
 
     protected function createShrineType($id){

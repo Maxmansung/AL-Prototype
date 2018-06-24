@@ -44,7 +44,9 @@ class profileAchievements
             $this->keyAchievement2 = $profileDetails->getKeyAchievement2();
             $this->keyAchievement3 = $profileDetails->getKeyAchievement3();
             $this->keyAchievement4 = $profileDetails->getKeyAchievement4();
-            $this->favouriteGod = shrineModel::getShrineNameOnly($profileDetails->getFavouriteGod());
+            $name = "shrine".$profileDetails->getFavouriteGod();
+            $shrine = new $name();
+            $this->favouriteGod = $shrine->getShrineName();
             $this->country = $profileDetails->getCountry();
             $this->mainGames = $profileDetails->getMainGames();
             $this->speedGames = $profileDetails->getSpeedGames();

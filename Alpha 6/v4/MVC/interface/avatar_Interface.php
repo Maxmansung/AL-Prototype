@@ -45,10 +45,6 @@ interface avatar_Interface
     function setResearched($var);
     function addResearched($var);
     function removeResearched($var);
-    function getPlayStatistics();
-    function setPlayStatistics($var);
-    function addPlayStatistics($var,$count);
-    function removePlayStatistics($var,$count);
     function getTempModLevel();
     function setTempModLevel($var);
     function getFindingChanceMod();
@@ -78,4 +74,11 @@ interface avatar_Interface
     function getFavourMap();
     function setFavourMap($var);
     function increaseFavourMap($var);
+    function getCurrentDay();
+    function setCurrentDay($var);
+    function getCurrentFavour();
+    function setCurrentFavour($var);
+    function addCurrentFavour($var);
+    function removeCurrentFavour($var);
+    function resetCurrentFavour();
 }

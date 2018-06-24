@@ -343,7 +343,7 @@ function errors(id){
             createAlertBox(5,1,"You can only use to allowed formats, please don't try to hack the system",1);
             break;
         case 200:
-            window.location.href="/nightfall.php";
+            window.location.href="/?page=nightfall";
             break;
         case 29:
         case 31:

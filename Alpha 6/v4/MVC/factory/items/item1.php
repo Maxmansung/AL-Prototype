@@ -32,13 +32,15 @@ class item1 extends item
         //THIS IS USED TO FIND ANY ASSOCIATED RECIPES
         $this->givesRecipe = array();
 
+        //THIS IS USED TO DETECT IF CHANGES HAPPEN OVERNIGHT WITH THE ITEM
+        $this->dayEndChanges = false;
+
     }
 
     //THIS WILL BE USED TO WORK OUT WHAT HAPPENS WHEN AN ITEM IS CONSUMED, EVERY ITEM WILL HAVE THIS FUNCTION BUT IT WILL ALWAYS RETURN FALSE UNLESS THAT ITEM CAN BE CONSUMED
-    function consumeItem()
+    function consumeItem($avatar)
     {
-        return false;
-
+        return array("ERROR"=>"This item cannot be consumed, please bug report this (Item1)");
     }
 
 }

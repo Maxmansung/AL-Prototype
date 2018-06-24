@@ -15,7 +15,9 @@ if (isset($_POST["type"])) {
             $profile = new profileController("");
         }
         $control = intval(preg_replace('#[^0-9]#i', '', $_POST['view']));
-        if ($profile->getNightfall() === 1 && $type !== 47 && $control!== 15){
+        $excludeView = [12,15];
+        $excludeType = [47,186,187];
+        if ($profile->getNightfall() === 1 && !in_array($type,$excludeType) && !in_array($control,$excludeView)){
             echo json_encode(array("ERROR"=>200));
         } else {
             $ingameArray = [1, 2, 3, 5, 6, 8, 9, 11, 14, 16, 17, 18, 20, 21, 22, 23, 26, 27, 28, 29, 30, 31, 32, 33, 34, 41, 43, 44, 45, 48, 50, 51, 52, 202];
@@ -36,7 +38,6 @@ if (isset($_POST["type"])) {
                 switch ($type) {
                     //UNUSED FUNCTIONS:
                     /*
-                    case 10:
                     case 12:
                     case 19:
                     case 24:
@@ -118,6 +119,11 @@ if (isset($_POST["type"])) {
                         //Used to complete a research
                         $response = buildingItemController::completeResearch($profile->getAvatar(), $data3);
                         //Returns ERROR or ALERT
+                        break;
+                    case 10:
+                        //Used to mark a zone
+                        $response = partyZonePlayerController::markMapZone($profile->getAvatar(),$data2,$data3);
+                        //Returns ERROR or SUCCESS
                         break;
                     case 14:
                         //Used when a player reinforces the fence
@@ -515,7 +521,7 @@ if (isset($_POST["type"])) {
                             $view = shrineView::createTestView($profile->getAvatar());
                             break;
                         case 17:
-                            $view = mapView::getView($profile->getAvatar());
+                            $view = mapView::getViewWithZone($profile->getAvatar(),$data2);
                             break;
                         case 18:
                             $view = deathScreenView::getDeathView($profile->getProfileID());

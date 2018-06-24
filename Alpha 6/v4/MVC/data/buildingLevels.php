@@ -35,11 +35,6 @@ class buildingLevels
         }
     }
 
-    //THIS IS THE STARTING ITEMS FOR THE PLAYER
-    public static function playerStartingItems(){
-        return array(6,21);
-    }
-
 
     //THIS RETURN THE INCREASE IN NIGHT TEMPERATURE EACH DAY
     public static function increaseNightTemperature($dayNumber){
@@ -69,12 +64,12 @@ class buildingLevels
     public static function buildingsTempIncrease($avatar, $zone){
         if ($zone->getControllingParty() != null){
             if ($zone->getControllingParty() == $avatar->getPartyID() || buildingController::getLockValue($zone->getZoneID()) == 0){
-                $buildingsIncrease = buildingLevels::buildingsBonus();
+                $buildingsIncrease = buildingLevels::buildingsBonus($zone);
             } else {
                 $buildingsIncrease = 0;
             }
         } else {
-            $buildingsIncrease = buildingLevels::buildingsBonus();
+            $buildingsIncrease = buildingLevels::buildingsBonus($zone);
         }
         return $buildingsIncrease;
     }
@@ -89,8 +84,14 @@ class buildingLevels
     }
 
     //THIS CALCULATES THE TOTAL BONUS FROM ALL OF THE BUILDINGS
-    public static function buildingsBonus(){
-        return 0;
+    public static function buildingsBonus($zone){
+        $total = 0;
+        foreach ($zone->getBuildings() as $building){
+            $name = "building".$building;
+            $class = new $name();
+            $total += $class->getTempBonus();
+        }
+        return $total;
     }
 
     //THIS CALCULATES THE TOTAL TEMP BONUS FROM ALL THE ITEMS
@@ -115,5 +116,10 @@ class buildingLevels
             default:
                 break;
         }
+    }
+
+    //THIS IS THE STARTING ITEMS FOR THE PLAYER
+    public static function playerStartingItems(){
+        return array(6,21);
     }
 }

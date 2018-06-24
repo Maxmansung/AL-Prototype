@@ -12,7 +12,6 @@ class shrineActionsModel extends shrineActions
         $this->partyName = $shrineModel['partyName'];
         $this->mapID = intval($shrineModel['mapID']);
         $this->currentDay = intval($shrineModel['currentDay']);
-        $this->shrineID = intval($shrineModel['shrineID']);
         $this->shrineType = intval($shrineModel['shrineType']);
         $this->worshipTime = intval($shrineModel['worshipTime']);
     }
@@ -27,10 +26,11 @@ class shrineActionsModel extends shrineActions
 
     }
 
-    public static function getShrineActions($shrineID,$currentDay){
+    /*public static function getShrineActions($shrineType,$currentDay,$mapID){
         $db = db_conx::getInstance();
-        $req = $db->prepare('SELECT * FROM shrineActions WHERE shrineID= :shrineID AND currentDay= :currentDay');
-        $req->bindParam(':shrineID', $shrineID);
+        $req = $db->prepare('SELECT * FROM shrineActions WHERE mapID= :mapID AND shrineType= :shrineType AND currentDay= :currentDay');
+        $req->bindParam(':mapID', $mapID);
+        $req->bindParam(':shrineType', $shrineType);
         $req->bindParam(':currentDay', $currentDay);
         $req->execute();
         $shrineAction = $req->fetchAll();
@@ -40,7 +40,7 @@ class shrineActionsModel extends shrineActions
             $finalArray[$temp->getWorshipID()] = $temp;
         }
         return $finalArray;
-    }
+    }*/
 
     public static function getMapActions($mapID,$currentDay){
         $db = db_conx::getInstance();
@@ -96,13 +96,12 @@ class shrineActionsModel extends shrineActions
         $partyName = $controller->getPartyName();
         $mapID = $controller->getMapID();
         $currentDay = $controller->getCurrentDay();
-        $shrineID = $controller->getShrineID();
         $shrineType = $controller->getShrineType();
         $worshipTime = $controller->getWorshipTime();
         if ($type == "Insert") {
-            $req = $db->prepare("INSERT INTO shrineActions (avatar, profileName, partyID, partyName, mapID, currentDay, shrineID, shrineType, worshipTime) VALUES (:avatar, :profileName, :partyID, :partyName,:mapID, :currentDay, :shrineID, :shrineType, :worshipTime)");
+            $req = $db->prepare("INSERT INTO shrineActions (avatar, profileName, partyID, partyName, mapID, currentDay, shrineType, worshipTime) VALUES (:avatar, :profileName, :partyID, :partyName,:mapID, :currentDay, :shrineType, :worshipTime)");
         } elseif ($type == "Update") {
-            $req = $db->prepare("UPDATE shrineActions SET avatar= :avatar, profileName= :profileName, partyID= :partyID, partyName= :partyName, mapID= :mapID, currentDay= :currentDay, shrineID= :shrineID, shrineType= :shrineType, worshipTime= :worshipTime WHERE shrineID= :shrineID");
+            $req = $db->prepare("UPDATE shrineActions SET avatar= :avatar, profileName= :profileName, partyID= :partyID, partyName= :partyName, mapID= :mapID, currentDay= :currentDay, shrineType= :shrineType, worshipTime= :worshipTime WHERE worshipID= :worshipID");
             $req->bindParam(':worshipID', $worshipID);
         }
         $req->bindParam(':avatar', $avatar);
@@ -111,7 +110,6 @@ class shrineActionsModel extends shrineActions
         $req->bindParam(':partyName', $partyName);
         $req->bindParam(':mapID', $mapID);
         $req->bindParam(':currentDay', $currentDay);
-        $req->bindParam(':shrineID', $shrineID);
         $req->bindParam(':shrineType', $shrineType);
         $req->bindParam(':worshipTime', $worshipTime);
         $req->execute();

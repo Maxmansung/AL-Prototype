@@ -194,4 +194,15 @@ class zoneController extends zone
         }
         return $zoneList;
     }
+
+    public static function getMapShrines($mapID){
+        $list = zoneModel::getMapShrines($mapID);
+        $finalArray = [];
+        foreach ($list as $zone){
+            $name = "shrine".$zone->getProtectedType();
+            $shrine = new $name();
+            $finalArray[$shrine->getShrineID()] = $shrine;
+        }
+        return $finalArray;
+    }
 }

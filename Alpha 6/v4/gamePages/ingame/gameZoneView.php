@@ -20,7 +20,7 @@ if (isset($accessed) === false){
                 </div>
                 <div class="row">
                     <div class="col-12 d-flex justify-content-end">
-                        <div class="d-flex flex-column align-items-end mr-2"><div class="zoneMapWrapper clickable tempImageWriting" onclick="getMapView()">Mini Map</div><div class=" zoneCoordWriting"></div></div>
+                        <div class="d-flex flex-column align-items-end mr-2"><div class="zoneMapWrapper clickable tempImageWriting" onclick="changeView(5)">Mini Map</div><div class=" zoneCoordWriting"></div></div>
                     </div>
                 </div>
                 <div class="zoneBuildingLocks row justify-content-end align-items-center flex-column">

@@ -5,7 +5,7 @@ class status5 extends statuses
 
     function __construct()
     {
-        $this->statusID = 1;
+        $this->statusID = 5;
         $this->statusName = "Fed";
         $this->statusDescription = "Your belly might not be full but there's no way you're ready to risk something so disgusting again today";
         $this->statusImage = "fed";

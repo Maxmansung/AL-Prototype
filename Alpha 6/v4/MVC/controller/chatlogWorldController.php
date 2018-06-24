@@ -48,7 +48,8 @@ class chatlogWorldController extends chatlogController
 
     public static function shrineBonusGained($zone,$day){
         $log = new chatlogWorldController("");
-        $shrine = shrineController::findShrine($zone->getZoneID());
+        $name = "shrine".$zone->getProtectedType();
+        $shrine = new $name();
         $message = $shrine->getBlessingMessage();
         $log->createNewLog($zone,$shrine->getShrineType(),$message,$day);
         $log->insertChatLogWorld();

@@ -36,8 +36,6 @@ include_once(PROJECT_ROOT."/MVC/controller/profileImagesController.php");
 include_once(PROJECT_ROOT."/MVC/controller/profileWarningController.php");
 include_once(PROJECT_ROOT."/MVC/controller/reportingController.php");
 include_once(PROJECT_ROOT."/MVC/controller/shrineActionsController.php");
-include_once(PROJECT_ROOT."/MVC/controller/shrineController.php");
-include_once(PROJECT_ROOT."/MVC/controller/statusesController.php");
 include_once(PROJECT_ROOT."/MVC/controller/storageController.php");
 include_once(PROJECT_ROOT."/MVC/controller/zoneController.php");
 
@@ -67,3 +65,4 @@ include_once(PROJECT_ROOT . "/MVC/view/profileSearchView.php");
 include_once(PROJECT_ROOT . "/MVC/view/profileSearchViewAdmin.php");
 include_once(PROJECT_ROOT . "/MVC/view/shrineView.php");
 include_once(PROJECT_ROOT . "/MVC/view/testChancesView.php");
+include_once(PROJECT_ROOT . "/MVC/view/zoneDetailView.php");

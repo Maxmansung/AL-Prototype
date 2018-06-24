@@ -2,6 +2,7 @@ var dropLocation = 0;
 var typeBuild = "ground";
 var chestExist = true;
 var typeView = 0;
+var selectedZoneID = null;
 
 function getItemTypes(num){
     switch (num){
@@ -81,10 +82,11 @@ function buildGamePageMain(data){
     createPersonalAvatarPage(data);
     makeTypeView();
     activateTooltips();
+    createMapImage(data.mapInformation);
 }
 
 function createPersonalAvatarPage(data){
-    $(".zoneAvatarPlayerImage").attr("src","/avatarimages/avatarIngame/"+data.avatarImage);
+    $(".zoneAvatarPlayerImage").attr("src","/avatarimages/avatarIngame/"+data.avatarImage+".png");
     createAvatarBackpackView(data.currentBackpack,data.backpackUp1,data.backpackUp2);
     createAvatarRecipes(data.recipeList);
     createAvatarUsable(data.itemBackpack);
@@ -94,7 +96,7 @@ function createPersonalAvatarPage(data){
 function createOtherAvatarPage(data){
     $(".avatarPlayerName").empty().append(data.profileID);
     $(".avatarPlayerPartyName").empty().append(data.partyName);
-    $(".zoneAvatarOtherImage").attr("src","/avatarimages/avatarIngame/"+data.avatarImage);
+    $(".zoneAvatarOtherImage").attr("src","/avatarimages/avatarIngame/"+data.avatarImage+".png");
     createResearchList(data.researchTeach,data.avatarID);
     createPartyActions(data);
     changeView(3);
@@ -104,7 +106,7 @@ function createOtherAvatarPage(data){
 function createShrinePage(data){
     $(".zoneShrineGodType").empty().append(data.godClass);
     $(".zoneShrineGodName").empty().append(data.name);
-    $(".zoneShrineImage").attr("src","/images/gamePage/shrines/"+data.icon);
+    $(".zoneShrineImage").attr("src","/images/gamePage/shrines/"+data.icon+".png");
     $(".zoneShrineDetails").empty().append(data.message);
     $(".zoneShrineWorshipCost").empty().append(data.costMessage);
     $(".zoneShrineWorshipButton").empty().append('<button class="btn btn-primary" id="worshipButton'+data.shrineID+'" onclick="worshipAtShrine(this.id)">Sacrifice</button>');
@@ -113,7 +115,8 @@ function createShrinePage(data){
 }
 
 function createMapPage(data){
-    createMapImage(data);
+    createMapImage(data.mapInformation);
+    createMapZoneDetails(data.details);
     changeView(5);
 }
 
@@ -367,8 +370,8 @@ function setupZoneImage(data){
     createBackground(data.biomeType,data.depleted);
     createActionButtons(data.actions);
     createLocksInfo(data);
-    $(".zoneAvatarImageWrap").empty().append('<img class="inzoneAvatarImage" src="/avatarimages/avatarIngame/'+data.avatarImage+'">');
-    $(".zoneAvatarImageWrapPhone").empty().append('<img class="inzoneAvatarImage" src="/avatarimages/avatarIngame/'+data.avatarImage+'">');
+    $(".zoneAvatarImageWrap").empty().append('<img class="inzoneAvatarImage" src="/avatarimages/avatarIngame/'+data.avatarImage+'.png">');
+    $(".zoneAvatarImageWrapPhone").empty().append('<img class="inzoneAvatarImage" src="/avatarimages/avatarIngame/'+data.avatarImage+'.png">');
 }
 
 function createLocksInfo(data){
@@ -473,12 +476,13 @@ function createZoneBuildings(data){
     var list = [];
     for (var x in data){
         var name = null;
-        switch(data[x]){
-            case "B0001":
+        var check = ""+data[x];
+        switch(check){
+            case "1":
                 name = "firepit";
                 list.push("Firepit");
                 break;
-            case "B0005":
+            case "5":
                 name = "fence";
                 list.push("Fence");
                 break;
@@ -508,12 +512,12 @@ function createOtherAvatars(data){
     var padding;
     for (var x in data){
         $(".zoneOtherAvatarListWrapper").append('<div class="col-6 d-flex flex-column justify-content-center align-items-center" id="avatarPhone'+data[x].avatarID+'" onclick="popupOtherPlayer(this.id)">' +
-            '<img src="/avatarimages/avatarIngame/'+data[x].avatarImage+'" class="phoneAvatarListImage"><div class="font-size-2">'+data[x].profileID+'</div>' +
+            '<img src="/avatarimages/avatarIngame/'+data[x].avatarImage+'.png" class="phoneAvatarListImage"><div class="font-size-2">'+data[x].profileID+'</div>' +
             '</div>');
         xEdge = Math.floor(Math.random()*3);
         yEdge = Math.floor(Math.random()*5);
         $(".zoneOtherAvatarWrap").append('<div class="zoneOtherAvatarWrapSingle" data-html="true" data-toggle="popover" data-placement="top" title="'+data[x].profileID+'" data-content="'+data[x].partyName+'" id="avatarOther'+data[x].avatarID+'" onclick="popupOtherPlayer(this.id)">' +
-            '<img class="zoneOtherAvatarSingle" src="/avatarimages/avatarIngame/'+data[x].avatarImage+'">' +
+            '<img class="zoneOtherAvatarSingle" src="/avatarimages/avatarIngame/'+data[x].avatarImage+'.png">' +
             '</div>');
         padding = yEdge+"px 0 0 "+xEdge+"px";
         $("#avatarOther"+data[x].avatarID).css({"padding":padding})
@@ -585,7 +589,7 @@ function createPlayersWrap(inParty,requests,partyName){
         $(".zonePartyMembersWrap").append('<div class="col-12 mb-2">' +
             '<div class="row zonePartyMemberSingleWrap pl-1 pl-sm-3 pr-3 pr-md-0 py-1 votingBack'+inParty[x].avatarID+'">' +
             '<div class="col-6 d-flex flex-row" align="left">' +
-            '<img class="partyAvatarImage" src="/avatarimages/avatarIngame/'+inParty[x].avatarImage+'">' +
+            '<img class="partyAvatarImage" src="/avatarimages/avatarIngame/'+inParty[x].avatarImage+'.png">' +
             '<div class="pl-3">'+inParty[x].profileID+'</div>' +
             '</div>' +
             '<div class="col-6 d-flex flex-row justify-content-end align-items-center">' +
@@ -614,7 +618,7 @@ function createPlayersWrap(inParty,requests,partyName){
             $(".zonePartyRequestsWrap").append('<div class="col-12 mb-2">' +
                 '<div class="row zonePartyMemberSingleWrap pl-1 pl-sm-3 pr-3 pr-md-0 py-1 votingRequest'+requests[x].avatarID+'">' +
                 '<div class="col-6 d-flex flex-row" align="left">' +
-                '<img class="partyAvatarImage" src="/avatarimages/avatarIngame/' + requests[x].avatarImage + '">' +
+                '<img class="partyAvatarImage" src="/avatarimages/avatarIngame/' + requests[x].avatarImage + '.png">' +
                 '<div class="pl-3">' + requests[x].profileID + '</div>' +
                 '</div>' +
                 '<div class="col-6 d-flex flex-row justify-content-end align-items-center">' +
@@ -696,21 +700,37 @@ function playerPartyButtons(type,playerID,word){
 }
 
 function createAvatarBackpackView(current,upgrade1,upgrade2){
-    $(".zoneAvatarCurrentBackpack").empty().append('<div class="zoneEquipmentBorder justify-content-center align-items-center d-flex flex-column p-2">' +
+    var heatWord = current.heatBonus;
+    if (current.heatBonus >= 0){
+        heatWord = "+"+heatWord;
+    }
+    var backpackWord = current.backpackBonus;
+    if (current.backpackBonus >= 0){
+        backpackWord = "+"+backpackWord;
+    }
+    $(".zoneAvatarCurrentBackpack").empty().append('<div class="zoneEquipmentBorder justify-content-center align-items-center d-flex flex-column p-2" data-toggle="popover" data-placement="top" title="Current" data-html="true" data-content="Heat bonus: <b>'+heatWord+'</b><br>Space: <b>'+backpackWord+'</b>" >' +
         '<img src="/images/gamePage/sleepingBag/'+current.equipImage+'.png" class="zoneCurrentEquipmentIcon">' +
         '<div class="font-size-1" align="center">'+current.equipName+'</div>' +
         '</div>');
     var upgrade;
-    if (upgrade1.cost2Count == 0) {
-        upgrade = createBackpackUpgradeSingle(upgrade1,1);
+    if (upgrade1.equipmentID !== 1) {
+        if (upgrade1.cost2Count == 0) {
+            upgrade = createBackpackUpgradeSingle(upgrade1, 1);
+        } else {
+            upgrade = createBackpackUpgradeSingle(upgrade1, 2);
+        }
     } else {
-        upgrade = createBackpackUpgradeSingle(upgrade1,2);
+        upgrade = '<div class="zoneEquipmentBorder justify-content-center align-items-center d-flex flex-column p-2" data-toggle="popover" data-placement="top" title="No Upgrade" data-content="There are no further upgrades" onclick=""><div class="font-size-1 font-weight-bold standardWrapperTitle" align="center">No Upgrade</div></div>';
     }
     $(".zoneAvatarUpgradeBackpack").empty().append(upgrade);
-    if (upgrade2.cost2Count == 0) {
-        upgrade = createBackpackUpgradeSingle(upgrade2,1);
+    if (upgrade2.equipmentID !== 1) {
+        if (upgrade2.cost2Count == 0) {
+            upgrade = createBackpackUpgradeSingle(upgrade2, 1);
+        } else {
+            upgrade = createBackpackUpgradeSingle(upgrade2, 2);
+        }
     } else {
-        upgrade = createBackpackUpgradeSingle(upgrad2,2);
+        upgrade = '<div class="zoneEquipmentBorder justify-content-center align-items-center d-flex flex-column p-2" data-toggle="popover" data-placement="top" title="No Upgrade" data-content="There are no further upgrades" onclick=""><div class="font-size-1 font-weight-bold standardWrapperTitle" align="center">No Upgrade</div></div>';
     }
     $(".zoneAvatarUpgradeBackpack").append(upgrade);
 
@@ -721,7 +741,7 @@ function createBackpackUpgradeSingle(data,items){
     if (items === 2){
         upgradeItems += '<div class="itemObjectChest mr-1 mt-1"><img src="/images/gamePage/items/'+data.cost2Item.icon+'.png" class="itemImage"><span class="font-size-1 itemObjectChestNumber font-weight-bold" id="1">'+data.cost2Count+'</span></div>';
     }
-    return '<div class="zoneEquipmentBorder justify-content-center align-items-center d-flex flex-column p-2 clickableTransparent" data-toggle="popover" data-placement="top" title="Upgrade" data-content="Gives +'+data.heatBonus+' heat and +'+data.backpackBonus+' space" id="backpackUpgradeButton'+data.equipmentID+'" onclick="upgradeBackpack(this.id)"><div class="font-size-1 font-weight-bold standardWrapperTitle" align="center">'+data.equipName+'</div><img src="/images/gamePage/sleepingBag/'+data.equipImage+'.png" class="zoneNextEquipmentIcon"><div class="font-weight-bold mt-2 font-size-1" align="center">Cost</div><div class="d-flex flex-row justify-content-between align-items-center">'+upgradeItems+'</div></div>';
+    return '<div class="zoneEquipmentBorder justify-content-center align-items-center d-flex flex-column p-2 clickableTransparent" data-toggle="popover" data-placement="top" title="Upgrade" data-content="Gives '+data.heatBonus+' heat bonus and '+data.backpackBonus+' space" id="backpackUpgradeButton'+data.equipmentID+'" onclick="upgradeBackpack(this.id)"><div class="font-size-1 font-weight-bold standardWrapperTitle" align="center">'+data.equipName+'</div><img src="/images/gamePage/sleepingBag/'+data.equipImage+'.png" class="zoneNextEquipmentIcon"><div class="font-weight-bold mt-2 font-size-1" align="center">Cost</div><div class="d-flex flex-row justify-content-between align-items-center">'+upgradeItems+'</div></div>';
 }
 
 function createAvatarUsable(data) {
@@ -745,7 +765,7 @@ function createAvatarUsable(data) {
                     case 2:
                         action = "Apply";
                 }
-                $(".zoneAvatarUseItems").append('<div class="d-flex flex-row clickableFlash"  id="useClick'+data[x].itemID+'" onclick="useItem(this.id)"><img src="/images/gamePage/items/' + data[x].icon + '.png" class="itemImage"><div class="pl-2 font-size-2">' + action + ' ' + data[x].identity + '</div></div>')
+                $(".zoneAvatarUseItems").append('<div class="d-flex flex-row clickableFlash"  id="useClick'+data[x].itemTemplateID+'" onclick="useItem(this.id)"><img src="/images/gamePage/items/' + data[x].icon + '.png" class="itemImage"><div class="pl-2 font-size-2">' + action + ' ' + data[x].identity + '</div></div>')
             }
         }
     }
@@ -786,19 +806,18 @@ function createAvatarResearch(current,maximum,options){
             '</div>');
         for (var x in options){
             var image = "";
-            console.log(x);
-            switch (options[x].typeID){
+            var type = ""+options[x].typeID;
+            switch (type){
                 case "1":
-                    image = "firepit.png";
+                    image = "firepit";
                     break;
                 case "2":
-                    image = "fence2.png";
+                    image = "fence2";
                     break;
                 case "3":
-                    image = "trap.png";
+                    image = "trap";
                     break;
             }
-            console.log(image);
             $(".zoneAvatarResearchOptions").append('<div class="clickableTransparent researchUpgradeImage" data-toggle="popover" data-placement="top" title="'+options[x].typeName+'" data-content="'+options[x].typeDescription+'" id="researchType'+options[x].typeID+'" onclick="selectResearch(this.id)"><img src="/images/gamePage/buildings/'+image+'.png" class="itemImage mr-2"></div>');
         }
     }
@@ -897,7 +916,6 @@ function createMapImage(data) {
             top = data[x].yaxis
         }
     }
-    console.log(top);
     for (x = 0; x <= top; x++) {
         $(".zoneMapImageWrapper").prepend("<div class='row p-0 m-0 mapRowWrap" + x + " justify-content-center align-items-center'></div>");
     }
@@ -908,19 +926,30 @@ function createMapImage(data) {
                 var avatarImage = "";
                 var campSite = "";
                 var shrine = "";
+                var borderSize = "mapZoneBox";
+                var checker = 'mapZoneImageOverlay';
+                var borderColour = "mapZoneBorder";
+                if (data[y].marker !== 0){
+                    borderSize = "mapZoneBox1";
+                    checker = 'mapZoneImageOverlayBorder';
+                    borderColour = "mapZoneBorderMarked"+data[y].marker;
+                }
                 if (data[y].depleted === 0){
-                    depleted = "<img class='mapZoneImageOverlay' src='/images/gamePage/Other/zoneDepleted.png'>";
+                    depleted = "<img class='"+checker+"' src='/images/gamePage/mapMarkers/zoneDepleted.png'>";
                 }
                 if (data[y].currentZone === true){
-                    avatarImage = "<img class='mapZoneImageOverlay' src='/images/gamePage/Other/avatarImage.png'>";
+                    avatarImage = "<img class='"+checker+"' src='/images/gamePage/mapMarkers/avatarImage.png'>";
                 }
                 if (data[y].camp === true){
-                    campSite = "<img class='mapZoneImageOverlay' src='/images/gamePage/Other/campSite.png'>";
+                    campSite = "<img class='"+checker+"' src='/images/gamePage/mapMarkers/campSite.png'>";
                 }
                 if (data[y].biome === 100){
-                    shrine = "<img class='mapZoneImageOverlay' src='/images/gamePage/Other/shrine.png'>";
+                    shrine = "<img class='"+checker+"' src='/images/gamePage/mapMarkers/shrine.png'>";
                 }
-                $(".mapRowWrap"+data[y].yaxis).append("<div class='mapZoneBox d-flex flex-column justify-content-center align-items-center biomeBackground"+data[y].biome+"'>"+depleted+campSite+shrine+avatarImage+"</div>");
+                if (data[y].zoneID == selectedZoneID){
+                    borderColour = "mapZoneBorderSelected";
+                }
+                $(".mapRowWrap"+data[y].yaxis).append("<div class='"+borderSize+" "+borderColour+" d-flex flex-column justify-content-center align-items-center biomeBackground"+data[y].biome+"' id='zoneLocation"+data[y].zoneID+"' onclick='selectedZone(this.id)'>"+depleted+campSite+shrine+avatarImage+"</div>");
             }
         }
     }
@@ -1005,6 +1034,57 @@ function createEventsList(data) {
     }
 }
 
+
+function createMapZoneDetails(data) {
+    $(".zoneInformationBox").empty();
+    if (data.known === false){
+        $(".zoneInformationBox").append('<div align="center" class="grayColour font-size-2x">Unknown Zone</div>');
+    } else {
+        var depleted = "";
+        if (data.depleted === 0){
+            depleted = "Depleted"
+        }
+        var avatarInfo = "<div class='grayColour' align='center'>None</div>";
+        if (data.partyThere === true) {
+            avatarInfo = "";
+            for (var x in data.playersInZone){
+                if (data.playersInZone[x] !== "Unknown") {
+                    avatarInfo += "<div class='font-size-2' align='center'>" + data.playersInZone[x].profileID + "</div>"
+                } else {
+                    avatarInfo += "<div class='font-size-2'  align='center'>Unknown Player</div>"
+
+                }
+            }
+        }
+        $(".zoneInformationBox").append('<div class="row p-2 justify-content-center">' +
+            '<div align="center" class=" font-weight-bold font-size-3">'+data.biomeType+'</div>' +
+            '</div>' +
+            '<div class="row justify-content-center">' +
+            '<div align="center" class="font-weight-bold redColour">'+depleted+'</div>' +
+            '</div>' +
+            '<div class="row p-2 justify-content-center">' +
+            '<div class="col-11 normalBorder d-flex flex-column justify-content-center">' +
+                '<div class="font-weight-bold">Zone Avatars:</div>'+
+            avatarInfo +
+            '</div>' +
+            '</div>' +
+            '<div class="row p-2 align-items-center">' +
+            '<div class="input-group">' +
+            '<select class="custom-select font-weight-bold" id="zoneMarkerSelector" selected="'+data.marker+'">' +
+            '<option value="0" class="font-weight-bold">None</option>' +
+            '<option value="1" class="redColour font-weight-bold">Red</option>' +
+            '<option value="2" class="orangeColour font-weight-bold">Orange</option>' +
+            '<option value="3" class="yellowColour font-weight-bold">Yellow</option>' +
+            '<option value="4" class="greenColour font-weight-bold">Green</option>' +
+            '<option value="5" class="blueColour font-weight-bold">Blue</option>' +
+            '</select>' +
+            '<div class="input-group-append">' +
+            '<button class="btn btn-outline-secondary" type="button" onclick="markZoneColour()">Mark Zone</button>' +
+            '</div>' +
+            '</div>' +
+            '</div>')
+    }
+}
 
 //////////////////////////////////////////////////////////////
 // ACTION BUTTONS
@@ -1214,11 +1294,13 @@ function researchOnce(){
 
 function upgradeBackpack(id){
     var newID = id.slice(21);
+    console.log(newID);
     ajax_All(45,14,typeBuild,typeView,newID);
 }
 
 function useItem(id){
     var newID = id.slice(8);
+    console.log(newID);
     ajax_All(48,14,typeBuild,typeView,newID);
 }
 
@@ -1330,8 +1412,15 @@ function worshipAtShrine(shrineID){
     ajax_All(43,0,newID);
 }
 
-function getMapView(){
-    ajax_All(41,17);
+function selectedZone(id){
+    var newID = id.slice(12);
+    selectedZoneID = newID;
+    ajax_All(41,17,typeBuild,newID);
+}
+
+function markZoneColour() {
+    var value = $("#zoneMarkerSelector").val();
+    ajax_All(10,17,typeBuild,selectedZoneID,value);
 }
 
 //THESE ARE THE ACTION BUTTONS INFORMATION

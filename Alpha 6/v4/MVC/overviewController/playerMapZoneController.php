@@ -10,7 +10,6 @@ class playerMapZoneController
             return array("ERROR" => 0);
         } else {
             $dirClean = preg_replace(data::$cleanPatterns['text'],"",$dir);
-            $map = new mapController($avatar->getMapID());
             $avatar->useStamina(1);
             $currentZone = new zoneController($avatar->getZoneID());
             $newZone = new zoneController($avatar->getZoneID());
@@ -24,7 +23,7 @@ class playerMapZoneController
             if ($newZone->getMapID() != $avatar->getMapID()) {
                 return array("ERROR" => 2);
             }
-            chatlogMovementController::leaveCurrentZone($avatar,$dirClean,$map->getCurrentDay());
+            chatlogMovementController::leaveCurrentZone($avatar,$dirClean);
             $metAvatars = $newZone->getAvatars();
             $currentZone->removeAvatar($avatar->getAvatarID());
             $currentZone->updateZone();
@@ -32,7 +31,6 @@ class playerMapZoneController
             $newZone->adjustCounter(1);
             $newZone->updateZone();
             $avatar->setZoneID($newZone->getZoneID());
-            $avatar->addPlayStatistics("move",1);
             $avatar->updateAvatar();
             $party = new partyController($avatar->getPartyID());
             foreach ($metAvatars as $player) {
@@ -51,8 +49,8 @@ class playerMapZoneController
             $party->addOverallZoneExploration($newZone->getName(),$newZone->getBiomeType(),$find);
             $party->addOverallZoneExploration($currentZone->getName(),$currentZone->getBiomeType(),$find2);
             $party->uploadParty();
-            partyController::removeAllInvites($avatarID,$map->getCurrentDay());
-            chatlogMovementController::enterNewZone($avatar,$dirClean,$map->getCurrentDay());
+            partyController::removeAllInvites($avatarID,$avatar->getCurrentDay());
+            chatlogMovementController::enterNewZone($avatar,$dirClean);
             return array("Success");
         }
     }
@@ -72,17 +70,15 @@ class playerMapZoneController
                     return array("ERROR" => 4);
                 } else {
                     $avatar->useStamina(1);
-                    $avatar->addPlayStatistics("search", 1);
                     $name = "biome".$zone->getBiomeType();
                     $biome = new $name();
                     $findingchance = self::findingChances($biome, $avatar,$zone->getFindingChances(),false);
                     $zone->reduceFindingChances();
-                    $map = new mapController($avatar->getMapID());
                     if ($findingchance === 0) {
                         $avatar->increaseFindingChanceFail(1);
                         $avatar->updateAvatar();
                         $zone->updateZone();
-                        chatlogPersonalController::searchZone($avatar,"nothing",$map->getCurrentDay());
+                        chatlogPersonalController::searchZone($avatar,"nothing");
                         return array("Success" => true);
                     } else {
                         for ($x = 0; $x < $findingchance; $x++){
@@ -90,7 +86,7 @@ class playerMapZoneController
                             $zone->addItem($id);
                             $itemName = "item".$id;
                             $item = new $itemName();
-                            chatlogPersonalController::searchZone($avatar,$item->getIdentity(),$map->getCurrentDay());
+                            chatlogPersonalController::searchZone($avatar,$item->getIdentity());
                         }
                         $avatar->resetFindingChanceFail();
                         $response = achievementController::checkAchievement(array("ACTION","SEARCH"));
@@ -198,26 +194,26 @@ class playerMapZoneController
                     $found = 0;
                     for ($x = 0; $x < $chances; $x++) {
                         $chancesLeft = $chances-$x;
-                        $findingchance = self::findingChances($zone->getBiomeType(), $avatar,$chancesLeft);
+                        $name = "biome".$zone->getBiomeType();
+                        $biome = new $name();
+                        $findingchance = self::findingChances($biome, $avatar,$chancesLeft,false);
                         if ($findingchance != 0) {
-                            $item = self::addNewItem($zone);
-                            if ($item != "ERROR") {
-                                $zone->addItem($item);
-                                $found += 1;
+                            for ($y = 0; $y < $findingchance; $y++){
+                                $id = $biome->findItem();
+                                $zone->addItem($id);
+                                $found++;
                             }
                         }
                     }
                     $zone->setFindingChances(0);
                     $avatar->useStamina(5);
-                    $avatar->addPlayStatistics("break", 5);
                     $response = achievementController::checkAchievement(array("ACTION","DESTROY"));
                     if ($response !== false) {
                         $avatar->addAchievement($response);
                     }
                     $avatar->updateAvatar();
                     $zone->updateZone();
-                    $map = new mapController($avatar->getMapID());
-                    chatlogMovementController::destroyBiome($avatar,$map->getCurrentDay());
+                    chatlogMovementController::destroyBiome($avatar);
                     return array("ALERT" => 8, "DATA" => array("foundItems" => $found, "biome" => $zone->getBiomeType()));
                 }
             }
@@ -226,10 +222,12 @@ class playerMapZoneController
 
     public static function worshipShrine($shrineID, $avatarID){
         $avatar = new avatarController($avatarID);
-        $shrine = new shrineController($shrineID);
-        if ($shrine->getZoneID() !== $avatar->getZoneID()){
+        $zone = new zoneController($avatar->getZoneID());
+        if ($zone->getProtectedType() === null){
             return array("ERROR"=>"You are not in the correct zone to perform this action");
         } else{
+            $name = "shrine".$zone->getProtectedType();
+            $shrine = new $name();
             $party = new partyController($avatar->getPartyID());
             if (count($party->getMembers()) < $shrine->getMinParty() || count($party->getMembers())>$shrine->getMaxParty()){
                 return array("ERROR"=>67);
@@ -242,8 +240,7 @@ class playerMapZoneController
                     if ($checker === "ERROR") {
                         return array("ERROR" => "Something has gone wrong with the 'Worship Coster' function");
                     } else {
-                        $map = new mapController($avatar->getMapID());
-                        shrineActionsController::createNewWorship($avatar,$party,$map,$shrine);
+                        shrineActionsController::createNewWorship($avatar,$party,$shrine);
                         return array("ALERT" => 9,"DATA"=>$shrine->getShrineName()." is pleased with your sacrifice. Keep working at it to become this gods chosen champion for the night");
                     }
                 }
@@ -284,7 +281,7 @@ class playerMapZoneController
                 $checker = "SUCCESS";
                 break;
             case "Item":
-                foreach ($avatar->getInventory as $item){
+                foreach ($avatar->getInventory() as $item){
                     if ($shrine->getWorshipCostValue() === $item){
                         if ($checker === "ERROR"){
                             $checker = "SUCCESS";
@@ -306,7 +303,6 @@ class playerMapZoneController
     public static function useRecipe($recipeID,$avatarID)
     {
         $avatar = new avatarController($avatarID);
-        $tempAvatar = $avatar;
         $zone = new zoneController($avatar->getZoneID());
         $name = "recipe".intval($recipeID);
         $recipe = new $name();
@@ -326,11 +322,11 @@ class playerMapZoneController
         } else {
             foreach ($recipe->getConsumedItems() as $requiredItem) {
                 $itemExists = false;
-                foreach ($tempAvatar->getInventory() as $backpackItem) {
+                foreach ($avatar->getInventory() as $backpackItem) {
                     if ($backpackItem == $requiredItem) {
                         if ($itemExists === false) {
                             $itemExists = true;
-                            $tempAvatar->removeInventoryItem($backpackItem);
+                            $avatar->removeInventoryItem($backpackItem);
                         }
                     }
                 }
@@ -339,25 +335,13 @@ class playerMapZoneController
                     return array("ALERT" => "10", "DATA" => $item);
                 }
             }
-            //Loop is repeated to actually remove the items from the game this time
-            foreach ($recipe->getConsumedItems() as $requiredItem) {
-                $itemExistsNew = false;
-                foreach ($avatar->getInventory() as $backpackItem) {
-                    if ($backpackItem == $requiredItem) {
-                        if ($itemExistsNew === false) {
-                            $itemExistsNew = true;
-                            $avatar->removeInventoryItem($backpackItem);
-                        }
-                    }
-                }
-            }
             //This then creates the new items
             $response = achievementController::checkAchievement(array("RECIPE", $recipeID));
             if ($response !== false) {
                 $avatar->addAchievement($response);
             }
-            foreach ($recipe->getGeneratedItems() as $createdItem) {
-                if ($createdItem === "OTHER") {
+            foreach ($recipe->getGeneratedItems() as $key=>$createdItem) {
+                if ($key === "OTHER") {
                     $createdItemName = $recipe->differentResult($recipe->getRecipeID());
                     if (array_key_exists("STAMINA", $createdItemName)) {
                         $avatar->useStamina($createdItemName["STAMINA"] * -1);
@@ -368,11 +352,6 @@ class playerMapZoneController
                         $zone->updateZone();
                     } else if (array_key_exists("ITEM", $createdItemName)) {
                         $avatar->addInventoryItem($createdItemName["ITEM"]);
-                        $comment = $recipe->getRecipeComment();
-                        $name = "item".$createdItemName["ITEM"];
-                        $newItem = new $name();
-                        $comment .= $newItem->getIdentity();
-                        $recipe->setRecipeComment($comment);
                     }
                 } else {
                     $avatar->addInventoryItem($createdItem);
@@ -391,21 +370,12 @@ class playerMapZoneController
         } else {
             $name = "item".$cleanItemID;
             $item = new $name();
-            $status = statusesController::checkConsumable($avatar->getStatusArray(), $item->getStatusImpact());
+            $status = $item->checkConsumable($avatar->getStatusArray(), $item);
             if ($status !== true) {
                 return array("ALERT" => 11, "DATA" => $status);
             } else {
-                $avatar->removeInventoryItem($item->getItemTemplateID());
-                $responseController = responseController::getStatusChangeType($item->getStatusImpact());
-                $newStatuses = $responseController->statusChange($avatar->getStatusArray());
-                $avatar->setStatusArray($newStatuses);
-                $avatar->useStamina(($item->getMaxCharges() * -1));
-                $response = achievementController::checkAchievement(array("RECIPE", $item->getItemTemplateID()));
-                if ($response !== false) {
-                    $avatar->addAchievement($response);
-                }
-                $avatar->updateAvatar();
-                return array("ALERT" => 9, "DATA" => $responseController->getSucceedResponse());
+                $response = $item->consumeItem($avatar);
+                return $response;
             }
         }
     }

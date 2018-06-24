@@ -10,14 +10,15 @@ class item11 extends item
         $this->icon = "rock";
         $this->description = "A building material, good for stacking one on top of another";
         $this->itemType = 2;
-        $this->usable = 0;
+        $this->usable = false;
         $this->survivalBonus = 0;
         $this->statusImpact = 1;
         $this->givesRecipe = array();
+        $this->dayEndChanges = false;
     }
-    function consumeItem()
-    {
-        return false;
 
+    function consumeItem($avatar)
+    {
+        return array("ERROR"=>"This item cannot be consumed, please bug report this (Item11)");
     }
 }

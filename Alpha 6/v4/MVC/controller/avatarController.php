@@ -13,25 +13,25 @@ class avatarController extends avatar
             } else {
                 $avatarModel = avatarModel::findAvatarID($id);
             }
+            $map = new mapController($avatarModel->getMapID());
             $equipmentClass = "equipment".$avatarModel->getTempModLevel();
             $equipment = new $equipmentClass();
             $this->avatarID = $avatarModel->getAvatarID();
             $this->profileID = $avatarModel->getProfileID();
             $this->mapID = $avatarModel->getMapID();
             $this->stamina = $avatarModel->getStamina();
-            $this->maxStamina = $avatarModel->getMaxStamina();
+            $this->maxStamina = intval($map->getMaxPlayerStamina());
             $this->zoneID = $avatarModel->getZoneID();
             $this->inventory = $avatarModel->getInventory();
-            $this->maxInventorySlots = (intval($avatarModel->getMaxInventorySlots())+intval($equipment->getBackpackBonus()));
+            $this->maxInventorySlots = (intval($map->getMaxPlayerInventorySlots())+intval($equipment->getBackpackBonus()));
             $this->partyID = $avatarModel->getPartyID();
             $this->readiness = $avatarModel->getReady();
             $this->avatarTempRecord = $avatarModel->getavatarTempRecord();
-            $this->avatarSurvivableTemp = (intval($avatarModel->getAvatarSurvivableTemp())+intval($equipment->getHeatBonus()));
+            $this->avatarSurvivableTemp = (intval($equipment->getHeatBonus()));
             $this->achievements = $avatarModel->getAchievements();
             $this->partyVote = $avatarModel->getPartyVote();
             $this->researchStats = $avatarModel->getResearchStats();
             $this->researched = $avatarModel->getResearched();
-            $this->playStatistics = $avatarModel->getPlayStatistics();
             $this->tempModLevel = $avatarModel->getTempModLevel();
             $this->shrineScore = $avatarModel->getShrineScore();
             $this->forumPosts = $avatarModel->getForumPosts();
@@ -42,6 +42,32 @@ class avatarController extends avatar
             $this->favourSolo = $avatarModel->getFavourSolo();
             $this->favourTeam = $avatarModel->getFavourTeam();
             $this->favourMap = $avatarModel->getFavourMap();
+            $this->currentDay = $map->getCurrentDay();
+            $this->currentFavour = $avatarModel->getCurrentFavour();
+            foreach ($this->currentFavour as $favour){
+                $name = "shrine".$favour;
+                $class = new $name();
+                $array = $class->giveAvatarBonus();
+                $this->addShrineBonuses($array);
+            }
+        }
+    }
+
+    private function addShrineBonuses($array)
+    {
+        foreach ($array as $key=>$count)
+        {
+            switch ($key){
+                case "STAMINA":
+                    $this->maxStamina += $count;
+                    break;
+                case "BAG":
+                    $this->maxInventorySlots += $count;
+                    break;
+                case "HEAT":
+                    $this->avatarSurvivableTemp += $count;
+                    break;
+            }
         }
     }
 
@@ -49,28 +75,35 @@ class avatarController extends avatar
         $this->profileID = $profileController->getProfileName();
         $this->mapID = $mapController->getMapID();
         $this->stamina = $mapController->getMaxPlayerStamina();
-        $this->maxStamina = $mapController->getMaxPlayerStamina();
         $this->zoneLocation($mapController->getEdgeSize(),count($mapController->getAvatars()),$mapController->getMaxPlayerCount(),$mapController->getMapID());
         $this->inventory = array();
-        $this->maxInventorySlots = $mapController->getMaxPlayerInventorySlots();
         $this->partyID = $this->startParty($mapController->getMapID());
         $this->readiness = false;
         $this->avatarTempRecord = $mapController->getBaseAvatarTemperatureModifier();
-        $this->avatarSurvivableTemp = self::getBaseAvatarTemperature($profileController);
         $this->achievements = array();
         $this->researchStats = array(1,0);
         $this->researched = [];
-        $this->playStatistics = array();
         $this->tempModLevel = 1;
         $this->shrineScore = array();
-        $this->statusArray = statusesController::createStatusArray();
-        $this->avatarImage = "avatarTemp.png";
+        $this->createStatusArray();
+        $this->avatarImage = "avatarTemp";
         $this->favourSolo = 0;
         $this->favourTeam = 0;
         $this->favourMap = 0;
+        $this->currentFavour = array();
         $newID = $this->insertAvatar();
         $this->avatarID = $newID;
         return $newID;
+    }
+
+    private function createStatusArray()
+    {
+        $statuses = factoryClassArray::createAllStatuses();
+        $finalStatus = [];
+        foreach ($statuses as $status){
+            $finalStatus[$status->getStatusID()] = 0;
+        }
+        $this->statusArray = $finalStatus;
     }
 
     public function insertAvatar(){

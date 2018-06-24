@@ -21,7 +21,7 @@ class shrineTeam extends shrineType
         $votingArray = [];
         $sortingArray = [];
         foreach ($list as $action){
-            if ($action->getShrineID() == $shrine->getShrineID()) {
+            if ($action->getShrineType() == $shrine->getShrineID()) {
                 if (isset($votingArray[$action->getPartyID()])){
                     $temp = $votingArray[$action->getPartyID()];
                 } else {

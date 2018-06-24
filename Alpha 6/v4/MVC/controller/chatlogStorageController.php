@@ -25,11 +25,11 @@ class chatlogStorageController extends chatlogController
         }
     }
 
-    public function createNewLog($avatar,$message,$currentDay){
+    public function createNewLog($avatar,$message){
         $this->mapID = $avatar->getMapID();
         $this->zoneID = $avatar->getZoneID();
         $this->avatarID = $avatar->getAvatarID();
-        $this->mapDay = $currentDay;
+        $this->mapDay = $avatar->getCurrentDay();
         $this->messageTime = time();
         $this->messageText = $message;
     }
@@ -55,24 +55,24 @@ class chatlogStorageController extends chatlogController
         return $logDetailsObject;
     }
 
-    public static function dropInStorage($avatar,$itemName,$day){
+    public static function dropInStorage($avatar,$itemName){
         $log = new chatlogStorageController("");
         $message = "#name# put a <span class='itemLogName'>".$itemName."</span> into the storage";
-        $log->createNewLog($avatar,$message,$day);
+        $log->createNewLog($avatar,$message);
         $log->insertChatLogZone();
     }
 
-    public static function takeFromStorage($avatar,$itemName,$day){
+    public static function takeFromStorage($avatar,$itemName){
         $log = new chatlogStorageController("");
         $message = "#name# took a <span class='itemLogName'>".$itemName."</span> out of the storage";
-        $log->createNewLog($avatar,$message,$day);
+        $log->createNewLog($avatar,$message);
         $log->insertChatLogZone();
     }
 
-    public static function upgradeStorage($avatar,$storageLevel,$day){
+    public static function upgradeStorage($avatar,$storageLevel){
         $log = new chatlogStorageController("");
         $message = "The storage was upgraded to <strong>Level ".$storageLevel."</strong> by #name#";
-        $log->createNewLog($avatar,$message,$day);
+        $log->createNewLog($avatar,$message);
         $log->insertChatLogZone();
     }
 }

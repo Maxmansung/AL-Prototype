@@ -25,10 +25,9 @@ class building implements building_Interface
     protected $isBuilt;
     protected $buildingType;
     protected $buildingTypeID;
-    protected $tutorialKnown;
-    protected $mainKnown;
     protected $parentBuilt;
     protected $givesRecipe;
+    protected $badBiomes;
 
 
     public function __toString()
@@ -49,8 +48,6 @@ class building implements building_Interface
         $output .= '/ '.$this->isBuilt;
         $output .= '/ '.$this->buildingType;
         $output .= '/ '.$this->buildingTypeID;
-        $output .= '/ '.$this->tutorialKnown;
-        $output .= '/ '.$this->mainKnown;
         return $output;
     }
 
@@ -244,26 +241,6 @@ class building implements building_Interface
         $this->buildingType = intval($var);
     }
 
-    function getTutorialKnown()
-    {
-        return $this->tutorialKnown;
-    }
-
-    function setTutorialKnown($var)
-    {
-        $this->tutorialKnown = $var;
-    }
-
-    function getMainKnown()
-    {
-        return $this->mainKnown;
-    }
-
-    function setMainKnown($var)
-    {
-        $this->mainKnown = $var;
-    }
-
     function getBuildingTypeID()
     {
         return $this->buildingTypeID;
@@ -309,5 +286,15 @@ class building implements building_Interface
     function setGivesRecipe($var)
     {
         $this->givesRecipe = $var;
+    }
+
+    function getBadBiomes()
+    {
+        return $this->badBiomes;
+    }
+
+    function setBadBiomes($var)
+    {
+        $this->badBiomes = $var;
     }
 }

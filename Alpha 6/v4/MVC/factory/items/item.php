@@ -4,8 +4,6 @@ require_once(PROJECT_ROOT . "/MVC/interface/item_Interface.php");
 class item implements item_Interface
 {
 
-    protected $itemID;
-    protected $mapID;
     protected $itemTemplateID;
     protected $identity;
     protected $icon;
@@ -14,12 +12,14 @@ class item implements item_Interface
     protected $usable;
     protected $survivalBonus;
     protected $givesRecipe;
+    protected $statusImpact;
+    protected $edible;
+    protected $inedible;
+    protected $dayEndChanges;
 
     public function __toString()
     {
-        $output = $this->itemID;
-        $output .= '/ '.$this->mapID;
-        $output .= '/ '.$this->itemTemplateID;
+        $output = '/ '.$this->itemTemplateID;
         $output .= '/ '.$this->identity;
         $output .= '/ '.$this->icon;
         $output .= '/ '.$this->description;
@@ -32,27 +32,6 @@ class item implements item_Interface
     function returnVars()
     {
         return get_object_vars($this);
-    }
-
-
-    function getItemID()
-    {
-        return $this->itemID;
-    }
-
-    function setItemID($var)
-    {
-        $this->itemID = $var;
-    }
-
-    function getMapID()
-    {
-        return $this->mapID;
-    }
-
-    function setMapID($var)
-    {
-        $this->mapID = $var;
     }
 
     function getItemTemplateID()
@@ -133,5 +112,40 @@ class item implements item_Interface
     function setGivesRecipe($var)
     {
         $this->givesRecipe = $var;
+    }
+
+    function getStatusImpact()
+    {
+        return $this->statusImpact;
+    }
+
+    function setStatusImpact($var)
+    {
+        $this->statusImact = $var;
+    }
+
+    function getEdible()
+    {
+        return $this->edible;
+    }
+
+    function getInedible()
+    {
+        return $this->inedible;
+    }
+
+    function checkConsumable($statusArray){
+        $response = responseController::getStatusChangeType($this->statusImpact);
+        if ($statusArray[$response->getFailStatus()] == true || $response->getFailStatus() === false){
+            if (!in_array($response->getSucceedStatus(),$statusArray) || $response->getSucceedStatus() === false){
+                return $this->inedible;
+            }
+        }
+        return true;
+    }
+
+    function getDayEndChanges()
+    {
+        return $this->dayEndChanges;
     }
 }

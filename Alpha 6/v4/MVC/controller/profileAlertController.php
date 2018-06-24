@@ -66,16 +66,16 @@ class profileAlertController extends profileAlert
 
     public static function getAllAlerts($profile){
         $list = profileAlertModel::getProfileAlerts($profile->getProfileID());
-        $finalArry = [];
+        $finalArray = [];
         $counter = 0;
         foreach ($list as $alert){
             if ($alert->getVisible() == 1){
                 $temp = new profileAlertController($alert);
-                $finalArry[$counter] = $temp->returnVars();
+                $finalArray[$counter] = $temp->returnVars();
                 $counter++;
             }
         }
-        return $finalArry;
+        return $finalArray;
     }
 
     public static function markAsRead($profile,$alertArray){

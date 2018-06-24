@@ -11,6 +11,7 @@ class mapView
     protected $currentZone;
     protected $partyMember;
     protected $camp;
+    protected $marker;
 
     function __construct($zone,$knownZones,$avatar)
     {
@@ -19,6 +20,7 @@ class mapView
         $this->zoneID = $zone->getZoneID();
         $this->biome = $knownZones[$zone->getName()][0];
         $this->depleted = $knownZones[$zone->getName()][1];
+        $this->marker = $knownZones[$zone->getName()][2];
         if ($zone->getZoneID() === $avatar->getZoneID()){
             $this->currentZone = true;
         }
@@ -31,16 +33,26 @@ class mapView
         return get_object_vars($this);
     }
 
-    public static function getView($avatarID)
+    public static function getView($avatar,$party)
     {
-        $avatar = new avatarController($avatarID);
-        $party = new partyController($avatar->getPartyID());
         $zoneList = zoneController::getAllZones($avatar->getMapID(),true);
         $finalArray = [];
         foreach ($zoneList as $zone){
             $temp = new mapView($zone,$party->getZoneExploration(),$avatar);
             $finalArray[$temp->zoneID] = $temp->returnVars();
         }
+        return $finalArray;
+    }
+
+    public static function getViewWithZone($avatarID,$zoneID)
+    {
+        $avatar = new avatarController($avatarID);
+        $party = new partyController($avatar->getPartyID());
+        $finalArray["mapInformation"] = mapView::getView($avatar,$party);
+        $zoneIDClean = preg_replace(data::$cleanPatterns['num'],"",$zoneID);
+        $zone = new zoneController($zoneIDClean);
+        $zoneDetails = new zoneDetailView($zone,$party,$avatar);
+        $finalArray["details"] = $zoneDetails->returnVars();
         return $finalArray;
     }
 }

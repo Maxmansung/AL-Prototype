@@ -25,11 +25,11 @@ class chatlogPersonalController extends chatlogController
         }
     }
 
-    public function createNewLog($avatar,$message,$messageType,$day){
+    public function createNewLog($avatar,$message,$messageType){
         $this->mapID = $avatar->getMapID();
         $this->zoneID = $avatar->getZoneID();
         $this->avatarID = $avatar->getAvatarID();
-        $this->mapDay = $day;
+        $this->mapDay = $avatar->getCurrentDay();
         $this->messageTime = time();
         $this->messageText = $message;
         $this->messageType = $messageType;
@@ -73,45 +73,46 @@ class chatlogPersonalController extends chatlogController
 
     }
 
-    public static function findNewResearch($avatar,$buildingName,$day)
+    public static function findNewResearch($avatar,$buildingName)
     {
         $log = new chatlogPersonalController("");
         $message = "After much time spent studying you uncovered the designs for the <strong>" . $buildingName."</strong>";
         $messageType = 1;
-        $log->createNewLog($avatar,$message,$messageType,$day);
+        $log->createNewLog($avatar,$message,$messageType);
         $log->insertChatLogZone();
     }
 
-    public static function teachPlayerResearch($avatar,$buildingName,$playerName,$day)
+    public static function teachPlayerResearch($avatar,$buildingName,$playerName)
     {
         $log = new chatlogPersonalController("");
         $message = "It took a while but <strong>".$playerName."</strong> seems to finally understand how to build the <strong>".$buildingName."</strong>";
         $messageType = 2;
-        $log->createNewLog($avatar,$message,$messageType,$day);
+        $log->createNewLog($avatar,$message,$messageType);
         $log->insertChatLogZone();
     }
 
-    public static function upgradeBackpack($avatar,$level,$day)
+    public static function upgradeBackpack($avatar,$level)
     {
         $log = new chatlogPersonalController("");
         $message = "You've managed to figure out how to expand your backpack, you are now the proud owner of the <strong>".$level."</strong>";
         $messageType = 3;
-        $log->createNewLog($avatar,$message,$messageType,$day);
+        $log->createNewLog($avatar,$message,$messageType);
         $log->insertChatLogZone();
     }
 
-    public static function shrineBonusItem($avatar,$shrineID,$day){
+    public static function shrineBonusItem($avatar,$shrineID){
         $log = new chatlogPersonalController("");
-        $shrine = new shrineController($shrineID);
+        $name = "shrine".$shrineID;
+        $shrine = new $name();
         $name = "item".$shrine->getShrineBonusReward();
         $item = new $name();
         $message = "You have been given a ".$item->getIdentity()." by ".$shrine->getShrineName();
         $messageType = 4;
-        $log->createNewLog($avatar,$message,$messageType,$day);
+        $log->createNewLog($avatar,$message,$messageType);
         $log->insertChatLogZone();
     }
 
-    public static function searchZone($avatar,$itemName,$day){
+    public static function searchZone($avatar,$itemName){
         $log = new chatlogPersonalController("");
         if ($itemName != "nothing"){
             $message = "After some tough searching you have managed to find a ##?".$itemName."##!";
@@ -120,15 +121,15 @@ class chatlogPersonalController extends chatlogController
             $message = "Nothing was found when you searched the zone";
             $messageType = 8;
         }
-        $log->createNewLog($avatar,$message,$messageType,$day);
+        $log->createNewLog($avatar,$message,$messageType);
         $log->insertChatLogZone();
     }
 
-    public static function getFrozen($avatar,$day){
+    public static function getFrozen($avatar){
         $log = new chatlogPersonalController("");
         $message = "You couldn't keep yourself warm enough overnight and now you have frostbite!";
         $messageType = 9;
-        $log->createNewLog($avatar,$message,$messageType,$day);
+        $log->createNewLog($avatar,$message,$messageType);
         $log->insertChatLogZone();
     }
 

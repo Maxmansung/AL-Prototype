@@ -11,7 +11,6 @@ class shrineActions implements shrineActions_Interface
     protected $partyName;
     protected $mapID;
     protected $currentDay;
-    protected $shrineID;
     protected $shrineType;
     protected $worshipTime;
 
@@ -88,16 +87,6 @@ class shrineActions implements shrineActions_Interface
     function setCurrentDay($var)
     {
         $this->currentDay = $var;
-    }
-
-    function getShrineID()
-    {
-        return $this->shrineID;
-    }
-
-    function setShrineID($var)
-    {
-        $this->shrineID = $var;
     }
 
     function getShrineType()

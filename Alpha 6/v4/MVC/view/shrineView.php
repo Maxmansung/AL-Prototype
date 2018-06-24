@@ -43,7 +43,9 @@ class shrineView
 
     public static function createTestView($avatarID){
         $avatar = new avatarController($avatarID);
-        $shrine = shrineController::findShrine($avatar->getZoneID());
+        $zone= new zoneController($avatar->getZoneID());
+        $name = "shrine".$zone->getProtectedType();
+        $shrine = new $name();
         $party = new partyController($avatar->getPartyID());
         $map = new mapController($avatar->getMapID());
         $view = new shrineView($avatar,$shrine,$party,$map,true);
@@ -51,7 +53,7 @@ class shrineView
     }
 
     public static function createAllShrineView($avatar,$party,$map){
-        $list = shrineController::findMapShrines($map->getMapID());
+        $list = zoneController::getMapShrines($map->getMapID());
         $finalArray = [];
         foreach ($list as $shrine){
             $temp = new shrineView($avatar,$shrine,$party,$map,false);

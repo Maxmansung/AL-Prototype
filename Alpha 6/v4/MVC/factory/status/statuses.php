@@ -90,4 +90,39 @@ class statuses implements statuses_Interface
     {
         $this->startingStat = $var;
     }
+
+
+    public static function changeStatuses($statusArray){
+        if ($statusArray[1] === 1){
+            $statusArray[1] = 0;
+            $statusArray[2] = 1;
+            $statusArray[5] = 0;
+        } elseif ($statusArray[5] === 1){
+            $statusArray[1] = 0;
+            $statusArray[2] = 0;
+            $statusArray[5] = 0;
+        } elseif ($statusArray[2] === 1){
+            $statusArray[1] = 0;
+            $statusArray[2] = 1;
+            $statusArray[5] = 0;
+        } else {
+            $statusArray[1] = 1;
+            $statusArray[2] = 0;
+            $statusArray[5] = 0;
+        }
+        if ($statusArray[4] === 1) {
+            $statusArray[4] = 0;
+        }
+        return $statusArray;
+    }
+
+    public static function checkStatuses($statusArray){
+        if ($statusArray[2] === 1){
+            return "dead";
+        } elseif ($statusArray[3] === 1){
+            return "risk";
+        } else {
+            return "safe";
+        }
+    }
 }

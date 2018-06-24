@@ -23,7 +23,7 @@ class buildingView extends building
 
 
     public static function getAllBuildingsView(){
-        $buildingsList = buildingController::getAllBuildings();
+        $buildingsList = factoryClassArray::createAllBuildings();
         $finalArray = [];
         foreach ($buildingsList as $item){
             $temp = new buildingView($item);
