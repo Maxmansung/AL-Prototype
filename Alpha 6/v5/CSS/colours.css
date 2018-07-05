@@ -1,0 +1,151 @@
+.blackColour{
+    color: #000000;
+}
+
+.grayColour{
+    color: rgba(155, 155, 155,1);
+}
+
+.lightGrayColour{
+    color: rgba(216, 216, 216,1);
+}
+
+.darkGrayColour{
+    color: #333333;
+}
+
+.greenColour{
+    color: rgba(0,255,0,1);
+}
+
+.blueColour{
+    color: rgba(0,0,255,1);
+}
+
+.redColour{
+    color: rgba(255,0,0,1);
+}
+
+.orangeColour{
+    color: rgba(255,125,0,1);
+}
+
+.yellowColour{
+    color: rgba(255,255,0,1);
+}
+
+.whiteColour{
+    color: #FFFFFF
+}
+
+.whiteBackground{
+    background-color: #ffffff;
+}
+
+.lightGrayBackground{
+    background-color: rgba(216, 216, 216,1);
+}
+
+.grayBackground{
+    background-color: #bbbbbb;
+}
+
+.darkGrayBackground{
+    background-color: #333333;
+}
+
+.blueBackground{
+    background-color: #1F51AC;
+}
+
+.redBackground{
+    background-color: #C91285;
+}
+
+.greenBackground{
+    background-color: #AFF016;
+}
+
+.blackBackground{
+    background-color: #000000;
+}
+
+.redBackgroundTransparent{
+    background-color: rgba(255,0,0,0.2);
+}
+
+.greenBackgroundTransparent{
+    background-color: rgba(0,255,0,0.2);
+}
+
+.blackBorder{
+    border-color: rgba(0,0,0,1);
+}
+
+.whiteBorder{
+    border-color: rgba(255,255,255,1);
+}
+
+.grayBorder{
+    border-color: rgba(187, 189, 191, 1);
+}
+
+.lightGrayBorder{
+    border-color: rgba(216, 216, 216,1);
+}
+
+.biomeBackground1{
+    background-color: #CFA97D;
+}
+
+.biomeBackground2{
+    background-color: #D7E0DF;
+}
+
+.biomeBackground3{
+    background-color: #AEC254;
+}
+
+.biomeBackground4{
+    background-color: #67A152;
+}
+
+.biomeBackground5{
+    background-color: #3094B8;
+}
+
+.biomeBackground6{
+    background-color: #88AFBD;
+}
+
+.biomeBackground7{
+    background-color: #DAB894;
+}
+
+.biomeBackground8{
+    background-color: #82D173;
+}
+
+.biomeBackground9{
+    background-color: #3F3F37;
+}
+
+.biomeBackground10{
+    background-color: #D0A98F;
+}
+
+.biomeBackground11{
+    background-color: #8C271E;
+}
+
+.biomeBackground12{
+    background-color: #623CEA;
+}
+
+.biomeBackground100{
+    background-color: #F5EDFF;
+}
+
+.biomeBackgroundx{
+    background-color: #000000;
+}
