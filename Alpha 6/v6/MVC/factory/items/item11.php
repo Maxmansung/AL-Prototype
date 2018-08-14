@@ -13,7 +13,7 @@ class item11 extends item
         $this->usable = false;
         $this->survivalBonus = 0;
         $this->statusImpact = 1;
-        $this->givesRecipe = array();
+        $this->givesRecipe = array(16);
         $this->dayEndChanges = false;
     }
 

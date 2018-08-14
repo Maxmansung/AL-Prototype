@@ -23,14 +23,20 @@ class dayEndingFunctions
                 switch ($result) {
                     case "injured":
                         chatlogPersonalController::getFrozen($single, $map->getCurrentDay());
+                        $zone->addItem(35);
+                        $zone->updateZone();
                         dayEndingFunctions::playerSurvives($single, "cold", $stats, $map, $zone);
                         break;
                     case "starve":
                         dayEndingFunctions::playerDeath($single, 2, $statsAdjusted, $nightAdjusted, $party, $map, $zone);
+                        $zone->addItem(35);
+                        $zone->updateZone();
                         $deathCounter++;
                         break;
                     case "freeze":
                         dayEndingFunctions::playerDeath($single, 1, $statsAdjusted, $nightAdjusted, $party, $map, $zone);
+                        $zone->addItem(35);
+                        $zone->updateZone();
                         $deathCounter++;
                         break;
                     case "burnt":
@@ -39,6 +45,8 @@ class dayEndingFunctions
                             dayEndingFunctions::playerSurvives($single, "normal", $stats, $map, $zone);
                         } else {
                             dayEndingFunctions::playerDeath($single, 4, $statsAdjusted, $nightAdjusted, $party, $map, $zone);
+                            $zone->addItem(35);
+                            $zone->updateZone();
                             $deathCounter++;
                         }
                         break;

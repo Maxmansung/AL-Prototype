@@ -40,9 +40,13 @@ class building4 extends building
         return true;
     }
 
-    public function getTempBonus()
+    public function getTempBonus($zone)
     {
         return 0;
+    }
+
+    function getLongDescription(){
+        return "A lock will mean that other players cant access your things without a lot of effort. It comes with a starting defense of 20 stamina but further buildings may be able to improve this. Once the lock has been destroyed, those outside of your party will be able to access the items inside again so make sure you keep an eye on it's health.";
     }
 
 }

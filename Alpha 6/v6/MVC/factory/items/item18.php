@@ -14,7 +14,7 @@ class item18 extends item
         $this->survivalBonus = 0;
         $this->statusImpact = 3;
         $this->edible = "Your eyesight fades away, and you remember that it was the red spo...";
-        $this->inedible = "you still feel woozy since the last time, best to give it a rest.";
+        $this->inedible = "You still feel woozy since the last time, best to give it a rest.";
         $this->givesRecipe = array();
         $this->dayEndChanges = false;
     }

@@ -5,8 +5,12 @@ class buildingType3 extends buildingType
     function __construct()
     {
         $this->typeID = 3;
-        $this->typeName = "Hunting";
+        $this->typeName = "Farming";
         $this->typeDescription = "Buildings to catch and kill wildlife";
+    }
+
+    function getLongDescription(){
+        return "This is a longer description of the building type";
     }
 
 }

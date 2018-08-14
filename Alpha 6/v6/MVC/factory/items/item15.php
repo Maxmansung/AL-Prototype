@@ -12,7 +12,7 @@ class item15 extends item
         $this->itemType = 1;
         $this->usable = true;
         $this->survivalBonus = 0;
-        $this->statusImpact = 5;
+        $this->statusImpact = 2;
         $this->edible = "You bite into the hard shells and almost breaks your teeth, you cant tell if you ate anything but shells";
         $this->inedible = "These nuts and seeds definitely don't look appealing enough for you to want to eat them today";
         $this->givesRecipe = array();

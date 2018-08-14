@@ -94,7 +94,7 @@ if ($profile->getProfileID() == "" || $profile->getAccountType() > 7){
             $pageName = "/gamePages/other/credits.php";
             break;
         case "help":
-            $pageName = "/gamePages/other/helpPage.php";
+            $pageName = "/gamePages/help/helpPage.php";
             break;
         case "news":
             $pageName = "/gamePages/other/news.php";

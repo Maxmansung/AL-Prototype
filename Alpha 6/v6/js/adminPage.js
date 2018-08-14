@@ -552,24 +552,24 @@ function createTestPage(data){
     $(".testMainWrapper").empty();
     for (var x in data){
         $(".testMainWrapper").append('<div class="col-11">' +
-            '<div class="row my-2 standardWrapperTitle font-size-3 font-weight-bold">' +
+            '<div class="row my-1 standardWrapperTitle font-size-2x font-weight-bold">' +
                 data[x].biomeName +
             '</div>' +
             '<div class="row justify-content-around">' +
             '<div class="col-4 col-md-2 d-flex flex-column align-items-center justify-content-center" align="center">' +
-            '<div class="font-size-2x">None</div><div class="font-size-3">'+data[x].noneChance+'%</div>' +
+            '<div class="font-size-2">None</div><div class="font-size-2x">'+data[x].noneChance+'%</div>' +
             '</div>' +
             '<div class="col-4 col-md-2 d-flex flex-column align-items-center justify-content-center" align="center">' +
-            '<div class="font-size-2x">Single</div><div class="font-size-3">'+data[x].singleChance+'%</div>' +
+            '<div class="font-size-2">Single</div><div class="font-size-2x">'+data[x].singleChance+'%</div>' +
             '</div>' +
             '<div class="col-4 col-md-2 d-flex flex-column align-items-center justify-content-center" align="center">' +
-            '<div class="font-size-2x">Double</div><div class="font-size-3">'+data[x].doubleChance+'%</div>' +
+            '<div class="font-size-2">Double</div><div class="font-size-2x">'+data[x].doubleChance+'%</div>' +
             '</div>' +
             '<div class="col-4 col-md-2 d-flex flex-column align-items-center justify-content-center" align="center">' +
-            '<div class="font-size-2x">Triple</div><div class="font-size-3">'+data[x].tripleChance+'%</div>' +
+            '<div class="font-size-2">Triple</div><div class="font-size-2x">'+data[x].tripleChance+'%</div>' +
             '</div>' +
             '<div class="col-4 col-md-2 d-flex flex-column align-items-center justify-content-center" align="center">' +
-            '<div class="font-size-2x">Quad</div><div class="font-size-3">'+data[x].quadChance+'%</div>' +
+            '<div class="font-size-2">Quad</div><div class="font-size-2x">'+data[x].quadChance+'%</div>' +
             '</div>' +
             '</div>' +
             '<div class="row justify-content-center pb-2" id="test'+x+'">' +

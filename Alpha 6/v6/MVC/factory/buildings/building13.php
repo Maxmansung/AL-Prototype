@@ -30,6 +30,7 @@ class building13 extends building
         $building = new buildingController($firepit);
         $building->modifyFuelRemaining(1);
         $building->postBuildingDatabase();
+        $zone->addBuilding($this->getBuildingTemplateID());
         $zone->updateZone();
         $avatar->updateAvatar();
     }
@@ -47,9 +48,13 @@ class building13 extends building
         return true;
     }
 
-    public function getTempBonus()
+    public function getTempBonus($zone)
     {
         return 0;
+    }
+
+    function getLongDescription(){
+        return "This essential action will need to become part of your daily routine if you want to keep the fire alive. Each day this will need to be performed to keep the fire going and if it's missed the next day you'll wake to a missing heat source.";
     }
 
 }

@@ -3,7 +3,7 @@ if (!defined('PROJECT_ROOT')) exit(include($_SERVER['DOCUMENT_ROOT'] . "/error/4
 class HUDController
 {
     //These are the cheat functions for the game
-    private static $infiniteStamina = true;
+    private static $cheatsActive = true;
 
 
     public static function changeReady($profile){
@@ -60,7 +60,7 @@ class HUDController
     }
 
     public static function refreshStamina($avatarID){
-        if (HUDController::$infiniteStamina === true) {
+        if (HUDController::$cheatsActive === true) {
             $avatar = new avatarController($avatarID);
             $map = new mapController($avatar->getMapID());
             if ($map->getGameType() === 5) {
@@ -73,7 +73,6 @@ class HUDController
         } else {
             return array("ERROR"=>100);
         }
-
     }
 
     public static function playerDeathKilling($avatarID,$profile){
@@ -112,6 +111,27 @@ class HUDController
             }
         } else {
             return array("ERROR"=>"You dont have the power to do that");
+        }
+    }
+
+    public static function resetStatuses($avatarID){
+        if (HUDController::$cheatsActive === true) {
+            $avatar = new avatarController($avatarID);
+            $map = new mapController($avatar->getMapID());
+            if ($map->getGameType() === 5) {
+                $array = $avatar->getStatusArray();
+                foreach ($array as $key=>$status){
+                    $status = 0;
+                    $array[$key] = $status;
+                }
+                $avatar->setStatusArray($array);
+                $avatar->updateAvatar();
+                return array("ERROR"=>69);
+            } else {
+                return array("ERROR"=>100);
+            }
+        } else {
+            return array("ERROR"=>100);
         }
     }
 }

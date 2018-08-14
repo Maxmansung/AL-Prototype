@@ -17,5 +17,6 @@ include_once(PROJECT_ROOT."/MVC/factory/biomes/biome9.php");
 include_once(PROJECT_ROOT."/MVC/factory/biomes/biome10.php");
 include_once(PROJECT_ROOT."/MVC/factory/biomes/biome11.php");
 include_once(PROJECT_ROOT."/MVC/factory/biomes/biome12.php");
+include_once(PROJECT_ROOT."/MVC/factory/biomes/biome13.php");
 include_once(PROJECT_ROOT."/MVC/factory/biomes/biome100.php");
 

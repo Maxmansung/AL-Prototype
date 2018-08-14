@@ -7,12 +7,12 @@ class item13 extends item
     {
         $this->itemTemplateID = 13;
         $this->identity = "Water";
-        $this->icon = "";
+        $this->icon = "water";
         $this->description = "Your water wont last long at these temperatures";
         $this->itemType = 1;
         $this->usable = false;
         $this->survivalBonus = 0;
-        $this->statusImpact = 5;
+        $this->statusImpact = 2;
         $this->edible = "You gulp down the water and feel a chill travel through you";
         $this->inedible = "No way, there's bits floating in it and its freezing cold, you'll need to be a lot more desperate";
         $this->givesRecipe = array();

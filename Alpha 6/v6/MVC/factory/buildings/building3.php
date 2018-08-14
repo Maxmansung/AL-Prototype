@@ -37,9 +37,13 @@ class building3 extends building
         return true;
     }
 
-    public function getTempBonus()
+    public function getTempBonus($zone)
     {
         return 0;
+    }
+
+    function getLongDescription(){
+        return "With a bit of effort you can claim this as your own land. This is the most important step to protecting the region and items within it from those you dislike. Some might call it selfish but others may find it to be smart move. Once the region has been claimed you'll be able to find it on your map easily and start on the defensive buildings.";
     }
 
 }

@@ -1370,3 +1370,8 @@ span.btn-dark:not(:disabled):not(.disabled):active:focus, .btn-dark:not(:disable
     border: 2px solid lightgray;
     padding: 3px;
 }
+
+.helpBuildingImage{
+    width: 50px;
+    max-height: 50px;
+}

@@ -17,6 +17,7 @@ function clickSignin() {
     $("#forgottenPopupWindow").hide();
     $("#loginPopupWindow").show();
     $("#signupPopupWindow").hide();
+    $("#username").focus();
 }
 
 function clickForgotten(){

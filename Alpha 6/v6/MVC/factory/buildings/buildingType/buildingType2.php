@@ -9,4 +9,8 @@ class buildingType2 extends buildingType
         $this->typeDescription = "Buildings that keep strangers out and protect your stuff";
     }
 
+    function getLongDescription(){
+        return "This is a longer description of the building type";
+    }
+
 }

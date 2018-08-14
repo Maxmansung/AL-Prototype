@@ -32,12 +32,34 @@ class building11 extends building
 
     public function dayEndingActions($map)
     {
+        $buildingList = buildingModel::findBuildingsInMap($this->buildingTemplateID,$map->getMapID());
+        foreach ($buildingList as $buildingModel) {
+            $building = new buildingController($buildingModel);
+            $zone = new zoneController($building->getZoneID());
+            if (in_array(1,$zone->getBuildings())){
+                $temp = $building->getFuelRemaining();
+                $building->setFuelRemaining(($temp+1));
+            } else {
+                $building->setFuelRemaining(0);
+            }
+            $building->postBuildingDatabase();
+        }
         return true;
     }
 
-    public function getTempBonus()
+    public function getTempBonus($zone)
     {
-        return 0;
+        return $this->getFuelRemaining();
+    }
+
+    function getLongDescription(){
+        return "This rock will gradually get hotter beside the fire. Every night that the fire remains alight next to it the temperature of the rock will increase by 1. If the fire ever goes out though the rock will cool back off to nothing again.";
+    }
+
+    function getHeatDescription()
+    {
+        $words = "+1&#176C (per night)";
+        return $words;
     }
 
 }

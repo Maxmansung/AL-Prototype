@@ -35,9 +35,13 @@ class building8 extends building
         return true;
     }
 
-    public function getTempBonus()
+    public function getTempBonus($zone)
     {
         return 0;
+    }
+
+    function getLongDescription(){
+        return "Its a bit of waste of food but this building should make the fire obvious to every other player on the map. However, attracting everyone's attention may not always be a good thing so make sure it's something you really want to be doing.";
     }
 
 }

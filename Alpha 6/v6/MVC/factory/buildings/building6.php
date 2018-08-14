@@ -44,9 +44,13 @@ class building6 extends building
         return true;
     }
 
-    public function getTempBonus()
+    public function getTempBonus($zone)
     {
         return 0;
+    }
+
+    function getLongDescription(){
+        return "So the zone belongs to another party and you're feeling left out? Then get in there and capture their flag! Doing this will allow you to take over another parties region and turn everything to yours. What fun!";
     }
 
 }

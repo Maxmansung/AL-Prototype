@@ -223,6 +223,8 @@ class ingameOverview
         if ($map->getGameType() == 5){
             //VAR 7 = ADD STAMINA
             array_push($finalArray,7);
+            //VAR 13 = RESET STATUSES
+            array_push($finalArray,13);
         }
         $this->actions = $finalArray;
     }

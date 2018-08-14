@@ -89,7 +89,7 @@ class buildingLevels
         foreach ($zone->getBuildings() as $building){
             $name = "building".$building;
             $class = new $name();
-            $total += $class->getTempBonus();
+            $total += $class->getTempBonus($zone);
         }
         return $total;
     }

@@ -554,6 +554,9 @@ function createActionButtons(actions){
             case 12:
                 actionButtonVar = new actionButton("fas fa-screwdriver redColour","Chest Secured","You can't improve the chest lock and further","");
                 break;
+            case 13:
+                actionButtonVar = new actionButton("fas fa-church","Statuses","This is a cheat to reset your statuses in test games","resetStatus()");
+                break;
         }
         if (actionButtonVar !== null){
             $(".zoneActionsWrap").append('<div class="d-flex flex-column justify-content-center align-items-center mr-2 mb-2"><div class="clickableActionButton p-1 d-flex justify-content-center align-items-center" data-toggle="popover" data-placement="top" title="'+actionButtonVar.title+'" data-content="'+actionButtonVar.text+'" onclick="'+actionButtonVar.action+'">' +
@@ -1493,6 +1496,10 @@ function actionChest(){
 
 function gainStamina(){
     ajax_All(202,0);
+}
+
+function resetStatus(){
+    ajax_All(230,0);
 }
 
 function worshipShrine(){

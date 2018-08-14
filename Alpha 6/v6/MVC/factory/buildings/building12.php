@@ -8,7 +8,7 @@ class building12 extends building
         $this->name = "Seedlings";
         $this->icon = "seedlings";
         $this->description = "Maybe if you plant some seeds and hope really hard you can reverse the damage you've done...";
-        $this->itemsRequired = [15=>3];
+        $this->itemsRequired = [15=>2,34=>2];
         $this->buildingsRequired = 0;
         $this->staminaRequired = 12;
         $this->fuelBuilding = 0;
@@ -53,9 +53,13 @@ class building12 extends building
         return true;
     }
 
-    public function getTempBonus()
+    public function getTempBonus($zone)
     {
         return 0;
+    }
+
+    function getLongDescription(){
+        return "With some fertilizer, beans and a lot of hope you might be able to get a few things to sprout and improve the region a little. Scrubland becomes Forests, Lakes fill with litchen and everything else might be able to grow a little scrub.";
     }
 
 }

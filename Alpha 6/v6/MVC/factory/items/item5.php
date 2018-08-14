@@ -6,9 +6,9 @@ class item5 extends item
     function __construct()
     {
         $this->itemTemplateID = 5;
-        $this->identity = "Charred Stick";
-        $this->icon = "BurntTorch";
-        $this->description = "A stick that's been burnt, only good for sticking on the fire now";
+        $this->identity = "Ash";
+        $this->icon = "ash";
+        $this->description = "This stick seems to have been burnt down to just a pile of ash";
         $this->itemType = 4;
         $this->usable = false;
         $this->survivalBonus = 0;

@@ -49,6 +49,8 @@ include_once(PROJECT_ROOT . "/MVC/overviewController/partyZonePlayerController.p
 include_once(PROJECT_ROOT . "/MVC/overviewController/playerMapZoneController.php");
 
 //VIEW CLASSES
+include_once(PROJECT_ROOT . "/MVC/view/buildingsListHelp.php");
+include_once(PROJECT_ROOT . "/MVC/view/buildingListSingle.php");
 include_once(PROJECT_ROOT . "/MVC/view/buildingView.php");
 include_once(PROJECT_ROOT . "/MVC/view/deathScreenView.php");
 include_once(PROJECT_ROOT . "/MVC/view/equipmentView.php");

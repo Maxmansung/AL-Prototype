@@ -134,6 +134,12 @@ function switchArray(type,response){
         case 53:
             createDeathPage(response.view);
             break;
+        case 181:
+            createBuildingInformation(response.view);
+            break;
+        case 182:
+            createBuildingsIndex(response.view);
+            break;
         case 188:
             leaderboardSetup(response.view);
             break;

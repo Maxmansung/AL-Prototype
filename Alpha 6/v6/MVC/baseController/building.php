@@ -297,4 +297,23 @@ class building implements building_Interface
     {
         $this->badBiomes = $var;
     }
+
+    function getLongDescription(){
+        return "This is a longer description for the help page";
+    }
+
+    public function getTempBonus($zone)
+    {
+        return 0;
+    }
+
+    public function dayEndingActions($map)
+    {
+        return true;
+    }
+
+    function getHeatDescription()
+    {
+        return "None";
+    }
 }

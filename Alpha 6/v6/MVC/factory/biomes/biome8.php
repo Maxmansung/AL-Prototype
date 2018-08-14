@@ -13,7 +13,7 @@ class biome8 extends biomeType
         $this->findingChanceMod = 3;
         $this->finalType = 0;
         $this->biomeImage = "lichen";
-        $this->biomeItems = [20,20,20,19];
+        $this->biomeItems = [20,20,20,20,19,19,19,13,13,23];
         $this->depletedTo = 5;
         $this->visibleMap = false;
     }

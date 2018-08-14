@@ -37,9 +37,13 @@ class building9 extends building
         return true;
     }
 
-    public function getTempBonus()
+    public function getTempBonus($zone)
     {
         return 0;
+    }
+
+    function getLongDescription(){
+        return "This upgrade will improve the defense of your fences, adding another 10 stamina to its health. A worthwhile building if you really don't trust those other people around you but some may find it to be a waste of stamina.";
     }
 
 }

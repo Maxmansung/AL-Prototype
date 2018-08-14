@@ -65,6 +65,10 @@ if (isset($_POST["type"])) {
                         //This is used to show the deathscreen page
                     case 53:
                         //This is used to show the join game page
+                    case 181:
+                        //This is used to get further details on a single building from the help index
+                    case 182:
+                        //This is used to get the buildings Help index
                     case 188:
                         //This is used to show the leaderboards
                     case 192:
@@ -437,6 +441,11 @@ if (isset($_POST["type"])) {
                         $response = newsCommentsController::modifyComment($profile, $data1, $data2, "Edit");
                         //Returns ERROR or ALERT
                         break;
+                    case 230:
+                        //Used to reset the players statuses in a test game
+                        $response = HUDController::resetStatuses($profile->getAvatar());
+                        //Returns ERROR or ALERT
+                        break;
                     default:
                         $response = array("ERROR" => "No known AJAX type sent");
                         $control = 99999;
@@ -534,6 +543,14 @@ if (isset($_POST["type"])) {
                             break;
                         case 19:
                             $view = testChancesView::createView($data1);
+                            $viewHUD = false;
+                            break;
+                        case 20:
+                            $view = buildingsListHelp::createBuildingsList();
+                            $viewHUD = false;
+                            break;
+                        case 21:
+                            $view = buildingListSingle::getBuildingsInfo($data1,$data2);
                             $viewHUD = false;
                             break;
                         default:

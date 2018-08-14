@@ -38,9 +38,13 @@ class building5 extends building
         return true;
     }
 
-    public function getTempBonus()
+    public function getTempBonus($zone)
     {
         return 0;
+    }
+
+    function getLongDescription(){
+        return "This is the big time defenses, you'll need the locks from a few other people to get this built but once you have no one will be able to access anything in the region. This includes using the buildings in the region, gaining heat from the buildings around and accessing the items in the chest. However, the region around can still be searched and items on the floor are outside of the gates.";
     }
 
 }

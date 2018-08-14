@@ -13,7 +13,7 @@ class biome7 extends biomeType
         $this->findingChanceMod = 1;
         $this->finalType = 0;
         $this->biomeImage = "bones";
-        $this->biomeItems = [2];
+        $this->biomeItems = [2,22,2,2,29,29,30,28,10,8,2,22];
         $this->depletedTo = 2;
         $this->visibleMap = false;
     }

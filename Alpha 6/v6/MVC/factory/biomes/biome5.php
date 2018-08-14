@@ -13,7 +13,7 @@ class biome5 extends biomeType
         $this->findingChanceMod = 4;
         $this->finalType = 1;
         $this->biomeImage = "lake";
-        $this->biomeItems = [19,19,20,20,17];
+        $this->biomeItems = [19,20,20,17,17,13,13,13];
         $this->depletedTo = 0;
         $this->visibleMap = false;
     }

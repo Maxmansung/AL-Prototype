@@ -144,10 +144,10 @@ class buildingItemController
                             $avatar->updateAvatar();
                             $selectedBuilding->addStaminaSpent($stamina);
                             $checker = null;
+                            $selectedBuilding->postBuildingDatabase();
                             if ($selectedBuilding->getStaminaSpent() >= $selectedBuilding->getStaminaRequired()) {
                                 $checker = self::completeBuilding($avatar,$zone, $selectedBuilding,$location);
                             }
-                            $selectedBuilding->postBuildingDatabase();
                             if ($checker !== null) {
                                 return $checker;
                             } else {

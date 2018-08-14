@@ -16,7 +16,7 @@ class building10 extends building
         $this->isBuilt = false;
         $this->staminaSpent = 0;
         $this->setTypeVars();
-        $this->givesRecipe = array(5,6,7);
+        $this->givesRecipe = array(5,6,7,23);
         $this->badBiomes = [100];
     }
 
@@ -35,9 +35,13 @@ class building10 extends building
         return true;
     }
 
-    public function getTempBonus()
+    public function getTempBonus($zone)
     {
         return 0;
+    }
+
+    function getLongDescription(){
+        return "This building allows you to start taking apart animals with a bit more precision. Small animals can be broken up into a specific item and rotten corpses can be dissected into their last useful parts. This is a must have for any budding hunters out there.";
     }
 
 }

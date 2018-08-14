@@ -119,7 +119,7 @@ class statuses implements statuses_Interface
     public static function checkStatuses($statusArray){
         if ($statusArray[2] === 1){
             return array("dead","starve");
-        } elseif ($statusArray[3] === 1){
+        } elseif ($statusArray[3] === 1 || $statusArray[6] === 1){
             return array("risk","freeze");
         } else {
             return array("safe",true);

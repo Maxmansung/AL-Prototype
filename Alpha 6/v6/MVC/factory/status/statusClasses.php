@@ -10,6 +10,7 @@ include_once(PROJECT_ROOT."/MVC/factory/status/status2.php");
 include_once(PROJECT_ROOT."/MVC/factory/status/status3.php");
 include_once(PROJECT_ROOT."/MVC/factory/status/status4.php");
 include_once(PROJECT_ROOT."/MVC/factory/status/status5.php");
+include_once(PROJECT_ROOT."/MVC/factory/status/status6.php");
 
 //THE FIVE BASIC CONSUME TYPES
 include_once(PROJECT_ROOT."/MVC/factory/status/response/responseController.php");

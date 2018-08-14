@@ -389,7 +389,7 @@ class englishLanguage implements languageInterface
     //This is the current version of the game
     function footerGameVersion()
     {
-        return "Version: 6.4 (Alpha)";
+        return "Version: 6.6 (Alpha)";
     }
 
     //This is the title of the helpful links

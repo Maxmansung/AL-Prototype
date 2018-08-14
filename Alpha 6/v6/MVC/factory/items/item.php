@@ -136,12 +136,22 @@ class item implements item_Interface
 
     function checkConsumable($statusArray){
         $response = responseController::getStatusChangeType($this->statusImpact);
-        if ($statusArray[$response->getFailStatus()] == true || $response->getFailStatus() === false){
-            if (!in_array($response->getSucceedStatus(),$statusArray) || $response->getSucceedStatus() === false){
-                return $this->inedible;
+        $checker = true;
+        if ($response->getFailStatus() !== false){
+            if ($statusArray[$response->getFailStatus()] != 0){
+                $checker = false;
             }
         }
-        return true;
+        if ($response->getSucceedStatus() !== false){
+            if ($statusArray[$response->getSucceedStatus()] != 1){
+                $checker = false;
+            }
+        }
+        if ($checker === true){
+            return true;
+        } else {
+            return $this->inedible;
+        }
     }
 
     function getDayEndChanges()

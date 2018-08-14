@@ -35,4 +35,8 @@ class buildingType
         return get_object_vars($this);
     }
 
+    function getLongDescription(){
+        return "This is a longer description of the building type";
+    }
+
 }

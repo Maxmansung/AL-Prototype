@@ -41,6 +41,6 @@ class item1 extends item
     function consumeItem($avatar)
     {
         return array("ERROR"=>"This item cannot be consumed, please bug report this (Item1)");
-    }
+}
 
 }

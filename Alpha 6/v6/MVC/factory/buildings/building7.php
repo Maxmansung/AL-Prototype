@@ -46,9 +46,13 @@ class building7 extends building
         return true;
     }
 
-    public function getTempBonus()
+    public function getTempBonus($zone)
     {
         return 0;
+    }
+
+    function getLongDescription(){
+        return "A trap will catch you a small animal every day, assuming no one scares them all off. Every time someone walks through the zone the chances of an animal being caught overnight will reduce, so make sure you plan out when you're going to check your traps and try not to build them too close to a route.";
     }
 
 }

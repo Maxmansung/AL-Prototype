@@ -11,10 +11,10 @@ class biome1 extends biomeType
         $this->descriptionLong = "This is a longer description of the soil";
         $this->temperatureMod = 1;
         $this->findingChanceMod = 1;
-        $this->finalType = 1;
+        $this->finalType = 0;
         $this->biomeImage = "dirt";
         $this->biomeItems = [6,6,20,10,11,11,11,7];
-        $this->depletedTo = 0;
+        $this->depletedTo = 10;
         $this->visibleMap = false;
     }
 

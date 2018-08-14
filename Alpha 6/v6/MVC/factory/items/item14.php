@@ -7,7 +7,7 @@ class item14 extends item
     {
         $this->itemTemplateID = 14;
         $this->identity = "Charcoal";
-        $this->icon = "";
+        $this->icon = "charcoal";
         $this->description = "This will burn much hotter and brighter than wood";
         $this->itemType = 2;
         $this->usable = false;

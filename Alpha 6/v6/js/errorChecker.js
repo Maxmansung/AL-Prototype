@@ -222,6 +222,10 @@ function errors(id){
         case 68:
             createAlertBox(4,1,"Your friends will be sad if you betray them for another party. Maybe you should commit to leaving first before you start trying to join other people");
             break;
+        case 69:
+            createAlertBox(2,1,"Your statuses have been refreshed for this test game",1);
+            break;
+
         case 100:
             createAlertBox(5,1,"You do not have permission to perform this action",1);
             break;

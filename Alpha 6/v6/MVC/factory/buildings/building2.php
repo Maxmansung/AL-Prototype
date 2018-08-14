@@ -40,9 +40,13 @@ class building2 extends building
         return true;
     }
 
-    public function getTempBonus()
+    public function getTempBonus($zone)
     {
         return 0;
+    }
+
+    function getLongDescription(){
+        return "The snow chest is your first line in protecting your items from other players. It can't hold a lot but at least they may not spot it. The original chest offers 10 spaces in which to put your items but further upgrades could improve that and even secure the chest from sneaky hands";
     }
 
 }

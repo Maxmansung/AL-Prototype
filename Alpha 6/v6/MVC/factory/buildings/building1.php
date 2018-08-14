@@ -27,9 +27,10 @@ class building1 extends building
     public function newBuildingFunctions($zone,$avatar)
     {
         $building = new buildingController("");
-        $building->createNewBuilding(13,$zone->getZoneID());
         $building->setStaminaSpent($building->getStaminaRequired());
+        $building->setFuelRemaining($building->getFuelBuilding());
         $building->postBuildingDatabase();
+        $building->createNewBuilding(13,$zone->getZoneID());
         $zone->addBuilding(13);
         $zone->updateZone();
         $avatar->updateAvatar();
@@ -53,9 +54,19 @@ class building1 extends building
         return true;
     }
 
-    public function getTempBonus()
+    public function getTempBonus($zone)
     {
         return 10;
+    }
+
+    function getLongDescription(){
+        return "The firepit is your basic building to keep everything warm and running. It can be used to to make torches and to start getting the zone warmer. Be aware that the firepit requires constant maintenance though, if you forget to stoke it one day it will fail and you'll have to start all over again.";
+    }
+
+    function getHeatDescription()
+    {
+        $words = "+".$this->getTempBonus(false)."&#176C";
+        return $words;
     }
 
 }

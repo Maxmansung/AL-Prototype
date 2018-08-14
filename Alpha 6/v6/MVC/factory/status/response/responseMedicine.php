@@ -6,12 +6,13 @@ class responseMedicine extends responseController
     function __construct()
     {
         $this->changeType = "Medicine";
-        $this->failStatus = false;
+        $this->failStatus = 6;
         $this->succeedStatus = 3;
     }
 
     function statusChange($statusArray){
-        $statusArray[5] = 1;
+        $statusArray[6] = 1;
+        $statusArray[3] = 0;
         return $statusArray;
     }
 }

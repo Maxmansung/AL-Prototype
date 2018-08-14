@@ -13,7 +13,7 @@ class biome11 extends biomeType
         $this->findingChanceMod = 4;
         $this->finalType = 0;
         $this->biomeImage = "lava";
-        $this->biomeItems = [5];
+        $this->biomeItems = [5,14];
         $this->depletedTo = 9;
         $this->visibleMap = true;
     }
